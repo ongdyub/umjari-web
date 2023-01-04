@@ -2,7 +2,11 @@ import {Stack} from "@mui/material";
 
 const ConcertFilter = () => {
     return(
-        <Stack sx={{bgcolor: 'gray', height: '50px'}}>
+        <Stack direction="row"
+               justifyContent="flex-start"
+               alignItems="center"
+               spacing={2}
+               sx={{bgcolor: 'gray', height: '50px', pl: '50px'}}>
             filter
         </Stack>
     )
