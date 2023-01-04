@@ -16,7 +16,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import {useState} from "react";
 
 const Header = () => {
-    const pages = ['홈', '게시판', '단체검색하기', '중고거래 및 대여', '객원모집'];
+    const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -44,7 +44,7 @@ const Header = () => {
     return(
         <AppBar position="static">
             <Container maxWidth="xl">
-                <Toolbar sx={{pl: '20px'}} disableGutters>
+                <Toolbar sx={{pl: '20px', height: '60px'}} disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                     <Typography
                         variant="h6"

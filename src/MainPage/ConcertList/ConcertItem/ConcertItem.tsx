@@ -1,19 +1,23 @@
-import {Card, CardMedia} from "@mui/material";
+import {Card, CardMedia, Grid} from "@mui/material";
 
 const ConcertItem = (props: any) => {
 
     const { img } = props
 
     return(
-        <Card sx={{ maxWidth: 345, overflow: "auto" }}>
-            <CardMedia
-                component="img"
-                alt="green iguana"
-                height="340"
-                width="auto"
-                image={img}
-            />
-        </Card>
+        <Grid>
+            <Card sx={{ maxWidth: 345, overflowX: "scroll" }}>
+                <CardMedia
+                    component="img"
+                    alt="green iguana"
+                    height="240px"
+                    width="400px"
+                    image={img}
+                    sx={{objectFit: 'cover'}}
+                />
+            </Card>
+        </Grid>
+
     )
 }
 
