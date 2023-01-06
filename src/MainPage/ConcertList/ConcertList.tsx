@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 import {selectDummy} from "../../store/slices/dummy/dummy";
-import {Stack, Grid} from "@mui/material";
+import {Stack, Grid, Divider} from "@mui/material";
 import ConcertFilter from "./ConcertFilter/ConcertFilter";
 import ConcertItem from "./ConcertItem/ConcertItem";
 
@@ -9,15 +9,17 @@ const ConcertList = () => {
     const dummySelector = useSelector(selectDummy)
 
     return(
-        <Stack sx={{bgcolor: 'green', height: '400px'}}>
+        <Stack sx={{height: '400px'}}>
             <ConcertFilter />
-            <Stack direction="row" gap={'20px'} justifyContent="center" alignItems="center" sx={{'overflow-x':"auto"}} >
+            <Divider orientation="horizontal"  />
+            <Stack direction="row" sx={{height: '340px', pb: '20px', pt: '10px', overflowX: 'scroll','&::-webkit-scrollbar': {display: 'none'}}}>
                 {dummySelector.img.map((item: string) => (
-                    <Grid justifyContent="center" alignItems="center" key={item} item md={3} sm={5} xs={20} sx={{overflow:"auto"}}>
-                        <ConcertItem img={item} />
+                    <Grid justifyContent="center" direction="row" alignItems="center" key={item} container sx={{width: 'auto', ml:'20px', mr: '20px'}}>
+                        <ConcertItem key={item} img={item} />
                     </Grid>
                 ))}
             </Stack>
+            <Divider orientation="horizontal" sx={{pt: '10px'}} />
         </Stack>
     )
 }

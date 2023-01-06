@@ -1,0 +1,8 @@
+.concert-item {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+/*# sourceMappingURL=ConcertItem.css.map */

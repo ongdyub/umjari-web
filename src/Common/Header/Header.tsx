@@ -3,7 +3,7 @@ import {
     Avatar,
     Box,
     Button,
-    Container,
+    Container, Divider,
     IconButton,
     Menu,
     MenuItem,
@@ -16,8 +16,8 @@ import AdbIcon from '@mui/icons-material/Adb';
 import {useState} from "react";
 
 const Header = () => {
-    const pages = ['홈', '게시판', '단체검색하기', '중고거래 및 대여', '객원모집'];
-    const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+    const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
+    const settings = ['프로필', '마이페이지', '설정', '로그아웃'];
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -44,7 +44,7 @@ const Header = () => {
     return(
         <AppBar position="static">
             <Container maxWidth="xl">
-                <Toolbar disableGutters>
+                <Toolbar sx={{pl: '20px', height: '60px'}} disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                     <Typography
                         variant="h6"
@@ -121,13 +121,16 @@ const Header = () => {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
+                            <>
+                                <Button
+                                    key={page}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 2, color: 'white', display: 'block', fontSize: '15px' }}
+                                >
+                                    {page}
+                                </Button>
+                                <Divider orientation="vertical" sx={{m: '10px',position:'relative', top: '20px', height:'10px', border: 'solid 1px white'}} />
+                            </>
                         ))}
                     </Box>
 
