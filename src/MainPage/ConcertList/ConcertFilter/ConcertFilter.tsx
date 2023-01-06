@@ -77,15 +77,11 @@ const ConcertFilter = () => {
                             setValue(newValue);
                         }}
                         InputProps={{
-                            sx: {
-                                "& label" : {
-                                    marginTop: "-500px"
-                                }
-                            },
                             style: {
                                 height: "35px",
                                 width: "150px",
                                 fontSize: "small",
+                                marginLeft: '10px'
                             },
 
                         }}
@@ -108,11 +104,6 @@ const ConcertFilter = () => {
                             setValue(newValue);
                         }}
                         InputProps={{
-                            sx: {
-                                "& label" : {
-                                    marginTop: "-500px"
-                                }
-                            },
                             style: {
                                 height: "35px",
                                 width: "150px",

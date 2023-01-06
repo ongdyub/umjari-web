@@ -7,10 +7,16 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 export interface  dummyForm {
     data: string,
+    concert: any
     img: string[]
 }
 const initialState: dummyForm = {
     data: 'asdf',
+    concert: [
+        {
+            img: '//www.snupo.org/files/attach/images/157797/561/154/001/59%ED%9A%8C%20%ED%8F%AC%EC%8A%A4%ED%84%B0.png',
+        },
+    ],
     img: [
         '//www.snupo.org/files/attach/images/157797/561/154/001/59%ED%9A%8C%20%ED%8F%AC%EC%8A%A4%ED%84%B0.png',
         '//www.snupo.org/files/attach/images/157797/537/137/001/8697fc06-3b79-48d3-af93-d47be8d65871.pdf-0001.png',

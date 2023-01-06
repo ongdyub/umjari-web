@@ -17,7 +17,7 @@ import {useState} from "react";
 
 const Header = () => {
     const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
-    const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+    const settings = ['프로필', '마이페이지', '설정', '로그아웃'];
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);

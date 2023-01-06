@@ -12,14 +12,14 @@ const ConcertList = () => {
         <Stack sx={{height: '400px'}}>
             <ConcertFilter />
             <Divider orientation="horizontal"  />
-            <Stack direction="row" sx={{height: '300px', pb: '10px', pt: '10px', overflowX: 'scroll'}}>
+            <Stack direction="row" sx={{height: '340px', pb: '20px', pt: '10px', overflowX: 'scroll','&::-webkit-scrollbar': {display: 'none'}}}>
                 {dummySelector.img.map((item: string) => (
-                    <Grid justifyContent="center" alignItems="center" key={item} container sx={{minWidth: 200}}>
-                        <ConcertItem img={item} />
+                    <Grid justifyContent="center" direction="row" alignItems="center" key={item} container sx={{width: 'auto', ml:'20px', mr: '20px'}}>
+                        <ConcertItem key={item} img={item} />
                     </Grid>
                 ))}
             </Stack>
-            <Divider orientation="horizontal" />
+            <Divider orientation="horizontal" sx={{pt: '10px'}} />
         </Stack>
     )
 }

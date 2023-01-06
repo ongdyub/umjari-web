@@ -14,6 +14,11 @@ const blueTheme = createTheme({
           light: '#606060',
           dark : '#252525',
       },
+      secondary: {
+          main : '#313131',
+          light: '#ffffff',
+          dark : '#111111'
+      },
   },
 });
 
