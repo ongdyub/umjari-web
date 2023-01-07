@@ -15,18 +15,12 @@ const ConcertFilter = () => {
         setAge(event.target.value);
     };
 
-    const dateLabelStyle = {
-        "& label" : {
-            marginTop: "-50px"
-        }
-    }
-
     return (
         <Stack direction="row"
                justifyContent="flex-start"
                alignItems="center"
                spacing={2}
-               sx={{height: '90px', pl: '45px', pt: '10px',overflowX: 'scroll'}}
+               sx={{height: '70px', pl: '45px', pt: '10px',overflowX: 'scroll', '&::-webkit-scrollbar': {display: 'none'}}}
         >
             <FormControl sx={{m: 1, minWidth: 80}}>
                 <InputLabel id="demo-simple-select-autowidth-label" sx={{mt: '-10px'}}>지역 1</InputLabel>

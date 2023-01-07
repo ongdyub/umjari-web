@@ -14,7 +14,7 @@ const ConcertList = () => {
             <Divider orientation="horizontal"  />
             <Stack direction="row" sx={{height: '340px', pb: '20px', pt: '10px', overflowX: 'scroll','&::-webkit-scrollbar': {display: 'none'}}}>
                 {dummySelector.img.map((item: string) => (
-                    <Grid justifyContent="center" direction="row" alignItems="center" key={item} container sx={{width: 'auto', ml:'20px', mr: '20px'}}>
+                    <Grid justifyContent="center" direction="row" alignItems="center" key={item} container sx={{width: 'auto',pt: '10px', ml:'20px', mr: '20px'}}>
                         <ConcertItem key={item} img={item} />
                     </Grid>
                 ))}
