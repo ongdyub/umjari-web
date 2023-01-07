@@ -1,28 +1,28 @@
 import {Stack, useMediaQuery, useTheme} from "@mui/material";
 
-const RecommendGroup = () => {
+const MiniBoard = () => {
 
     const theme = useTheme();
 
     return(
-        <Stack direction="column" sx={{bgcolor:'pink', width: useMediaQuery(theme.breakpoints.down("md")) ? "100%" : "40%"}}>
+        <Stack direction="column" sx={{bgcolor:'pink', width: useMediaQuery(theme.breakpoints.down("md")) ? "100%" : "58%"}}>
             <div>
-                Recoomend
+                Miniboard
             </div>
             <div>
-                Recoomend
+                Miniboard
             </div>
             <div>
-                Recoomend
+                Miniboard
             </div>
             <div>
-                Recoomend
+                Miniboard
             </div>
             <div>
-                Recoomend
+                Miniboard
             </div>
         </Stack>
     )
 }
 
-export default RecommendGroup
+export default MiniBoard
