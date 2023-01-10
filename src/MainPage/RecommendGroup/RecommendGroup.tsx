@@ -1,26 +1,24 @@
-import {Stack, useMediaQuery, useTheme} from "@mui/material";
+import {Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import GroupItem from "./GroupItem/GroupItem";
+import {useSelector} from "react-redux";
+import {groupFrom, selectDummy} from "../../store/slices/dummy/dummy";
+import {it} from "node:test";
 
 const RecommendGroup = () => {
 
     const theme = useTheme();
+    const dummySelector = useSelector(selectDummy)
 
     return(
-        <Stack direction="column" sx={{bgcolor:'pink', width: useMediaQuery(theme.breakpoints.down("md")) ? "100%" : "40%"}}>
-            <div>
-                Recoomend
-            </div>
-            <div>
-                Recoomend
-            </div>
-            <div>
-                Recoomend
-            </div>
-            <div>
-                Recoomend
-            </div>
-            <div>
-                Recoomend
-            </div>
+        <Stack direction="column" justifyContent="flex-start" alignItems="center" spacing={2} sx={{width: useMediaQuery(theme.breakpoints.down("md")) ? "100%" : "40%"}}>
+            <Typography sx={{fontWeight: 300, fontSize: 30}} mt={2} >추천 단체</Typography>
+            <Grid justifyContent="center" alignItems="center" container xs={15} sm={15} md={15}>
+                {
+                    dummySelector.group.map((item: groupFrom) => (
+                        <GroupItem img={item.img} name={item.name} song={item.song} recruit={item.recruit} region={item.region} friend={item.friend} />
+                    ))
+                }
+            </Grid>
         </Stack>
     )
 }
