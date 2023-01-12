@@ -1,50 +1,50 @@
-import {Box, Card, CardContent, CardMedia, IconButton, Typography, useTheme} from "@mui/material";
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
-import {groupFrom} from "../../../store/slices/dummy/dummy";
+import {Box, Card, CardContent, CardMedia, IconButton, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {groupFrom, songForm} from "../../../store/slices/dummy/dummy";
+import './GroupItem.scss'
 
 const GroupItem = (props : groupFrom) => {
 
+    const {name, img, song, friend, region, recruit} = props
     const theme = useTheme();
 
-    const {name, img, song, friend, region, recruit} = props
-
     return(
-        <Card sx={{justifyContent:"flex-start", alignItems:"center" ,display: 'flex', width: '90%', marginBottom: '30px' }}>
+        <Card sx={{justifyContent:"flex-start", alignItems:"center" ,display: 'flex', width: '90%', marginBottom: '30px', height: 'auto' }}>
             <CardMedia
                 component="img"
-                sx={{ width: 80, height: 80, objectFit: 'fill', marginLeft: 2 }}
+                sx={{ width: 60, height: 60, objectFit: 'fill', marginLeft: 3, marginRight: 3 }}
                 image={img}
                 alt="Live from space album cover"
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: 1 }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="h5">
+            <Box sx={{width: 160,display: 'flex', flexDirection: 'column', justifyContent: "flex-start", alignItems: "center"}}>
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', pt:3}}>
+                    <Typography component="div" variant="h6" sx={{textOverflow: 'ellipsis'}}>
                         {name}
                     </Typography>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                        Mac Miller
+                        {region}
+                    </Typography>
+                    <Typography variant="subtitle2" color="text.secondary" sx={{textOverflow: 'ellipsis',whiteSpace: 'nowrap'}} component="div">
+                        {friend}명이 참여중입니다.
                     </Typography>
                 </CardContent>
             </Box>
-            <Box sx={{justifyContent:"flex-start", flexDirection: 'column',display: 'flex', alignItems: 'center', ml: 2}}>
+            <Box className={"groupitem-box-song"} sx={{justifyContent:"flex-start", flexDirection: 'column', alignItems: 'center'}}>
                 {
-                    song.map((item) => (
-                        <Typography variant="overline" display="block" gutterBottom>
-                            {item}
-                        </Typography>
+                    song.map((item : songForm) => (
+                        <Stack direction="row" justifyContent="flex-start" alignItems="center">
+                            <Box sx={{width: 120}}>
+                                <Typography variant="caption"  display="block" gutterBottom sx={{fontWeight: 600, fontSize: 12, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>
+                                    {item.composer}
+                                </Typography>
+                            </Box>
+                            <Box className={"groupitem-box-name"} sx={{width: 180,textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}} >
+                                <Typography variant="overline"  display="block" gutterBottom sx={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>
+                                    {item.name}
+                                </Typography>
+                            </Box>
+                        </Stack>
                     ))
                 }
-                {/*<IconButton aria-label="previous">*/}
-                {/*    {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}*/}
-                {/*</IconButton>*/}
-                {/*<IconButton aria-label="play/pause">*/}
-                {/*    <PlayArrowIcon sx={{ height: 38, width: 38 }} />*/}
-                {/*</IconButton>*/}
-                {/*<IconButton aria-label="next">*/}
-                {/*    {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}*/}
-                {/*</IconButton>*/}
             </Box>
 
         </Card>

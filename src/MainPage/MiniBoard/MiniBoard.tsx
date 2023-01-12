@@ -5,7 +5,7 @@ const MiniBoard = () => {
     const theme = useTheme();
 
     return(
-        <Stack direction="column" sx={{bgcolor:'pink', width: useMediaQuery(theme.breakpoints.down("md")) ? "100%" : "58%"}}>
+        <Stack direction="column" sx={{ width: useMediaQuery(theme.breakpoints.down("md")) ? "100%" : "48%"}}>
             <div>
                 Miniboard
             </div>

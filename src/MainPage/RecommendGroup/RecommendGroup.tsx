@@ -10,7 +10,7 @@ const RecommendGroup = () => {
     const dummySelector = useSelector(selectDummy)
 
     return(
-        <Stack direction="column" justifyContent="flex-start" alignItems="center" spacing={2} sx={{width: useMediaQuery(theme.breakpoints.down("md")) ? "100%" : "40%"}}>
+        <Stack direction="column" justifyContent="flex-start" alignItems="center" spacing={2} sx={{width: useMediaQuery(theme.breakpoints.down("md")) ? "100%" : "50%"}}>
             <Typography sx={{fontWeight: 300, fontSize: 30}} mt={2} >추천 단체</Typography>
             <Grid justifyContent="center" alignItems="center" container xs={15} sm={15} md={15}>
                 {
