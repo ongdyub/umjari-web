@@ -25,7 +25,7 @@ const ConcertItem = (props: any) => {
     }
 
     return(
-        <Card className="concert-item" sx={{height: '290px', bgcolor: 'rgba(236,236,236,0.5)' }}>
+        <Card className="concert-item" sx={{height: '285px', bgcolor: 'rgba(236,236,236,0.5)' }}>
             <CardActionArea onClick={onClickDetail} sx={{width: '210px'}}>
                 <CardMedia
                     component="img"

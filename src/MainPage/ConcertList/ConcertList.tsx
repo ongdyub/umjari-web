@@ -9,10 +9,10 @@ const ConcertList = () => {
     const dummySelector = useSelector(selectDummy)
 
     return(
-        <Stack sx={{height: '400px'}}>
+        <Stack sx={{height: '410px'}}>
             <ConcertFilter />
             <Divider orientation="horizontal"  />
-            <Stack direction="row" sx={{height: '340px', pb: '20px', pt: '10px', overflowX: 'scroll','&::-webkit-scrollbar': {display: 'none'}}}>
+            <Stack direction="row" sx={{height: '370px',mb:'10px', pb: '20px', pt: '10px', overflowX: 'scroll','&::-webkit-scrollbar': {display: 'none'}}}>
                 {dummySelector.img.map((item: string) => (
                     <Grid justifyContent="center" direction="row" alignItems="center" key={item} container sx={{width: 'auto',pt: '10px', ml:'20px', mr: '20px'}}>
                         <ConcertItem key={item} img={item} />

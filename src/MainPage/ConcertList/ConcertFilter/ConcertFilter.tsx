@@ -20,10 +20,10 @@ const ConcertFilter = () => {
                justifyContent="flex-start"
                alignItems="center"
                spacing={2}
-               sx={{height: '70px', pl: '45px', pt: '10px',overflowX: 'scroll', '&::-webkit-scrollbar': {display: 'none'}}}
+               sx={{position: 'relative',height: '80px', pl: '45px', top: '15px',mb: '15px', overflowX: 'scroll', '&::-webkit-scrollbar': {display: 'none'}}}
         >
             <FormControl sx={{m: 1, minWidth: 80}}>
-                <InputLabel id="demo-simple-select-autowidth-label" sx={{mt: '-10px'}}>지역 1</InputLabel>
+                <InputLabel id="demo-simple-select-autowidth-label" sx={{mt: '-10px', fontSize: 15}}>지역 1</InputLabel>
                 <Select
                     labelId="demo-simple-select-autowidth-label"
                     id="demo-simple-select-autowidth"
@@ -43,7 +43,7 @@ const ConcertFilter = () => {
             </FormControl>
 
             <FormControl sx={{m: 1, minWidth: 80}}>
-                <InputLabel id="demo-simple-select-autowidth-label" sx={{mt: '-10px', mr: '10px', width: '200px'}}>지역
+                <InputLabel id="demo-simple-select-autowidth-label" sx={{mt: '-10px', mr: '10px', width: '200px', fontSize: 15}}>지역
                     2</InputLabel>
                 <Select
                     labelId="demo-simple-select-autowidth-label"

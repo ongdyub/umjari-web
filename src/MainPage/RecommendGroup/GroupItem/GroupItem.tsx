@@ -8,10 +8,10 @@ const GroupItem = (props : groupFrom) => {
     const theme = useTheme();
 
     return(
-        <Card sx={{justifyContent:"flex-start", alignItems:"center" ,display: 'flex', width: '90%', marginBottom: '30px', height: 'auto' }}>
+        <Card sx={{justifyContent:"flex-start", alignItems:"center" ,display: 'flex', width: '90%', marginBottom: '30px', height: 'auto', ml: '5%' }}>
             <CardMedia
                 component="img"
-                sx={{ width: 60, height: 60, objectFit: 'fill', marginLeft: 3, marginRight: 3 }}
+                sx={{ width: 60, height: 60, objectFit: 'fill', marginLeft: 2, marginRight: 3 }}
                 image={img}
                 alt="Live from space album cover"
             />

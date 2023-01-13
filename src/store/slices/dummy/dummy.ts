@@ -17,11 +17,20 @@ export interface groupFrom {
     region: string,
     recruit: string,
 }
+export interface articleForm{
+    boardName: string,
+    title: string,
+    author: string,
+    comment: number,
+    like: number,
+    visit: number
+}
 export interface  dummyForm {
     data: string,
     concert: any,
     img: string[],
-    group: groupFrom[]
+    group: groupFrom[],
+    article: articleForm[]
 }
 const initialState: dummyForm = {
     data: 'asdf',
@@ -112,6 +121,130 @@ const initialState: dummyForm = {
             region: '관악구',
             recruit: '모집 마감',
         },
+    ],
+    article: [
+        {
+            boardName: '중고거래 및 대여',
+            title: '코넷 대여를 할만한 곳이 있을까요',
+            author: '병정민',
+            comment: 3,
+            like: 2,
+            visit: 42
+        },
+        {
+            boardName: '객원 모집',
+            title: '모집모집모집모집모집',
+            author: '김민호른',
+            comment: 5,
+            like: 111,
+            visit: 42
+        },
+        {
+            boardName: '바이올린',
+            title: '바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요',
+            author: '정병',
+            comment: 22,
+            like: 2,
+            visit: 142
+        },
+        {
+            boardName: '트롬본',
+            title: '고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 ',
+            author: '정건용',
+            comment: 52,
+            like: 0,
+            visit: 62
+        },
+        {
+            boardName: '트럼펫',
+            title: '환상 4악장 해보신분 팁좀요',
+            author: '이솔찬',
+            comment: 2,
+            like: 1,
+            visit: 62
+        },
+        {
+            boardName: '연습실 공유',
+            title: '낙성대역 근처 관악기 연습할 만한 좋은 곳 있나요?',
+            author: 'PM',
+            comment: 24,
+            like: 16,
+            visit: 62
+        },
+        {
+            boardName: '자유 게시판',
+            title: '악!',
+            author: '오도해병 정병민',
+            comment: 0,
+            like: 0,
+            visit: 0
+        },
+        {
+            boardName: '중고거래 및 대여',
+            title: '코넷 대여를 할만한 곳이 있을까요',
+            author: '병정민',
+            comment: 3,
+            like: 2,
+            visit: 42
+        },
+        {
+            boardName: '객원 모집',
+            title: '모집모집모집모집모집',
+            author: '김민호른',
+            comment: 5,
+            like: 111,
+            visit: 42
+        },
+        {
+            boardName: '바이올린',
+            title: '바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요',
+            author: '정병',
+            comment: 22,
+            like: 2,
+            visit: 142
+        },
+        {
+            boardName: '트롬본',
+            title: '고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 ',
+            author: '정건용',
+            comment: 52,
+            like: 0,
+            visit: 62
+        },
+        {
+            boardName: '트럼펫',
+            title: '환상 4악장 해보신분 팁좀요',
+            author: '이솔찬',
+            comment: 2,
+            like: 1,
+            visit: 62
+        },
+        {
+            boardName: '연습실 공유',
+            title: '낙성대역 근처 관악기 연습할 만한 좋은 곳 있나요?',
+            author: 'PM',
+            comment: 24,
+            like: 16,
+            visit: 62
+        },
+        {
+            boardName: '자유 게시판',
+            title: '악!',
+            author: '오도해병 정병민',
+            comment: 0,
+            like: 0,
+            visit: 0
+        },
+        {
+            boardName: '자유 게시판',
+            title: '악!',
+            author: '오도해병 정병민',
+            comment: 0,
+            like: 0,
+            visit: 0
+        },
+
+
     ]
 }
 

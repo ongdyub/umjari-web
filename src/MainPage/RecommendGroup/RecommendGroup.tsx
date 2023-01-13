@@ -1,4 +1,4 @@
-import {Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Button, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import GroupItem from "./GroupItem/GroupItem";
 import {useSelector} from "react-redux";
 import {groupFrom, selectDummy} from "../../store/slices/dummy/dummy";
@@ -10,7 +10,7 @@ const RecommendGroup = () => {
     const dummySelector = useSelector(selectDummy)
 
     return(
-        <Stack direction="column" justifyContent="flex-start" alignItems="center" spacing={2} sx={{width: useMediaQuery(theme.breakpoints.down("md")) ? "100%" : "50%"}}>
+        <Stack direction="column" justifyContent="flex-start" alignItems="center" spacing={2} sx={{width: useMediaQuery(theme.breakpoints.down("md")) ? "96%" : "42%"}}>
             <Typography sx={{fontWeight: 300, fontSize: 30}} mt={2} >추천 단체</Typography>
             <Grid justifyContent="center" alignItems="center" container xs={15} sm={15} md={15}>
                 {
@@ -19,6 +19,7 @@ const RecommendGroup = () => {
                     ))
                 }
             </Grid>
+            <Button size="medium" sx={{top: -25, ml: '15%'}}>더보기</Button>
         </Stack>
     )
 }
