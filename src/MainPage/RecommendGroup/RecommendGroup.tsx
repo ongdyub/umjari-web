@@ -19,7 +19,7 @@ const RecommendGroup = () => {
                     ))
                 }
             </Grid>
-            <Button size="medium" sx={{top: -25, ml: '15%'}}>더보기</Button>
+            <Button size="medium" sx={{top: -25, ml: '25%'}}>더보기</Button>
         </Stack>
     )
 }
