@@ -19,7 +19,9 @@ const RecommendGroup = () => {
                     ))
                 }
             </Grid>
-            <Button size="medium" sx={{top: -25, ml: '25%'}}>더보기</Button>
+            <Stack justifyContent="flex-start" alignItems="center" sx={{width: '100%'}}>
+                <Button sx={{top: '-20px'}}>더보기</Button>
+            </Stack>
         </Stack>
     )
 }

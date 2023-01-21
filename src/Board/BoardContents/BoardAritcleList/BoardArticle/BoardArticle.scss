@@ -1,0 +1,27 @@
+@media (max-width: 650px), (min-width: 800px) and (max-width: 1000px) {
+  .board-article-responsive{
+    display: none;
+    min-width: 0%;
+    max-width: 0%;
+    width: 0px;
+    height: 0px;
+  }
+}
+
+@media (max-width: 650px), (min-width: 900px) and (max-width: 1000px) {
+  .board-article-responsive-box{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+@media (max-width: 500px){
+  .board-article-responsive-like{
+    display: none;
+    min-width: 0%;
+    max-width: 0%;
+    width: 0px;
+    height: 0px;
+  }
+}
