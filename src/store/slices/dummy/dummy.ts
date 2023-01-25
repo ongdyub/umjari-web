@@ -18,7 +18,7 @@ export interface groupFrom {
     recruit: string,
 }
 export interface articleForm{
-    boardName: string,
+    boardName: string | null | undefined
     title: string,
     author: string,
     comment: number,
@@ -30,7 +30,8 @@ export interface  dummyForm {
     concert: any,
     img: string[],
     group: groupFrom[],
-    article: articleForm[]
+    article: articleForm[],
+    boardArticle: articleForm[],
 }
 const initialState: dummyForm = {
     data: 'asdf',
@@ -110,7 +111,7 @@ const initialState: dummyForm = {
         },
         {
             name: 'AOU',
-            img: 'https://scontent-ssn1-1.xx.fbcdn.net/v/t39.30808-6/309228819_531361568995250_3384828235320818942_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=ngI7YE8Hjf8AX9zukRE&_nc_ht=scontent-ssn1-1.xx&oh=00_AfCKvMzQwujSwpPtsikKoDpN8VyeaA9y2r4FRkrDULbQew&oe=63C1F245',
+            img: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEA8ODRAPDhAPERANEBAPDQ8NDg8OFhEWFhURExUYHSggGBolGxMVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDQ0OEA4PDysZFSUtKzc3Kys3KysrKystNy0rKysrKysrKysrKysrNysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAAAQYEBQcDAv/EADUQAQACAQEFBgQFBAIDAAAAAAABAgMRBAUGEiExM0FRcXIyNFKxYWKBkaETItHwQpIWI4L/xAAVAQEBAAAAAAAAAAAAAAAAAAAAAf/EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A7iAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIAgBIgBIgBIgBIgBIgBIgANQBIgBIAAAAAAAAABISCAAAAAAAAAAAABCQAACAgEgAAAAAAAAAEhIIabbd/wBMV5xzW06eMNvedImfKNXPdtyc2S9vCbT9wWWvE2OZiOS3WYhvqzrES5rro6BuzLz4sdvyxr6issGJvPaoxY7X8Yjp6iPnbt5YsPx26/THW37NTk4prHw45t6zore0ZrXtNrzrMyydi3VlyxzUr085FbzHxTSfipNfSYltti3hjzRrjtr5xPS0fope27vyYe8r0nxjseWy7TbFeL1mYmOvqI6I0+3b/pivOOa2mY8Y7Gy2TNGSlbx4xqpu/wDv7gsW7t+0zXjHWtomYmdZ/Bt1J4Y+Zr7bfZdgYW894RgrFrRM6zp0az/yjH9Fn1xd3VfVU6+Aro+HJzVi0eMavuHhsXd4/bH2e8CJAAAAAAAAAAJESDE3tl5MOS35dFDw05rVr9UrXxXm0xRX6p/iFf3Hi5s+OPx1FYu1YeS9qeXRbeFsuuDl+i0x+7QcRYuXPb82kthwfl65Keel/wBewFoaDi7JpjpXzt/Dfq1xf2YxFarXWYjzmIdE2TDFMdaR4RDnmP4q+sOj07I9AYO+8MXw318I5o9YUR0HeXc5PbLn1v8AP3FXThm+uCI8pmFd4g7+7fcKdzPuloeIfmLg++F/ma+232XZSeF/ma+2y7SDQ8Wd1X3KnHgtnFndV9yp18AdC2Lu6e2GRDw2Hu8ftj7PcRIAAAAAAAAACJSiZBU+Ls+uSmP6Ymf3l8cJYtctrfTDC35m58+Se2InSPRuuEcelL3nxnT9BWPxdj0tS/nGjC4cy8u0V8rRNf4bnivHrii3by29VY2LJy5KW8rR9wdFVri/sxrJWdYifONVb4v7MYit4/ir6w6PTsj0c4x/FX1h0enZHoDG3n3OT2z9nP58XQd59zk9suff7/Iq4cKdz/8AUtDxB392+4U7mfdLQ8Q9/YI9OGPma+232XWVK4Y+Zr7bLrINDxZ3VfcqceC2cWd1X3KnHgDoew93T2w93hsPd09sPeBEgAAAAAAAASA8tovy1tbyiZ/h6Q13EGbkwX85jlBR8l9bTPnMy2m0ZL49nxVrM1i2tpmPHq1VY10j9F9w7HS2HHS9YnSsdvnoKrOw5cmTDnpaZtEVm0a9dJaZ0GNjpSl6UrFYmJ7PHooGSukzE9sTMAv+68vPhx2/LDTcYdmNl8LZebBp9M6MTi/sxiK1j+KvrDo9OyPRzjH8VfWHR6dkegMfeXc5PbLnzoO8+5ye2XPp/wB/cVcOFO5n3S0PEPf3b7hTuZ90tDxD39wj04Y+Zr7bfZdZUrhj5mvtsusg0PFndV9ypx4LZxZ3VfcqcA6HsPd09sPeHhsPd09sfZ7wIkAAAAAAAAABXOL839tKR4zrPppKxSpnFGbmzcv0xoDXbBj5suOvnaP4l0OvgpHDmLm2iv5Ymy8AiYc/3ri5c2SPzTP6TLoKmcUYtM8z9URP7CsvhHN1vSfHrD74wjpjn8Wt4cy8uev5ujecU4Jti5o/4Tr+gKjj+KvrH3dGpPSPRzeFv3RvvHNIrknltHTWfEGy3nP/AKcntn7OfT/lZt/75pNJxYp5pt2zHZEKzp/v4guPC1dMPrMy0HEMaZ7/AO9Fr3Ps/wDTw0rPbpqr3Fez6ZIvp0tGgPDhj5mvtt9l2c+3btX9HLXJ4R0n0lcab3wzHNzxH4SDB4t7qvqqceDdcR70rl0pj61r1mWq2LFN8lKxHWZj9tQX7Ye7p7Y+z3h8Y66REeUaPsRIAAAAAAAAAPm0qLvHZ8t8t7clusz4a9F7lHKCs8K7Jat8lr1mukREaxpM6rOjRICucWbLa047UibaRMTpGvisaNAULY9ny0yUtyW6TE9i9XpFq8s9lo0l96JBTd57hyUtNsUc9Os6R1tH4NTfDaOk1n/rLo6OWPL+IBzvHs97TpWlp9Ilv9y7htExkzxpp1injr+KzcseUGgpDF3jsVc1Jpb1ifKWWCKJtu5s2KZ/tm1fqr1jRgzjtH/G3/WzpGiOWPIXXPtn2HLfpSlp/TSFp3Fub+j/AH5NJvPl1ircxCRAgIBIAAAAAAAAACEoAAAAAAAAAAAAAAAAAICASAAAAAAAAAAhICBICBICBICBICBICBICBICBICEgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//Z',
             song: [
                 {
                     composer: 'Rimsky-Korsakov',
@@ -124,60 +125,12 @@ const initialState: dummyForm = {
     ],
     article: [
         {
-            boardName: '중고거래 및 대여',
-            title: '코넷 대여를 할만한 곳이 있을까요',
-            author: '병정민',
-            comment: 3,
-            like: 2,
-            visit: 42
-        },
-        {
-            boardName: '객원 모집',
-            title: '모집모집모집모집모집',
-            author: '김민호른',
-            comment: 5,
-            like: 111,
-            visit: 42
-        },
-        {
-            boardName: '바이올린',
-            title: '바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요',
-            author: '정병',
-            comment: 22,
-            like: 2,
-            visit: 142
-        },
-        {
-            boardName: '트롬본',
-            title: '고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 ',
-            author: '정건용',
-            comment: 52,
-            like: 0,
-            visit: 62
-        },
-        {
-            boardName: '트럼펫',
-            title: '환상 4악장 해보신분 팁좀요',
-            author: '이솔찬',
-            comment: 2,
-            like: 1,
-            visit: 62
-        },
-        {
-            boardName: '연습실 공유',
-            title: '낙성대역 근처 관악기 연습할 만한 좋은 곳 있나요?',
-            author: 'PM',
-            comment: 24,
-            like: 16,
-            visit: 62
-        },
-        {
-            boardName: '자유 게시판',
-            title: '악!',
-            author: '오도해병 정병민',
-            comment: 0,
-            like: 0,
-            visit: 0
+            boardName: '전체 게시판',
+            title: '다른 오케보고 지렁이라니 불 - 편하네요',
+            author: '탈덴탈',
+            comment: 521,
+            like: 532,
+            visit: 32142
         },
         {
             boardName: '중고거래 및 대여',
@@ -228,23 +181,215 @@ const initialState: dummyForm = {
             visit: 62
         },
         {
-            boardName: '자유 게시판',
-            title: '악!',
-            author: '오도해병 정병민',
-            comment: 0,
-            like: 0,
-            visit: 0
+            boardName: '중고거래 및 대여',
+            title: '코넷 대여를 할만한 곳이 있을까요',
+            author: '병정민',
+            comment: 3,
+            like: 2,
+            visit: 42
         },
         {
-            boardName: '자유 게시판',
-            title: '악!',
-            author: '오도해병 정병민',
-            comment: 0,
-            like: 0,
-            visit: 0
+            boardName: '객원 모집',
+            title: '모집모집모집모집모집',
+            author: '김민호른',
+            comment: 5,
+            like: 111,
+            visit: 42
         },
-
-
+        {
+            boardName: '바이올린',
+            title: '바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요',
+            author: '정병',
+            comment: 22,
+            like: 2,
+            visit: 142
+        },
+        {
+            boardName: '트롬본',
+            title: '고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 ',
+            author: '정건용',
+            comment: 52,
+            like: 0,
+            visit: 62
+        },
+        {
+            boardName: '트럼펫',
+            title: '환상 4악장 해보신분 팁좀요',
+            author: '이솔찬',
+            comment: 2,
+            like: 1,
+            visit: 62
+        },
+        {
+            boardName: '연습실 공유',
+            title: '낙성대역 근처 관악기 연습할 만한 좋은 곳 있나요?',
+            author: 'PM',
+            comment: 24,
+            like: 16,
+            visit: 62
+        },
+    ],
+    boardArticle : [
+        {
+            boardName: '전체 게시판',
+            title: '다른 오케보고 지렁이라니 불 - 편하네요',
+            author: '탈덴탈',
+            comment: 521,
+            like: 532,
+            visit: 32142
+        },
+        {
+            boardName: '중고거래 및 대여',
+            title: '코넷 대여를 할만한 곳이 있을까요',
+            author: '병정민',
+            comment: 3,
+            like: 2,
+            visit: 42
+        },
+        {
+            boardName: '객원 모집',
+            title: '모집모집모집모집모집',
+            author: '김민호른',
+            comment: 5,
+            like: 111,
+            visit: 42
+        },
+        {
+            boardName: '바이올린',
+            title: '바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요',
+            author: '정병',
+            comment: 22,
+            like: 2,
+            visit: 142
+        },
+        {
+            boardName: '트롬본',
+            title: '고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 ',
+            author: '정건용',
+            comment: 52,
+            like: 0,
+            visit: 62
+        },
+        {
+            boardName: '트럼펫',
+            title: '환상 4악장 해보신분 팁좀요',
+            author: '이솔찬',
+            comment: 2,
+            like: 1,
+            visit: 62
+        },
+        {
+            boardName: '연습실 공유',
+            title: '낙성대역 근처 관악기 연습할 만한 좋은 곳 있나요?',
+            author: 'PM',
+            comment: 24,
+            like: 16,
+            visit: 62
+        },
+        {
+            boardName: '중고거래 및 대여',
+            title: '코넷 대여를 할만한 곳이 있을까요',
+            author: '병정민',
+            comment: 3,
+            like: 2,
+            visit: 42
+        },
+        {
+            boardName: '객원 모집',
+            title: '모집모집모집모집모집',
+            author: '김민호른',
+            comment: 5,
+            like: 111,
+            visit: 42
+        },
+        {
+            boardName: '바이올린',
+            title: '바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요',
+            author: '정병',
+            comment: 22,
+            like: 2,
+            visit: 142
+        },
+        {
+            boardName: '전체 게시판',
+            title: '다른 오케보고 지렁이라니 불 - 편하네요',
+            author: '탈덴탈asdfasdfasdfasadfasdasdfsfasf',
+            comment: 521,
+            like: 532,
+            visit: 32142
+        },
+        {
+            boardName: '중고거래 및 대여',
+            title: '코넷 대여를 할만한 곳이 있을까요',
+            author: '병정민',
+            comment: 3,
+            like: 2,
+            visit: 42
+        },
+        {
+            boardName: '객원 모집',
+            title: '모집모집모집모집모집',
+            author: '김민호른',
+            comment: 5,
+            like: 111,
+            visit: 42
+        },
+        {
+            boardName: '바이올린',
+            title: '바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요',
+            author: '정병',
+            comment: 22,
+            like: 2,
+            visit: 142
+        },
+        {
+            boardName: '트롬본',
+            title: '고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 고음 잘내는 주법 연습 알려주세요 ',
+            author: '정건용',
+            comment: 52,
+            like: 0,
+            visit: 62
+        },
+        {
+            boardName: '트럼펫',
+            title: '환상 4악장 해보신분 팁좀요',
+            author: '이솔찬',
+            comment: 2,
+            like: 1,
+            visit: 62
+        },
+        {
+            boardName: '연습실 공유',
+            title: '낙성대역 근처 관악기 연습할 만한 좋은 곳 있나요?',
+            author: 'PM',
+            comment: 24,
+            like: 16,
+            visit: 62
+        },
+        {
+            boardName: '중고거래 및 대여',
+            title: '코넷 대여를 할만한 곳이 있을까요',
+            author: '병정민',
+            comment: 3,
+            like: 2,
+            visit: 42
+        },
+        {
+            boardName: '객원 모집',
+            title: '모집모집모집모집모집',
+            author: '김민호른',
+            comment: 5,
+            like: 111,
+            visit: 42
+        },
+        {
+            boardName: '바이올린',
+            title: '바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요 바이올린 연습 방법좀요',
+            author: '정병',
+            comment: 22,
+            like: 2,
+            visit: 142
+        },
     ]
 }
 

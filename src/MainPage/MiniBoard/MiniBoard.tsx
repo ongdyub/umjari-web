@@ -12,14 +12,16 @@ const MiniBoard = () => {
         <Stack direction="column" justifyContent="flex-start" alignItems="center" sx={{ width: useMediaQuery(theme.breakpoints.down("md")) ? "96%" : "54%"}} divider={<Divider orientation="horizontal"/>}>
             <Typography sx={{fontWeight: 300, fontSize: 22}} mt={2} >전체 게시글</Typography>
             <Divider orientation={"horizontal"} />
-            <List sx={{width: '98%'}}>
+            <List sx={{width: '100%'}}>
                 {
                     dummySelector.article.map((item) => (
                         <MiniArticle boardName={item.boardName} title={item.title} author={item.author} like={item.like} visit={item.visit} comment={item.comment} />
                     ))
                 }
             </List>
-            <Button>더보기</Button>
+            <Stack justifyContent="flex-start" alignItems="center" sx={{width: '100%'}}>
+                <Button>더보기</Button>
+            </Stack>
         </Stack>
     )
 }
