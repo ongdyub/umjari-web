@@ -6,7 +6,7 @@ const BoardSide = () => {
     const resSize = useMediaQuery(theme.breakpoints.down("md"))
 
     return(
-        <Stack sx={{ flex: 1, display : resSize ? 'none' : '', minWidth: 165}}>
+        <Stack sx={{ flex: 1, display : resSize ? 'none' : '', minWidth: 155}}>
             Side
         </Stack>
     )

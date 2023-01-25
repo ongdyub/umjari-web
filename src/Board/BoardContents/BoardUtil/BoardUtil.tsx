@@ -10,7 +10,7 @@ const BoardUtil = () => {
     };
 
     return(
-        <Stack alignItems="center" sx={{width:'100%', height: '120px', bgcolor: 'pink'}} flexDirection={'row'} justifyContent="center" alignContent="center">
+        <Stack alignItems="center" sx={{width:'100%', height: '80px'}} flexDirection={'row'} justifyContent="center" alignContent="center">
             <Pagination sx={{display: 'flex', width: '80%',justifyContent: "center", alignItems:"center"}} size="small" count={15} page={page} onChange={handleChange} defaultPage={1} siblingCount={1} boundaryCount={1}/>
         </Stack>
     )

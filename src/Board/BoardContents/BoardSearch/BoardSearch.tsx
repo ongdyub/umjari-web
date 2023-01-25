@@ -92,81 +92,161 @@ const BoardSearch = () => {
         );
     };
 
-    return (
-        <Stack alignItems="center" sx={{width:'100%', height: '130px', mt: res800? -3 : ''}} flexDirection={'row'} justifyContent="space-around">
-            <Stack justifyContent="flex-end" sx={{height: 50, ml:3}}>
-                <FormControl variant="standard" sx={{width: 150}}>
-                    <InputLabel htmlFor="standard-adornment-amount">검색어를 입력하세요</InputLabel>
-                    <Input
-                        id="standard-adornment-amount"
-                        sx={{fontSize: 13, pt: 0.5}}
-                        value={searchWord}
-                        onChange={(e) => setSearchWord(e.target.value)}
-                        startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
-                    />
-                </FormControl>
-            </Stack>
+    if (res600){
+        return(
+            <Stack alignItems="center" sx={{width:'100%', height: '140px', mt: -2}} flexDirection={'column'}>
+                <Stack alignItems="center" sx={{width:'100%', height: '100px'}} flexDirection={'row'} justifyContent="space-around">
+                    <Stack justifyContent="flex-end" sx={{height: 50, ml:3}}>
+                        <FormControl variant="standard" sx={{width: 150}}>
+                            <InputLabel htmlFor="standard-adornment-amount">검색어를 입력하세요</InputLabel>
+                            <Input
+                                id="standard-adornment-amount"
+                                sx={{fontSize: 13, pt: 0.5}}
+                                value={searchWord}
+                                onChange={(e) => setSearchWord(e.target.value)}
+                                startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
+                            />
+                        </FormControl>
+                    </Stack>
+                    <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 175}}>
+                        <ButtonGroup variant="text" aria-label="text button group">
+                            <Button sx={{fontSize: 12}}>인기글</Button>
+                            <Button sx={{fontSize: 12}}>댓글</Button>
+                            <Button sx={{fontSize: 12}}>조회</Button>
+                            <Button sx={{fontSize: 12}}>추천</Button>
+                        </ButtonGroup>
+                    </Stack>
+                    <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 60}}>
+                        <ButtonGroup variant="text" aria-label="text button group">
+                            <Button sx={{fontSize: 12, fontWeight: 1800}} variant={"outlined"}>글쓰기</Button>
+                        </ButtonGroup>
+                    </Stack>
+                </Stack>
 
-            <Stack justifyContent="flex-end" sx={{height: 50, display: res600 ? 'none' : ''}}>
-                <FormControl variant="standard" sx={{width: 80}}>
-                    <Select
-                        labelId="demo-simple-select-standard-label"
-                        id="demo-simple-select-standard"
-                        value={personName}
-                        onChange={handleChange}
-                        label="Age"
-                        sx={{fontSize: 11}}
-                    >
-                        {boardList.map((item) => (
-                            <MenuItem
-                                key={item.ID}
-                                value={item.name}
+                <Stack alignItems="center" sx={{width:'100%', height: '50px', mt: -5}} flexDirection={'row'}>
+                    <Stack justifyContent="flex-end" sx={{height: 50, ml: 6}}>
+                        <FormControl variant="standard" sx={{width: 100}}>
+                            <Select
+                                labelId="demo-simple-select-standard-label"
+                                id="demo-simple-select-standard"
+                                value={personName}
+                                onChange={handleChange}
+                                label="Age"
+                                sx={{fontSize: 11}}
                             >
-                                {item.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-            </Stack>
-
-            <Stack justifyContent="flex-end" sx={{height: 50, display: res600 ? 'none' : ''}}>
-                <FormControl variant="standard" sx={{width: 80}}>
-                    <Select
-                        labelId="demo-simple-select-standard-label"
-                        id="demo-simple-select-standard"
-                        value={personName}
-                        onChange={handleChange}
-                        label="Age"
-                        sx={{fontSize: 11}}
-                    >
-                        {searchList.map((name) => (
-                            <MenuItem
-                                key={name}
-                                value={name}
+                                {boardList.map((item) => (
+                                    <MenuItem
+                                        key={item.ID}
+                                        value={item.name}
+                                    >
+                                        {item.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Stack>
+                    <Stack justifyContent="flex-end" sx={{height: 50, ml: 5}}>
+                        <FormControl variant="standard" sx={{width: 100}}>
+                            <Select
+                                labelId="demo-simple-select-standard-label"
+                                id="demo-simple-select-standard"
+                                value={personName}
+                                onChange={handleChange}
+                                label="Age"
+                                sx={{fontSize: 11}}
                             >
-                                {name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                                {searchList.map((name) => (
+                                    <MenuItem
+                                        key={name}
+                                        value={name}
+                                    >
+                                        {name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Stack>
+                </Stack>
             </Stack>
+        )
+    }
+    else{
+        return (
+            <Stack alignItems="center" sx={{width:'100%', height: '130px', mt: res800? -3 : ''}} flexDirection={'row'} justifyContent="space-around">
+                <Stack justifyContent="flex-end" sx={{height: 50, ml:3}}>
+                    <FormControl variant="standard" sx={{width: 150}}>
+                        <InputLabel htmlFor="standard-adornment-amount">검색어를 입력하세요</InputLabel>
+                        <Input
+                            id="standard-adornment-amount"
+                            sx={{fontSize: 13, pt: 0.5}}
+                            value={searchWord}
+                            onChange={(e) => setSearchWord(e.target.value)}
+                            startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
+                        />
+                    </FormControl>
+                </Stack>
 
-            <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 175}}>
-                <ButtonGroup variant="text" aria-label="text button group">
-                    <Button sx={{fontSize: 12}}>인기글</Button>
-                    <Button sx={{fontSize: 12}}>댓글</Button>
-                    <Button sx={{fontSize: 12}}>조회</Button>
-                    <Button sx={{fontSize: 12}}>추천</Button>
-                </ButtonGroup>
-            </Stack>
+                <Stack justifyContent="flex-end" sx={{height: 50, display: res600 ? 'none' : ''}}>
+                    <FormControl variant="standard" sx={{width: 80}}>
+                        <Select
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            value={personName}
+                            onChange={handleChange}
+                            label="Age"
+                            sx={{fontSize: 11}}
+                        >
+                            {boardList.map((item) => (
+                                <MenuItem
+                                    key={item.ID}
+                                    value={item.name}
+                                >
+                                    {item.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Stack>
 
-            <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 60}}>
-                <ButtonGroup variant="text" aria-label="text button group">
-                    <Button sx={{fontSize: 12, fontWeight: 1800}} variant={"outlined"}>글쓰기</Button>
-                </ButtonGroup>
+                <Stack justifyContent="flex-end" sx={{height: 50, display: res600 ? 'none' : ''}}>
+                    <FormControl variant="standard" sx={{width: 80}}>
+                        <Select
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            value={personName}
+                            onChange={handleChange}
+                            label="Age"
+                            sx={{fontSize: 11}}
+                        >
+                            {searchList.map((name) => (
+                                <MenuItem
+                                    key={name}
+                                    value={name}
+                                >
+                                    {name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Stack>
+
+                <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 175}}>
+                    <ButtonGroup variant="text" aria-label="text button group">
+                        <Button sx={{fontSize: 12}}>인기글</Button>
+                        <Button sx={{fontSize: 12}}>댓글</Button>
+                        <Button sx={{fontSize: 12}}>조회</Button>
+                        <Button sx={{fontSize: 12}}>추천</Button>
+                    </ButtonGroup>
+                </Stack>
+
+                <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 60}}>
+                    <ButtonGroup variant="text" aria-label="text button group">
+                        <Button sx={{fontSize: 12, fontWeight: 1800}} variant={"outlined"}>글쓰기</Button>
+                    </ButtonGroup>
+                </Stack>
             </Stack>
-        </Stack>
-    );
+        );
+    }
 }
 
 export default BoardSearch
