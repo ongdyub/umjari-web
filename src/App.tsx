@@ -7,12 +7,6 @@ import MainPage from "./MainPage/MainPage";
 import Header from "./Common/Header/Header";
 import Board from "./Board/Board";
 
-declare module '@mui/material/styles' {
-    interface BreakpointOverrides {
-        mm :true
-    }
-}
-
 const blueTheme = createTheme({
     palette: {
         mode: 'light',
