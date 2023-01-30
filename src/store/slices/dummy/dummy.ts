@@ -1,10 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+export interface commentForm{
+    author: string,
+    author_img: string,
+    comment: string
+}
 export interface songForm {
     composer: string,
     name: string
@@ -32,6 +37,8 @@ export interface  dummyForm {
     group: groupFrom[],
     article: articleForm[],
     boardArticle: articleForm[],
+    write: any,
+    commentList: commentForm[]
 }
 const initialState: dummyForm = {
     data: 'asdf',
@@ -390,13 +397,78 @@ const initialState: dummyForm = {
             like: 2,
             visit: 142
         },
+    ],
+    write: 'empty',
+    commentList: [
+        {
+            author: '정병',
+            author_img: 'n',
+            comment: '댓글 대에에엣글 댕에에ㅔ에에엣글'
+        },
+        {
+            author: '정병',
+            author_img: 'n',
+            comment: '댓글 대댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글에에엣글 댕에에ㅔ에에엣글'
+        },
+        {
+            author: '정병',
+            author_img: 'n',
+            comment: '댓글 대에에엣글 댕에에ㅔ에에엣글'
+        },
+        {
+            author: '정병',
+            author_img: 'n',
+            comment: '댓글 대에에엣글 댕에에ㅔ에에엣글'
+        },
+        {
+            author: '정병',
+            author_img: 'n',
+            comment: '댓글 대에에엣글 댕에에ㅔ에에엣글'
+        },
+        {
+            author: '정병',
+            author_img: 'n',
+            comment: '댓글 대에에엣글 댕에에ㅔ에에엣글'
+        },
+        {
+            author: '정병',
+            author_img: 'n',
+            comment: '댓글 대에에엣글 댕에댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글에ㅔ에에엣글'
+        },
+        {
+            author: '정병',
+            author_img: 'n',
+            comment: '댓글 대에에엣글 댕에에ㅔ에에엣글'
+        },
+        {
+            author: '정병',
+            author_img: 'n',
+            comment: '댓글 대에에엣글 댕에에ㅔ에에엣글'
+        },
+        {
+            author: '정병',
+            author_img: 'n',
+            comment: '댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글댓글 대에에엣글 댕에에ㅔ에에엣글'
+        },
+        {
+            author: '정병',
+            author_img: 'n',
+            comment: '댓글 대에에엣글 댕에에ㅔ에에엣글'
+        },
     ]
 }
 
 export const dummySlice = createSlice({
     name: "dummy",
     initialState,
-    reducers: {},
+    reducers: {
+        setWrite: (
+            state,
+            action: PayloadAction<string>
+        ) => {
+            state.write = action.payload;
+        },
+    },
 })
 
 export const dummyActions = dummySlice.actions;
