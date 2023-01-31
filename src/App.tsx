@@ -6,6 +6,8 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import MainPage from "./MainPage/MainPage";
 import Header from "./Common/Header/Header";
 import Board from "./Board/Board";
+import Write from "./Write/Write";
+import Article from "./Article/Article";
 
 const blueTheme = createTheme({
     palette: {
@@ -33,7 +35,9 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<MainPage />} />
+                    <Route path="/write" element={<Write />} />
                     <Route path="/community/:boardName" element={<Board />} />
+                    <Route path="/community/:boardName/:id" element={<Article />} />
                 </Routes>
             </BrowserRouter >
         </div>

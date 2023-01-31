@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 const boardList = [
     {
@@ -76,6 +77,7 @@ const boardList = [
 const BoardSearch = () => {
 
     const theme = useTheme();
+    const navigate = useNavigate()
     const res600 = useMediaQuery('(max-width:600px)')
     const res800 = useMediaQuery('(max-width:800px)')
 
@@ -91,6 +93,9 @@ const BoardSearch = () => {
             typeof value === 'string' ? value.split(',') : value,
         );
     };
+    const handleWrite = () => {
+        navigate('/write')
+    }
 
     if (res600){
         return(
@@ -118,7 +123,7 @@ const BoardSearch = () => {
                     </Stack>
                     <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 60}}>
                         <ButtonGroup variant="text" aria-label="text button group">
-                            <Button sx={{fontSize: 12, fontWeight: 1800}} variant={"outlined"}>글쓰기</Button>
+                            <Button sx={{fontSize: 12, fontWeight: 1800}} variant={"outlined"} onClick={handleWrite}>글쓰기</Button>
                         </ButtonGroup>
                     </Stack>
                 </Stack>
@@ -241,7 +246,7 @@ const BoardSearch = () => {
 
                 <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 60}}>
                     <ButtonGroup variant="text" aria-label="text button group">
-                        <Button sx={{fontSize: 12, fontWeight: 1800}} variant={"outlined"}>글쓰기</Button>
+                        <Button sx={{fontSize: 12, fontWeight: 1800}} variant={"outlined"} onClick={handleWrite}>글쓰기</Button>
                     </ButtonGroup>
                 </Stack>
             </Stack>
