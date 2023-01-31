@@ -1,4 +1,4 @@
-import {Divider, Stack, TextField, Typography} from "@mui/material";
+import {Button, Divider, Stack, TextField, Typography} from "@mui/material";
 import {selectDummy} from "../../../store/slices/dummy/dummy";
 import {useSelector} from "react-redux";
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
@@ -32,12 +32,16 @@ const ArticleComments = () => {
                     <Comment author={item.author} author_img={item.author_img} comment={item.comment} />
                 ))}
             </Stack>
-            <Stack sx={{width: '80%', mb:20, border: '1px solid #606060'}}>
+            <Stack sx={{width: '80%', mb:20, mt:2}}>
                 <TextField
                     placeholder="댓글을 입력해 주세요"
                     multiline
+                    minRows={6}
                     variant={"standard"}
                 />
+                <Stack sx={{width: '100%'}} flexDirection={'row-reverse'}>
+                    <Button size={"large"}>작성하기</Button>
+                </Stack>
             </Stack>
         </Stack>
     )

@@ -141,7 +141,7 @@ const WriteEditor = () => {
             </Stack>
             <ReactQuill
                 className={"quill"}
-                style={{width: '95%', marginBottom: '60px' }}
+                style={{width: '95%', marginBottom: '60px', height: '500px' }}
                 theme="snow"
                 modules={modules}
                 formats={formats}

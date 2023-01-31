@@ -8,7 +8,7 @@ const Write = () => {
 
     const res800 = useMediaQuery('(max-width:800px)')
     return (
-        <Stack sx={{height: 1000}}>
+        <Stack sx={{height: 700, mb: 50}}>
             <Stack justifyContent="flex-start" direction={res800 ? 'column' : 'row'}>
                 <WriteEditor />
                 <Divider orientation={"vertical"}/>
