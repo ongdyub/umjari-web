@@ -9,7 +9,7 @@ const BoardContents = () => {
     const resMd = useMediaQuery(theme.breakpoints.down("md"))
 
     return(
-        <Stack justifyContent="flex-start" alignItems="center" sx={{height: res800 ? 'auto' : '1000px', width: res800 ? '100%' : resMd ? 'calc(100% - 160px)' : 'calc(100% - 325px)'}}>
+        <Stack justifyContent="flex-start" alignItems="center" sx={{height: res800 ? 'auto' : '1000px', width: res800 ? '100%' : resMd ? 'calc(100% - 164px)' : 'calc(100% - 325px)'}}>
             <BoardSearch />
             <Divider orientation={"horizontal"} sx={{width: '100%', mt: -3}} />
             <BoardArticleList />

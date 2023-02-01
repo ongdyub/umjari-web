@@ -8,6 +8,19 @@ import Header from "./Common/Header/Header";
 import Board from "./Board/Board";
 import Write from "./Write/Write";
 import Article from "./Article/Article";
+import GroupSearch from "./GroupSearch/GroupSearch";
+
+declare module '@mui/material/styles' {
+    interface BreakpointOverrides {
+        res300: true;
+        res500: true;
+        res700: true;
+        res800: true;
+        res950: true;
+        res1000: true;
+        res1100: true;
+    }
+}
 
 const blueTheme = createTheme({
     palette: {
@@ -21,6 +34,22 @@ const blueTheme = createTheme({
             main : '#313131',
             light: '#ffffff',
             dark : '#111111'
+        },
+    },
+    breakpoints: {
+        values: {
+            xs: 0,
+            res300: 300,
+            res500: 500,
+            sm: 600,
+            res700: 700,
+            res800: 800,
+            md: 900,
+            res950: 950,
+            res1000: 1000,
+            res1100: 1100,
+            lg: 1200,
+            xl: 1536,
         },
     },
 });
@@ -38,6 +67,7 @@ function App() {
                     <Route path="/write" element={<Write />} />
                     <Route path="/community/:boardName" element={<Board />} />
                     <Route path="/community/:boardName/:id" element={<Article />} />
+                    <Route path="/groupsearch" element={<GroupSearch />} />
                 </Routes>
             </BrowserRouter >
         </div>
