@@ -9,6 +9,7 @@ import Board from "./Board/Board";
 import Write from "./Write/Write";
 import Article from "./Article/Article";
 import GroupSearch from "./GroupSearch/GroupSearch";
+import MyConcert from "./MyConcert/MyConcert";
 
 declare module '@mui/material/styles' {
     interface BreakpointOverrides {
@@ -68,6 +69,7 @@ function App() {
                     <Route path="/community/:boardName" element={<Board />} />
                     <Route path="/community/:boardName/:id" element={<Article />} />
                     <Route path="/groupsearch" element={<GroupSearch />} />
+                    <Route path="/myconcert/:id/*" element={<MyConcert />} />
                 </Routes>
             </BrowserRouter >
         </div>

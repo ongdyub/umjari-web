@@ -27,6 +27,7 @@
     "draftjs-to-html": "^0.9.1",
     "html-react-parser": "^3.0.8",
     "html-to-draftjs": "^1.5.0",
+    "mui-image": "^1.0.7",
     "node-sass": "^7.0.3",
     "quill-image-resize": "^3.0.9",
     "react": "^18.2.0",
@@ -69,6 +70,7 @@
     "@types/draft-js": "^0.11.10",
     "@types/draftjs-to-html": "^0.8.1",
     "@types/html-to-draftjs": "^1.4.0",
+    "@types/mui-image": "^1.0.1",
     "@types/react-draft-wysiwyg": "^1.13.4"
   }
 }
