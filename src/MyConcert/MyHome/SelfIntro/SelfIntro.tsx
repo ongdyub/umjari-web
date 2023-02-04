@@ -1,142 +1,155 @@
-import {Divider, Stack, Typography} from "@mui/material";
+import {Divider, MenuItem, Stack, TextField, Typography, useMediaQuery, useTheme} from "@mui/material";
 
 const SelfIntro = () => {
 
-    const careerList = [
+    const theme = useTheme();
+    const selfList = [
         {
-            date: '2018.09.01',
-            place: '서울대학교 문화관 대강당',
-            group: 'SNUPO',
-            concert: '53회 정기연주회',
-            program: [
-                {
-                    composer: 'J.Brahms',
-                    song: 'Academic Festival Overture, OP. 80',
-                    part: 'Vn 2nd'
-                },
-                {
-                    composer: 'P. I. Tchaikovsky',
-                    song: 'Excerpts from Swan Lake, Op. 20',
-                    part: 'Vn 2nd'
-                },
-                {
-                    composer: 'J.Brahms',
-                    song: 'Symphony No. 2 in D Major, Op. 73',
-                    part: 'Vn 2nd'
-                },
-            ]
+            composer: 'J. Brahms',
+            part: 'Vn 2nd',
+            title: 'Academic Festival Overture, Op. 80',
+            role: '',
+            group: 'SNUPO'
         },
         {
-            date: '2019.03.02',
-            place: '서울대학교 문화관 대강당',
-            group: 'SNUPO',
-            concert: '54회 정기연주회',
-            program: [
-                {
-                    composer: 'C. M. v. Weber',
-                    song: 'Der Freischütz Overture, Op. 77',
-                    part: 'Trp 2nd'
-                },
-                {
-                    composer: 'A. Dvořák',
-                    song: 'Cello Concerto in b minor, Op. 104',
-                    part: 'Trp 2nd'
-                },
-                {
-                    composer: 'J. Sibelius',
-                    song: 'Symphony No. 2 in D Major, Op. 43',
-                    part: 'Vn 2nd'
-                },
-            ]
+            composer: 'J. Brahms',
+            part: 'Vn 2nd',
+            title: 'Symphony No. 2 in D Major, Op. 73',
+            role: '',
+            group: 'SNUPO'
         },
         {
-            date: '2019.09.01',
-            group: 'SNUPO',
-            place: '서울대학교 문화관 대강당',
-            concert: '55회 정기연주회',
-            program: [
-                {
-                    composer: 'A. Dvořák',
-                    song: 'Othello Overture, Op. 77',
-                    part: 'Trp 2nd'
-                },
-                {
-                    composer: 'P. I. Tchaikovsky',
-                    song: 'The Sleeping Beauty (suite), Op. 66a',
-                    part: 'Trp 1st'
-                },
-                {
-                    composer: 'J. Sibelius',
-                    song: 'Symphony No. 1 in e minor, Op. 39',
-                    part: 'Trp 1st'
-                },
-            ]
+            composer: 'J. Brahms',
+            part: 'Vn 1st',
+            title: 'Symphony No. 4 in e minor, Op. 98',
+            role: '',
+            group: 'SNUPO'
         },
         {
-            date: '2022.10.15',
-            group: '가우디움',
-            place: '인천 아트센터',
-            concert: '창단 10주년 기념 연주회',
-            program: [
-                {
-                    composer: 'G. Mahler',
-                    song: 'Lieder eines fahrenden Gesellen',
-                    part: 'Vn 2nd'
-                },
-                {
-                    composer: 'G. Mahler',
-                    song: 'Symphony No. 5 in c# minor',
-                    part: 'Vn 2nd'
-                },
-            ]
+            composer: 'J. Brahms',
+            part: 'Vn 1st',
+            title: 'Academic Festival Overture, Op. 80',
+            role: '',
+            group: 'SNUPO'
         },
         {
-            date: '2023.03.02',
-            group: 'SNUPO',
-            place: '서울대학교 문화관 대강강',
-            concert: '60회 정기연주회',
-            program: [
-                {
-                    composer: 'J. Strauss II',
-                    song: 'Kaiser-Walzer, Op. 437',
-                    part: 'Vn 1st'
-                },
-                {
-                    composer: 'A. Borodin',
-                    song: 'Symphony No. 2 in b minor',
-                    part: 'Vn 1st'
-                },
-                {
-                    composer: 'H. Berlioz',
-                    song: 'Symphonie fantastique, H. 48',
-                    part: 'Trb III'
-                },
-            ]
+            composer: 'P. I. Tchaikovsky',
+            part: 'Vn 2nd',
+            title: 'Excerpts from Swan Lake, Op. 20',
+            role: '',
+            group: 'SNUPO'
+        },
+        {
+            composer: 'P. I. Tchaikovsky',
+            part: 'Trp 1st',
+            title: 'The Sleeping Beauty (suite), Op. 66a',
+            role: '',
+            group: 'SNUPO'
+        },
+        {
+            composer: 'P. I. Tchaikovsky',
+            part: 'Vn 1st',
+            title: 'Symphony No.5 in e minor, Op.64',
+            role: '',
+            group: 'SNUPO'
+        },
+        {
+            composer: 'P. I. Tchaikovsky',
+            part: 'Trp 3rd',
+            title: 'Symphony No.5 in e minor, Op.64',
+            role: '',
+            group: 'SNUPO'
+        },
+        {
+            composer: 'J. Sibelius',
+            part: 'Trp 1st',
+            title: 'Symphony No. 1 in e minor, Op. 39',
+            role: '',
+            group: 'SNUPO'
+        },
+        {
+            composer: 'J. Sibelius',
+            part: 'Vn 2nd',
+            title: 'Symphony No. 2 in D Major, Op. 43',
+            role: '',
+            group: 'SNUPO'
         },
     ]
+    const sort = ['작곡가', '곡명', '파트', '단체']
+    const direction = ['오름차순', '내립차순']
+    const res1000 = useMediaQuery(theme.breakpoints.down("res1000"))
+
     return(
         <Stack sx={{mt: 2}}>
             <Divider sx={{width: '90%', color: '#292929'}} />
-            <Stack sx={{mt: 2}}>
-                {careerList.map((item) => (
-                    <Stack>
-                        <Stack direction={"row"}>
-                            <Typography>{item.group}</Typography>
-                            <Typography>{item.concert}</Typography>
-                        </Stack>
-                        <Stack direction={"row"}>
-                            <Typography>{item.place}</Typography>
-                            <Typography>{item.date}</Typography>
-                        </Stack>
-                        <Stack>
-                            {item.program.map((item) => (
-                                <Stack>
-                                    <Typography>{item.composer}</Typography>
-                                    <Typography>{item.song}</Typography>
-                                    <Typography>{item.part}</Typography>
+            <Stack sx={{mt: 2}} direction={"row"}>
+                <Stack sx={{width: 110, mr: 5}} >
+                    <TextField
+                        select
+                        defaultValue="작곡가"
+                        helperText="정렬기준"
+                        variant="standard"
+                    >
+                        {sort.map((option) => (
+                            <MenuItem key={option} value={option}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Stack>
+                <Stack sx={{width: 110}}>
+                    <TextField
+                        select
+                        defaultValue="오름차순"
+                        helperText="정렬기준"
+                        variant="standard"
+                    >
+                        {direction.map((option) => (
+                            <MenuItem key={option} value={option}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Stack>
+            </Stack>
+            <Stack sx={{mt: 1, mb: 10}}>
+                {selfList.map((item) => (
+                    <Stack sx={{mt:3, mb:1}}>
+                        {
+                            res1000 ?
+                                <Stack justifyContent={"flex-start"}>
+                                    <Stack direction={'row'} justifyContent={"flex-start"} alignItems={"center"} alignContent={"center"} sx={{width: '100%'}}>
+                                        <Stack justifyContent={"flex-start"} sx={{width: '35%'}}>
+                                            <Typography variant={"caption"} sx={{fontWeight: 900, fontSize: 15}}>{item.composer}</Typography>
+                                        </Stack>
+                                        <Stack justifyContent={"flex-start"} sx={{width: '20%'}}>
+                                            <Typography variant={"subtitle2"}>{item.part}</Typography>
+                                        </Stack>
+                                        <Stack justifyContent={"flex-start"} sx={{width: '20%'}}>
+                                            <Typography variant={"caption"} sx={{fontWeight: 300, fontSize: 12}}>{item.group}</Typography>
+                                        </Stack>
+                                    </Stack>
+                                    <Stack justifyContent={"flex-start"} sx={{}}>
+                                        <Typography variant={"overline"} sx={{fontWeight: 200, fontSize: 16}}>{item.title}</Typography>
+                                    </Stack>
                                 </Stack>
-                            ))}
-                        </Stack>
+                                :
+                                <Stack direction={"row"} justifyContent={"flex-start"} alignItems={"center"}>
+                                    <Stack sx={{width: '22%'}}>
+                                        <Typography variant={"caption"} sx={{fontWeight: 900, fontSize: 15}}>{item.composer}</Typography>
+                                    </Stack>
+                                    <Stack sx={{width: '50%'}}>
+                                        <Typography variant={"overline"} sx={{fontWeight: 200, fontSize: 16}}>{item.title}</Typography>
+                                    </Stack>
+                                    <Stack sx={{width: '10%'}}>
+                                        <Typography variant={"subtitle2"}>{item.part}</Typography>
+                                    </Stack>
+                                    <Stack sx={{width: '10%'}}>
+                                        <Typography variant={"caption"}>{item.group}</Typography>
+                                    </Stack>
+                                </Stack>
+                        }
+                        <Divider sx={{width: '90%', mt:1}} />
                     </Stack>
                 ))}
             </Stack>
