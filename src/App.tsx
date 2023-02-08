@@ -15,7 +15,10 @@ declare module '@mui/material/styles' {
     interface BreakpointOverrides {
         res300: true;
         res500: true;
+        res550: true;
+        res650: true;
         res700: true;
+        res750: true;
         res800: true;
         res950: true;
         res1000: true;
@@ -42,8 +45,11 @@ const blueTheme = createTheme({
             xs: 0,
             res300: 300,
             res500: 500,
+            res550: 550,
             sm: 600,
+            res650: 650,
             res700: 700,
+            res750: 750,
             res800: 800,
             md: 900,
             res950: 950,
