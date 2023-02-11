@@ -10,13 +10,11 @@ import {
     Stack, TextField,
     Typography, useMediaQuery, useTheme
 } from "@mui/material";
-import {useRef, useState} from "react";
 import MyConcertList from "./MyConcertList/MyConcertList";
 
 const MyList = () => {
     const theme = useTheme();
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
-    const inWidth = useRef(window.innerWidth)
 
     const careerList = [
         {

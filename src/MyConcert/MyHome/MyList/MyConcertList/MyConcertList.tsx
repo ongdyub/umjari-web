@@ -4,7 +4,7 @@ import {useState} from "react";
 const MyConcertList = (props : any) => {
 
     const {item} = props
-    const [expanded, setExpanded] = useState(true)
+    const [expanded, setExpanded] = useState(false)
 
     return(
         <Card sx={{mb: 5, mt:3, width: '60%'}}>
@@ -21,21 +21,21 @@ const MyConcertList = (props : any) => {
                     {item.program.map((item : any) => (
                         <Stack sx={{width: '100%', cursor: 'pointer', mb: 3}} onClick={() => setExpanded(!expanded)}>
                             <Stack direction={"row"} alignContent={"center"} alignItems={"center"}>
-                                <Typography variant="caption"  display="block" gutterBottom sx={{fontWeight: 600, fontSize: 12}}>
+                                <Typography variant="caption"  display="block" sx={{fontWeight: 600, fontSize: 12}}>
                                     {item.composer}
                                 </Typography>
-                                <Divider orientation={"vertical"} sx={{ml:2, mr: 2, height: '50%'}} />
-                                <Typography variant="caption"  display="block" gutterBottom sx={{fontSize: 12, fontWeight: 300}}>
+                                <Divider orientation={"vertical"} sx={{ml:2, mr: 2, height: 20}} />
+                                <Typography variant="caption"  display="block" sx={{fontSize: 12, fontWeight: 300}}>
                                     [ {item.part} ]
                                 </Typography>
                                 <Divider orientation={"vertical"} sx={{ml:2, mr: 2, height: '50%'}} />
                             </Stack>
                             <Stack direction={"row"} alignContent={"center"} alignItems={"center"} sx={{width: '100%'}}>
-                                <Typography variant="overline"  display="block" gutterBottom sx={{fontSize: 15, color: 'grey'}}>
+                                <Typography variant="overline"  display="block" sx={{fontSize: 15, color: 'grey'}}>
                                     {item.song}
                                 </Typography>
                             </Stack>
-                            <Divider sx={{mt:-1, mb:1}} />
+                            <Divider sx={{mt:1, mb:1}} />
                         </Stack>
                     ))}
                     <Stack>

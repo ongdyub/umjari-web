@@ -2,12 +2,14 @@ import {Button, ButtonGroup, Divider, Stack, Typography, useMediaQuery, useTheme
 import {Routes, Route} from "react-router-dom";
 import SelfIntro from "./SelfIntro/SelfIntro";
 import MyList from "./MyList/MyList";
+import Gallery from "./Gallery/Gallery";
 
 
 const myButtons = [
-    <Button key="one">짧은 소개</Button>,
-    <Button key="two">연주회 목록</Button>,
+    <Button key="one">짧은소개</Button>,
+    <Button key="two">연주회목록</Button>,
     <Button key="three">사진첩</Button>,
+    <Button key="three">다이어리</Button>,
     <Button key="four">방명록</Button>,
 ]
 
@@ -40,6 +42,7 @@ const MyHome = () => {
                 <Routes>
                     <Route path="selfintro" element={<SelfIntro />}/>
                     <Route path="list" element={<MyList />}/>
+                    <Route path="gallery" element={<Gallery />}/>
                     <Route path="visit" />
                 </Routes>
             </Stack>
