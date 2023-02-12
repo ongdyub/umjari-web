@@ -3,6 +3,8 @@ import {Routes, Route} from "react-router-dom";
 import SelfIntro from "./SelfIntro/SelfIntro";
 import MyList from "./MyList/MyList";
 import Gallery from "./Gallery/Gallery";
+import Visit from "./Visit/Visit";
+import Diary from "./Diary/Diary";
 
 
 const myButtons = [
@@ -43,7 +45,8 @@ const MyHome = () => {
                     <Route path="selfintro" element={<SelfIntro />}/>
                     <Route path="list" element={<MyList />}/>
                     <Route path="gallery" element={<Gallery />}/>
-                    <Route path="visit" />
+                    <Route path="visit" element={<Visit />}/>
+                    <Route path="diary" element={<Diary />}/>
                 </Routes>
             </Stack>
         </Stack>

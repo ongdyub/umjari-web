@@ -92,7 +92,7 @@ const GalleryModal = (props : any) => {
                                         alt="Live from space album cover"
                                     />
                                     :
-                                    <Stack sx={{width: '100%', height: '80%'}}>
+                                    <Stack sx={{width: '100%', height: 'calc(72% - 10px)'}}>
                                         <CardMedia
                                             component="img"
                                             sx={{height: '100%', objectFit: 'contain', loading: 'lazy'}}

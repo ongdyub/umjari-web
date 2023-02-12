@@ -14,6 +14,7 @@ import MyConcert from "./MyConcert/MyConcert";
 declare module '@mui/material/styles' {
     interface BreakpointOverrides {
         res300: true;
+        res400: true;
         res500: true;
         res550: true;
         res650: true;
@@ -44,6 +45,7 @@ const blueTheme = createTheme({
         values: {
             xs: 0,
             res300: 300,
+            res400: 400,
             res500: 500,
             res550: 550,
             sm: 600,
