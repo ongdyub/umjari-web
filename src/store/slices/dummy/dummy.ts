@@ -21,6 +21,7 @@ export interface groupFrom {
     friend: number,
     region: string,
     recruit: string,
+    re_inst: string[]
 }
 export interface articleForm{
     boardName: string | null | undefined
@@ -77,6 +78,7 @@ const initialState: dummyForm = {
             friend: 8,
             region: '서초구',
             recruit: '모집 중',
+            re_inst: ['바이올린', '비올라', '타악기', '튜바']
         },
         {
             name: 'SNUPO',
@@ -94,6 +96,7 @@ const initialState: dummyForm = {
             friend: 51,
             region: '관악구',
             recruit: '모집 마감',
+            re_inst: ['바순', '오보에', '피콜로', '잉혼', '튜바', '타악기']
         },
         {
             name: 'SNUGO',
@@ -115,6 +118,7 @@ const initialState: dummyForm = {
             friend: 4,
             region: '서초구',
             recruit: '모집 중',
+            re_inst: ['바이올린', '비올라', '첼로', '베이스', '플루트', '클라리넷', '바순', '오보에', '호른', '트럼펫','오보에', '호른', '트럼펫']
         },
         {
             name: 'AOU',
@@ -128,6 +132,7 @@ const initialState: dummyForm = {
             friend: 4,
             region: '관악구',
             recruit: '모집 마감',
+            re_inst: ['바이올린', '비올라', '첼로', '베이스', '플루트', '클라리넷', '바순', '오보에', '호른', '트럼펫','오보에', '호른', '트럼펫']
         },
     ],
     article: [

@@ -2,7 +2,7 @@ import {Box, Card, CardContent, CardMedia, IconButton, Stack, Typography, useMed
 import {groupFrom, songForm} from "../../../store/slices/dummy/dummy";
 import './GroupItem.scss'
 
-const GroupItem = (props : groupFrom) => {
+const GroupItem = (props : Omit<groupFrom, 're_inst'>) => {
 
     const {name, img, song, friend, region, recruit} = props
     const theme = useTheme();
