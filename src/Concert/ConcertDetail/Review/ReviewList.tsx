@@ -1,6 +1,6 @@
 import {Box, Button, ButtonGroup, Divider, Stack, TextField, Typography, useMediaQuery, useTheme} from "@mui/material";
 
-const VisitList = (props : any) => {
+const ReviewList = (props: any) => {
 
     const {item, write} = props
 
@@ -10,9 +10,9 @@ const VisitList = (props : any) => {
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
     return(
-        <Stack  sx={{width: '100%', mt:3}} justifyContent={res550 ? "center" : ''} alignItems={res550 ? "center" : ''} alignContent={res550 ? "center" : ''}>
+        <Stack  sx={{width: '100%', mt:3}}>
             <Divider sx={{width: '90%'}} />
-            <Stack direction={res400 ? "column" : "row"} sx={{width: '90%'}}>
+            <Stack direction={res400 ? "column" : "row"} sx={{width: '90%', mt: res400 ? 1 : 0}}>
                 <Stack direction={"row"} alignContent={"center"} alignItems={"center"}>
                     <Typography sx={{ml: 2, fontWeight:800, fontSize: 13}}>
                         No. {item}
@@ -28,7 +28,7 @@ const VisitList = (props : any) => {
                     <ButtonGroup>
                         <Button variant={"text"}>수정</Button>
                         <Button variant={"text"}>삭제</Button>
-                        <Button variant={"text"}>잠금</Button>
+                        <Button variant={"text"}>비공개</Button>
                     </ButtonGroup>
                 </Stack>
             </Stack>
@@ -46,8 +46,8 @@ const VisitList = (props : any) => {
                             objectFit: 'cover',
                             boxShadow: 'rgb(0 0 0 / 6%) 0px 0px 4px 0px'
                         }}
-                        alt="대충 본인 프사"
-                        src={`/img/${item}.jpg`}
+                        alt="기타 공연 봤다는 인증 사진 업로드"
+                        src={``}
                     />
                 </Stack>
                 {
@@ -73,4 +73,4 @@ const VisitList = (props : any) => {
     )
 }
 
-export default VisitList
+export default ReviewList

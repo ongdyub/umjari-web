@@ -5,8 +5,6 @@ import MyHome from "./MyHome/MyHome";
 const MyConcert = () => {
 
     const theme = useTheme();
-    const resSize = useMediaQuery(theme.breakpoints.down("md"))
-    const res800 = useMediaQuery(theme.breakpoints.down("res800"))
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
     return(

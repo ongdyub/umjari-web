@@ -180,6 +180,30 @@ const MyList = () => {
                 },
             ]
         },
+        {
+            date: '2023.03.02',
+            place: '서울대학교 문화관 대강당',
+            group: 'SNUPO',
+            concert: '제 60회 정기연주회',
+            img: '/img/poster.jpeg',
+            program: [
+                {
+                    composer: 'J.Strauss II',
+                    song: 'Kaiser-Walzer, Op. 437',
+                    part: 'Vn 1st'
+                },
+                {
+                    composer: 'A.Borodin',
+                    song: 'Symphony No. 2 in b minor',
+                    part: 'Vn 1st'
+                },
+                {
+                    composer: 'H.Berlioz',
+                    song: 'Symphonie Fantastique, H. 48',
+                    part: 'Trb 3rd'
+                },
+            ]
+        },
     ]
     const sort = ['시간순','단체순']
     const direction = ['오름차순', '내립차순']
