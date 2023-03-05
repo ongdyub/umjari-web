@@ -72,7 +72,10 @@ const boardList = [
         name: '타악기',
         ID: 13
     },
-
+    {
+        name: '객원모집',
+        ID: 14
+    },
 ]
 
 const BoardMenu = () => {

@@ -27,6 +27,10 @@ const GroupQnA = () => {
         setPage(value);
     };
 
+    const onClickQnA = () => {
+        window.alert("click")
+    }
+
     return(
         <Stack sx={{mb:10}}>
             <Stack direction={res700 ? "column" : "row"} alignItems={res700 ? "center" : ''} sx={{mb: 3}}>
@@ -50,12 +54,15 @@ const GroupQnA = () => {
 
             <Divider sx={{width: '100%'}} />
 
+
+
+
             <Stack sx={{pr: 3, pt: 3, width: '100%', pl: res700 ? 3 : 0}}>
                 <Grid container columns={14}>
                     {
                         dummySelector.boardArticle.map((item) => (
                             <Grid sx={{pr:2, pl: 2, mb: 3}} item res300={14} res500={14} res800={7} lg={7} alignItems={"center"} alignContent={"center"}>
-                                <QnAItem key={item} img={item} title={item.title} comment={item.comment} />
+                                <QnAItem onClick={() => onClickQnA} key={item} img={item} title={item.title} comment={item.comment} />
                             </Grid>
                         ))
                     }
