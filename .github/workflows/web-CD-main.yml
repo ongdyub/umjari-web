@@ -2,7 +2,7 @@ name: web-CD-main
 
 on:
   push: # 적용될 액션
-    branches: develop # 적용될 브랜치
+    branches: main # 적용될 브랜치
 
 jobs:
   deploy:
