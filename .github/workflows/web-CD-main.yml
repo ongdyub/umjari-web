@@ -18,7 +18,7 @@ jobs:
         run: npm run build
 
       - name: S3 Deploy
-        run: aws s3 sync ./dist s3://umjari-web-bucket/ --acl bucket-owner-full-control # s3 이름 umjari-web-bucket
+        run: aws s3 sync ./build s3://umjari-web-bucket/ --acl bucket-owner-full-control # ./build 자리는 빌드파일 생성 위치 s3 이름 umjari-web-bucket
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
