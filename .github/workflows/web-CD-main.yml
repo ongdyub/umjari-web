@@ -1,0 +1,25 @@
+name: web-CD-main
+
+on:
+  push: # 적용될 액션
+    branches: develop # 적용될 브랜치
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # 인스턴스 OS
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2 # 워크플로에서 액세스할 수 있도록 에서 저장소를 체크아웃
+
+      - name: Install Dependencies
+        run: npm
+
+      - name: Build
+        run: npm build
+
+      - name: S3 Deploy
+        run: aws s3 sync ./dist s3://umjari-web-bucket/ --acl bucket-owner-full-control # s3 이름 umjari-web-bucket
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
