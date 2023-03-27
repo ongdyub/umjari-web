@@ -48,6 +48,7 @@ const Header = () => {
         if(setting === '로그아웃'){
             setIsLogin(!isLogin)
         }
+        console.log("1")
         console.log(isLogin)
     }
 
