@@ -49,7 +49,7 @@ const initialState: dummyForm = {
         },
     ],
     img: [
-        '//www.snupo.org/files/attach/images/157797/561/154/001/59%ED%9A%8C%20%ED%8F%AC%EC%8A%A4%ED%84%B0.png',
+        'https://www.snupo.org/files/attach/images/157797/544/178/001/SNUPO%2060th%20%ED%8F%AC%EC%8A%A4%ED%84%B0%20%EC%B5%9C%EC%A2%85%20(1).png',
         '//www.snupo.org/files/attach/images/157797/537/137/001/8697fc06-3b79-48d3-af93-d47be8d65871.pdf-0001.png',
         '//www.snupo.org/files/attach/images/157797/193/123/001/SNUPO57%ED%8F%AC%EC%8A%A4%ED%84%B0%EC%95%95%EC%B6%95.jpg',
         '//www.snupo.org/files/attach/images/157797/517/111/001/82831625_2700309973351982_2330739276771229696_n.jpg',
