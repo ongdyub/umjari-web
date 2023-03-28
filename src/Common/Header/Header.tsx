@@ -60,7 +60,7 @@ const Header = () => {
     return(
         <AppBar position="static">
             <Container maxWidth="xl">
-                <Toolbar sx={{pl: '20px', height: '60px'}} disableGutters>
+                <Toolbar sx={{pl: '20px', height: '60px'}} >
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                     <Typography
                         variant="h6"
@@ -185,4 +185,4 @@ const Header = () => {
     )
 }
 
-export default Header
+export default Header;
