@@ -9,13 +9,16 @@ import {
     MenuItem,
     Toolbar,
     Tooltip,
-    Typography
+    Typography, useMediaQuery, useTheme
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
 import {useState} from "react";
 
 const Header = () => {
+
+    const theme = useTheme();
+    const res400 = useMediaQuery(theme.breakpoints.down("res400"))
 
     const [isLogin, setIsLogin] = useState(true);
 
@@ -60,8 +63,8 @@ const Header = () => {
     return(
         <AppBar position="static">
             <Container maxWidth="xl">
-                <Toolbar sx={{pl: '20px', height: '60px'}} >
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                <Toolbar sx={{pl: res400 ? 0 : '20px', height: '60px'}} >
+                    {/*Desktop Display*/}
                     <Typography
                         variant="h6"
                         noWrap
@@ -71,13 +74,13 @@ const Header = () => {
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
                             fontFamily: 'monospace',
-                            fontWeight: 700,
+                            fontWeight: 300,
                             letterSpacing: '.3rem',
                             color: 'inherit',
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        / 음자리 /
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -116,24 +119,24 @@ const Header = () => {
                             ))}
                         </Menu>
                     </Box>
-                    <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+
+                    {/*Mobile Display*/}
                     <Typography
                         variant="h5"
                         noWrap
                         component="a"
                         href=""
                         sx={{
-                            mr: 2,
                             display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
                             fontFamily: 'monospace',
-                            fontWeight: 700,
+                            fontWeight: 300,
                             letterSpacing: '.3rem',
                             color: 'inherit',
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        / 음자리 /
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
