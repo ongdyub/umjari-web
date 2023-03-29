@@ -74,5 +74,5 @@
     "@types/mui-image": "^1.0.1",
     "@types/react-draft-wysiwyg": "^1.13.4"
   },
-  "proxy" : "https://umjari.co.kr/"
+  "proxy" : "http://ec2-52-79-235-11.ap-northeast-2.compute.amazonaws.com/"
 }
