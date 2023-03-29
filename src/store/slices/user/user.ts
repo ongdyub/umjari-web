@@ -24,6 +24,17 @@ const initialState: User = {
     isLogin : (localStorage.getItem("Token") !== null)
 };
 
+export const  testPingPong = createAsyncThunk(
+    "user/testPingPong",
+    async () => {
+        await axios.get('/api/v1/ping/')
+            .then(function (response) {
+                console.log(response)
+                return response.data;
+            })
+    }
+)
+
 export const userSlice = createSlice({
     name: "user",
     initialState,

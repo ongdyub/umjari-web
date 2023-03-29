@@ -16,6 +16,7 @@ import {useState} from "react";
 import {useSelector} from "react-redux";
 import {selectUser} from "../../store/slices/user/user";
 import { useNavigate } from "react-router"
+import LoginModal from "../../Modal/LoginModal";
 
 var w = window.innerWidth
 const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
@@ -32,6 +33,11 @@ const Header = () => {
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+    const [loginOpen, setLoginOpen] = useState<boolean>(false)
+    const handleLoginClose = () => {
+        setLoginOpen(false)
+    }
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -144,7 +150,7 @@ const Header = () => {
                         variant="h5"
                         noWrap
                         component="a"
-                        href=""
+                        href="/"
                         sx={{
                             flexGrow: 1,
                             display: { xs: 'flex', md: 'none' },
@@ -208,13 +214,14 @@ const Header = () => {
                                 </>
                                 :
                                 res450 ?
-                                    <Button variant="contained" size={"small"} sx={{left: -10, position: 'relative', border: '0.5px solid white', fontSize: 8}}>로그인</Button>
+                                    <Button variant="contained" size={"small"} sx={{left: -10, position: 'relative', border: '0.5px solid white', fontSize: 8}} onClick={() => setLoginOpen(true)}>로그인</Button>
                                     :
-                                    <Button variant="contained" sx={{border: '1px solid white'}}>로그인</Button>
+                                    <Button variant="contained" sx={{border: '1px solid white'}} onClick={() => setLoginOpen(true)}>로그인</Button>
                         }
                     </Box>
                 </Toolbar>
             </Container>
+            <LoginModal open={loginOpen} handleClose={handleLoginClose}/>
         </AppBar>
     )
 }
