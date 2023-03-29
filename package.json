@@ -73,5 +73,6 @@
     "@types/html-to-draftjs": "^1.4.0",
     "@types/mui-image": "^1.0.1",
     "@types/react-draft-wysiwyg": "^1.13.4"
-  }
+  },
+  "proxy" : "https://umjari.co.kr/"
 }

@@ -16,6 +16,7 @@ declare module '@mui/material/styles' {
     interface BreakpointOverrides {
         res300: true;
         res400: true;
+        res450: true;
         res500: true;
         res550: true;
         res650: true;
@@ -47,6 +48,7 @@ const blueTheme = createTheme({
             xs: 0,
             res300: 300,
             res400: 400,
+            res450: 450,
             res500: 500,
             res550: 550,
             sm: 600,
@@ -70,8 +72,8 @@ function App() {
       <ThemeProvider theme={blueTheme}>
         <CssBaseline />
         <div>
-            <Header />
             <BrowserRouter>
+                <Header />
                 <Routes>
                     <Route path="/" element={<MainPage />} />
                     <Route path="/write" element={<Write />} />
