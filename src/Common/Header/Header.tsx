@@ -12,19 +12,23 @@ import {
     Typography, useMediaQuery, useTheme
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import AdbIcon from '@mui/icons-material/Adb';
 import {useState} from "react";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../store/slices/user/user";
+import { useNavigate } from "react-router"
+
+var w = window.innerWidth
+const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
+const settings = ['프로필', '마이페이지', '설정', '로그아웃', 'Size'];
 
 const Header = () => {
 
     const theme = useTheme();
     const res400 = useMediaQuery(theme.breakpoints.down("res400"))
 
-    const [isLogin, setIsLogin] = useState(true);
+    const userState = useSelector(selectUser)
 
-    const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
-    const settings = ['프로필', '마이페이지', '설정', '로그아웃', 'Size'];
-    var w = window.innerWidth
+    const navigate = useNavigate();
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -33,31 +37,45 @@ const Header = () => {
         setAnchorElNav(event.currentTarget);
         console.log("open nav")
     };
+    const handleCloseNavMenu = (page : string) => {
+        setAnchorElNav(null);
+        if(page === 'close'){
+        }
+        else if(page === '홈'){
+            navigate('/')
+        }
+        else if(page === '커뮤니티'){
+            navigate('/community/전체게시판')
+        }
+        else if(page === '단체검색하기'){
+            navigate('/groupsearch')
+        }
+        else if(page === '중고거래 및 대여'){
+            window.alert("준비 중 입니다.")
+        }
+        else if(page === '객원모집'){
+            window.alert("준비 중 입니다.")
+        }
+        console.log("close nav")
+    };
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
         console.log("open user")
     };
-
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-        console.log("close nav")
-    };
-
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
         console.log("close user")
     };
-
     const handleUserMenuClick = (setting : any) => {
         if(setting === '로그아웃'){
-            setIsLogin(!isLogin)
+            // setIsLogin(!isLogin)
         }
         if(setting === 'Size'){
             console.log(w)
             window.alert(w)
         }
         console.log("1")
-        console.log(isLogin)
+        // console.log(isLogin)
     }
 
     return(
@@ -107,13 +125,13 @@ const Header = () => {
                                 horizontal: 'left',
                             }}
                             open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
+                            onClose={() => handleCloseNavMenu('close')}
                             sx={{
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
                                     <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
                             ))}
@@ -127,8 +145,8 @@ const Header = () => {
                         component="a"
                         href=""
                         sx={{
-                            display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
+                            display: { xs: 'flex', md: 'none' },
                             fontFamily: 'monospace',
                             fontWeight: 300,
                             letterSpacing: '.3rem',
@@ -143,7 +161,7 @@ const Header = () => {
                             <>
                                 <Button
                                     key={page}
-                                    onClick={handleCloseNavMenu}
+                                    onClick={() => handleCloseNavMenu(page)}
                                     sx={{ my: 2, color: 'white', display: 'block', fontSize: '15px' }}
                                 >
                                     {page}

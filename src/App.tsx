@@ -70,8 +70,8 @@ function App() {
       <ThemeProvider theme={blueTheme}>
         <CssBaseline />
         <div>
-            <Header />
             <BrowserRouter>
+                <Header />
                 <Routes>
                     <Route path="/" element={<MainPage />} />
                     <Route path="/write" element={<Write />} />
