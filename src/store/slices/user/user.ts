@@ -27,11 +27,9 @@ const initialState: User = {
 export const  testPingPong = createAsyncThunk(
     "user/testPingPong",
     async () => {
-        await axios.get('/api/v1/ping/')
-            .then(function (response) {
-                console.log(response)
-                return response.data;
-            })
+        const response = await axios.get('/api/v1/ping/')
+        console.log(response)
+        return response.data
     }
 )
 

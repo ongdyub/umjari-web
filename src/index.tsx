@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import {store} from "./store";
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://ec2-52-79-235-11.ap-northeast-2.compute.amazonaws.com/';
+//axios.defaults.baseURL = 'http://ec2-52-79-235-11.ap-northeast-2.compute.amazonaws.com/';
 //axios.defaults.baseURL = 'http://localhost:8000/';
 
 const root = ReactDOM.createRoot(

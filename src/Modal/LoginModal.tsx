@@ -67,7 +67,7 @@ const LoginModal = (props : any) => {
     }
 
     const checkPW = (asValue: string) => {
-        const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+        const regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/
         return regExp.test(asValue);
     }
 
@@ -124,7 +124,7 @@ const LoginModal = (props : any) => {
         console.log(result)
 
         if(!checkID(loginId) || !checkPW(loginPassword) || loginPassword !== pwConfirm){
-            window.alert("올바르지 않은 형식입니다")
+            console.log("올바르지 않은 형식입니다")
             return;
         }
     };
@@ -146,7 +146,7 @@ const LoginModal = (props : any) => {
                     <TextField
                         label="아이디"
                         variant="standard"
-                        helperText={!isLoginMode && "2-10자의 영문과 숫자, 일부 특수문자(., _, -)만 입력 가능합니다."}
+                        helperText={!isLoginMode && "4-10자의 영문과 숫자, 일부 특수문자(., _, -)만 입력 가능합니다."}
                         value={loginId}
                         onChange={(e) => { onChangeId(e.target.value) }}
                         onKeyPress={onKeyPress}
@@ -200,7 +200,7 @@ const LoginModal = (props : any) => {
                             }
                         />
                         <FormHelperText>
-                            {!isLoginMode && <> 영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. <br /> 특수문자(!@#$%^&*)도 사용 가능합니다. </>}
+                            {!isLoginMode && <>특수문자(!@#$%^&*) 영문과 숫자가 모두 들어간 8-20자의 비밀번호를 설정해주세요.</>}
                         </FormHelperText>
                     </FormControl>
                     {!isLoginMode &&
@@ -259,6 +259,7 @@ const LoginModal = (props : any) => {
                         </Button> :
                         <Button variant="text" onClick={onClickRegister}
                                 data-testid="register"
+                                disabled={!checkID(loginId) || !checkPW(loginPassword) || loginPassword !== pwConfirm}
                                 sx={{
                                     bgcolor: 'primary.dark',
                                     borderRadius: 3,
@@ -268,7 +269,7 @@ const LoginModal = (props : any) => {
                                         boxShadow: 2,
                                     },
                                     '&:disabled': {
-                                        backgroundColor: 'black',
+                                        backgroundColor: 'grey',
                                         boxShadow: 2,
                                     },
                                     width: '40%'
