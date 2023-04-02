@@ -8,7 +8,7 @@ import {
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {selectUser, signUp} from "../store/slices/user/user";
+import {login, selectUser, signUp} from "../store/slices/user/user";
 import {AppDispatch} from "../store";
 import { toast } from "react-toastify";
 
@@ -159,8 +159,27 @@ const LoginModal = (props : any) => {
         }
     }
 
-    const onClickLogin = () => {
-        window.alert("로그인 버튼 클릭!")
+    const onClickLogin = async () => {
+        const data = {
+            userId: loginId,
+            password: loginPassword
+        }
+
+        const result = await dispatch(login(data))
+        console.log(result)
+
+        if (result.type === `${signUp.typePrefix}/fulfilled`) {
+            //const result = await dispatch(loginUser(data));
+            // if (result.type === `${loginUser.typePrefix}/fulfilled`) {
+            //     setIsOpen(false)
+            // } else {
+            //     setErrorText("자동로그인 실패! 다시 로그인 해주세요");
+            // }
+            window.alert("로그인 성공")
+            onClickClose()
+        } else {
+            window.alert("로그인 실패.")
+        }
     };
 
     const onClickRegister = async () => {
@@ -185,9 +204,7 @@ const LoginModal = (props : any) => {
             window.alert("회원가입 성공")
             onClickClose()
         } else {
-            toast.error("중복되는 항목이 있습니다.",{
-                autoClose: 3000,
-            })
+            window.alert("중복되는 내용이 있습니다.")
         }
     };
     const onClickClose = () => {
