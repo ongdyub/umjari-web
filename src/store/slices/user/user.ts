@@ -4,6 +4,15 @@ import { RootState } from "../..";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+export interface SignUser {
+    userId: string;
+    password: string;
+    email: string;
+    nickname: string;
+    intro: string;
+    phoneNumber: string;
+}
+
 export interface User {
     user_id : string | null,
     phone : string | null;
@@ -24,10 +33,19 @@ const initialState: User = {
     isLogin : (localStorage.getItem("Token") !== null)
 };
 
-export const  testPingPong = createAsyncThunk(
+export const testPingPong = createAsyncThunk(
     "user/testPingPong",
     async () => {
         const response = await axios.get('/api/v1/ping/')
+        console.log(response)
+        return response.data
+    }
+)
+
+export const signUp = createAsyncThunk(
+    "user/signUp",
+    async (data: SignUser) => {
+        const response = await axios.post('/api/v1/auth/signup/',data)
         console.log(response)
         return response.data
     }
