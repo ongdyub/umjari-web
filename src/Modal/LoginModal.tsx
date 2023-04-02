@@ -1,27 +1,17 @@
 import {
-    Avatar,
-    Backdrop,
-    Box, Button,
-    CardMedia, Checkbox,
-    Divider,
-    Fade, FormControl, FormControlLabel, FormHelperText, Grid, IconButton, Input, InputAdornment, InputLabel, Link,
+    Button,
+    Fade, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel,
     Modal,
     Stack, TextField,
     Typography,
-    useMediaQuery,
-    useTheme
 } from "@mui/material";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import CommentIcon from '@mui/icons-material/Comment';
 import {useState} from "react";
-import Comment from "../Common/Comment/Comment";
 import {useDispatch, useSelector} from "react-redux";
-import {selectDummy} from "../store/slices/dummy/dummy";
-import GalleryComment from "../Common/GalleryComment/GalleryComment";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {selectUser, signUp, testPingPong} from "../store/slices/user/user";
+import {selectUser, signUp} from "../store/slices/user/user";
 import {AppDispatch} from "../store";
+import { toast } from "react-toastify";
+
 
 const style = (theme: any) => ({
     position: 'absolute',
@@ -195,7 +185,9 @@ const LoginModal = (props : any) => {
             window.alert("회원가입 성공")
             onClickClose()
         } else {
-            window.alert("회원가입 실패")
+            toast.error("중복되는 항목이 있습니다.",{
+                autoClose: 3000,
+            })
         }
     };
     const onClickClose = () => {

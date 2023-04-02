@@ -5,16 +5,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import {store} from "./store";
+import {ToastContainer} from "react-toastify";
 import axios from 'axios';
 
-//axios.defaults.baseURL = 'http://ec2-52-79-235-11.ap-northeast-2.compute.amazonaws.com/';
-//axios.defaults.baseURL = 'http://localhost:8000/';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '/' : 'http://ec2-52-79-235-11.ap-northeast-2.compute.amazonaws.com/';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
+      <ToastContainer/>
       <Provider store={store}>
           <App />
       </Provider>

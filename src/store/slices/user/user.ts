@@ -51,6 +51,15 @@ export const signUp = createAsyncThunk(
     }
 )
 
+export const login = createAsyncThunk(
+    "user/login",
+    async (data: SignUser) => {
+        const response = await axios.put('/api/v1/auth/login/',data)
+        console.log(response)
+        return response.data
+    }
+)
+
 export const userSlice = createSlice({
     name: "user",
     initialState,
