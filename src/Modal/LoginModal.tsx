@@ -174,8 +174,6 @@ const LoginModal = (props : any) => {
     };
 
     const onClickRegister = async () => {
-        const result = await dispatch(testPingPong())
-        console.log(result)
         const data = {
             userId: loginId,
             password: loginPassword,
@@ -184,8 +182,21 @@ const LoginModal = (props : any) => {
             nickname: nickname,
             intro: ''
         }
-        const signResult = await dispatch(signUp(data))
-        console.log(signResult)
+        const result = await dispatch(signUp(data))
+        console.log(result)
+
+        if (result.type === `${signUp.typePrefix}/fulfilled`) {
+            //const result = await dispatch(loginUser(data));
+            // if (result.type === `${loginUser.typePrefix}/fulfilled`) {
+            //     setIsOpen(false)
+            // } else {
+            //     setErrorText("자동로그인 실패! 다시 로그인 해주세요");
+            // }
+            window.alert("회원가입 성공")
+            onClickClose()
+        } else {
+            window.alert("회원가입 실패")
+        }
     };
     const onClickClose = () => {
         setLoginId('');
