@@ -52,6 +52,10 @@ const LoginModal = (props : any) => {
         setLoginPassword('');
         setPwConfirm('');
         setErrorText('');
+        setEmail('')
+        setAuthCode('')
+        setPhone('')
+        setNickname('')
         setIsLoginMode(!isLoginMode);
     }
 
@@ -168,7 +172,7 @@ const LoginModal = (props : any) => {
         const result = await dispatch(login(data))
         console.log(result)
 
-        if (result.type === `${signUp.typePrefix}/fulfilled`) {
+        if (result.type === `${login.typePrefix}/fulfilled`) {
             //const result = await dispatch(loginUser(data));
             // if (result.type === `${loginUser.typePrefix}/fulfilled`) {
             //     setIsOpen(false)
@@ -211,6 +215,12 @@ const LoginModal = (props : any) => {
         setLoginId('');
         setLoginPassword('');
         setPwConfirm('');
+        setErrorText('');
+        setEmail('')
+        setAuthCode('')
+        setPhone('')
+        setNickname('')
+        setIsLoginMode(true)
         handleClose(false)
     }
 
