@@ -55,6 +55,7 @@ export const login = createAsyncThunk(
     async (data: Partial<SignUser>, { dispatch }) => {
         await axios.post('/api/v1/auth/login/',data).then(function (response) {
             console.log(response.data)
+            dispatch(userActions.setUserId({user_id: data.userId}))
             dispatch(userActions.loginUser(response.data));
             return response.data
         })
@@ -74,30 +75,27 @@ export const userSlice = createSlice({
                 state.accessToken = action.payload.accessToken
                 localStorage.setItem("Token", action.payload.accessToken)
             }
-            // state.user = action.payload;
-            // if (action.payload.id) {
-            //     localStorage.setItem("id", action.payload.id)
-            // }
-            // if (action.payload.username) {
-            //     localStorage.setItem("username", action.payload.username)
-            // }
-            // if (action.payload.intro) {
-            //     localStorage.setItem("intro", action.payload.intro)
-            // }
-            // if (action.payload.profile_img) {
-            //     localStorage.setItem("profile_img", action.payload.profile_img)
-            // }
-            // if (action.payload.nickname) {
-            //     localStorage.setItem("nickname", action.payload.nickname)
-            // }
         },
-        // logoutUser: (
-        //     state,
-        // ) => {
-        //     state.user = null;
-        //     state.token = null;
-        //     state.isLogin = false;
-        // },
+        setUserId: (
+            state,
+            action: PayloadAction<Partial<User>>
+        ) => {
+            if (action.payload.user_id) {
+                state.user_id = action.payload.user_id;
+            }
+        },
+        logoutUser: (
+            state,
+        ) => {
+            state.user_id = null;
+            state.phone = null;
+            state.email = null;
+            state.nickname = null;
+            state.profile_img = null;
+            state.isLogin = false;
+            localStorage.removeItem("Token")
+            state.accessToken = null;
+        },
         // editUser: (
         //     state,
         // ) => {

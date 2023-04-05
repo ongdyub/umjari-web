@@ -13,10 +13,11 @@ import {
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {useState} from "react";
-import {useSelector} from "react-redux";
-import {selectUser} from "../../store/slices/user/user";
+import {useDispatch, useSelector} from "react-redux";
+import {selectUser, userActions} from "../../store/slices/user/user";
 import { useNavigate } from "react-router"
 import LoginModal from "../../Modal/LoginModal";
+import {AppDispatch} from "../../store";
 
 var w = window.innerWidth
 const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
@@ -27,6 +28,7 @@ const Header = () => {
     const theme = useTheme();
     const res450 = useMediaQuery(theme.breakpoints.down("res450"))
 
+    const dispatch = useDispatch<AppDispatch>();
     const userState = useSelector(selectUser)
 
     const navigate = useNavigate();
@@ -69,16 +71,16 @@ const Header = () => {
     const handleCloseUserMenu = (setting : any) => {
         setAnchorElUser(null);
         if(setting === '마이페이지'){
-            // setIsLogin(!isLogin)
+            navigate(`/myconcert/${userState.user_id}/selfintro`)
         }
         else if(setting === '작성기록'){
-
+            window.alert('준비중입니다.')
         }
         else if(setting === '설정'){
-
+            window.alert('준비중입니다.')
         }
         else if(setting === '로그아웃'){
-
+            dispatch(userActions.logoutUser())
         }
         else if(setting === 'Size'){
             window.alert(w)
@@ -214,9 +216,9 @@ const Header = () => {
                                 </>
                                 :
                                 res450 ?
-                                    <Button variant="contained" size={"small"} sx={{left: -10, position: 'relative', border: '0.5px solid white', fontSize: 8}} onClick={() => setLoginOpen(true)}>로그인</Button>
+                                    <Button variant="contained" size={"small"} sx={{left: -10, position: 'relative', border: '0.5px solid white', fontSize: 12}} onClick={() => setLoginOpen(true)}>로그인</Button>
                                     :
-                                    <Button variant="contained" sx={{border: '1px solid white'}} onClick={() => setLoginOpen(true)}>로그인</Button>
+                                    <Button variant="contained" sx={{left: -30, position: 'relative', border: '1px solid white'}} onClick={() => setLoginOpen(true)}>로그인</Button>
                         }
                     </Box>
                 </Toolbar>
