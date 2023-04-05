@@ -332,7 +332,7 @@ const LoginModal = (props : any) => {
                             <TextField
                                 label="이메일"
                                 variant="standard"
-                                helperText={!isLoginMode && "인증문자를 발송하니 사용하는 이메일을 입력해주세요."}
+                                helperText={!isLoginMode && "이메일을 입력해주세요."}
                                 value={email}
                                 onChange={(e) => { onChangeEmail(e.target.value) }}
                                 onKeyPress={onKeyPress}
