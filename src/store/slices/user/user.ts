@@ -4,6 +4,15 @@ import { RootState } from "../..";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+export interface SignUser {
+    userId: string;
+    password: string;
+    email: string;
+    nickname: string;
+    intro: string;
+    phoneNumber: string;
+}
+
 export interface User {
     user_id : string | null,
     phone : string | null;
@@ -11,7 +20,7 @@ export interface User {
     nickname : string | null;
     profile_img : string | null;
     isLogin : boolean;
-    Token : string | null;
+    accessToken : string | null;
 }
 
 const initialState: User = {
@@ -20,18 +29,36 @@ const initialState: User = {
     email : null,
     nickname : null,
     profile_img : null,
-    Token : (localStorage.getItem("Token") === null) ? null : localStorage.getItem("Token"),
+    accessToken : (localStorage.getItem("Token") === null) ? null : localStorage.getItem("Token"),
     isLogin : (localStorage.getItem("Token") !== null)
 };
 
-export const  testPingPong = createAsyncThunk(
+export const testPingPong = createAsyncThunk(
     "user/testPingPong",
     async () => {
-        await axios.get('/api/v1/ping/')
-            .then(function (response) {
-                console.log(response)
-                return response.data;
-            })
+        const response = await axios.get('/api/v1/ping/')
+        console.log(response)
+        return response.data
+    }
+)
+
+export const signUp = createAsyncThunk(
+    "user/signUp",
+    async (data: SignUser) => {
+        const response = await axios.post('/api/v1/auth/signup/',data)
+        return response.data
+    }
+)
+
+export const login = createAsyncThunk(
+    "user/login",
+    async (data: Partial<SignUser>, { dispatch }) => {
+        await axios.post('/api/v1/auth/login/',data).then(function (response) {
+            console.log(response.data)
+            dispatch(userActions.setUserId({user_id: data.userId}))
+            dispatch(userActions.loginUser(response.data));
+            return response.data
+        })
     }
 )
 
@@ -39,42 +66,36 @@ export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        // setToken: (
-        //     state,
-        //     action: PayloadAction<string>
-        // ) => {
-        //     state.token = action.payload;
-        //     localStorage.setItem("token", action.payload)
-        // },
-        // loginUser: (
-        //     state,
-        //     action: PayloadAction<UserType>
-        // ) => {
-        //     state.isLogin = true;
-        //     state.user = action.payload;
-        //     if (action.payload.id) {
-        //         localStorage.setItem("id", action.payload.id)
-        //     }
-        //     if (action.payload.username) {
-        //         localStorage.setItem("username", action.payload.username)
-        //     }
-        //     if (action.payload.intro) {
-        //         localStorage.setItem("intro", action.payload.intro)
-        //     }
-        //     if (action.payload.profile_img) {
-        //         localStorage.setItem("profile_img", action.payload.profile_img)
-        //     }
-        //     if (action.payload.nickname) {
-        //         localStorage.setItem("nickname", action.payload.nickname)
-        //     }
-        // },
-        // logoutUser: (
-        //     state,
-        // ) => {
-        //     state.user = null;
-        //     state.token = null;
-        //     state.isLogin = false;
-        // },
+        loginUser: (
+            state,
+            action: PayloadAction<Partial<User>>
+        ) => {
+            state.isLogin = true;
+            if (action.payload.accessToken) {
+                state.accessToken = action.payload.accessToken
+                localStorage.setItem("Token", action.payload.accessToken)
+            }
+        },
+        setUserId: (
+            state,
+            action: PayloadAction<Partial<User>>
+        ) => {
+            if (action.payload.user_id) {
+                state.user_id = action.payload.user_id;
+            }
+        },
+        logoutUser: (
+            state,
+        ) => {
+            state.user_id = null;
+            state.phone = null;
+            state.email = null;
+            state.nickname = null;
+            state.profile_img = null;
+            state.isLogin = false;
+            localStorage.removeItem("Token")
+            state.accessToken = null;
+        },
         // editUser: (
         //     state,
         // ) => {

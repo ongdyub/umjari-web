@@ -1,27 +1,17 @@
 import {
-    Avatar,
-    Backdrop,
-    Box, Button,
-    CardMedia, Checkbox,
-    Divider,
-    Fade, FormControl, FormControlLabel, FormHelperText, Grid, IconButton, Input, InputAdornment, InputLabel, Link,
+    Button,
+    Fade, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel,
     Modal,
     Stack, TextField,
     Typography,
-    useMediaQuery,
-    useTheme
 } from "@mui/material";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import CommentIcon from '@mui/icons-material/Comment';
 import {useState} from "react";
-import Comment from "../Common/Comment/Comment";
 import {useDispatch, useSelector} from "react-redux";
-import {selectDummy} from "../store/slices/dummy/dummy";
-import GalleryComment from "../Common/GalleryComment/GalleryComment";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {selectUser, testPingPong} from "../store/slices/user/user";
+import {login, selectUser, signUp} from "../store/slices/user/user";
 import {AppDispatch} from "../store";
+import { toast } from "react-toastify";
+
 
 const style = (theme: any) => ({
     position: 'absolute',
@@ -52,12 +42,20 @@ const LoginModal = (props : any) => {
     const [errorText, setErrorText] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+    const [email, setEmail] = useState('')
+    const [authCode, setAuthCode] = useState('')
+    const [phone, setPhone] = useState('')
+    const [nickname, setNickname] = useState('')
 
     const onClickMode = () => {
         setLoginId('');
         setLoginPassword('');
         setPwConfirm('');
         setErrorText('');
+        setEmail('')
+        setAuthCode('')
+        setPhone('')
+        setNickname('')
         setIsLoginMode(!isLoginMode);
     }
 
@@ -67,8 +65,24 @@ const LoginModal = (props : any) => {
     }
 
     const checkPW = (asValue: string) => {
-        const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+        const regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/
         return regExp.test(asValue);
+    }
+
+    const checkEmail = (asValue: string) => {
+        const regExp = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/
+        return regExp.test(asValue)
+    }
+
+    const checkPhone = (asValue: string) => {
+        const regExp = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/
+        //숫자 11개 + 3 4 4 구조만 가능
+        return regExp.test(asValue)
+    }
+
+    const checkNick = (asValue: string) => {
+        const regExp = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.]{2,20}$/;
+        return regExp.test(asValue)
     }
 
     const onKeyPress = (e: { key: string; }) => {
@@ -105,6 +119,40 @@ const LoginModal = (props : any) => {
         }
     }
 
+    const onChangeEmail = (email: string) => {
+        setEmail(email)
+
+        if(checkEmail(email)){
+            setErrorText("")
+        }
+        else{
+            setErrorText("이메일 형식을 다시 확인해주세요")
+        }
+    }
+
+    const onChangePhone = (phone: string) => {
+        const value = phone.replace(/-/g, '');
+        setPhone(value)
+
+        if(checkPhone(value)){
+            setErrorText("")
+        }
+        else{
+            setErrorText("전화번호 형식을 다시 확인해주세요")
+        }
+    }
+
+    const onChangeNickname = (nickname: string) => {
+        setNickname(nickname)
+
+        if(checkNick(nickname)){
+            setErrorText("")
+        }
+        else{
+            setErrorText("닉네임 형식을 다시 확인해주세요")
+        }
+    }
+
     const onChangePwConfirm = (pw: string) => {
         setPwConfirm(pw)
 
@@ -115,23 +163,64 @@ const LoginModal = (props : any) => {
         }
     }
 
-    const onClickLogin = () => {
-        window.alert("로그인 버튼 클릭!")
+    const onClickLogin = async () => {
+        const data = {
+            userId: loginId,
+            password: loginPassword
+        }
+
+        const result = await dispatch(login(data))
+        console.log(result)
+
+        if (result.type === `${login.typePrefix}/fulfilled`) {
+            //const result = await dispatch(loginUser(data));
+            // if (result.type === `${loginUser.typePrefix}/fulfilled`) {
+            //     setIsOpen(false)
+            // } else {
+            //     setErrorText("자동로그인 실패! 다시 로그인 해주세요");
+            // }
+            window.alert("로그인 성공")
+            onClickClose()
+        } else {
+            window.alert("로그인 실패.")
+        }
     };
 
     const onClickRegister = async () => {
-        const result = await dispatch(testPingPong())
+        const data = {
+            userId: loginId,
+            password: loginPassword,
+            email: email,
+            phoneNumber: phone,
+            nickname: nickname,
+            intro: ''
+        }
+        const result = await dispatch(signUp(data))
         console.log(result)
 
-        if(!checkID(loginId) || !checkPW(loginPassword) || loginPassword !== pwConfirm){
-            window.alert("올바르지 않은 형식입니다")
-            return;
+        if (result.type === `${signUp.typePrefix}/fulfilled`) {
+            //const result = await dispatch(loginUser(data));
+            // if (result.type === `${loginUser.typePrefix}/fulfilled`) {
+            //     setIsOpen(false)
+            // } else {
+            //     setErrorText("자동로그인 실패! 다시 로그인 해주세요");
+            // }
+            window.alert("회원가입 성공")
+            onClickClose()
+        } else {
+            window.alert("중복되는 내용이 있습니다.")
         }
     };
     const onClickClose = () => {
         setLoginId('');
         setLoginPassword('');
         setPwConfirm('');
+        setErrorText('');
+        setEmail('')
+        setAuthCode('')
+        setPhone('')
+        setNickname('')
+        setIsLoginMode(true)
         handleClose(false)
     }
 
@@ -146,7 +235,7 @@ const LoginModal = (props : any) => {
                     <TextField
                         label="아이디"
                         variant="standard"
-                        helperText={!isLoginMode && "2-10자의 영문과 숫자, 일부 특수문자(., _, -)만 입력 가능합니다."}
+                        helperText={!isLoginMode && "4-10자의 영문과 숫자, 일부 특수문자(., _, -)만 입력 가능합니다."}
                         value={loginId}
                         onChange={(e) => { onChangeId(e.target.value) }}
                         onKeyPress={onKeyPress}
@@ -200,45 +289,141 @@ const LoginModal = (props : any) => {
                             }
                         />
                         <FormHelperText>
-                            {!isLoginMode && <> 영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. <br /> 특수문자(!@#$%^&*)도 사용 가능합니다. </>}
+                            {!isLoginMode && <>특수문자(!@#$%^&*) 영문과 숫자가 모두 들어간 8-20자의 비밀번호를 설정해주세요.</>}
                         </FormHelperText>
                     </FormControl>
                     {!isLoginMode &&
-                        <FormControl
-                            variant="standard"
-                            sx={{
-                                '& label.Mui-focused': {
-                                    color: 'black',
-                                },
-                                '& .MuiInput-underline:after': {
-                                    borderBottomColor: 'black',
-                                },
-                                '& .MuiOutlinedInput-root': {
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: 'black',
+                        <>
+                            <FormControl
+                                variant="standard"
+                                sx={{
+                                    '& label.Mui-focused': {
+                                        color: 'black',
                                     },
-                                },
-                            }}
-                        >
-                            <InputLabel>비밀번호 확인</InputLabel>
-                            <Input
-                                type={showPasswordConfirm ? "text" : "password"}
-                                value={pwConfirm}
-                                data-testid="pwconfirm"
-                                onChange={(e) => { onChangePwConfirm(e.target.value) }}
+                                    '& .MuiInput-underline:after': {
+                                        borderBottomColor: 'black',
+                                    },
+                                    '& .MuiOutlinedInput-root': {
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: 'black',
+                                        },
+                                    },
+                                }}
+                            >
+                                <InputLabel>비밀번호 확인</InputLabel>
+                                <Input
+                                    type={showPasswordConfirm ? "text" : "password"}
+                                    value={pwConfirm}
+                                    data-testid="pwconfirm"
+                                    onChange={(e) => { onChangePwConfirm(e.target.value) }}
+                                    onKeyPress={onKeyPress}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                tabIndex={-1}
+                                                onClick={onClickShowPasswordConfirm}
+                                            >
+                                                {showPasswordConfirm ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                />
+                            </FormControl>
+                            <TextField
+                                label="이메일"
+                                variant="standard"
+                                helperText={!isLoginMode && "인증문자를 발송하니 사용하는 이메일을 입력해주세요."}
+                                value={email}
+                                onChange={(e) => { onChangeEmail(e.target.value) }}
                                 onKeyPress={onKeyPress}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            tabIndex={-1}
-                                            onClick={onClickShowPasswordConfirm}
-                                        >
-                                            {showPasswordConfirm ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
+                                sx={{
+                                    '& label.Mui-focused': {
+                                        color: 'black',
+                                    },
+                                    '& .MuiInput-underline:after': {
+                                        borderBottomColor: 'black',
+                                    },
+                                    '& .MuiOutlinedInput-root': {
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: 'black',
+                                        },
+                                    },
+                                }}
                             />
-                        </FormControl>
+                            <Stack sx={{flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
+                                <TextField
+                                    label="인증번호"
+                                    variant="standard"
+                                    helperText={!isLoginMode && "인증번호를 입력해주세요"}
+                                    value={authCode}
+                                    onChange={(e) => { setAuthCode(e.target.value) }}
+                                    onKeyPress={onKeyPress}
+                                    sx={{
+                                        '& label.Mui-focused': {
+                                            color: 'black',
+                                        },
+                                        '& .MuiInput-underline:after': {
+                                            borderBottomColor: 'black',
+                                        },
+                                        '& .MuiOutlinedInput-root': {
+                                            '&.Mui-focused fieldset': {
+                                                borderColor: 'black',
+                                            },
+                                        },
+                                        width : '60%'
+                                    }}
+                                />
+                                <Button variant={"outlined"} sx={{height: '40px', ml: 2,}}>인증하기</Button>
+                            </Stack>
+                            <Stack sx={{flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
+                                <TextField
+                                    label="전화번호"
+                                    variant="standard"
+                                    helperText={!isLoginMode && "번호를 입력해주세요"}
+                                    value={phone}
+                                    onChange={(e) => { onChangePhone(e.target.value) }}
+                                    onKeyPress={onKeyPress}
+                                    sx={{
+                                        '& label.Mui-focused': {
+                                            color: 'black',
+                                        },
+                                        '& .MuiInput-underline:after': {
+                                            borderBottomColor: 'black',
+                                        },
+                                        '& .MuiOutlinedInput-root': {
+                                            '&.Mui-focused fieldset': {
+                                                borderColor: 'black',
+                                            },
+                                        },
+                                        width : '50%'
+                                    }}
+                                />
+                                <TextField
+                                    label="닉네임"
+                                    variant="standard"
+                                    helperText={!isLoginMode && "닉네임을 입력해주세요"}
+                                    value={nickname}
+                                    onChange={(e) => { onChangeNickname(e.target.value) }}
+                                    onKeyPress={onKeyPress}
+                                    sx={{
+                                        '& label.Mui-focused': {
+                                            color: 'black',
+                                        },
+                                        '& .MuiInput-underline:after': {
+                                            borderBottomColor: 'black',
+                                        },
+                                        '& .MuiOutlinedInput-root': {
+                                            '&.Mui-focused fieldset': {
+                                                borderColor: 'black',
+                                            },
+                                        },
+                                        width: '45%',
+                                        ml: '3%'
+                                    }}
+                                />
+                            </Stack>
+
+                        </>
                     }
                     {isLoginMode ?
                         <Button variant="text" onClick={onClickLogin}
@@ -259,6 +444,7 @@ const LoginModal = (props : any) => {
                         </Button> :
                         <Button variant="text" onClick={onClickRegister}
                                 data-testid="register"
+                                disabled={!checkEmail(email) || !checkNick(nickname) || !checkPhone(phone) || !checkID(loginId) || !checkPW(loginPassword) || loginPassword !== pwConfirm}
                                 sx={{
                                     bgcolor: 'primary.dark',
                                     borderRadius: 3,
@@ -268,7 +454,7 @@ const LoginModal = (props : any) => {
                                         boxShadow: 2,
                                     },
                                     '&:disabled': {
-                                        backgroundColor: 'black',
+                                        backgroundColor: 'grey',
                                         boxShadow: 2,
                                     },
                                     width: '40%'
