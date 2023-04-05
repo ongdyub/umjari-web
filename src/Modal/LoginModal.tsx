@@ -332,7 +332,7 @@ const LoginModal = (props : any) => {
                             <TextField
                                 label="이메일"
                                 variant="standard"
-                                helperText={!isLoginMode && "인증문자를 발송하니 사용하는 이메일을 입력해주세요."}
+                                helperText={!isLoginMode && "이메일을 입력해주세요."}
                                 value={email}
                                 onChange={(e) => { onChangeEmail(e.target.value) }}
                                 onKeyPress={onKeyPress}
@@ -350,31 +350,31 @@ const LoginModal = (props : any) => {
                                     },
                                 }}
                             />
-                            <Stack sx={{flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
-                                <TextField
-                                    label="인증번호"
-                                    variant="standard"
-                                    helperText={!isLoginMode && "인증번호를 입력해주세요"}
-                                    value={authCode}
-                                    onChange={(e) => { setAuthCode(e.target.value) }}
-                                    onKeyPress={onKeyPress}
-                                    sx={{
-                                        '& label.Mui-focused': {
-                                            color: 'black',
-                                        },
-                                        '& .MuiInput-underline:after': {
-                                            borderBottomColor: 'black',
-                                        },
-                                        '& .MuiOutlinedInput-root': {
-                                            '&.Mui-focused fieldset': {
-                                                borderColor: 'black',
-                                            },
-                                        },
-                                        width : '60%'
-                                    }}
-                                />
-                                <Button variant={"outlined"} sx={{height: '40px', ml: 2,}}>인증하기</Button>
-                            </Stack>
+                            {/*<Stack sx={{flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>*/}
+                            {/*    <TextField*/}
+                            {/*        label="인증번호"*/}
+                            {/*        variant="standard"*/}
+                            {/*        helperText={!isLoginMode && "인증번호를 입력해주세요"}*/}
+                            {/*        value={authCode}*/}
+                            {/*        onChange={(e) => { setAuthCode(e.target.value) }}*/}
+                            {/*        onKeyPress={onKeyPress}*/}
+                            {/*        sx={{*/}
+                            {/*            '& label.Mui-focused': {*/}
+                            {/*                color: 'black',*/}
+                            {/*            },*/}
+                            {/*            '& .MuiInput-underline:after': {*/}
+                            {/*                borderBottomColor: 'black',*/}
+                            {/*            },*/}
+                            {/*            '& .MuiOutlinedInput-root': {*/}
+                            {/*                '&.Mui-focused fieldset': {*/}
+                            {/*                    borderColor: 'black',*/}
+                            {/*                },*/}
+                            {/*            },*/}
+                            {/*            width : '60%'*/}
+                            {/*        }}*/}
+                            {/*    />*/}
+                            {/*    <Button variant={"outlined"} sx={{height: '40px', ml: 2,}}>인증하기</Button>*/}
+                            {/*</Stack>*/}
                             <Stack sx={{flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
                                 <TextField
                                     label="전화번호"

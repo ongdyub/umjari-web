@@ -90,7 +90,7 @@ const Header = () => {
     return(
         <AppBar position="static">
             <Container maxWidth="xl">
-                <Toolbar sx={{pr: 0,pl: res450 ? 0 : '20px', height: '60px', justifyContent: 'space-around', alignContent: 'center', alignItems: 'center'}} >
+                <Toolbar sx={{pr: 0,pl: res450 ? 0 : '20px', height: res450 ? '20px' : '60px', justifyContent: 'space-around', alignContent: 'center', alignItems: 'center'}} >
                     {/*Desktop Display*/}
                     <Typography
                         variant="h6"
