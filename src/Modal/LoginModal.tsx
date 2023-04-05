@@ -329,27 +329,27 @@ const LoginModal = (props : any) => {
                                     }
                                 />
                             </FormControl>
-                            {/*<TextField*/}
-                            {/*    label="이메일"*/}
-                            {/*    variant="standard"*/}
-                            {/*    helperText={!isLoginMode && "인증문자를 발송하니 사용하는 이메일을 입력해주세요."}*/}
-                            {/*    value={email}*/}
-                            {/*    onChange={(e) => { onChangeEmail(e.target.value) }}*/}
-                            {/*    onKeyPress={onKeyPress}*/}
-                            {/*    sx={{*/}
-                            {/*        '& label.Mui-focused': {*/}
-                            {/*            color: 'black',*/}
-                            {/*        },*/}
-                            {/*        '& .MuiInput-underline:after': {*/}
-                            {/*            borderBottomColor: 'black',*/}
-                            {/*        },*/}
-                            {/*        '& .MuiOutlinedInput-root': {*/}
-                            {/*            '&.Mui-focused fieldset': {*/}
-                            {/*                borderColor: 'black',*/}
-                            {/*            },*/}
-                            {/*        },*/}
-                            {/*    }}*/}
-                            {/*/>*/}
+                            <TextField
+                                label="이메일"
+                                variant="standard"
+                                helperText={!isLoginMode && "인증문자를 발송하니 사용하는 이메일을 입력해주세요."}
+                                value={email}
+                                onChange={(e) => { onChangeEmail(e.target.value) }}
+                                onKeyPress={onKeyPress}
+                                sx={{
+                                    '& label.Mui-focused': {
+                                        color: 'black',
+                                    },
+                                    '& .MuiInput-underline:after': {
+                                        borderBottomColor: 'black',
+                                    },
+                                    '& .MuiOutlinedInput-root': {
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: 'black',
+                                        },
+                                    },
+                                }}
+                            />
                             {/*<Stack sx={{flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>*/}
                             {/*    <TextField*/}
                             {/*        label="인증번호"*/}
