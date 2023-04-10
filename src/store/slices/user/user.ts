@@ -82,6 +82,7 @@ export const userSlice = createSlice({
         ) => {
             if (action.payload.user_id) {
                 state.user_id = action.payload.user_id;
+                localStorage.setItem("user_id", action.payload.user_id)
             }
         },
         logoutUser: (
@@ -94,6 +95,7 @@ export const userSlice = createSlice({
             state.profile_img = null;
             state.isLogin = false;
             localStorage.removeItem("Token")
+            localStorage.removeItem("user_id")
             state.accessToken = null;
         },
         // editUser: (

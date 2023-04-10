@@ -181,6 +181,7 @@ const LoginModal = (props : any) => {
             // }
             window.alert("로그인 성공")
             onClickClose()
+            window.location.reload()
         } else {
             window.alert("로그인 실패.")
         }
