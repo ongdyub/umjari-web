@@ -17,8 +17,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 
-const region_parents = ["서울시", "수원시", "부산시",]
+const region_parents = ["전체","서울시", "수원시", "부산시",]
 const region_child = [
+    ["전체"],
     ["강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"],
     ["권선구", "영통구", "장안구", "팔달구"],
     ["강서구", "금정구", "기장군", "남구", "동구", "동래구", "부산진구", "북구", "사상구", "사하구", "서구", "수영구", "연제구", "영도구", "중구", "해운대구"]
@@ -37,17 +38,33 @@ const ConcertFilter = () => {
     const theme = useTheme();
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
     const res800 = useMediaQuery(theme.breakpoints.down("res800"))
-    const [age, setAge] = useState('');
-    const [value, setValue] = useState<Dayjs | null>(null);
+
+    const [parent, setParent] = useState<any>(0);
+    const [child, setChild] = useState<any>(0);
+
+    const [startDate, setStartDate] = useState<Dayjs | null>(null)
+    const [endDate, setEndDate] = useState<Dayjs | null>( null)
+
+    const [searchText, setSearchText] = useState<string | null>("")
+
     const [open, setOpen] = useState(false)
 
     const menuOpen = () => {
         setOpen((!open))
     }
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value);
+    const handleParentChange = (event: SelectChangeEvent) => {
+        setParent(event.target.value);
+        setChild(0)
     };
+    const handleChildChange = (event: SelectChangeEvent) => {
+        setChild(event.target.value);
+    };
+
+    const handleSearchButton = () => {
+        console.log(parent)
+        console.log(child)
+    }
 
     return (
         <Stack direction={'row'}
@@ -81,35 +98,29 @@ const ConcertFilter = () => {
                                 <Stack justifyContent="space-around" alignItems="center" sx={{width: res550 ? "100%" : '50%'}} direction={"row"}>
                                     <FormControl sx={{width: '35%'}}>
                                         <Select
-                                            value={age}
-                                            onChange={handleChange}
+                                            value={parent}
+                                            onChange={handleParentChange}
                                             displayEmpty
                                             sx={{height: '35px'}}
                                             variant={"standard"}
                                         >
-                                            <MenuItem value="">
-                                                <em>지역 1</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Ten</MenuItem>
-                                            <MenuItem value={20}>Twenty</MenuItem>
-                                            <MenuItem value={30}>Thirty</MenuItem>
+                                            {region_parents.map((item, idx) => (
+                                                <MenuItem value={idx}>{item}</MenuItem>
+                                            ))}
                                         </Select>
                                     </FormControl>
 
                                     <FormControl sx={{width: '35%'}}>
                                         <Select
-                                            value={age}
-                                            onChange={handleChange}
+                                            value={child}
+                                            onChange={handleChildChange}
                                             displayEmpty
                                             sx={{height: '35px'}}
                                             variant={"standard"}
                                         >
-                                            <MenuItem value="">
-                                                <em>지역 2</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Ten</MenuItem>
-                                            <MenuItem value={20}>Twenty</MenuItem>
-                                            <MenuItem value={30}>Thirty</MenuItem>
+                                            {region_child[parent].map((item, idx) => (
+                                                <MenuItem value={idx}>{item}</MenuItem>
+                                            ))}
                                         </Select>
                                     </FormControl>
                                 </Stack>
@@ -128,9 +139,9 @@ const ConcertFilter = () => {
                                     <FormControl sx={{width: '35%'}}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
                                             <DatePicker
-                                                value={value}
+                                                value={startDate}
                                                 onChange={(newValue) => {
-                                                    setValue(newValue);
+                                                    setStartDate(newValue);
                                                 }}
                                                 InputProps={{
                                                     style: {
@@ -151,9 +162,9 @@ const ConcertFilter = () => {
                                     <FormControl sx={{width: '35%'}}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
                                             <DatePicker
-                                                value={value}
+                                                value={endDate}
                                                 onChange={(newValue) => {
-                                                    setValue(newValue);
+                                                    setEndDate(newValue);
                                                 }}
                                                 InputProps={{
                                                     style: {
@@ -192,6 +203,9 @@ const ConcertFilter = () => {
                                         label="텍스트로 검색하기"
                                         type="search"
                                         variant="standard"
+                                        placeholder={"검색어를 입력하세요"}
+                                        value={searchText}
+                                        onChange={(e) => setSearchText(e.target.value)}
                                         sx={{width: '90%'}}
                                     />
                                 </Stack>
@@ -200,7 +214,7 @@ const ConcertFilter = () => {
                                         null
                                         :
                                         <Stack sx={{width: '50%', mt: 2}} alignItems={"center"}>
-                                            <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', width: '90%'}}>검색하기</Button>
+                                            <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', width: '90%'}} onClick={handleSearchButton}>검색하기</Button>
                                         </Stack>
                                 }
                             </Stack>
@@ -208,7 +222,7 @@ const ConcertFilter = () => {
                             {
                                 res550 ?
                                     <Stack sx={{width: '100%'}} alignItems={"center"}>
-                                        <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', width: '40%'}}>검색하기</Button>
+                                        <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', width: '40%'}} onClick={handleSearchButton}>검색하기</Button>
                                     </Stack>
                                     :
                                     null
@@ -219,42 +233,36 @@ const ConcertFilter = () => {
                     <>
                         <FormControl sx={{width: '15%'}}>
                             <Select
-                                value={age}
-                                onChange={handleChange}
+                                value={parent}
+                                onChange={handleParentChange}
                                 displayEmpty
                                 sx={{height: '35px'}}
                                 variant={"standard"}
                             >
-                                <MenuItem value="">
-                                    <em>지역 1</em>
-                                </MenuItem>
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                {region_parents.map((item, idx) => (
+                                    <MenuItem value={idx}>{item}</MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                         <FormControl sx={{width: '15%'}}>
                             <Select
-                                value={age}
-                                onChange={handleChange}
+                                value={child}
+                                onChange={handleChildChange}
                                 displayEmpty
                                 sx={{height: '35px'}}
                                 variant={"standard"}
                             >
-                                <MenuItem value="">
-                                    <em>지역 1</em>
-                                </MenuItem>
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                {region_child[parent].map((item, idx) => (
+                                    <MenuItem value={idx}>{item}</MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                         <FormControl sx={{width: '15%'}}>
                             <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
                                 <DatePicker
-                                    value={value}
+                                    value={startDate}
                                     onChange={(newValue) => {
-                                        setValue(newValue);
+                                        setStartDate(newValue);
                                     }}
                                     InputProps={{
                                         style: {
@@ -274,9 +282,9 @@ const ConcertFilter = () => {
                         <FormControl sx={{width: '15%'}}>
                             <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
                                 <DatePicker
-                                    value={value}
+                                    value={endDate}
                                     onChange={(newValue) => {
-                                        setValue(newValue);
+                                        setEndDate(newValue);
                                     }}
                                     InputProps={{
                                         style: {
@@ -298,9 +306,11 @@ const ConcertFilter = () => {
                             type="search"
                             variant="standard"
                             placeholder={"검색어를 입력하세요"}
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
                             sx={{width: '20%'}}
                         />
-                        <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', mt:0.5}}>검색하기</Button>
+                        <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', mt:0.5}} onClick={handleSearchButton}>검색하기</Button>
 
                     </>
             }
