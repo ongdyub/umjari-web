@@ -3,7 +3,7 @@ import {
     Fade, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel,
     Modal,
     Stack, TextField,
-    Typography,
+    Typography, useMediaQuery, useTheme,
 } from "@mui/material";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -34,6 +34,9 @@ const LoginModal = (props : any) => {
 
     const dispatch = useDispatch<AppDispatch>();
     const userState = useSelector(selectUser);
+    const theme = useTheme();
+
+    const res550 = useMediaQuery(theme.breakpoints.down("res550"))
 
     const [loginId, setLoginId] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
@@ -376,7 +379,7 @@ const LoginModal = (props : any) => {
                             {/*    />*/}
                             {/*    <Button variant={"outlined"} sx={{height: '40px', ml: 2,}}>인증하기</Button>*/}
                             {/*</Stack>*/}
-                            <Stack sx={{flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
+                            <Stack sx={{flexDirection: res550 ? 'column' : 'row', alignItems: 'center', alignContent: 'center'}}>
                                 <TextField
                                     label="전화번호"
                                     variant="standard"
@@ -396,7 +399,7 @@ const LoginModal = (props : any) => {
                                                 borderColor: 'black',
                                             },
                                         },
-                                        width : '50%'
+                                        width : res550 ? '100%' :'40%'
                                     }}
                                 />
                                 <TextField
@@ -418,8 +421,8 @@ const LoginModal = (props : any) => {
                                                 borderColor: 'black',
                                             },
                                         },
-                                        width: '45%',
-                                        ml: '3%'
+                                        width: res550 ? '100%' :'40%',
+                                        ml: res550 ? '' :'5%'
                                     }}
                                 />
                             </Stack>

@@ -27,20 +27,20 @@ const ConcertItem = (props: any) => {
     }
 
     return(
-        <Card className="concert-item" sx={{height: '285px', bgcolor: 'rgba(236,236,236,0.5)' }}>
-            <CardActionArea onClick={onClickDetail} sx={{width: '210px'}}>
+        <Card className="concert-item" sx={{bgcolor: 'rgba(236,236,236,0.5)' }}>
+            <CardActionArea onClick={onClickDetail} sx={{width: 'auto'}}>
                 <CardMedia
                     component="img"
                     alt="green iguana"
                     image={img}
-                    sx={{objectFit: 'fill', height: '290px',width: '210px'}}
+                    sx={{objectFit: 'fill', height: '330px', width: '247.5px'}}
                 />
             </CardActionArea>
             <Divider orientation="vertical"  />
             {
                 useMediaQuery(theme.breakpoints.down("md")) ?
                     <Collapse orientation="horizontal" in={openDetail} timeout="auto" unmountOnExit>
-                        <CardContent onClick={onClickDetail} sx={{width: '200px', pl: '20px', paddingTop: '-120px',}}>
+                        <CardContent onClick={onClickDetail} sx={{width: '220px'}}>
                             <Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>
                                 날짜
                             </Typography>
@@ -77,7 +77,7 @@ const ConcertItem = (props: any) => {
                     </Collapse>
                     :
                     <Collapse orientation="horizontal" in={openDetail} timeout="auto" unmountOnExit>
-                        <CardContent onClick={onClickDetail} sx={{width: '200px', pl: '20px', paddingTop: '-120px',}}>
+                        <CardContent onClick={onClickDetail} sx={{width: '220px'}}>
                             <Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>
                                 날짜
                             </Typography>
