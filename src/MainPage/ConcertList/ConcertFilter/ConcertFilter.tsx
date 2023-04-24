@@ -16,6 +16,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import {signUp} from "../../../store/slices/user/user";
+import {dashboardList} from "../../../store/slices/concert/concert";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../store";
 
 const region_parents = ["전체","서울시","경기도", "수원시", "부산시",]
 const region_child = [
@@ -37,6 +41,7 @@ const result = region_parents.flatMap((parent, index) =>
 const ConcertFilter = () => {
 
     const theme = useTheme();
+    const dispatch = useDispatch<AppDispatch>();
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
     const res800 = useMediaQuery(theme.breakpoints.down("res800"))
 
@@ -62,9 +67,10 @@ const ConcertFilter = () => {
         setChild(event.target.value);
     };
 
-    const handleSearchButton = () => {
+    const handleSearchButton = async () => {
         console.log(parent)
         console.log(child)
+        const result = await dispatch(dashboardList())
     }
 
     return (
