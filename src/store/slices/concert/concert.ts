@@ -27,23 +27,42 @@ export interface ConcertList {
     totalPages: number,
     totalElements: number,
     currentPage: number,
-    contents: [Concert]
+    contents: [Partial<Concert>] | []
 }
 
 export interface ConcertState {
     concert : Concert | null,
-    concertList: ConcertList | null
+    concertList: ConcertList
 }
 
 const initialState: ConcertState = {
     concert: null,
-    concertList: null
+    concertList: {
+        totalPages: 0,
+        totalElements: 0,
+        currentPage: 0,
+        contents: []
+    }
 };
+
+export const dashboardList = createAsyncThunk(
+    "concert/dashboardList",
+    async () => {
+        const response = await axios.get('/api/v1/concert/dashboard/')
+        return response.data
+    }
+)
 
 export const concertStateSlice = createSlice({
     name: "concertState",
     initialState,
     reducers: {},
+
+    extraReducers: (builder) => {
+        builder.addCase(dashboardList.fulfilled, (state, action) => {
+            state.concertList = action.payload
+        });
+    },
 });
 
 export const concertStateActions = concertStateSlice.actions;
