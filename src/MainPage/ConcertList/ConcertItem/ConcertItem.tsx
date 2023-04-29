@@ -13,12 +13,14 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import './ConcertItem.scss'
 import {useState} from "react";
+import {useNavigate} from "react-router";
 
 const ConcertItem = (props: any) => {
 
     const { item } = props
 
     const theme = useTheme();
+    const navigate = useNavigate();
 
     const [openDetail, setOpenDetail] = useState(false)
 
@@ -26,9 +28,13 @@ const ConcertItem = (props: any) => {
         setOpenDetail(!openDetail)
     }
 
+    const onClickGoConcert = () => {
+        navigate(`/concert/${item.id}`)
+    }
+
     return(
         <Card className="concert-item" sx={{bgcolor: 'rgba(236,236,236,0.5)' }}>
-            <CardActionArea onClick={onClickDetail} sx={{width: '247px'}}>
+            <CardActionArea disableRipple onClick={onClickDetail} sx={{width: '247px'}}>
                 <CardMedia
                     component="img"
                     alt="green iguana"
@@ -65,14 +71,14 @@ const ConcertItem = (props: any) => {
                                 0명
                             </Typography>
                         </CardContent>
-                        <Stack direction="row" justifyContent="flex-start" alignItems="center" sx={{position: 'absolute',bottom: '0px', pl: '10px',width: '100%'}}>
+                        <Stack direction="row" justifyContent="flex-start" alignItems="center" sx={{position: 'absolute',bottom: '0px', pl: '10px',width: '100%', mb: 1}}>
                             <IconButton aria-label="add to favorites">
                                 <FavoriteIcon sx={{width: '20px', height: '20px'}} />
                             </IconButton>
                             <IconButton aria-label="share">
                                 <ShareIcon sx={{width: '20px', height: '20px'}} />
                             </IconButton>
-                            <Button size="medium" sx={{ml: '5px'}}>
+                            <Button onClick={onClickGoConcert} size="medium" sx={{ml: '5px'}}>
                                 자세히 보기
                             </Button>
                         </Stack>
@@ -105,14 +111,14 @@ const ConcertItem = (props: any) => {
                                 0명
                             </Typography>
                         </CardContent>
-                        <Stack direction="row" justifyContent="flex-start" alignItems="center" sx={{position: 'absolute',bottom: '0px', pl: '10px',width: '100%'}}>
+                        <Stack direction="row" justifyContent="flex-start" alignItems="center" sx={{position: 'absolute',bottom: '0px', pl: '10px',width: '100%',mb:1}}>
                             <IconButton aria-label="add to favorites">
                                 <FavoriteIcon sx={{width: '20px', height: '20px'}} />
                             </IconButton>
                             <IconButton aria-label="share">
                                 <ShareIcon sx={{width: '20px', height: '20px'}} />
                             </IconButton>
-                            <Button size="medium" sx={{ml: '5px'}}>
+                            <Button onClick={onClickGoConcert} size="medium" sx={{ml: '5px'}}>
                                 자세히 보기
                             </Button>
                         </Stack>
