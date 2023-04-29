@@ -32,7 +32,7 @@ const ConcertList = () => {
             <Stack direction="row" sx={{height: '370px', overflowX: 'scroll','&::-webkit-scrollbar': {display: 'none'}}}>
                 {concertListSelector.concertList.contents.map((item: Partial<Concert>) => (
                     <Grid justifyContent="center" direction="row" alignItems="center" key={item.posterImg} container sx={{width: 'auto', ml:'20px', mr: '20px'}}>
-                        <ConcertItem key={item.posterImg} img={item.posterImg} />
+                        <ConcertItem key={item.id} item={item} />
                     </Grid>
                 ))}
             </Stack>
