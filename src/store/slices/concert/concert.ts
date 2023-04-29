@@ -53,14 +53,29 @@ export const dashboardList = createAsyncThunk(
     }
 )
 
+export const concert = createAsyncThunk(
+    "concert/concert",
+    async (id: string | number | undefined) => {
+        const response = await axios.get(`/api/v1/concert/${id}/`)
+        return response.data
+    }
+)
+
 export const concertStateSlice = createSlice({
     name: "concertState",
     initialState,
-    reducers: {},
+    reducers: {
+        resetConcert: (state) => {
+            state.concert = null
+        }
+    },
 
     extraReducers: (builder) => {
         builder.addCase(dashboardList.fulfilled, (state, action) => {
             state.concertList = action.payload
+        });
+        builder.addCase(concert.fulfilled, (state, action) => {
+            state.concert = action.payload
         });
     },
 });
