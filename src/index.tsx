@@ -8,7 +8,7 @@ import {store} from "./store";
 import {ToastContainer} from "react-toastify";
 import axios from 'axios';
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '/' : 'http://ec2-52-79-235-11.ap-northeast-2.compute.amazonaws.com/';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '/' : 'https://umjari-server.kro.kr/';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
