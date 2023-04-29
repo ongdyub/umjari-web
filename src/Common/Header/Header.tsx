@@ -19,7 +19,6 @@ import { useNavigate } from "react-router"
 import LoginModal from "../../Modal/LoginModal";
 import {AppDispatch} from "../../store";
 
-var w = window.innerWidth
 const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
 const settings = ['마이페이지', '작성기록', '설정', '로그아웃', 'Size'];
 
@@ -84,7 +83,7 @@ const Header = () => {
             window.location.reload()
         }
         else if(setting === 'Size'){
-            window.alert(w)
+
         }
     }
 
