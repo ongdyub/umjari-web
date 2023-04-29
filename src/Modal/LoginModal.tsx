@@ -448,7 +448,7 @@ const LoginModal = (props : any) => {
                         </Button> :
                         <Button variant="text" onClick={onClickRegister}
                                 data-testid="register"
-                                disabled={!checkEmail(email) || !checkNick(nickname) || !checkPhone(phone) || !checkID(loginId) || !checkPW(loginPassword) || loginPassword !== pwConfirm}
+                                disabled={true || !checkEmail(email) || !checkNick(nickname) || !checkPhone(phone) || !checkID(loginId) || !checkPW(loginPassword) || loginPassword !== pwConfirm}
                                 sx={{
                                     bgcolor: 'primary.dark',
                                     borderRadius: 3,

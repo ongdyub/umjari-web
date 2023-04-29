@@ -10,8 +10,17 @@ const ConcertList = () => {
 
     const dispatch = useDispatch<AppDispatch>();
 
+
     useEffect(() => {
-        dispatch(dashboardList())
+        const params = {
+            regionParent : null,
+            region_child : null,
+            startDate : null,
+            endDate : null,
+            text : "",
+            sort : "concertDate,ASC",
+        }
+        dispatch(dashboardList(params))
     }, [])
 
     const concertListSelector = useSelector(selectConcert)

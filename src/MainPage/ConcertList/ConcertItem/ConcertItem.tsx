@@ -28,15 +28,14 @@ const ConcertItem = (props: any) => {
 
     return(
         <Card className="concert-item" sx={{bgcolor: 'rgba(236,236,236,0.5)' }}>
-            <CardActionArea onClick={onClickDetail} sx={{width: 'auto'}}>
+            <CardActionArea onClick={onClickDetail} sx={{width: '247px'}}>
                 <CardMedia
                     component="img"
                     alt="green iguana"
                     image={img}
-                    sx={{objectFit: 'fill', height: '330px', width: '247.5px'}}
+                    sx={{objectFit: 'contain', height: 'auto', width: '100%'}}
                 />
             </CardActionArea>
-            <Divider orientation="vertical"  />
             {
                 useMediaQuery(theme.breakpoints.down("md")) ?
                     <Collapse orientation="horizontal" in={openDetail} timeout="auto" unmountOnExit>
