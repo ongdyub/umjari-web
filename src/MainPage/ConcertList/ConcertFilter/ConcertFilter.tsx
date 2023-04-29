@@ -25,7 +25,7 @@ const region_parents = ["전체","서울시","경기도", "수원시", "부산�
 const region_child = [
     ["전체"],
     ["전체", "강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"],
-    ["전체", '가평', '고양', '과천', '광명', '광주', '구리', '군포', '김포', '남양주', '동두천', '부천', '성남', '수원', '시흥', '안산', '안성', '안양', '양주', '양평', '여주', '연천', '오산', '용인', '의왕', '의정부', '이천', '파주', '평택', '포천', '하남', '화성'],
+    ["전체", '가평시', '고양시', '과천시', '광명시', '광주시', '구리시', '군포시', '김포시', '남양주시', '동두천시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시', '양주시', '양평시', '여주시', '연천시', '오산시', '용인시', '의왕시', '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시'],
     ["전체", "권선구", "영통구", "장안구", "팔달구"],
     ["전체", "강서구", "금정구", "기장군", "남구", "동구", "동래구", "부산진구", "북구", "사상구", "사하구", "서구", "수영구", "연제구", "영도구", "중구", "해운대구"]
 ]
@@ -68,9 +68,19 @@ const ConcertFilter = () => {
     };
 
     const handleSearchButton = async () => {
-        console.log(parent)
-        console.log(child)
-        const result = await dispatch(dashboardList())
+        if(startDate?.isAfter(endDate)){
+            window.alert("날짜를 다시 설정해주세요")
+            return
+        }
+        const params = {
+            regionParent : region_parents[parent],
+            regionChild : region_child[parent][child],
+            startDate : startDate?.format('YYYY-MM-DD'),
+            endDate : endDate?.format('YYYY-MM-DD'),
+            sort : "concertDate,ASC",
+            text : searchText,
+        }
+        const result = await dispatch(dashboardList(params))
     }
 
     return (
@@ -147,8 +157,9 @@ const ConcertFilter = () => {
                                         <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
                                             <DatePicker
                                                 value={startDate}
-                                                onChange={(newValue) => {
-                                                    setStartDate(newValue);
+                                                onChange={(newValue) => setStartDate(newValue)}
+                                                onAccept={(newValue) => {
+                                                        setStartDate(newValue)
                                                 }}
                                                 InputProps={{
                                                     style: {
@@ -170,8 +181,11 @@ const ConcertFilter = () => {
                                         <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
                                             <DatePicker
                                                 value={endDate}
-                                                onChange={(newValue) => {
-                                                    setEndDate(newValue);
+                                                onChange={(newValue) => setEndDate(newValue)}
+                                                onAccept={(newValue) => {
+                                                    if (newValue === endDate) {
+                                                        setEndDate(null)
+                                                    }
                                                 }}
                                                 InputProps={{
                                                     style: {
@@ -213,6 +227,11 @@ const ConcertFilter = () => {
                                         placeholder={"검색어를 입력하세요"}
                                         value={searchText}
                                         onChange={(e) => setSearchText(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                handleSearchButton();
+                                            }
+                                        }}
                                         sx={{width: '90%'}}
                                     />
                                 </Stack>
@@ -268,8 +287,11 @@ const ConcertFilter = () => {
                             <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
                                 <DatePicker
                                     value={startDate}
-                                    onChange={(newValue) => {
-                                        setStartDate(newValue);
+                                    onChange={(newValue) => setStartDate(newValue)}
+                                    onAccept={(newValue) => {
+                                        if (newValue === startDate) {
+                                            setStartDate(null)
+                                        }
                                     }}
                                     InputProps={{
                                         style: {
@@ -290,8 +312,11 @@ const ConcertFilter = () => {
                             <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
                                 <DatePicker
                                     value={endDate}
-                                    onChange={(newValue) => {
-                                        setEndDate(newValue);
+                                    onChange={(newValue) => setEndDate(newValue)}
+                                    onAccept={(newValue) => {
+                                        if (newValue === endDate) {
+                                            setEndDate(null)
+                                        }
                                     }}
                                     InputProps={{
                                         style: {
@@ -315,6 +340,11 @@ const ConcertFilter = () => {
                             placeholder={"검색어를 입력하세요"}
                             value={searchText}
                             onChange={(e) => setSearchText(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleSearchButton();
+                                }
+                            }}
                             sx={{width: '20%'}}
                         />
                         <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', mt:0.5}} onClick={handleSearchButton}>검색하기</Button>

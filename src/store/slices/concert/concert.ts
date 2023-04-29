@@ -47,8 +47,8 @@ const initialState: ConcertState = {
 
 export const dashboardList = createAsyncThunk(
     "concert/dashboardList",
-    async () => {
-        const response = await axios.get('/api/v1/concert/dashboard/')
+    async (params : any) => {
+        const response = await axios.get('/api/v1/concert/dashboard/',{params : params})
         return response.data
     }
 )
