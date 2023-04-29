@@ -19,7 +19,10 @@ const Concert = () => {
 
     useEffect(() => {
         dispatch(concert(id))
-    },[id,concertSelector.concert])
+        return () => {
+            dispatch(concertStateActions.resetConcert());
+        };
+    },[id,dispatch])
 
     if(concertSelector.concert === null){
         return(
