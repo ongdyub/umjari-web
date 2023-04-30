@@ -1,27 +1,48 @@
 import {Button, ButtonGroup, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
-import {Routes, Route} from "react-router-dom";
+import {Routes, Route, useParams} from "react-router-dom";
 import SelfIntro from "./SelfIntro/SelfIntro";
 import MyList from "./MyList/MyList";
 import Gallery from "./Gallery/Gallery";
 import Visit from "./Visit/Visit";
 import Diary from "./Diary/Diary";
+import {useNavigate} from "react-router";
 
 
-const myButtons = [
-    <Button key="one">짧은소개</Button>,
-    <Button key="two">연주회목록</Button>,
-    <Button key="three">사진첩</Button>,
-    <Button key="three">다이어리</Button>,
-    <Button key="four">방명록</Button>,
-]
+
 
 const MyHome = () => {
 
     const profile_img = "secure.gravatar.com/avatar/217b46f9ae197e33b88883b0e38f0fa4?s=150&d=identicon"
     const theme = useTheme();
+    const { id } = useParams();
+    const navigate = useNavigate();
     const resSize = useMediaQuery(theme.breakpoints.down("md"))
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
+
+    const onClickGoSelf = () => {
+        navigate(`/myconcert/${id}/selfintro`)
+    }
+    const onClickGoList = () => {
+        navigate(`/myconcert/${id}/list`)
+    }
+    const onClickGoGallery = () => {
+        navigate(`/myconcert/${id}/gallery`)
+    }
+    const onClickGoDiary = () => {
+        navigate(`/myconcert/${id}/diary`)
+    }
+    const onClickGoVisit = () => {
+        navigate(`/myconcert/${id}/visit`)
+    }
+
+    const myButtons = [
+        <Button onClick={onClickGoSelf} key="one">짧은소개</Button>,
+        <Button onClick={onClickGoList} key="two">연주회목록</Button>,
+        <Button onClick={onClickGoGallery} key="three">사진첩</Button>,
+        <Button onClick={onClickGoDiary} key="three">다이어리</Button>,
+        <Button onClick={onClickGoVisit} key="four">방명록</Button>,
+    ]
 
     return (
         <Stack sx={{width: res750 ? '100%' : 'calc(100% - 200px)'}}>
