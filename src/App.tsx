@@ -64,6 +64,18 @@ const blueTheme = createTheme({
             xl: 1536,
         },
     },
+    components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                '*': {
+                    '&:focus': {
+                        outline: 'none',
+                    },
+                    '-webkit-tap-highlight-color': 'transparent',
+                },
+            },
+        },
+    },
 });
 
 

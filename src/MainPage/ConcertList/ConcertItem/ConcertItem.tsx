@@ -33,7 +33,7 @@ const ConcertItem = (props: any) => {
     }
 
     return(
-        <Card className="concert-item" sx={{bgcolor: 'rgba(236,236,236,0.5)' }}>
+        <Card className="concert-item" sx={{bgcolor: 'rgba(236,236,236,0.5)',height: '347.72px' }}>
             <CardActionArea disableRipple onClick={onClickDetail} sx={{width: '247px'}}>
                 <CardMedia
                     component="img"
@@ -45,7 +45,7 @@ const ConcertItem = (props: any) => {
             {
                 useMediaQuery(theme.breakpoints.down("md")) ?
                     <Collapse orientation="horizontal" in={openDetail} timeout="auto" unmountOnExit sx={{position: 'relative'}}>
-                        <CardContent onClick={onClickDetail} sx={{ml: '5px',width: '210px', height: 'auto', pb: 7}}>
+                        <CardContent onClick={onClickDetail} sx={{ml: '5px',width: '210px', height: '301.72px'}}>
                             <Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>
                                 날짜
                             </Typography>
@@ -71,7 +71,7 @@ const ConcertItem = (props: any) => {
                                 0명
                             </Typography>
                         </CardContent>
-                        <Stack direction="row" justifyContent="flex-start" alignItems="center" sx={{position: 'absolute',bottom: '0px', pl: '10px',width: '100%', mb: 1}}>
+                        <Stack direction="row" justifyContent="flex-start" alignItems="center" sx={{pl: '10px',width: '100%'}}>
                             <IconButton aria-label="add to favorites">
                                 <FavoriteIcon sx={{width: '20px', height: '20px'}} />
                             </IconButton>
@@ -85,7 +85,7 @@ const ConcertItem = (props: any) => {
                     </Collapse>
                     :
                     <Collapse orientation="horizontal" in={openDetail} timeout="auto" unmountOnExit sx={{position: 'relative'}}>
-                        <CardContent onClick={onClickDetail} sx={{ml: '5px',width: '210px', height: 'auto', pb: 7}}>
+                        <CardContent onClick={onClickDetail} sx={{ml: '5px',width: '210px', height: '301.72px'}}>
                             <Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>
                                 날짜
                             </Typography>
@@ -111,7 +111,7 @@ const ConcertItem = (props: any) => {
                                 0명
                             </Typography>
                         </CardContent>
-                        <Stack direction="row" justifyContent="flex-start" alignItems="center" sx={{position: 'absolute',bottom: '0px', pl: '10px',width: '100%',mb:1}}>
+                        <Stack direction="row" justifyContent="flex-start" alignItems="center" sx={{pl: '10px',width: '100%'}}>
                             <IconButton aria-label="add to favorites">
                                 <FavoriteIcon sx={{width: '20px', height: '20px'}} />
                             </IconButton>
