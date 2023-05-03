@@ -98,7 +98,6 @@ const Header = () => {
                         component="a"
                         href="/"
                         sx={{
-                            mr: 2,
                             display: { xs: 'none', md: 'flex' },
                             fontFamily: 'monospace',
                             fontWeight: 300,
@@ -154,8 +153,8 @@ const Header = () => {
                         component="a"
                         href="/"
                         sx={{
-                            flexGrow: 1,
-                            display: { xs: 'flex', md: 'none' },
+                            width: '60%',
+                            display: {md: 'none' },
                             fontFamily: 'monospace',
                             fontWeight: 300,
                             letterSpacing: '.3rem',
@@ -216,9 +215,9 @@ const Header = () => {
                                 </>
                                 :
                                 res450 ?
-                                    <Button variant="contained" size={"small"} sx={{left: -10, position: 'relative', border: '0.5px solid white', fontSize: 12}} onClick={() => setLoginOpen(true)}>로그인</Button>
+                                    <Button variant="contained" size={"small"} sx={{position: 'relative', border: '0.5px solid white', fontSize: 12}} onClick={() => setLoginOpen(true)}>로그인</Button>
                                     :
-                                    <Button variant="contained" sx={{left: -30, position: 'relative', border: '1px solid white'}} onClick={() => setLoginOpen(true)}>로그인</Button>
+                                    <Button variant="contained" sx={{position: 'relative', border: '1px solid white'}} onClick={() => setLoginOpen(true)}>로그인</Button>
                         }
                     </Box>
                 </Toolbar>
