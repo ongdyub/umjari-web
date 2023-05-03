@@ -7,6 +7,13 @@ const GroupInfo = (props : any) => {
     const theme = useTheme();
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
 
+    const handleLinkClick = (event : any) => {
+        if (groupData.homepage === "" || groupData.homepage === null) {
+            event.preventDefault();
+            alert("홈페이지가 존재하지 않습니다.");
+        }
+    }
+
     return(
         <Stack direction={res700 ? "column" : "row"} sx={{mt: 2, mb:2}} >
             <Stack direction={res700 ? "row" : "column"} sx={{pl: res700 ? 0 : 6, pr: res700 ? 0 : 6, mb:2}} alignContent={"center"} alignItems={"center"}>
@@ -70,7 +77,9 @@ const GroupInfo = (props : any) => {
                 <Stack sx={{mt: 2}} direction={"row"} alignContent={"center"} alignItems={"center"}>
                     <Typography sx={{fontSize: 17, fontWeight: 900, minWidth: 70}}>홈페이지</Typography>
                     <Divider orientation={"vertical"} sx={{height: '70%', ml:1, mr:1}} />
-                    <Link component="button" underline={"hover"} sx={{ml:1.5, mr:1.5}} onClick={() => window.alert("사이트 이동")}>{groupData.homepage}</Link>
+                    <Link href={groupData.homepage.startsWith("https://") || groupData.homepage.startsWith("http://") ? groupData.homepage : "https://" + groupData.homepage} target="_blank" rel="noopener" sx={{ ml: 1.5 }} onClick={handleLinkClick}>
+                        {(groupData.homepage === "" || groupData.homepage === null) ? '홈페이지 없음' : '홈페이지 바로가기'}
+                    </Link>
                 </Stack>
 
                 <Stack sx={{mt: 2}} direction={"row"} alignContent={"center"} alignItems={"center"}>
