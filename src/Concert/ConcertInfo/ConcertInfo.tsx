@@ -1,8 +1,10 @@
-import {Box, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Box, Button, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {useNavigate} from "react-router";
 
 const ConcertInfo = (props : any) => {
 
     const {concertData} = props
+    const navigate = useNavigate();
 
     const theme = useTheme();
     const res600 = useMediaQuery(theme.breakpoints.down("sm"))
@@ -21,6 +23,10 @@ const ConcertInfo = (props : any) => {
         pr:2
     }
 
+    const onClickGoGroup = () => {
+        navigate(`/group/${concertData.groupId}`)
+    }
+
     return(
         <Stack direction={res600 ? "column" : 'row'} sx={{width: '100%', mt: 2}} justifyContent={"flex-start"} alignItems={"center"}>
             <Stack sx={{maxWidth: 340, width: '95%', mb:1}} justifyContent={"center"} alignItems={"center"}>
@@ -37,7 +43,7 @@ const ConcertInfo = (props : any) => {
                     src={concertData.posterImg}
                 />
             </Stack>
-            <Stack justifyContent={"flex-start"} sx={{height: '100%', width: '100%', pl: 5}}>
+            <Stack justifyContent={"flex-start"} sx={{height: '100%', width: '100%', pl: 5, mb:1}}>
                 {
                     res600 ?
                         <Divider sx={{width: '90%', mt: 3, mb: 1}} />
@@ -84,6 +90,9 @@ const ConcertInfo = (props : any) => {
                 <Stack direction={"row"} sx={{mt:1.5}} alignItems={"center"} alignContent={"center"}>
                     <Typography variant={"subtitle2"} sx={fontTitle}>문의</Typography>
                     <Typography>{concertData.qna}</Typography>
+                </Stack>
+                <Stack direction={"row"} sx={{mt:1.5, width: '100%', pr: 5}} alignItems={"end"} alignContent={"center"}>
+                    <Button onClick={onClickGoGroup} sx={{ml: 'auto'}} size={"small"} variant="contained">단체 보기</Button>
                 </Stack>
             </Stack>
         </Stack>
