@@ -38,8 +38,9 @@ const initialState: GroupState = {
 
 export const groupInfo = createAsyncThunk(
     "group/groupInfo",
-    async (id : number | string) => {
+    async (id : number | string | undefined) => {
         const response = await axios.get(`/api/v1/group/${id}/`)
+        console.log(response.data)
         return response.data
     }
 )
