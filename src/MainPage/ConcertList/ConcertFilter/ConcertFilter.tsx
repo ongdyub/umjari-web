@@ -81,6 +81,7 @@ const ConcertFilter = () => {
             text : searchText,
         }
         const result = await dispatch(dashboardList(params))
+        setOpen(false)
     }
 
     return (
@@ -106,7 +107,7 @@ const ConcertFilter = () => {
                             <Stack justifyContent="flex-start" alignItems="center" sx={{width: '100%', mt:1, mb: 1}} direction={res550 ? "column" : "row"}>
                                 {
                                     res550 ?
-                                        <Typography sx={{width: 'auto', mt: 1, fontWeight: 300, fontSize: 25}}>
+                                        <Typography sx={{width: 'auto', mt: 1, fontWeight: 300, fontSize: 20}}>
                                             지역
                                         </Typography>
                                         :
@@ -145,7 +146,7 @@ const ConcertFilter = () => {
                                     res550 ?
                                         <>
                                             <Divider sx={{width: '90%', mt:3}}/>
-                                            <Typography sx={{width: 'auto', mt: 1, fontWeight: 300, fontSize: 25}}>
+                                            <Typography sx={{width: 'auto', mt: 1, fontWeight: 300, fontSize: 20}}>
                                                 날짜
                                             </Typography>
                                         </>
@@ -211,7 +212,7 @@ const ConcertFilter = () => {
                                     res550 ?
                                         <>
                                             <Divider sx={{width: '90%', mt:3}}/>
-                                            <Typography sx={{width: 'auto', mt: 1, fontWeight: 300, fontSize: 25}}>
+                                            <Typography sx={{width: 'auto', mt: 1, fontWeight: 300, fontSize: 20}}>
                                                 텍스트
                                             </Typography>
                                         </>
