@@ -10,12 +10,13 @@ export interface SignUser {
     email: string;
     nickname: string;
     intro: string;
-    phoneNumber: string;
+    name: string;
+    // phoneNumber: string;
 }
 
 export interface User {
     user_id : string | null,
-    phone : string | null;
+    // phone : string | null;
     email : string | null;
     nickname : string | null;
     profile_img : string | null;
@@ -25,7 +26,7 @@ export interface User {
 
 const initialState: User = {
     user_id : null,
-    phone : null,
+    // phone : null,
     email : null,
     nickname : null,
     profile_img : null,
@@ -46,6 +47,30 @@ export const signUp = createAsyncThunk(
     "user/signUp",
     async (data: SignUser) => {
         const response = await axios.post('/api/v1/auth/signup/',data)
+        return response.data
+    }
+)
+
+export const valEmailPost = createAsyncThunk(
+    "user/valEmailPost",
+    async (data: Partial<SignUser>) => {
+        const response = await axios.post('/api/v1/mail-verification/',data)
+        return response.data
+    }
+)
+
+export const valCode = createAsyncThunk(
+    "user/valCode",
+    async (data: any) => {
+        const response = await axios.post('/api/v1/mail-verification/validate/',data)
+        return response.data
+    }
+)
+
+export const valNamePost = createAsyncThunk(
+    "user/valNamePost",
+    async (data: Partial<SignUser>) => {
+        const response = await axios.post('/api/v1/user/nickname/',data)
         return response.data
     }
 )
@@ -89,7 +114,7 @@ export const userSlice = createSlice({
             state,
         ) => {
             state.user_id = null;
-            state.phone = null;
+            // state.phone = null;
             state.email = null;
             state.nickname = null;
             state.profile_img = null;
