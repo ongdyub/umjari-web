@@ -50,6 +50,9 @@ const LoginModal = (props : any) => {
     const [phone, setPhone] = useState('')
     const [nickname, setNickname] = useState('')
 
+    const [valEmail, setValEmail] = useState(false)
+    const [valName, setValName] = useState(false)
+
     const onClickMode = () => {
         setLoginId('');
         setLoginPassword('');
@@ -60,6 +63,9 @@ const LoginModal = (props : any) => {
         setPhone('')
         setNickname('')
         setIsLoginMode(!isLoginMode);
+
+        setValEmail(false)
+        setValName(false)
     }
 
     const checkID = (asValue: string) => {
@@ -333,59 +339,13 @@ const LoginModal = (props : any) => {
                                     }
                                 />
                             </FormControl>
-                            <TextField
-                                label="이메일"
-                                variant="standard"
-                                helperText={!isLoginMode && "이메일을 입력해주세요."}
-                                value={email}
-                                onChange={(e) => { onChangeEmail(e.target.value) }}
-                                onKeyPress={onKeyPress}
-                                sx={{
-                                    '& label.Mui-focused': {
-                                        color: 'black',
-                                    },
-                                    '& .MuiInput-underline:after': {
-                                        borderBottomColor: 'black',
-                                    },
-                                    '& .MuiOutlinedInput-root': {
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: 'black',
-                                        },
-                                    },
-                                }}
-                            />
-                            {/*<Stack sx={{flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>*/}
-                            {/*    <TextField*/}
-                            {/*        label="인증번호"*/}
-                            {/*        variant="standard"*/}
-                            {/*        helperText={!isLoginMode && "인증번호를 입력해주세요"}*/}
-                            {/*        value={authCode}*/}
-                            {/*        onChange={(e) => { setAuthCode(e.target.value) }}*/}
-                            {/*        onKeyPress={onKeyPress}*/}
-                            {/*        sx={{*/}
-                            {/*            '& label.Mui-focused': {*/}
-                            {/*                color: 'black',*/}
-                            {/*            },*/}
-                            {/*            '& .MuiInput-underline:after': {*/}
-                            {/*                borderBottomColor: 'black',*/}
-                            {/*            },*/}
-                            {/*            '& .MuiOutlinedInput-root': {*/}
-                            {/*                '&.Mui-focused fieldset': {*/}
-                            {/*                    borderColor: 'black',*/}
-                            {/*                },*/}
-                            {/*            },*/}
-                            {/*            width : '60%'*/}
-                            {/*        }}*/}
-                            {/*    />*/}
-                            {/*    <Button variant={"outlined"} sx={{height: '40px', ml: 2,}}>인증하기</Button>*/}
-                            {/*</Stack>*/}
-                            <Stack sx={{flexDirection: res550 ? 'column' : 'row', alignItems: 'center', alignContent: 'center'}}>
+                            <Stack sx={{flexDirection: res550 ? 'row' : 'row', alignItems: 'center', alignContent: 'center'}}>
                                 <TextField
-                                    label="전화번호"
+                                    label="이메일"
                                     variant="standard"
-                                    helperText={!isLoginMode && "번호를 입력해주세요"}
-                                    value={phone}
-                                    onChange={(e) => { onChangePhone(e.target.value) }}
+                                    helperText={!isLoginMode && "이메일을 입력해주세요."}
+                                    value={email}
+                                    onChange={(e) => { onChangeEmail(e.target.value) }}
                                     onKeyPress={onKeyPress}
                                     sx={{
                                         '& label.Mui-focused': {
@@ -399,32 +359,64 @@ const LoginModal = (props : any) => {
                                                 borderColor: 'black',
                                             },
                                         },
-                                        width : res550 ? '100%' :'40%'
+                                        width : 'calc(100% - 70px)'
                                     }}
                                 />
-                                <TextField
-                                    label="닉네임"
-                                    variant="standard"
-                                    helperText={!isLoginMode && "닉네임을 입력해주세요"}
-                                    value={nickname}
-                                    onChange={(e) => { onChangeNickname(e.target.value) }}
-                                    onKeyPress={onKeyPress}
-                                    sx={{
-                                        '& label.Mui-focused': {
-                                            color: 'black',
-                                        },
-                                        '& .MuiInput-underline:after': {
-                                            borderBottomColor: 'black',
-                                        },
-                                        '& .MuiOutlinedInput-root': {
-                                            '&.Mui-focused fieldset': {
-                                                borderColor: 'black',
+                                <Button variant={"outlined"} sx={{ml: 'auto',maxWidth: '60px', maxHeight: '30px', minWidth: '60px', minHeight: '30px'}}>인증</Button>
+                            </Stack>
+                            <Stack sx={{width: '100%', flexDirection: 'column', alignItems: 'center', alignContent: 'center'}}>
+                                <Stack sx={{width: '100%', flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
+                                    <TextField
+                                        label="인증번호"
+                                        variant="standard"
+                                        helperText={!isLoginMode && "번호를 입력해주세요"}
+                                        value={phone}
+                                        onChange={(e) => { onChangePhone(e.target.value) }}
+                                        onKeyPress={onKeyPress}
+                                        sx={{
+                                            '& label.Mui-focused': {
+                                                color: 'black',
                                             },
-                                        },
-                                        width: res550 ? '100%' :'40%',
-                                        ml: res550 ? '' :'5%'
-                                    }}
-                                />
+                                            '& .MuiInput-underline:after': {
+                                                borderBottomColor: 'black',
+                                            },
+                                            '& .MuiOutlinedInput-root': {
+                                                '&.Mui-focused fieldset': {
+                                                    borderColor: 'black',
+                                                },
+                                            },
+                                            width : 'calc(100% - 70px)',
+                                            mr: 1
+                                        }}
+                                    />
+                                    <Button variant={"outlined"} sx={{ml: 'auto',maxWidth: '60px', maxHeight: '30px', minWidth: '60px', minHeight: '30px'}}>확인</Button>
+                                </Stack>
+                                <Stack sx={{width: '100%', flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
+                                    <TextField
+                                        label="닉네임"
+                                        variant="standard"
+                                        helperText={!isLoginMode && "닉네임을 입력해주세요"}
+                                        value={nickname}
+                                        onChange={(e) => { onChangeNickname(e.target.value) }}
+                                        onKeyPress={onKeyPress}
+                                        sx={{
+                                            '& label.Mui-focused': {
+                                                color: 'black',
+                                            },
+                                            '& .MuiInput-underline:after': {
+                                                borderBottomColor: 'black',
+                                            },
+                                            '& .MuiOutlinedInput-root': {
+                                                '&.Mui-focused fieldset': {
+                                                    borderColor: 'black',
+                                                },
+                                            },
+                                            width: 'calc(100% - 100px)',
+                                            mr: 1
+                                        }}
+                                    />
+                                    <Button variant={"outlined"} sx={{ml: 'auto',maxWidth: '90px', maxHeight: '30px', minWidth: '90px', minHeight: '30px'}}>중복검사</Button>
+                                </Stack>
                             </Stack>
 
                         </>
