@@ -25,6 +25,13 @@ const Group = () => {
     }, [id,dispatch])
 
     if(groupSelector.groupInfo === null){
+        if(!groupSelector.groupExist){
+            return(
+                <div>
+                    존재하지 않는 그룹 ID 입니다.
+                </div>
+            )
+        }
         return(
             <div>
                 로딩중
