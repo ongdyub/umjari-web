@@ -29,17 +29,20 @@ export interface GroupRecruit {
 export interface GroupState {
     groupInfo: GroupInfo | null,
     groupRecruit: GroupRecruit | null,
+    groupExist: boolean,
 }
 
 const initialState: GroupState = {
     groupInfo: null,
     groupRecruit: null,
+    groupExist : true
 };
 
 export const groupInfo = createAsyncThunk(
     "group/groupInfo",
-    async (id : number | string) => {
+    async (id : number | string | undefined) => {
         const response = await axios.get(`/api/v1/group/${id}/`)
+        console.log(response.data)
         return response.data
     }
 )
@@ -58,12 +61,17 @@ export const groupStateSlice = createSlice({
     reducers: {
         resetGroupInfo: (state) => {
             state.groupInfo = null
+            state.groupExist = true
         }
     },
 
     extraReducers: (builder) => {
         builder.addCase(groupInfo.fulfilled, (state, action) => {
+            state.groupExist = true
             state.groupInfo = action.payload
+        });
+        builder.addCase(groupInfo.rejected, (state, action) => {
+            state.groupExist = false
         });
     },
 });

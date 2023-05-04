@@ -10,7 +10,6 @@ const ConcertList = () => {
 
     const dispatch = useDispatch<AppDispatch>();
 
-
     useEffect(() => {
         const params = {
             regionParent : null,
