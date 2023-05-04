@@ -45,17 +45,26 @@ export const testPingPong = createAsyncThunk(
 
 export const signUp = createAsyncThunk(
     "user/signUp",
-    async (data: SignUser) => {
-        const response = await axios.post('/api/v1/auth/signup/',data)
-        return response.data
+    async (data: SignUser, {rejectWithValue}) => {
+        try {
+            const response = await axios.post('/api/v1/auth/signup/',data)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
     }
 )
 
 export const valEmailPost = createAsyncThunk(
     "user/valEmailPost",
-    async (data: Partial<SignUser>) => {
-        const response = await axios.post('/api/v1/mail-verification/',data)
-        return response.data
+    async (data: Partial<SignUser>, {rejectWithValue}) => {
+        try {
+            const response = await axios.post('/api/v1/mail-verification/', data);
+            return response.data;
+        } catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"]);
+        }
     }
 )
 

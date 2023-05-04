@@ -177,7 +177,12 @@ const LoginModal = (props : any) => {
             window.alert("인증번호 전송 성공")
             setDisableCodeBtn(false)
         } else {
-            window.alert("인증번호 전송 실패")
+            if(result.payload === 13){
+                window.alert("이미 존재하는 메일입니다.")
+            }
+            else{
+                window.alert("인증번호 전송 실패")
+            }
         }
         setPending(false)
     }
@@ -284,7 +289,6 @@ const LoginModal = (props : any) => {
             intro: ''
         }
         const result = await dispatch(signUp(data))
-        console.log(result)
 
         if (result.type === `${signUp.typePrefix}/fulfilled`) {
             //const result = await dispatch(loginUser(data));
@@ -296,7 +300,18 @@ const LoginModal = (props : any) => {
             window.alert("회원가입 성공")
             onClickClose()
         } else {
-            window.alert("중복되는 내용이 있습니다.")
+            if(result.payload === 11){
+                window.alert("이미 존재하는 아이디 입니다.")
+            }
+            else if(result.payload === 12){
+                window.alert("이미 존재하는 닉네임 입니다.")
+            }
+            else if(result.payload === 13){
+                window.alert("이미 존재하는 이메일 입니다.")
+            }
+            else{
+                window.alert("중복되는 내용이 있습니다.")
+            }
         }
     };
     const onClickClose = () => {
@@ -446,6 +461,7 @@ const LoginModal = (props : any) => {
                                 <TextField
                                     label="이메일"
                                     variant="standard"
+                                    disabled={valEmail}
                                     helperText={!isLoginMode && "이메일을 입력해주세요."}
                                     value={email}
                                     onChange={(e) => { onChangeEmail(e.target.value) }}
@@ -464,13 +480,14 @@ const LoginModal = (props : any) => {
                                         width : 'calc(100% - 85px)'
                                     }}
                                 />
-                                <Button onClick={onClickValEmail} disabled={!checkEmail(email)} variant={"outlined"} sx={{ml: 'auto',maxWidth: '75px', maxHeight: '30px', minWidth: '75px', minHeight: '30px'}}>{pending ? '전송 중' : '전송'}</Button>
+                                <Button onClick={onClickValEmail} disabled={ valEmail || !checkEmail(email)} variant={"outlined"} sx={{ml: 'auto',maxWidth: '75px', maxHeight: '30px', minWidth: '75px', minHeight: '30px'}}>{pending ? '전송 중' : '전송'}</Button>
                             </Stack>
                             <Stack sx={{width: '100%', flexDirection: 'column', alignItems: 'center', alignContent: 'center'}}>
                                 <Stack sx={{width: '100%', flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
                                     <TextField
                                         label="인증번호"
                                         variant="standard"
+                                        disabled={valEmail}
                                         helperText={!isLoginMode && "번호를 입력해주세요"}
                                         value={authCode}
                                         onChange={(e) => { setAuthCode(e.target.value) }}
@@ -490,7 +507,7 @@ const LoginModal = (props : any) => {
                                             mr: 1
                                         }}
                                     />
-                                    <Button disabled={disableCodeBtn} onClick={onClickValCode} variant={"outlined"} sx={{ml: 'auto',maxWidth: '60px', maxHeight: '30px', minWidth: '60px', minHeight: '30px'}}>확인</Button>
+                                    <Button disabled={disableCodeBtn || valEmail} onClick={onClickValCode} variant={"outlined"} sx={{ml: 'auto',maxWidth: '60px', maxHeight: '30px', minWidth: '60px', minHeight: '30px'}}>확인</Button>
                                 </Stack>
                                 <Stack sx={{width: '100%', flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
                                     <TextField
@@ -498,6 +515,7 @@ const LoginModal = (props : any) => {
                                         variant="standard"
                                         helperText={!isLoginMode && "닉네임을 입력해주세요"}
                                         value={nickname}
+                                        disabled={valName}
                                         onChange={(e) => { onChangeNickname(e.target.value) }}
                                         sx={{
                                             '& label.Mui-focused': {
@@ -515,7 +533,7 @@ const LoginModal = (props : any) => {
                                             mr: 1
                                         }}
                                     />
-                                    <Button onClick={onClickValName} variant={"outlined"} sx={{ml: 'auto',maxWidth: '90px', maxHeight: '30px', minWidth: '90px', minHeight: '30px'}}>중복검사</Button>
+                                    <Button onClick={onClickValName} disabled={valName} variant={"outlined"} sx={{ml: 'auto',maxWidth: '90px', maxHeight: '30px', minWidth: '90px', minHeight: '30px'}}>중복검사</Button>
                                 </Stack>
                             </Stack>
 
