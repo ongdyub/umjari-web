@@ -6,9 +6,9 @@ import {
     Typography, useMediaQuery, useTheme,
 } from "@mui/material";
 import {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {login, selectUser, signUp, valCode, valEmailPost, valNamePost} from "../store/slices/user/user";
+import {login, signUp, valCode, valEmailPost, valNamePost} from "../store/slices/user/user";
 import {AppDispatch} from "../store";
 
 const styleReg = (theme: any) => ({
@@ -47,7 +47,6 @@ const LoginModal = (props : any) => {
     const {open, handleClose} = props;
 
     const dispatch = useDispatch<AppDispatch>();
-    const userState = useSelector(selectUser);
     const theme = useTheme();
 
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
@@ -112,11 +111,11 @@ const LoginModal = (props : any) => {
         return regExp.test(asValue)
     }
 
-    const checkPhone = (asValue: string) => {
-        const regExp = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/
-        //숫자 11개 + 3 4 4 구조만 가능
-        return regExp.test(asValue)
-    }
+    // const checkPhone = (asValue: string) => {
+    //     const regExp = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/
+    //     //숫자 11개 + 3 4 4 구조만 가능
+    //     return regExp.test(asValue)
+    // }
 
     const checkNick = (asValue: string) => {
         const regExp = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.]{2,20}$/;
@@ -124,7 +123,7 @@ const LoginModal = (props : any) => {
     }
 
     const onKeyPress = (e: { key: string; }) => {
-        if (e.key == 'Enter') {
+        if (e.key === 'Enter') {
             onClickLogin();
         }
     };
@@ -334,7 +333,6 @@ const LoginModal = (props : any) => {
                         helperText={!isLoginMode && "4-10자의 영문과 숫자, 일부 특수문자(., _, -)만 입력 가능합니다."}
                         value={loginId}
                         onChange={(e) => { onChangeId(e.target.value) }}
-                        onKeyPress={onKeyPress}
                         sx={{
                             '& label.Mui-focused': {
                                 color: 'black',
@@ -412,7 +410,6 @@ const LoginModal = (props : any) => {
                                     value={pwConfirm}
                                     data-testid="pwconfirm"
                                     onChange={(e) => { onChangePwConfirm(e.target.value) }}
-                                    onKeyPress={onKeyPress}
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton
@@ -431,7 +428,6 @@ const LoginModal = (props : any) => {
                                 helperText={!isLoginMode && "유저 이름을 입력하세요"}
                                 value={name}
                                 onChange={(e) => { onChangeName(e.target.value) }}
-                                onKeyPress={onKeyPress}
                                 sx={{
                                     '& label.Mui-focused': {
                                         color: 'black',
@@ -453,7 +449,6 @@ const LoginModal = (props : any) => {
                                     helperText={!isLoginMode && "이메일을 입력해주세요."}
                                     value={email}
                                     onChange={(e) => { onChangeEmail(e.target.value) }}
-                                    onKeyPress={onKeyPress}
                                     sx={{
                                         '& label.Mui-focused': {
                                             color: 'black',
