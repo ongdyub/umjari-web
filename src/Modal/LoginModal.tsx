@@ -89,7 +89,6 @@ const LoginModal = (props : any) => {
 
         setIsLoginMode(!isLoginMode);
 
-
     }
 
     const checkID = (asValue: string) => {
@@ -98,7 +97,8 @@ const LoginModal = (props : any) => {
     }
 
     const checkName = (asValue : string) => {
-        return asValue.length > 0
+        const regExp = /^[a-zA-Z0-9가-힣_]{2,16}$/
+        return regExp.test(asValue)
     }
 
     const checkPW = (asValue: string) => {
@@ -118,7 +118,7 @@ const LoginModal = (props : any) => {
     // }
 
     const checkNick = (asValue: string) => {
-        const regExp = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.]{2,20}$/;
+        const regExp = /^[a-zA-Z0-9가-힣_]{2,16}$/;
         return regExp.test(asValue)
     }
 
@@ -246,7 +246,7 @@ const LoginModal = (props : any) => {
             setErrorText("")
         }
         else{
-            setErrorText("공백은 불가능합니다.")
+            setErrorText("이름 형식을 다시 확인해주세요")
         }
     }
 
@@ -440,7 +440,7 @@ const LoginModal = (props : any) => {
                             <TextField
                                 label="이름"
                                 variant="standard"
-                                helperText={!isLoginMode && "유저 이름을 입력하세요"}
+                                helperText={!isLoginMode && "유저 이름을 입력하세요. 프로필에 표시될 이름입니다. 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
                                 value={name}
                                 onChange={(e) => { onChangeName(e.target.value) }}
                                 sx={{
@@ -503,17 +503,17 @@ const LoginModal = (props : any) => {
                                                     borderColor: 'black',
                                                 },
                                             },
-                                            width : 'calc(100% - 70px)',
+                                            width : 'calc(100% - 85px)',
                                             mr: 1
                                         }}
                                     />
-                                    <Button disabled={disableCodeBtn || valEmail} onClick={onClickValCode} variant={"outlined"} sx={{ml: 'auto',maxWidth: '60px', maxHeight: '30px', minWidth: '60px', minHeight: '30px'}}>확인</Button>
+                                    <Button disabled={disableCodeBtn || valEmail} onClick={onClickValCode} variant={"outlined"} sx={{ml: 'auto',maxWidth: '75px', maxHeight: '30px', minWidth: '75px', minHeight: '30px'}}>확인</Button>
                                 </Stack>
                                 <Stack sx={{width: '100%', flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
                                     <TextField
                                         label="닉네임"
                                         variant="standard"
-                                        helperText={!isLoginMode && "닉네임을 입력해주세요"}
+                                        helperText={!isLoginMode && "닉네임을 입력해주세요. 글 및 질문 작성 시에 보여지는 닉네임 입니다. 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
                                         value={nickname}
                                         disabled={valName}
                                         onChange={(e) => { onChangeNickname(e.target.value) }}
