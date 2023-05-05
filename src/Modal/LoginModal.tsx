@@ -527,7 +527,7 @@ const LoginModal = (props : any) => {
                                             mr: 1
                                         }}
                                     />
-                                    <Button onClick={onClickValName} disabled={valName} variant={"outlined"} sx={{ml: 'auto',maxWidth: '90px', maxHeight: '30px', minWidth: '90px', minHeight: '30px'}}>중복검사</Button>
+                                    <Button onClick={onClickValName} disabled={valName || !checkNick(nickname)} variant={"outlined"} sx={{ml: 'auto',maxWidth: '90px', maxHeight: '30px', minWidth: '90px', minHeight: '30px'}}>중복검사</Button>
                                 </Stack>
                             </Stack>
 
