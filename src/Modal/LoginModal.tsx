@@ -5,7 +5,7 @@ import {
     Stack, TextField,
     Typography, useMediaQuery, useTheme,
 } from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {login, signUp, valCode, valEmailPost, valNamePost} from "../store/slices/user/user";
@@ -62,14 +62,16 @@ const LoginModal = (props : any) => {
     // const [phone, setPhone] = useState('')
     const [nickname, setNickname] = useState('')
 
-    const [valEmail, setValEmail] = useState(false)
+    const [valEmail, setValEmail] = useState<boolean>(false)
     const [authCode, setAuthCode] = useState('')
     const [disableCodeBtn, setDisableCodeBtn] = useState(true)
-    const [valName, setValName] = useState(false)
+    const [valName, setValName] = useState<boolean>(false)
 
     const [name, setName] = useState('')
 
     const [pending, setPending] = useState(false)
+
+    const [submit, setSubmit] = useState<boolean>(false)
 
     const onClickMode = () => {
         setLoginId('');
@@ -138,33 +140,14 @@ const LoginModal = (props : any) => {
 
     const onChangeId = (id: string) => {
         setLoginId(id)
-
-        if (checkID(id) || isLoginMode) {
-            setErrorText("")
-        } else {
-            setErrorText("아이디의 형식을 다시 확인해주세요")
-        }
     }
 
     const onChangePw = (pw: string) => {
         setLoginPassword(pw)
-
-        if (checkPW(pw) || isLoginMode) {
-            setErrorText("")
-        } else {
-            setErrorText("비밀번호의 형식을 다시 확인해주세요")
-        }
     }
 
     const onChangeEmail = (email: string) => {
         setEmail(email)
-
-        if(checkEmail(email)){
-            setErrorText("")
-        }
-        else{
-            setErrorText("이메일 형식을 다시 확인해주세요")
-        }
     }
 
     const onClickValEmail = async () => {
@@ -230,34 +213,14 @@ const LoginModal = (props : any) => {
 
     const onChangeNickname = (nickname: string) => {
         setNickname(nickname)
-
-        if(checkNick(nickname)){
-            setErrorText("")
-        }
-        else{
-            setErrorText("닉네임 형식을 다시 확인해주세요")
-        }
     }
 
     const onChangeName = (name: string) => {
         setName(name)
-
-        if(checkName(name)){
-            setErrorText("")
-        }
-        else{
-            setErrorText("이름 형식을 다시 확인해주세요")
-        }
     }
 
     const onChangePwConfirm = (pw: string) => {
         setPwConfirm(pw)
-
-        if (loginPassword === pw) {
-            setErrorText("")
-        } else {
-            setErrorText("비밀번호가 일치하지 않습니다.")
-        }
     }
 
     const onClickLogin = async () => {
@@ -333,6 +296,37 @@ const LoginModal = (props : any) => {
         setIsLoginMode(true)
         handleClose(false)
     }
+
+    useEffect(() => {
+        setSubmit(checkName(name) && checkEmail(email) && checkNick(nickname) && checkID(loginId) && checkPW(pwConfirm))
+        if(!isLoginMode){
+            if(!checkID(loginId)){
+                setErrorText("아이디 형식을 다시 확인해주세요")
+                return
+            }
+            if(!checkPW(loginPassword) || !checkPW(pwConfirm)){
+                setErrorText("비밀번호 형식을 다시 확인해주세요")
+                return
+            }
+            if(pwConfirm !== loginPassword){
+                setErrorText("비밀번호가 일치하지 않습니다")
+                return;
+            }
+            if(!checkName(name)){
+                setErrorText("이름의 형식을 다시 확인해주세요")
+                return;
+            }
+            if(!checkEmail(email)){
+                setErrorText("이메일의 형식을 다시 확인해주세요")
+                return;
+            }
+            if(!checkNick(nickname)){
+                setErrorText("닉네임의 형식을 다시 확인해주세요")
+                return;
+            }
+            setErrorText("")
+        }
+    },[name, email, nickname, loginId, loginPassword, pwConfirm])
 
     return (
         <Modal
@@ -558,7 +552,7 @@ const LoginModal = (props : any) => {
                         </Button> :
                         <Button variant="text" onClick={onClickRegister}
                                 data-testid="register"
-                                disabled={(!valName || !valEmail || !checkName(name) || !checkEmail(email) || !checkNick(nickname) || !checkID(loginId) || !checkPW(loginPassword)) || (loginPassword !== pwConfirm)}
+                                disabled={(!valName || !valEmail || !submit) || (loginPassword !== pwConfirm)}
                                 sx={{
                                     bgcolor: 'primary.dark',
                                     borderRadius: 3,
