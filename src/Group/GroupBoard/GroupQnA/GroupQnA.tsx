@@ -15,6 +15,8 @@ import {useState} from "react";
 import {useSelector} from "react-redux";
 import {selectDummy} from "../../../store/slices/dummy/dummy";
 import QnAItem from "./QnAItem";
+import LoginModal from "../../../Modal/LoginModal";
+import GroupQnAWriteModal from "../../../Modal/GroupQnAWriteModal";
 
 const GroupQnA = () => {
 
@@ -23,6 +25,12 @@ const GroupQnA = () => {
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
     const [searchWord, setSearchWord] = useState('')
     const [page, setPage] = useState(1);
+
+    const [loginOpen, setLoginOpen] = useState<boolean>(false)
+    const handleLoginClose = () => {
+        setLoginOpen(false)
+    }
+
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
@@ -47,7 +55,7 @@ const GroupQnA = () => {
 
                 <Stack direction={"row"}>
                     <Button variant={"outlined"} sx={{ml: 2, mt: res700 ? 2: 0}}>검색하기</Button>
-                    <Button variant={"contained"} sx={{ml: 2, mt: res700 ? 2: 0}}>작성하기</Button>
+                    <Button variant={"contained"} sx={{ml: 2, mt: res700 ? 2: 0}} onClick={() => setLoginOpen(true)}>작성하기</Button>
                 </Stack>
 
             </Stack>
@@ -72,7 +80,7 @@ const GroupQnA = () => {
             <Stack alignItems="center" sx={{width:'100%', height: '120px'}} flexDirection={'row'} justifyContent="center" alignContent="center">
                 <Pagination sx={{display: 'flex', width: '80%',justifyContent: "center", alignItems:"center"}} size="large" count={15} page={page} onChange={handleChange} defaultPage={1} siblingCount={1} boundaryCount={1}/>
             </Stack>
-
+            <GroupQnAWriteModal open={loginOpen} handleClose={handleLoginClose}/>
         </Stack>
     )
 }

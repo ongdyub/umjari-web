@@ -26,22 +26,69 @@ export interface GroupRecruit {
     recruitDetail: string
 }
 
+export interface GroupQnAComment {
+    id: number,
+    content: string,
+    anonymous: boolean,
+    updatedAt: string,
+    createAt: string
+}
+
+export interface GroupQnAItem {
+    id: number,
+    content: string,
+    title: string,
+    anonymous: boolean,
+    replyList: [GroupQnAComment]
+}
+
+export interface GroupQnAList {
+    contents: [
+        {
+            "id": number,
+            "title": string,
+            "anonymous": boolean,
+            "updatedAt": string,
+            "replyCount": number,
+            "createAt": string
+        }
+    ],
+    totalPages: number,
+    totalElements: number,
+    currentPage: number
+}
+
 export interface GroupState {
     groupInfo: GroupInfo | null,
     groupRecruit: GroupRecruit | null,
     groupExist: boolean,
+
+    groupQnAList : GroupQnAList | null,
+    groupQnAItem : GroupQnAItem | null
 }
 
 const initialState: GroupState = {
     groupInfo: null,
     groupRecruit: null,
-    groupExist : true
+    groupExist : true,
+
+    groupQnAList : null,
+    groupQnAItem : null
 };
 
 export const groupInfo = createAsyncThunk(
     "group/groupInfo",
     async (id : number | string | undefined) => {
         const response = await axios.get(`/api/v1/group/${id}/`)
+        console.log(response.data)
+        return response.data
+    }
+)
+
+export const groupQnAPost = createAsyncThunk(
+    "group/groupQnAPost",
+    async (data : any) => {
+        const response = await axios.post(`/api/v1/group/${data.id}/qna/`,data.qnaData, {})
         console.log(response.data)
         return response.data
     }
