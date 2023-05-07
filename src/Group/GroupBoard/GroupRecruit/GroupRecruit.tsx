@@ -35,6 +35,7 @@ const GroupRecruit = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const dummySelector = useSelector(selectDummy)
+    const res700 = useMediaQuery(theme.breakpoints.down("res700"))
     const res1100 = useMediaQuery('(max-width:1099px)')
     const res800 = useMediaQuery('(max-width:800px)')
     const res600 = useMediaQuery('(max-width:600px)')
@@ -51,14 +52,14 @@ const GroupRecruit = () => {
 
     return(
         <Stack justifyContent={"flex-start"}>
-            <Divider sx={{width: '90%', mt: -1}}/>
+            <Divider sx={{width: res700 ? '100%' : '90%', mt: -1}}/>
 
-            <Stack>
-                <Stack justifyContent={"flex-start"} sx={{mt: 4}} direction={"row"} alignItems={"center"} alignContent={"center"}>
-                    <Typography sx={{fontSize: 45, fontWeight: 100, fontFamily: "Open Sans", mr:5}}>모집 악기</Typography>
-                    <Button variant={"contained"} disabled={false}>모집중</Button>
+            <Stack alignItems={res700 ? "center" : ''}>
+                <Stack justifyContent={"flex-start"} sx={{mt: res700 ? 2 : 4}} direction={"row"} alignItems={"center"} alignContent={"center"}>
+                    <Typography sx={{fontSize: res700 ? 20 : 45, fontWeight: 100, fontFamily: "Open Sans", mr:5}}>모집 악기</Typography>
+                    <Button variant={"contained"} sx={{maxWidth: res700 ? 60 : 80, minWidth: res700 ? 60 : 80,maxHeight: res700 ? 30 : 50,minHeight: res700 ? 30 : 50, fontSize : res700 ? 12 : 17}} size={res700 ? "small" : 'medium'} disabled={false}>모집중</Button>
                 </Stack>
-                <Stack direction={"row"} sx={{mt: 2}} flexWrap={"wrap"}>
+                <Stack direction={"row"} sx={{mt: res700 ? 1 : 2, pl: res700 ? 3: 0}} flexWrap={"wrap"}>
                     {
                         instrument.map((item) => (
                             <Chip label={`${item}`} sx={{mr: 2, mb: 1}}/>
@@ -67,29 +68,28 @@ const GroupRecruit = () => {
                 </Stack>
             </Stack>
 
-            <Divider sx={{width: '90%', mt: 2}}/>
+            <Divider sx={{width: res700 ? '100%' : '90%', mt: res700 ? 1 : 2}}/>
 
-            <Stack sx={{width: 'calc(100% - 24px)', mt:1}}>
-                <ReactQuill
-                    value={dummySelector.write}
-                    readOnly={true}
-                    theme={"bubble"}
-                />
-                <ReactQuill
-                    className={"quill"}
-                    style={{width: '95%', marginBottom: '60px', height: '500px' }}
-                    theme="snow"
-                    modules={modules}
-                    formats={formats}
-                    value={contents}
-                    onChange={(e) => setContents(e)}
-                />
-            </Stack>
-            <Divider sx={{width: '90%'}} />
-            <Stack direction={"row"} sx={{mt:1, mb:10}}>
-                <Button variant={"outlined"} onClick={handleEdit}>수정하기</Button>
-            </Stack>
-
+            {/*<Stack sx={{width: 'calc(100% - 24px)', mt:1}}>*/}
+            {/*    <ReactQuill*/}
+            {/*        value={dummySelector.write}*/}
+            {/*        readOnly={true}*/}
+            {/*        theme={"bubble"}*/}
+            {/*    />*/}
+            {/*    <ReactQuill*/}
+            {/*        className={"quill"}*/}
+            {/*        style={{width: '95%', marginBottom: '60px', height: '500px' }}*/}
+            {/*        theme="snow"*/}
+            {/*        modules={modules}*/}
+            {/*        formats={formats}*/}
+            {/*        value={contents}*/}
+            {/*        onChange={(e) => setContents(e)}*/}
+            {/*    />*/}
+            {/*</Stack>*/}
+            {/*<Divider sx={{width: '90%'}} />*/}
+            {/*<Stack direction={"row"} sx={{mt:1, mb:10}}>*/}
+            {/*    <Button variant={"outlined"} onClick={handleEdit}>수정하기</Button>*/}
+            {/*</Stack>*/}
 
         </Stack>
     )
