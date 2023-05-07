@@ -87,29 +87,30 @@ const Header = () => {
         }
     }
 
+    const onClickLogo = () => {
+        navigate('/')
+    }
+
     return(
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar sx={{pr: 0,pl: res450 ? 0 : '20px', height: res450 ? '20px' : '60px', justifyContent: 'space-around', alignContent: 'center', alignItems: 'center'}} >
                     {/*Desktop Display*/}
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
+                    <Box
+                        component="img"
                         sx={{
                             display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 300,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
+                            width: 100,
+                            objectFit: 'contain',
+                            cursor: 'pointer'
+                            // border: '0.5px solid black'
                         }}
-                    >
-                        / 음자리 /
-                    </Typography>
+                        alt="Image description"
+                        src={`${process.env.PUBLIC_URL}/Thumbnail_trans_white.png`}
+                        onClick={onClickLogo}
+                    />
 
-                    <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' }, width: '64px' }}>
+                    <Box sx={{display: {md: 'none' }, width: '48px', pr: 0, mr: 0 }}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -147,25 +148,19 @@ const Header = () => {
                     </Box>
 
                     {/*Mobile Display*/}
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        href="/"
+                    <Box
+                        component="img"
                         sx={{
-                            width: '60%',
                             display: {md: 'none' },
-                            fontFamily: 'monospace',
-                            fontWeight: 300,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                            textAlign: 'center',
-                            justifyContent: 'center'
+                            width: 100,
+                            objectFit: 'contain',
+                            cursor: 'pointer'
+                            // border: '0.5px solid black'
                         }}
-                    >
-                        / 음자리 /
-                    </Typography>
+                        alt="Image description"
+                        src={`${process.env.PUBLIC_URL}/Thumbnail_trans_white.png`}
+                        onClick={onClickLogo}
+                    />
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
                             <>
