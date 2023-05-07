@@ -11,18 +11,32 @@ import {
     useTheme
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {useState} from "react";
-import {useSelector} from "react-redux";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {selectDummy} from "../../../store/slices/dummy/dummy";
 import QnAItem from "./QnAItem";
+import LoginModal from "../../../Modal/LoginModal";
+import GroupQnAWriteModal from "../../../Modal/GroupQnAWriteModal";
+import {AppDispatch} from "../../../store";
+import {groupQnAListGet, selectGroup} from "../../../store/slices/group/group";
+import {useParams} from "react-router-dom";
 
 const GroupQnA = () => {
 
     const theme = useTheme();
+    const dispatch = useDispatch<AppDispatch>()
+    const { id } = useParams();
     const dummySelector = useSelector(selectDummy)
+    const groupState = useSelector(selectGroup)
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
     const [searchWord, setSearchWord] = useState('')
     const [page, setPage] = useState(1);
+
+    const [loginOpen, setLoginOpen] = useState<boolean>(false)
+    const handleLoginClose = () => {
+        setLoginOpen(false)
+    }
+
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
@@ -30,6 +44,10 @@ const GroupQnA = () => {
     const onClickQnA = () => {
         window.alert("click")
     }
+
+    useEffect(() => {
+        dispatch(groupQnAListGet(id))
+    },[])
 
     return(
         <Stack sx={{mb:10}}>
@@ -47,7 +65,7 @@ const GroupQnA = () => {
 
                 <Stack direction={"row"}>
                     <Button variant={"outlined"} sx={{ml: 2, mt: res700 ? 2: 0}}>검색하기</Button>
-                    <Button variant={"contained"} sx={{ml: 2, mt: res700 ? 2: 0}}>작성하기</Button>
+                    <Button variant={"contained"} sx={{ml: 2, mt: res700 ? 2: 0}} onClick={() => setLoginOpen(true)}>작성하기</Button>
                 </Stack>
 
             </Stack>
@@ -60,9 +78,9 @@ const GroupQnA = () => {
             <Stack sx={{pr: 3, pt: 3, width: '100%', pl: res700 ? 3 : 0}}>
                 <Grid container columns={14}>
                     {
-                        dummySelector.boardArticle.map((item) => (
+                        groupState.groupQnAList?.contents.map((item) => (
                             <Grid sx={{pr:2, pl: 2, mb: 3}} item res300={14} res500={14} res800={7} lg={7} alignItems={"center"} alignContent={"center"}>
-                                <QnAItem onClick={() => onClickQnA} key={item} img={item} title={item.title} comment={item.comment} />
+                                <QnAItem onClick={() => onClickQnA} key={item} img={item} title={item.title} comment={item.replyCount} />
                             </Grid>
                         ))
                     }
@@ -72,7 +90,7 @@ const GroupQnA = () => {
             <Stack alignItems="center" sx={{width:'100%', height: '120px'}} flexDirection={'row'} justifyContent="center" alignContent="center">
                 <Pagination sx={{display: 'flex', width: '80%',justifyContent: "center", alignItems:"center"}} size="large" count={15} page={page} onChange={handleChange} defaultPage={1} siblingCount={1} boundaryCount={1}/>
             </Stack>
-
+            <GroupQnAWriteModal open={loginOpen} handleClose={handleLoginClose}/>
         </Stack>
     )
 }
