@@ -24,7 +24,7 @@ const ConcertInfo = (props : any) => {
     }
 
     const onClickGoGroup = () => {
-        navigate(`/group/${concertData.groupId}`)
+        navigate(`/group/${concertData.groupId}/recruit`)
     }
 
     return(
