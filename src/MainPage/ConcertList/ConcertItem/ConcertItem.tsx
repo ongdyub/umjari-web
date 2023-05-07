@@ -29,7 +29,7 @@ const ConcertItem = (props: any) => {
     }
 
     const onClickGoConcert = () => {
-        navigate(`/concert/${item.id}`)
+        navigate(`/concert/${item.id}/info`)
     }
 
     return(
