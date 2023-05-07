@@ -72,6 +72,7 @@ const blueTheme = createTheme({
                         outline: 'none',
                     },
                     '-webkit-tap-highlight-color': 'transparent',
+                    '-webkit-scrollbar': {display: 'none'}
                 },
             },
         },
