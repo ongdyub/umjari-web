@@ -31,7 +31,7 @@ const GroupInfo = (props : any) => {
                         objectFit: 'contain',
                         // border: '0.5px solid black'
                     }}
-                    onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/temp_logo.png`}
+                    onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
                     alt="Image description"
                     src={`${groupData.logo}`}
                 />
