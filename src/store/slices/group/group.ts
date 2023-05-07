@@ -88,7 +88,20 @@ export const groupInfo = createAsyncThunk(
 export const groupQnAPost = createAsyncThunk(
     "group/groupQnAPost",
     async (data : any) => {
-        const response = await axios.post(`/api/v1/group/${data.id}/qna/`,data.qnaData, {})
+        const response = await axios.post(`/api/v1/group/${data.id}/qna/`,data.qnaData, {
+            headers: {
+                Authorization: `Bearer  ${data.token}`,
+            },
+        })
+        console.log(response.data)
+        return response.data
+    }
+)
+
+export const groupQnAListGet = createAsyncThunk(
+    "group/groupQnAListGet",
+    async (id : string | null | undefined) => {
+        const response = await axios.get(`/api/v1/group/${id}/qna/`)
         console.log(response.data)
         return response.data
     }
@@ -119,6 +132,9 @@ export const groupStateSlice = createSlice({
         });
         builder.addCase(groupInfo.rejected, (state, action) => {
             state.groupExist = false
+        });
+        builder.addCase(groupQnAListGet.fulfilled, (state, action) => {
+            state.groupQnAList = action.payload
         });
     },
 });

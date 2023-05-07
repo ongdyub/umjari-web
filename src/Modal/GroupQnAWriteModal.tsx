@@ -12,6 +12,11 @@ import {
     TextField, Typography
 } from "@mui/material";
 import {useState} from "react";
+import {useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {selectUser, userSlice} from "../store/slices/user/user";
+import {groupInfo, groupQnAPost} from "../store/slices/group/group";
+import {AppDispatch} from "../store";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -30,16 +35,29 @@ const GroupQnAWriteModal = (props : any) => {
 
     const {open, handleClose} = props;
 
+    const dispatch = useDispatch<AppDispatch>()
+
+    const userState = useSelector(selectUser)
+
+    const { id } = useParams();
+
     const [title,setTitle] = useState('')
     const [contents, setContents] = useState('')
 
     const handleSubmit = async () => {
-        const data = {
+        const qnaData = {
             title : title,
             content : contents,
             isPrivate : false
         }
-        const token = "asdf"
+        const data = {
+            qnaData : qnaData,
+            token : userState.accessToken,
+            id : id
+        }
+        const result = dispatch(groupQnAPost(data))
+        handleClose(true)
+        window.location.reload()
     }
 
     return(
