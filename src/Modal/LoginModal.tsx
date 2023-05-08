@@ -8,7 +8,7 @@ import {
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {login, signUp, valCode, valEmailPost, valNamePost} from "../store/slices/user/user";
+import {login, signUp, userActions, valCode, valEmailPost, valNamePost} from "../store/slices/user/user";
 import {AppDispatch} from "../store";
 
 const styleReg = (theme: any) => ({
@@ -44,7 +44,7 @@ const styleLog = (theme: any) => ({
 
 const LoginModal = (props : any) => {
 
-    const {open, handleClose} = props;
+    const {open} = props;
 
     const dispatch = useDispatch<AppDispatch>();
     const theme = useTheme();
@@ -294,7 +294,7 @@ const LoginModal = (props : any) => {
         setName('')
 
         setIsLoginMode(true)
-        handleClose(false)
+        dispatch(userActions.closeModal())
     }
 
     useEffect(() => {

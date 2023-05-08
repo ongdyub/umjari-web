@@ -22,6 +22,7 @@ export interface User {
     profile_img : string | null;
     isLogin : boolean;
     accessToken : string | null;
+    isModalOpen : boolean;
 }
 
 const initialState: User = {
@@ -31,7 +32,8 @@ const initialState: User = {
     nickname : null,
     profile_img : null,
     accessToken : (localStorage.getItem("Token") === null) ? null : localStorage.getItem("Token"),
-    isLogin : (localStorage.getItem("Token") !== null)
+    isLogin : (localStorage.getItem("Token") !== null),
+    isModalOpen : false
 };
 
 export const testPingPong = createAsyncThunk(
@@ -131,6 +133,18 @@ export const userSlice = createSlice({
             localStorage.removeItem("Token")
             localStorage.removeItem("user_id")
             state.accessToken = null;
+        },
+        openModal : (
+            state,
+        ) => {
+            state.isModalOpen = true
+            console.log("open")
+        },
+        closeModal : (
+            state,
+        ) => {
+            state.isModalOpen = false
+            console.log("close")
         },
         // editUser: (
         //     state,

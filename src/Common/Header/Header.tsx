@@ -6,7 +6,7 @@ import {
     Container, Divider,
     IconButton,
     Menu,
-    MenuItem, Stack,
+    MenuItem,
     Toolbar,
     Tooltip,
     Typography, useMediaQuery, useTheme
@@ -34,11 +34,6 @@ const Header = () => {
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-
-    const [loginOpen, setLoginOpen] = useState<boolean>(false)
-    const handleLoginClose = () => {
-        setLoginOpen(false)
-    }
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -210,14 +205,14 @@ const Header = () => {
                                 </>
                                 :
                                 res450 ?
-                                    <Button variant="contained" size={"small"} sx={{position: 'relative', border: '0.5px solid white', fontSize: 12}} onClick={() => setLoginOpen(true)}>로그인</Button>
+                                    <Button variant="contained" size={"small"} sx={{position: 'relative', border: '0.5px solid white', fontSize: 12}} onClick={() => dispatch(userActions.openModal())}>로그인</Button>
                                     :
-                                    <Button variant="contained" sx={{position: 'relative', border: '1px solid white'}} onClick={() => setLoginOpen(true)}>로그인</Button>
+                                    <Button variant="contained" sx={{position: 'relative', border: '1px solid white'}} onClick={() => dispatch(userActions.openModal())}>로그인</Button>
                         }
                     </Box>
                 </Toolbar>
             </Container>
-            <LoginModal open={loginOpen} handleClose={handleLoginClose}/>
+            <LoginModal open={userState.isModalOpen}/>
         </AppBar>
     )
 }
