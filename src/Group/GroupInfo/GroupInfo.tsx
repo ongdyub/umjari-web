@@ -15,16 +15,16 @@ const GroupInfo = (props : any) => {
     }
 
     return(
-        <Stack direction={res700 ? "column" : "row"} sx={{mt: 2, mb:2}} >
-            <Stack direction={res700 ? "row" : "column"} sx={{pl: res700 ? 0 : 6, pr: res700 ? 0 : 6, mb:2}} alignContent={"center"} alignItems={"center"}>
+        <Stack direction={res700 ? "column" : "row"} sx={{mt: res700 ? 1 : 2, mb:res700 ? 0.5 : 2}} >
+            <Stack direction={res700 ? "row" : "column"} sx={{pl: res700 ? 0 : 6, pr: res700 ? 0 : 6, mb: res700 ? 0 : 2}} alignContent={"center"} alignItems={"center"}>
                 <Stack direction={"row"} alignContent={"center"} alignItems={"center"} sx={{width: res700 ? 'calc(100% - 100px)' : 'auto'}}>
-                    <Typography align={"center"} sx={{fontSize: 40,fontFamily: "Open Sans",fontWeight: 100, wordWrap: "break-word", width: res700 ? '100%' : 150, pl: res700 ? 2 : 0}}>{groupData.name}</Typography>
+                    <Typography align={"center"} sx={{fontSize: res700 ? 24 : 30,fontFamily: "Open Sans",fontWeight: 100, wordWrap: "break-word", width: res700 ? '100%' : 150, pl: res700 ? 2 : 0}}>{groupData.name}</Typography>
                 </Stack>
                 <Box
                     component="img"
                     sx={{
                         display: 'block',
-                        width: res700 ? 80 : 200,
+                        width: res700 ? 50 : 200,
                         ml: res700 ? 'auto' : 0,
                         mr: res700 ? 5 : 0,
                         mt: res700 ? 0 : 2,
@@ -44,7 +44,7 @@ const GroupInfo = (props : any) => {
                     <Divider orientation={"vertical"} />
             }
 
-            <Stack sx={{pl:3, pt: 5}}>
+            <Stack sx={{pl:3, pt: 2}}>
                 <Stack direction={"row"} alignContent={"center"} alignItems={"center"}>
                     <Typography sx={{fontSize: 17, fontWeight: 900, minWidth: 70}}>연습 장소</Typography>
                     <Divider orientation={"vertical"} sx={{height: '70%', ml:1, mr:1}} />
