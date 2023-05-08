@@ -42,7 +42,7 @@ const GroupBoard = () => {
             <Routes>
                 <Route path="recruit" element={<GroupRecruit />}/>
                 <Route path="list" element={<GroupConcert />}/>
-                <Route path="qna" element={<GroupQnA />}/>
+                <Route path="qna/*" element={<GroupQnA />}/>
             </Routes>
         </Stack>
     )
