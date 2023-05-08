@@ -121,6 +121,9 @@ export const groupStateSlice = createSlice({
         resetGroupInfo: (state) => {
             state.groupInfo = null
             state.groupExist = true
+        },
+        resetGroupQnA : (state) => {
+            state.groupQnAList = null
         }
     },
 

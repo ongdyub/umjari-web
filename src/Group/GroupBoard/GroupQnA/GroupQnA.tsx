@@ -18,7 +18,7 @@ import QnAItem from "./QnAItem";
 import LoginModal from "../../../Modal/LoginModal";
 import GroupQnAWriteModal from "../../../Modal/GroupQnAWriteModal";
 import {AppDispatch} from "../../../store";
-import {groupQnAListGet, selectGroup} from "../../../store/slices/group/group";
+import {groupQnAListGet, groupStateActions, selectGroup} from "../../../store/slices/group/group";
 import {useParams} from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
 
@@ -42,23 +42,23 @@ const GroupQnA = () => {
     }
 
     const handleSearchWord = (text : string) => {
-        searchParams.set('text',text)
-        setSearchParams(searchParams)
         setSearchWord(text)
     }
 
     const onClickTextSearch = () => {
-        const text = searchParams.get('text')
+        searchParams.set('text', searchWord)
         searchParams.set('page', '1')
+
+        const text = searchParams.get('text')
+
         setSearchParams(searchParams)
-        setPage(1)
 
         const param = {
             text : text === null ? '' : text.toString(),
             page : 1,
             sort : 'createAt,DESC',
         }
-
+        setPage(1)
         dispatch(groupQnAListGet({id, param}))
     }
 
@@ -88,14 +88,14 @@ const GroupQnA = () => {
 
         dispatch(groupQnAListGet({id, param}))
 
-    },[page, dispatch, id])
+    },[page, dispatch, id, searchParams])
 
     useEffect(() => {
         if (groupState.groupQnAList !== null) {
             setTotalPage(groupState.groupQnAList.totalPages)
             setPage(groupState.groupQnAList.currentPage)
         }
-    }, [groupState.groupQnAList, setTotalPage, setPage])
+    }, [groupState.groupQnAList])
 
     return(
         <Stack sx={{mb:10}}>
