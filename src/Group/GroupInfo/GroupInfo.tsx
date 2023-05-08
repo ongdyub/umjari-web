@@ -15,7 +15,7 @@ const GroupInfo = (props : any) => {
     }
 
     return(
-        <Stack direction={res700 ? "column" : "row"} sx={{mt: res700 ? 1 : 2, mb:2}} >
+        <Stack direction={res700 ? "column" : "row"} sx={{mt: res700 ? 1 : 2, mb:res700 ? 0.5 : 2}} >
             <Stack direction={res700 ? "row" : "column"} sx={{pl: res700 ? 0 : 6, pr: res700 ? 0 : 6, mb: res700 ? 0 : 2}} alignContent={"center"} alignItems={"center"}>
                 <Stack direction={"row"} alignContent={"center"} alignItems={"center"} sx={{width: res700 ? 'calc(100% - 100px)' : 'auto'}}>
                     <Typography align={"center"} sx={{fontSize: res700 ? 24 : 30,fontFamily: "Open Sans",fontWeight: 100, wordWrap: "break-word", width: res700 ? '100%' : 150, pl: res700 ? 2 : 0}}>{groupData.name}</Typography>

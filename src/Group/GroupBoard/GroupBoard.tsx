@@ -29,12 +29,12 @@ const GroupBoard = () => {
     const myButtons = [
         <Button key="recruit" onClick={onClickGoRecruit}>모집정보</Button>,
         <Button key="list" onClick={onClickGoList}>연주목록</Button>,
-        <Button key="comment" onClick={onClickGoQnA}>Q&A</Button>,
+        <Button key="qna" onClick={onClickGoQnA}>Q&A</Button>,
     ]
 
     return(
-        <Stack sx={{mt:1, pl: res700 ? 0 : 3}}>
-            <Stack sx={{mb: 3}} alignItems={res700 ? "center" : ''}>
+        <Stack sx={{mt:0, pl: res700 ? 0 : 3}}>
+            <Stack sx={{mb: 2}} alignItems={res700 ? "center" : ''}>
                 <ButtonGroup variant={"text"} size="large">
                     {myButtons}
                 </ButtonGroup>

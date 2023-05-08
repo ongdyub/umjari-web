@@ -51,8 +51,9 @@ const GroupQnA = () => {
 
     return(
         <Stack sx={{mb:10}}>
-            <Stack direction={res700 ? "column" : "row"} alignItems={res700 ? "center" : ''} sx={{mb: 3}}>
-                <FormControl variant="standard" sx={{width: res700 ? '80%' : 350}}>
+            <Divider sx={{width: res700 ? '100%' : '90%', mt: -1}}/>
+            <Stack direction={res700 ? "column" : "row"} alignItems={res700 ? "center" : ''} sx={{mb: 3, mt: 1}}>
+                <FormControl variant="standard" sx={{mt : res700 ? 1 : 1,width: res700 ? '80%' : 350}}>
                     <InputLabel htmlFor="standard-adornment-amount">검색어를 입력하세요</InputLabel>
                     <Input
                         id="standard-adornment-amount"
@@ -64,23 +65,20 @@ const GroupQnA = () => {
                 </FormControl>
 
                 <Stack direction={"row"}>
-                    <Button variant={"outlined"} sx={{ml: 2, mt: res700 ? 2: 0}}>검색하기</Button>
-                    <Button variant={"contained"} sx={{ml: 2, mt: res700 ? 2: 0}} onClick={() => setLoginOpen(true)}>작성하기</Button>
+                    <Button variant={"outlined"} sx={{ml: 2, mt: res700 ? 2: 1.5, fontSize: res700 ? 11 : 14}}>검색하기</Button>
+                    <Button variant={"contained"} sx={{ml: 2, mt: res700 ? 2: 1.5, fontSize : res700 ? 11 : 14}} onClick={() => setLoginOpen(true)}>작성하기</Button>
                 </Stack>
 
             </Stack>
 
-            <Divider sx={{width: '100%'}} />
-
-
-
+            <Divider sx={{width: '100%', mt: res700 ? -1 : 0}} />
 
             <Stack sx={{pr: 3, pt: 3, width: '100%', pl: res700 ? 3 : 0}}>
                 <Grid container columns={14}>
                     {
                         groupState.groupQnAList?.contents.map((item) => (
-                            <Grid sx={{pr:2, pl: 2, mb: 3}} item res300={14} res500={14} res800={7} lg={7} alignItems={"center"} alignContent={"center"}>
-                                <QnAItem onClick={() => onClickQnA} key={item} img={item} title={item.title} comment={item.replyCount} />
+                            <Grid sx={{pr:2, pl: 2, mb: 2}} item res300={14} res500={14} res800={7} lg={7} alignItems={"center"} alignContent={"center"}>
+                                <QnAItem onClick={() => onClickQnA} item={item} />
                             </Grid>
                         ))
                     }
