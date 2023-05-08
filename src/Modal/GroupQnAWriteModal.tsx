@@ -43,12 +43,13 @@ const GroupQnAWriteModal = (props : any) => {
 
     const [title,setTitle] = useState('')
     const [contents, setContents] = useState('')
+    const [hide, setHide] = useState(false)
 
     const handleSubmit = async () => {
         const qnaData = {
             title : title,
             content : contents,
-            isPrivate : false
+            isPrivate : hide
         }
         const data = {
             qnaData : qnaData,
@@ -82,7 +83,7 @@ const GroupQnAWriteModal = (props : any) => {
                 <Divider sx={{width: '100%', mt: 1, mb: 1}} />
                 <Stack sx={{height: '80%'}}>
                     <TextField
-                        placeholder="내용을 입력해 주세요"
+                        placeholder="내용을 입력해 주세요. 공개 선택 시에는 이름이 표시가 되고 비공개 선택 시에는 닉네임이 표시됩니다."
                         multiline
                         minRows={15}
                         maxRows={15}
@@ -92,6 +93,12 @@ const GroupQnAWriteModal = (props : any) => {
                     />
                 </Stack>
                 <Stack alignItems={"center"} justifyContent={"flex-start"} direction={"row"} sx={{mt: 1}}>
+                    {
+                        hide ?
+                            <Button variant={"contained"} sx={{mr: 2, bgcolor: 'red', color: 'white'}} onClick={() => setHide(false)}>비공개</Button>
+                            :
+                            <Button variant={"contained"} sx={{mr: 2, bgcolor: 'green', color: 'white'}} onClick={() => setHide(true)}>공개</Button>
+                    }
                     <Button variant={"contained"} onClick={handleSubmit}>작성하기</Button>
                 </Stack>
             </Box>

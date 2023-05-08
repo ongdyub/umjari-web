@@ -21,6 +21,7 @@ import {AppDispatch} from "../../../store";
 import {groupQnAListGet, groupStateActions, selectGroup} from "../../../store/slices/group/group";
 import {useParams} from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
+import {selectUser, userActions} from "../../../store/slices/user/user";
 
 const GroupQnA = () => {
 
@@ -28,6 +29,7 @@ const GroupQnA = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { id } = useParams();
     const groupState = useSelector(selectGroup)
+    const userState = useSelector(selectUser)
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -36,9 +38,18 @@ const GroupQnA = () => {
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1)
 
-    const [loginOpen, setLoginOpen] = useState<boolean>(false)
-    const handleLoginClose = () => {
-        setLoginOpen(false)
+    const [writeOpen, setWriteOpen] = useState<boolean>(false)
+    const handleWriteClose = () => {
+        setWriteOpen(false)
+    }
+
+    const onClickWrite = () => {
+        if(userState.isLogin){
+            setWriteOpen(true)
+        }
+        else{
+            dispatch(userActions.openModal())
+        }
     }
 
     const handleSearchWord = (text : string) => {
@@ -130,7 +141,7 @@ const GroupQnA = () => {
 
                 <Stack direction={"row"}>
                     <Button variant={"outlined"} sx={{ml: 2, mt: res700 ? 2: 1.5, fontSize : res700 ? 11 : 14}} onClick={onClickTextSearch}>검색하기</Button>
-                    <Button variant={"contained"} sx={{ml: 2, mt: res700 ? 2: 1.5, fontSize : res700 ? 11 : 14}} onClick={() => setLoginOpen(true)}>작성하기</Button>
+                    <Button variant={"contained"} sx={{ml: 2, mt: res700 ? 2: 1.5, fontSize : res700 ? 11 : 14}} onClick={onClickWrite}>작성하기</Button>
                 </Stack>
 
             </Stack>
@@ -152,7 +163,7 @@ const GroupQnA = () => {
             <Stack alignItems="center" sx={{width:'100%'}} flexDirection={'row'} justifyContent="center" alignContent="center">
                 <Pagination sx={{display: 'flex', width: '80%',justifyContent: "center", alignItems:"center"}} size={res700 ? "small" : "large"} count={totalPage} page={page} onChange={handlePage} defaultPage={1} siblingCount={1} boundaryCount={1}/>
             </Stack>
-            <GroupQnAWriteModal open={loginOpen} handleClose={handleLoginClose}/>
+            <GroupQnAWriteModal open={writeOpen} handleClose={handleWriteClose}/>
         </Stack>
     )
 }

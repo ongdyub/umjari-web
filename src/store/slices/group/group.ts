@@ -80,7 +80,6 @@ export const groupInfo = createAsyncThunk(
     "group/groupInfo",
     async (id : number | string | undefined) => {
         const response = await axios.get(`/api/v1/group/${id}/`)
-        console.log(response.data)
         return response.data
     }
 )
@@ -102,6 +101,7 @@ export const groupQnAListGet = createAsyncThunk(
     "group/groupQnAListGet",
     async ({ id, param }: { id: string | null | undefined, param: any }) => {
         const response = await axios.get(`/api/v1/group/${id}/qna/`, {params : param})
+        console.log(response.data)
         return response.data
     }
 )
