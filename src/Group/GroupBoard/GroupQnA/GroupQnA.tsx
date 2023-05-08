@@ -63,8 +63,20 @@ const GroupQnA = () => {
     }
 
     const handlePage = (event: React.ChangeEvent<unknown>, value: number) => {
+        searchParams.set('text', searchWord)
         searchParams.set('page', value.toString())
+
+        const text = searchParams.get('text')
+        const page = searchParams.get('page')
+
         setSearchParams(searchParams)
+
+        const param = {
+            text : text === null ? '' : text.toString(),
+            page : page === null ? '1' : page.toString(),
+            sort : 'createAt,DESC',
+        }
+        dispatch(groupQnAListGet({id, param}))
         setPage(value);
     };
 
@@ -88,7 +100,11 @@ const GroupQnA = () => {
 
         dispatch(groupQnAListGet({id, param}))
 
-    },[page, dispatch, id, searchParams])
+        return () => {
+            dispatch(groupStateActions.resetGroupQnA)
+        }
+
+    },[dispatch, id, searchParams])
 
     useEffect(() => {
         if (groupState.groupQnAList !== null) {
