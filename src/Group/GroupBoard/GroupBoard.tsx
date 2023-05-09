@@ -8,6 +8,7 @@ import GroupRecruit from "./GroupRecruit/GroupRecruit";
 import GroupConcert from "./GroupConcert/GroupConcert";
 import GroupQnA from "./GroupQnA/GroupQnA";
 import {useNavigate} from "react-router";
+import GroupQnAItem from "./GroupQnAItem/GroupQnAItem";
 
 const GroupBoard = () => {
 
@@ -43,6 +44,7 @@ const GroupBoard = () => {
                 <Route path="recruit" element={<GroupRecruit />}/>
                 <Route path="list" element={<GroupConcert />}/>
                 <Route path="qna/*" element={<GroupQnA />}/>
+                <Route path="qna/:qid" element={<GroupQnAItem />}/>
             </Routes>
         </Stack>
     )

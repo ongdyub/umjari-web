@@ -3,16 +3,23 @@ import CommentIcon from '@mui/icons-material/Comment';
 import {useSelector} from "react-redux";
 import {selectDummy} from "../../../store/slices/dummy/dummy";
 import {useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 
 const QnAItem = (props : any) => {
 
     const {item} = props
     const theme = useTheme();
+    const { id } = useParams();
+    const navigate = useNavigate()
     const res500 = useMediaQuery(theme.breakpoints.down("res500"))
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
 
+    const onClickQnAItem = () => {
+        navigate(`/group/${id}/qna/${item.id}`)
+    }
+
     return(
-        <Card sx={{width: '100%',justifyContent:"flex-start", alignItems:"center" ,display: 'flex',height: 40, alignContent: 'center',cursor: 'pointer'}}>
+        <Card onClick={onClickQnAItem} sx={{width: '100%',justifyContent:"flex-start", alignItems:"center" ,display: 'flex',height: 40, alignContent: 'center',cursor: 'pointer'}}>
             <Stack sx={{width: 20}} alignItems={"center"} alignContent={"center"} justifyContent={"center"}>
                 <Typography sx={{color: '#00b0ff', fontSize: 15, fontWeight: 800, pl:1}}>Q.</Typography>
             </Stack>

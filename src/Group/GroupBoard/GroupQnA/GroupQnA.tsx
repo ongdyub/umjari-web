@@ -91,10 +91,6 @@ const GroupQnA = () => {
         setPage(value);
     };
 
-    const onClickQnA = () => {
-        window.alert("click")
-    }
-
     useEffect(() => {
 
         const text = searchParams.get('text')
@@ -153,7 +149,7 @@ const GroupQnA = () => {
                     {
                         groupState.groupQnAList?.contents.map((item) => (
                             <Grid sx={{pr:2, pl: 2, mb: 2}} item res300={14} res500={14} res800={7} lg={7} alignItems={"center"} alignContent={"center"}>
-                                <QnAItem onClick={onClickQnA} item={item} />
+                                <QnAItem item={item} />
                             </Grid>
                         ))
                     }
