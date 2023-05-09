@@ -83,7 +83,7 @@ const GroupQnAWriteModal = (props : any) => {
                 <Divider sx={{width: '100%', mt: 1, mb: 1}} />
                 <Stack sx={{height: '80%'}}>
                     <TextField
-                        placeholder="내용을 입력해 주세요. 공개 선택 시에는 이름이 표시가 되고 비공개 선택 시에는 닉네임이 표시됩니다."
+                        placeholder="내용을 입력해 주세요. 공개 선택 시에는 계정 검색 가능한 현재 이름이 표시가 되고, 비공개 선택 시에는 닉네임만 표시됩니다."
                         multiline
                         minRows={15}
                         maxRows={15}
