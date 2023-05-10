@@ -28,6 +28,7 @@ export interface GroupRecruit {
 
 export interface GroupQnAComment {
     id: number,
+    author: string,
     content: string,
     anonymous: boolean,
     updatedAt: string,
