@@ -59,7 +59,7 @@ const MyProfile = () => {
             }
             <Stack direction={res750 ? "row" : 'column'} justifyContent={"flex-start"} sx={{width: '80%', flexWrap: res750 ? 'wrap' : '', pl: res750 ? 1 : 0, pr: res750 ? 1 : 0, pt:2 }}>
                 {groupList.map((item) => (
-                    <Stack justifyContent={"flex-start"} sx={{width: res750 ? 'auto' : '100%', mb: res750 ? 1 : 3, flexWrap: res750 ? 'wrap' : '', mr: res750 ? 2 : 0, ml: res750 ? 2 : 0}} direction={res750 ? "row" : "column"}>
+                    <Stack justifyContent={"flex-start"} sx={{width: res750 ? '80%' : '100%', mb: res750 ? 1 : 3, flexWrap: res750 ? 'wrap' : '', mr: res750 ? 2 : 0, ml: res750 ? 2 : 0}} direction={res750 ? "row" : "column"}>
                         {
                             res750 ?
                                 <Chip label={item.name} sx={{fontSize : res500 ? 10 : 13, width: 100, height: res500 ? 20 : 30}} />
