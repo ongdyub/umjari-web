@@ -64,7 +64,7 @@ const GroupQnAComment = (props : any) => {
 
             <Stack alignItems="center" sx={{width: '100%'}} flexDirection={"row"} justifyContent={"space-between"}>
                 {
-                    item.isAuthor ?
+                    item.isAuthor === true ?
                         <Stack alignItems={"center"} sx={{ml: 'auto'}} flexDirection={"row"}>
                             <Button size={"small"} color={"info"} onClick={() => window.alert("구현 예정입니다.")}>수정</Button>
                             <Button size={"small"} color={"error"} onClick={() => window.alert("구현 예정입니다.")} >삭제</Button>
