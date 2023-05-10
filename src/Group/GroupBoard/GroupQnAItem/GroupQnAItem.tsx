@@ -49,6 +49,8 @@ const GroupQnAItem = () => {
             const result = await dispatch(groupQnAReplyPost({id, qid, token: userState.accessToken, data}))
             if (result.type === `${groupQnAReplyPost.typePrefix}/fulfilled`) {
                 window.alert("댓글 작성 성공")
+                setReplyText('')
+                dispatch(groupQnAItemGet({id, qid, token : userState.accessToken}))
             } else {
                 if(result.payload == 3001){
                     window.alert("그룹에 속해있지 않은 계정입니다.")
