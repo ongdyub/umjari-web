@@ -27,7 +27,7 @@ const QnAItem = (props : any) => {
                 <Typography sx={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 12}}>{item.title}</Typography>
             </Stack>
             <Stack sx={{ml: 'auto', mr: res700 ? 1 : -1}}>
-                <Typography sx={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 9, fontWeight: 200}}>{item.anonymous}</Typography>
+                <Typography sx={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 9, fontWeight: 200}}>{item.isAnonymous ? item.nickname : item.authorInfo.profileName}</Typography>
             </Stack>
             <Stack sx={{ml: 'auto'}}>
                 <CommentIcon sx={{maxWidth: res700 ? 15 : 20, maxHeight: res700 ? 15 : 20, minWidth: res700 ? 15 : 20, minHeight: res700 ? 15 : 20}}/>

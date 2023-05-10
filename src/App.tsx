@@ -71,7 +71,7 @@ const blueTheme = createTheme({
                     '&:focus': {
                         outline: 'none',
                     },
-                    '-webkit-tap-highlight-color': 'transparent',
+                    'WebkitTapHighlightColor' : 'transparent',
                     '-webkit-scrollbar': {display: 'none'}
                 },
             },

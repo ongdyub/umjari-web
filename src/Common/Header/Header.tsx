@@ -6,7 +6,7 @@ import {
     Container, Divider,
     IconButton,
     Menu,
-    MenuItem,
+    MenuItem, Stack,
     Toolbar,
     Tooltip,
     Typography, useMediaQuery, useTheme
@@ -18,6 +18,7 @@ import {selectUser, userActions} from "../../store/slices/user/user";
 import { useNavigate } from "react-router"
 import LoginModal from "../../Modal/LoginModal";
 import {AppDispatch} from "../../store";
+import React from 'react'
 
 const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
 const settings = ['마이페이지', '작성기록', '설정', '로그아웃', 'Size'];
@@ -86,15 +87,22 @@ const Header = () => {
         navigate('/')
     }
 
-    return(
+    return (
         <AppBar position="static">
             <Container maxWidth="xl">
-                <Toolbar sx={{pr: 0,pl: res450 ? 0 : '20px', height: res450 ? '20px' : '60px', justifyContent: 'space-around', alignContent: 'center', alignItems: 'center'}} >
+                <Toolbar sx={{
+                    pr: 0,
+                    pl: res450 ? 0 : '20px',
+                    height: res450 ? '20px' : '60px',
+                    justifyContent: 'space-around',
+                    alignContent: 'center',
+                    alignItems: 'center'
+                }}>
                     {/*Desktop Display*/}
                     <Box
                         component="img"
                         sx={{
-                            display: { xs: 'none', md: 'flex' },
+                            display: {xs: 'none', md: 'flex'},
                             width: 100,
                             objectFit: 'contain',
                             cursor: 'pointer'
@@ -105,7 +113,7 @@ const Header = () => {
                         onClick={onClickLogo}
                     />
 
-                    <Box sx={{display: {md: 'none' }, width: '48px', pr: 0, mr: 0 }}>
+                    <Box sx={{display: {md: 'none'}, width: '48px', pr: 0, mr: 0}}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -114,7 +122,7 @@ const Header = () => {
                             onClick={handleOpenNavMenu}
                             color="inherit"
                         >
-                            <MenuIcon />
+                            <MenuIcon/>
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -131,7 +139,7 @@ const Header = () => {
                             open={Boolean(anchorElNav)}
                             onClose={() => handleCloseNavMenu('close')}
                             sx={{
-                                display: { xs: 'block', md: 'none' },
+                                display: {xs: 'block', md: 'none'},
                             }}
                         >
                             {pages.map((page) => (
@@ -146,7 +154,7 @@ const Header = () => {
                     <Box
                         component="img"
                         sx={{
-                            display: {md: 'none' },
+                            display: {md: 'none'},
                             width: 100,
                             objectFit: 'contain',
                             cursor: 'pointer'
@@ -156,32 +164,38 @@ const Header = () => {
                         src={`${process.env.PUBLIC_URL}/Thumbnail_trans_white.png`}
                         onClick={onClickLogo}
                     />
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                    <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         {pages.map((page) => (
-                            <>
+                            <React.Fragment key={page}>
                                 <Button
                                     key={page}
                                     onClick={() => handleCloseNavMenu(page)}
-                                    sx={{ my: 2, color: 'white', display: 'block', fontSize: '15px' }}
+                                    sx={{my: 2, color: 'white', display: 'block', fontSize: '15px'}}
                                 >
                                     {page}
                                 </Button>
-                                <Divider orientation="vertical" sx={{m: '10px',position:'relative', top: '20px', height:'10px', border: 'solid 1px white'}} />
-                            </>
+                                <Divider orientation="vertical" sx={{
+                                    m: '10px',
+                                    position: 'relative',
+                                    top: '20px',
+                                    height: '10px',
+                                    border: 'solid 1px white'
+                                }}/>
+                            </React.Fragment>
                         ))}
                     </Box>
 
-                    <Box sx={{ flexGrow: 0, display: 'flex' }}>
+                    <Box sx={{flexGrow: 0, display: 'flex'}}>
                         {
                             userState.isLogin ?
                                 <>
                                     <Tooltip title="Open settings">
-                                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                            <Avatar alt={'I'} src="" />
+                                        <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                                            <Avatar alt={'I'} src=""/>
                                         </IconButton>
                                     </Tooltip>
                                     <Menu
-                                        sx={{ mt: '45px' }}
+                                        sx={{mt: '45px'}}
                                         id="menu-appbar"
                                         anchorEl={anchorElUser}
                                         anchorOrigin={{
@@ -205,16 +219,19 @@ const Header = () => {
                                 </>
                                 :
                                 res450 ?
-                                    <Button variant="contained" size={"small"} sx={{position: 'relative', border: '0.5px solid white', fontSize: 12}} onClick={() => dispatch(userActions.openModal())}>로그인</Button>
+                                    <Button variant="contained" size={"small"}
+                                            sx={{position: 'relative', border: '0.5px solid white', fontSize: 12}}
+                                            onClick={() => dispatch(userActions.openModal())}>로그인</Button>
                                     :
-                                    <Button variant="contained" sx={{position: 'relative', border: '1px solid white'}} onClick={() => dispatch(userActions.openModal())}>로그인</Button>
+                                    <Button variant="contained" sx={{position: 'relative', border: '1px solid white'}}
+                                            onClick={() => dispatch(userActions.openModal())}>로그인</Button>
                         }
                     </Box>
                 </Toolbar>
             </Container>
             <LoginModal open={userState.isModalOpen}/>
         </AppBar>
-    )
+    );
 }
 
 export default Header;

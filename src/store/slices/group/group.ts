@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
+import {SignUser} from "../user/user";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -28,20 +29,34 @@ export interface GroupRecruit {
 
 export interface GroupQnAComment {
     id: number,
+    author: string,
     content: string,
-    anonymous: boolean,
+    isAnonymous: boolean,
     updatedAt: string,
-    createAt: string
+    createAt: string,
+    isAuthor: {
+        "id" : string,
+        "profileImage": string,
+        "profileName" : string
+    },
+    nickname: string
 }
 
 export interface GroupQnAItem {
     id: number,
     content: string,
     title: string,
-    anonymous: boolean,
+    isAnonymous: boolean,
     replyList: [GroupQnAComment],
     createAt: string,
-    updatedAt: string
+    updatedAt: string,
+    nickname: string,
+    authorInfo: {
+        "profileName": string,
+        "profileImage" : string,
+        "id" : number
+    },
+    isAuthor: boolean
 }
 
 export interface GroupQnAList {
@@ -49,10 +64,10 @@ export interface GroupQnAList {
         {
             "id": number,
             "title": string,
-            "anonymous": boolean,
+            "isAnonymous": boolean,
             "updatedAt": string,
             "replyCount": number,
-            "createAt": string
+            "createAt": string,
         }
     ],
     totalPages: number,
@@ -99,6 +114,23 @@ export const groupQnAPost = createAsyncThunk(
     }
 )
 
+export const groupQnAReplyPost = createAsyncThunk(
+"group/groupQnAReplyPost",
+    async ({ id, qid, token, data }: { id: string | null | undefined, qid: string | null | undefined, token : string | null | undefined, data : any }, {rejectWithValue}) => {
+        try {
+            const response = await axios.post(`/api/v1/group/${id}/qna/${qid}/reply/`,data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const groupQnAListGet = createAsyncThunk(
     "group/groupQnAListGet",
     async ({ id, param }: { id: string | null | undefined, param: any }) => {
@@ -110,8 +142,12 @@ export const groupQnAListGet = createAsyncThunk(
 
 export const groupQnAItemGet = createAsyncThunk(
     "group/groupQnAItemGet",
-    async ({ id, qid }: { id: string | null | undefined, qid: string | null | undefined }) => {
-        const response = await axios.get(`/api/v1/group/${id}/qna/${qid}/`)
+    async ({ id, qid, token }: { id: string | null | undefined, qid: string | null | undefined, token : string | null | undefined }) => {
+        const response = await axios.get(`/api/v1/group/${id}/qna/${qid}/`,{
+            headers: {
+                Authorization: `Bearer  ${token}`,
+            },
+        })
         console.log(response.data)
         return response.data
     }
