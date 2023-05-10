@@ -54,7 +54,7 @@ const MyHome = () => {
                     null
             }
             <Stack sx={{width: '100%', mt: 3, mb: 2}} justifyContent={res750 ? "center" : "flex-start"} alignContent={"center"} alignItems={"center"}>
-                <Typography sx={{ml: res750 ? 0 : 2, fontWeight: 300, fontSize: res750 ? 17 : 30, pr: res750 ? 0 : 2}}>한줄 소개 입력 공간한줄 소개 입력 소개 입력 공간</Typography>
+                <Typography sx={{pl: 2, fontWeight: 300, fontSize: res750 ? 17 : 30, pr: 2}}>한줄 소개 입력 공간한줄 소개 입력 소개 입력 공간</Typography>
             </Stack>
             <Divider sx={{Width: '90%'}}/>
             <Stack sx={{pl: res750 ? 0 : 6}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
