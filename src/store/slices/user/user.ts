@@ -10,7 +10,7 @@ export interface SignUser {
     email: string;
     nickname: string;
     intro: string;
-    name: string;
+    profileName: string;
     // phoneNumber: string;
 }
 

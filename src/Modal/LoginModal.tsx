@@ -94,13 +94,15 @@ const LoginModal = (props : any) => {
     }
 
     const checkID = (asValue: string) => {
-        const regExp = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.]{4,20}$/;
-        return regExp.test(asValue);
+        const regExp : RegExp = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.]{4,20}$/;
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        return regExp.test(asValue) && regAdmin.test(asValue);
     }
 
     const checkProfileName = (asValue : string) => {
         const regExp = /^[a-zA-Z0-9_-]{4,20}$/
-        return regExp.test(asValue)
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        return regExp.test(asValue) && regAdmin.test(asValue)
     }
 
     const checkPW = (asValue: string) => {
@@ -121,7 +123,8 @@ const LoginModal = (props : any) => {
 
     const checkNick = (asValue: string) => {
         const regExp = /^[a-zA-Z0-9가-힣_]{2,16}$/;
-        return regExp.test(asValue)
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        return regExp.test(asValue) && regAdmin.test(asValue)
     }
 
     const onKeyPress = (e: { key: string; }) => {
@@ -248,7 +251,7 @@ const LoginModal = (props : any) => {
             email: email,
             // phoneNumber: phone,
             nickname: nickname,
-            name: profileName,
+            profileName: profileName,
             intro: ''
         }
         const result = await dispatch(signUp(data))
@@ -272,8 +275,11 @@ const LoginModal = (props : any) => {
             else if(result.payload === 13){
                 window.alert("이미 존재하는 이메일 입니다.")
             }
+            else if(result.payload === 13){
+                window.alert("이미 존재하는 프로필 이름 입니다.")
+            }
             else{
-                window.alert("중복되는 내용이 있습니다.")
+                window.alert("네트워크 오류 발생. 다시 시도해 주세요.")
             }
         }
     };
@@ -304,7 +310,7 @@ const LoginModal = (props : any) => {
                 setErrorText("아이디 형식을 다시 확인해주세요")
                 return
             }
-            if(!checkPW(loginPassword) || !checkPW(pwConfirm)){
+            if(!checkPW(loginPassword)){
                 setErrorText("비밀번호 형식을 다시 확인해주세요")
                 return
             }
@@ -454,7 +460,7 @@ const LoginModal = (props : any) => {
                                         mr: 1
                                     }}
                                 />
-                                <Button onClick={() => {window.alert("준비중")}} disabled={false} variant={"outlined"} sx={{ml: 'auto',maxWidth: '90px', maxHeight: '30px', minWidth: '90px', minHeight: '30px'}}>중복검사</Button>
+                                {/*<Button onClick={() => {window.alert("준비중")}} disabled={false} variant={"outlined"} sx={{ml: 'auto',maxWidth: '90px', maxHeight: '30px', minWidth: '90px', minHeight: '30px'}}>중복검사</Button>*/}
                             </Stack>
                             <Stack sx={{flexDirection: res550 ? 'row' : 'row', alignItems: 'center', alignContent: 'center'}}>
                                 <TextField
