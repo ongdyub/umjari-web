@@ -148,7 +148,7 @@ const GroupQnA = () => {
                 <Grid container columns={14}>
                     {
                         groupState.groupQnAList?.contents.map((item) => (
-                            <Grid sx={{pr:2, pl: 2, mb: 2}} item res300={14} res500={14} res800={7} lg={7} alignItems={"center"} alignContent={"center"}>
+                            <Grid key={item.id} sx={{pr:2, pl: 2, mb: 2}} item res300={14} res500={14} res800={7} lg={7} alignItems={"center"} alignContent={"center"}>
                                 <QnAItem item={item} />
                             </Grid>
                         ))

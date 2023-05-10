@@ -100,7 +100,7 @@ const LoginModal = (props : any) => {
     }
 
     const checkProfileName = (asValue : string) => {
-        const regExp = /^[a-zA-Z0-9_-]{4,20}$/
+        const regExp = /^[a-zA-Z0-9_-]{4,15}$/
         const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
         return regExp.test(asValue) && regAdmin.test(asValue)
     }
@@ -122,7 +122,7 @@ const LoginModal = (props : any) => {
     // }
 
     const checkNick = (asValue: string) => {
-        const regExp = /^[a-zA-Z0-9가-힣_]{2,16}$/;
+        const regExp = /^[a-zA-Z0-9가-힣_]{4,15}$/;
         const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
         return regExp.test(asValue) && regAdmin.test(asValue)
     }
@@ -599,7 +599,7 @@ const LoginModal = (props : any) => {
                             onClick={onClickMode}
                             sx={{
                                 width: 0.4,
-                                'word-break': 'keep-all',
+                                wordBreak: 'keep-all',
                                 cursor: 'pointer',
                                 '&:hover': {
                                     color: 'black',
