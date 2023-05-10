@@ -94,13 +94,15 @@ const LoginModal = (props : any) => {
     }
 
     const checkID = (asValue: string) => {
-        const regExp = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.]{4,20}$/;
-        return regExp.test(asValue);
+        const regExp : RegExp = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.]{4,20}$/;
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        return regExp.test(asValue) && regAdmin.test(asValue);
     }
 
     const checkProfileName = (asValue : string) => {
         const regExp = /^[a-zA-Z0-9_-]{4,20}$/
-        return regExp.test(asValue)
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        return regExp.test(asValue) && regAdmin.test(asValue)
     }
 
     const checkPW = (asValue: string) => {
@@ -121,7 +123,8 @@ const LoginModal = (props : any) => {
 
     const checkNick = (asValue: string) => {
         const regExp = /^[a-zA-Z0-9가-힣_]{2,16}$/;
-        return regExp.test(asValue)
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        return regExp.test(asValue) && regAdmin.test(asValue)
     }
 
     const onKeyPress = (e: { key: string; }) => {
@@ -248,7 +251,7 @@ const LoginModal = (props : any) => {
             email: email,
             // phoneNumber: phone,
             nickname: nickname,
-            name: profileName,
+            profileName: profileName,
             intro: ''
         }
         const result = await dispatch(signUp(data))
@@ -304,7 +307,7 @@ const LoginModal = (props : any) => {
                 setErrorText("아이디 형식을 다시 확인해주세요")
                 return
             }
-            if(!checkPW(loginPassword) || !checkPW(pwConfirm)){
+            if(!checkPW(loginPassword)){
                 setErrorText("비밀번호 형식을 다시 확인해주세요")
                 return
             }
@@ -454,7 +457,7 @@ const LoginModal = (props : any) => {
                                         mr: 1
                                     }}
                                 />
-                                <Button onClick={() => {window.alert("준비중")}} disabled={false} variant={"outlined"} sx={{ml: 'auto',maxWidth: '90px', maxHeight: '30px', minWidth: '90px', minHeight: '30px'}}>중복검사</Button>
+                                {/*<Button onClick={() => {window.alert("준비중")}} disabled={false} variant={"outlined"} sx={{ml: 'auto',maxWidth: '90px', maxHeight: '30px', minWidth: '90px', minHeight: '30px'}}>중복검사</Button>*/}
                             </Stack>
                             <Stack sx={{flexDirection: res550 ? 'row' : 'row', alignItems: 'center', alignContent: 'center'}}>
                                 <TextField
