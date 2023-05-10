@@ -42,13 +42,14 @@ const MyProfile = () => {
                         height: res750 ? '80%' : 133,
                         borderRadius: '30%',
                         objectFit: 'cover',
-                        boxShadow: 'rgb(0 0 0 / 6%) 0px 0px 4px 0px',
+                        boxShadow: 'rgb(0 0 0 / 20%) 0px 0px 4px 0px',
                         mt: res500 ? 0 : 2
                     }}
-                    alt="The house from the offer."
-                    src={"https://secure.gravatar.com/avatar/217b46f9ae197e33b88883b0e38f0fa4?s=150&d=identicon"}
+                    alt="Profile Img"
+                    onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
+                    src={"프로필이미지 자리"}
                 />
-                <Typography sx={{fontWeight: 300, fontSize: res700 ? 20 : 25, mt:2}}>정병민</Typography>
+                <Typography sx={{fontWeight: 300, fontSize: res700 ? 20 : 25, mt:2}}>{"umjari"}</Typography>
             </Stack>
             {
                 res750 ?
@@ -56,12 +57,12 @@ const MyProfile = () => {
                     :
                     <Divider sx={{width: '80%', mb:2}}/>
             }
-            <Stack direction={res750 ? "column" : 'column'} justifyContent={"flex-start"} sx={{width: '80%', flexWrap: res750 ? 'wrap' : '', pl: res750 ? 1 : 0, pr: res750 ? 1 : 0, pt:2 }}>
+            <Stack direction={res750 ? "row" : 'column'} justifyContent={"flex-start"} sx={{width: '80%', flexWrap: res750 ? 'wrap' : '', pl: res750 ? 1 : 0, pr: res750 ? 1 : 0, pt:2 }}>
                 {groupList.map((item) => (
-                    <Stack justifyContent={"flex-start"} sx={{width: res750 ? '80%' : '100%', mb: res750 ? 1 : 3, flexWrap: res750 ? 'wrap' : '', mr: res750 ? 2 : 0, ml: res750 ? 2 : 0}} direction={res750 ? "row" : "column"}>
+                    <Stack justifyContent={"flex-start"} sx={{width: res750 ? 'auto' : '100%', mb: res750 ? 1 : 3, flexWrap: res750 ? 'wrap' : '', mr: res750 ? 2 : 0, ml: res750 ? 2 : 0}} direction={res750 ? "row" : "column"}>
                         {
                             res750 ?
-                                <Chip label={item.name} sx={{fontSize : res500 ? 10 : 13, width: 120, height: res500 ? 20 : 30}} />
+                                <Chip label={item.name} sx={{fontSize : res500 ? 10 : 13, width: 100, height: res500 ? 20 : 30}} />
                                 :
                                 <Typography sx={{fontWeight: 900, fontSize: res500 ? 8 : 17, color: '#111111'}}>{item.name}</Typography>
                         }

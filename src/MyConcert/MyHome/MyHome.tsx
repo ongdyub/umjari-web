@@ -18,6 +18,7 @@ const MyHome = () => {
     const navigate = useNavigate();
     const resSize = useMediaQuery(theme.breakpoints.down("md"))
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
+    const res700 = useMediaQuery(theme.breakpoints.down("res700"))
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
     const onClickGoSelf = () => {
@@ -37,11 +38,11 @@ const MyHome = () => {
     }
 
     const myButtons = [
-        <Button onClick={onClickGoSelf} key="one">짧은소개</Button>,
-        <Button onClick={onClickGoList} key="two">연주회목록</Button>,
-        <Button onClick={onClickGoGallery} key="three">사진첩</Button>,
-        <Button onClick={onClickGoDiary} key="three">다이어리</Button>,
-        <Button onClick={onClickGoVisit} key="four">방명록</Button>,
+        <Button onClick={onClickGoSelf} sx={{fontSize: res700 ? 12 : 14}} key="one">짧은소개</Button>,
+        <Button onClick={onClickGoList} sx={{fontSize: res700 ? 12 : 14}} key="two">연주회목록</Button>,
+        <Button onClick={onClickGoGallery} sx={{fontSize: res700 ? 12 : 14}} key="three">사진첩</Button>,
+        <Button onClick={onClickGoDiary} sx={{fontSize: res700 ? 12 : 14}} key="three">다이어리</Button>,
+        <Button onClick={onClickGoVisit} sx={{fontSize: res700 ? 12 : 14}} key="four">방명록</Button>,
     ]
 
     return (
@@ -52,13 +53,13 @@ const MyHome = () => {
                     :
                     null
             }
-            <Stack sx={{width: '95%', mt: 3, mb: 2}} justifyContent={"flex-start"}>
-                <Typography sx={{ml: 8, fontWeight: 300, fontSize: 35, pr: 5}}>한줄 소개 입력 공간한줄 소개 입력 소개 입력 공간</Typography>
+            <Stack sx={{width: '100%', mt: 3, mb: 2}} justifyContent={res750 ? "center" : "flex-start"} alignContent={"center"} alignItems={"center"}>
+                <Typography sx={{ml: res750 ? 0 : 2, fontWeight: 300, fontSize: res750 ? 17 : 30, pr: res750 ? 0 : 2}}>한줄 소개 입력 공간한줄 소개 입력 소개 입력 공간</Typography>
             </Stack>
             <Divider sx={{Width: '90%'}}/>
-            <Stack sx={{pl: res550 ? 0 : 6}} justifyContent={res550 ? "center" : ''} alignItems={res550 ? "center" : ''} alignContent={res550 ? "center" : ''}>
-                <Stack sx={{mt:5}}>
-                    <ButtonGroup variant={"text"} size="large">
+            <Stack sx={{pl: res750 ? 0 : 6}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
+                <Stack sx={{mt:2}}>
+                    <ButtonGroup variant={"text"} size={"small"}>
                         {myButtons}
                     </ButtonGroup>
                 </Stack>
