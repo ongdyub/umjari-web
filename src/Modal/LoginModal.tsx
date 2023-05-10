@@ -67,7 +67,7 @@ const LoginModal = (props : any) => {
     const [disableCodeBtn, setDisableCodeBtn] = useState(true)
     const [valName, setValName] = useState<boolean>(false)
 
-    const [name, setName] = useState('')
+    const [profileName, setProfileName] = useState('')
 
     const [pending, setPending] = useState(false)
 
@@ -87,20 +87,22 @@ const LoginModal = (props : any) => {
         setValName(false)
         setDisableCodeBtn(true)
         setPending(false)
-        setName('')
+        setProfileName('')
 
         setIsLoginMode(!isLoginMode);
 
     }
 
     const checkID = (asValue: string) => {
-        const regExp = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.]{4,20}$/;
-        return regExp.test(asValue);
+        const regExp : RegExp = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.]{4,20}$/;
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        return regExp.test(asValue) && regAdmin.test(asValue);
     }
 
-    const checkName = (asValue : string) => {
-        const regExp = /^[a-zA-Z0-9가-힣_]{2,16}$/
-        return regExp.test(asValue)
+    const checkProfileName = (asValue : string) => {
+        const regExp = /^[a-zA-Z0-9_-]{4,20}$/
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        return regExp.test(asValue) && regAdmin.test(asValue)
     }
 
     const checkPW = (asValue: string) => {
@@ -121,7 +123,8 @@ const LoginModal = (props : any) => {
 
     const checkNick = (asValue: string) => {
         const regExp = /^[a-zA-Z0-9가-힣_]{2,16}$/;
-        return regExp.test(asValue)
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        return regExp.test(asValue) && regAdmin.test(asValue)
     }
 
     const onKeyPress = (e: { key: string; }) => {
@@ -215,8 +218,8 @@ const LoginModal = (props : any) => {
         setNickname(nickname)
     }
 
-    const onChangeName = (name: string) => {
-        setName(name)
+    const onChangeProfileName = (name: string) => {
+        setProfileName(name)
     }
 
     const onChangePwConfirm = (pw: string) => {
@@ -248,7 +251,7 @@ const LoginModal = (props : any) => {
             email: email,
             // phoneNumber: phone,
             nickname: nickname,
-            name: name,
+            profileName: profileName,
             intro: ''
         }
         const result = await dispatch(signUp(data))
@@ -272,8 +275,11 @@ const LoginModal = (props : any) => {
             else if(result.payload === 13){
                 window.alert("이미 존재하는 이메일 입니다.")
             }
+            else if(result.payload === 13){
+                window.alert("이미 존재하는 프로필 이름 입니다.")
+            }
             else{
-                window.alert("중복되는 내용이 있습니다.")
+                window.alert("네트워크 오류 발생. 다시 시도해 주세요.")
             }
         }
     };
@@ -291,20 +297,20 @@ const LoginModal = (props : any) => {
         setValName(false)
         setDisableCodeBtn(true)
         setPending(false)
-        setName('')
+        setProfileName('')
 
         setIsLoginMode(true)
         dispatch(userActions.closeModal())
     }
 
     useEffect(() => {
-        setSubmit(checkName(name) && checkEmail(email) && checkNick(nickname) && checkID(loginId) && checkPW(pwConfirm))
+        setSubmit(checkProfileName(profileName) && checkEmail(email) && checkNick(nickname) && checkID(loginId) && checkPW(pwConfirm))
         if(!isLoginMode){
             if(!checkID(loginId)){
                 setErrorText("아이디 형식을 다시 확인해주세요")
                 return
             }
-            if(!checkPW(loginPassword) || !checkPW(pwConfirm)){
+            if(!checkPW(loginPassword)){
                 setErrorText("비밀번호 형식을 다시 확인해주세요")
                 return
             }
@@ -312,8 +318,8 @@ const LoginModal = (props : any) => {
                 setErrorText("비밀번호가 일치하지 않습니다")
                 return;
             }
-            if(!checkName(name)){
-                setErrorText("이름의 형식을 다시 확인해주세요")
+            if(!checkProfileName(profileName)){
+                setErrorText("프로필 이름의 형식을 다시 확인해주세요")
                 return;
             }
             if(!checkEmail(email)){
@@ -326,7 +332,7 @@ const LoginModal = (props : any) => {
             }
             setErrorText("")
         }
-    },[name, email, nickname, loginId, loginPassword, pwConfirm])
+    },[profileName, email, nickname, loginId, loginPassword, pwConfirm])
 
     return (
         <Modal
@@ -431,26 +437,31 @@ const LoginModal = (props : any) => {
                                     }
                                 />
                             </FormControl>
-                            <TextField
-                                label="URL"
-                                variant="standard"
-                                helperText={!isLoginMode && "유저 url을 입력하세요. 프로필에 표시되고 /mypage/@url/ 형태로 사용됩니다. 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
-                                value={name}
-                                onChange={(e) => { onChangeName(e.target.value) }}
-                                sx={{
-                                    '& label.Mui-focused': {
-                                        color: 'black',
-                                    },
-                                    '& .MuiInput-underline:after': {
-                                        borderBottomColor: 'black',
-                                    },
-                                    '& .MuiOutlinedInput-root': {
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: 'black',
+                            <Stack sx={{width: '100%', flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
+                                <TextField
+                                    label="프로필 이름"
+                                    variant="standard"
+                                    helperText={!isLoginMode && "프로필 이름을 입력하세요. /mypage/@이름/ 형태로 사용되며, 글 작성 공개 시에 표시되는 이름입니다. "}
+                                    value={profileName}
+                                    onChange={(e) => { onChangeProfileName(e.target.value) }}
+                                    sx={{
+                                        '& label.Mui-focused': {
+                                            color: 'black',
                                         },
-                                    },
-                                }}
-                            />
+                                        '& .MuiInput-underline:after': {
+                                            borderBottomColor: 'black',
+                                        },
+                                        '& .MuiOutlinedInput-root': {
+                                            '&.Mui-focused fieldset': {
+                                                borderColor: 'black',
+                                            },
+                                        },
+                                        width: 'calc(100% - 100px)',
+                                        mr: 1
+                                    }}
+                                />
+                                {/*<Button onClick={() => {window.alert("준비중")}} disabled={false} variant={"outlined"} sx={{ml: 'auto',maxWidth: '90px', maxHeight: '30px', minWidth: '90px', minHeight: '30px'}}>중복검사</Button>*/}
+                            </Stack>
                             <Stack sx={{flexDirection: res550 ? 'row' : 'row', alignItems: 'center', alignContent: 'center'}}>
                                 <TextField
                                     label="이메일"
