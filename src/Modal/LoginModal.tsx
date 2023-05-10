@@ -8,7 +8,7 @@ import {
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {login, signUp, valCode, valEmailPost, valNamePost} from "../store/slices/user/user";
+import {login, signUp, userActions, valCode, valEmailPost, valNamePost} from "../store/slices/user/user";
 import {AppDispatch} from "../store";
 
 const styleReg = (theme: any) => ({
@@ -44,7 +44,7 @@ const styleLog = (theme: any) => ({
 
 const LoginModal = (props : any) => {
 
-    const {open, handleClose} = props;
+    const {open} = props;
 
     const dispatch = useDispatch<AppDispatch>();
     const theme = useTheme();
@@ -294,7 +294,7 @@ const LoginModal = (props : any) => {
         setName('')
 
         setIsLoginMode(true)
-        handleClose(false)
+        dispatch(userActions.closeModal())
     }
 
     useEffect(() => {
@@ -432,9 +432,9 @@ const LoginModal = (props : any) => {
                                 />
                             </FormControl>
                             <TextField
-                                label="이름"
+                                label="URL"
                                 variant="standard"
-                                helperText={!isLoginMode && "유저 이름을 입력하세요. 프로필에 표시될 이름입니다. 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
+                                helperText={!isLoginMode && "유저 url을 입력하세요. 프로필에 표시되고 /mypage/@url/ 형태로 사용됩니다. 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
                                 value={name}
                                 onChange={(e) => { onChangeName(e.target.value) }}
                                 sx={{

@@ -39,7 +39,9 @@ export interface GroupQnAItem {
     content: string,
     title: string,
     anonymous: boolean,
-    replyList: [GroupQnAComment]
+    replyList: [GroupQnAComment],
+    createAt: string,
+    updatedAt: string
 }
 
 export interface GroupQnAList {
@@ -80,7 +82,6 @@ export const groupInfo = createAsyncThunk(
     "group/groupInfo",
     async (id : number | string | undefined) => {
         const response = await axios.get(`/api/v1/group/${id}/`)
-        console.log(response.data)
         return response.data
     }
 )
@@ -102,6 +103,16 @@ export const groupQnAListGet = createAsyncThunk(
     "group/groupQnAListGet",
     async ({ id, param }: { id: string | null | undefined, param: any }) => {
         const response = await axios.get(`/api/v1/group/${id}/qna/`, {params : param})
+        console.log(response.data)
+        return response.data
+    }
+)
+
+export const groupQnAItemGet = createAsyncThunk(
+    "group/groupQnAItemGet",
+    async ({ id, qid }: { id: string | null | undefined, qid: string | null | undefined }) => {
+        const response = await axios.get(`/api/v1/group/${id}/qna/${qid}/`)
+        console.log(response.data)
         return response.data
     }
 )
@@ -124,7 +135,10 @@ export const groupStateSlice = createSlice({
         },
         resetGroupQnA : (state) => {
             state.groupQnAList = null
-        }
+        },
+        resetGroupQnAItem : (state) => {
+            state.groupQnAItem = null
+        },
     },
 
     extraReducers: (builder) => {
@@ -137,6 +151,9 @@ export const groupStateSlice = createSlice({
         });
         builder.addCase(groupQnAListGet.fulfilled, (state, action) => {
             state.groupQnAList = action.payload
+        });
+        builder.addCase(groupQnAItemGet.fulfilled, (state, action) => {
+            state.groupQnAItem = action.payload
         });
     },
 });

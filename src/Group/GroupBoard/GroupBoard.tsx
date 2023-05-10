@@ -8,6 +8,7 @@ import GroupRecruit from "./GroupRecruit/GroupRecruit";
 import GroupConcert from "./GroupConcert/GroupConcert";
 import GroupQnA from "./GroupQnA/GroupQnA";
 import {useNavigate} from "react-router";
+import GroupQnAItem from "./GroupQnAItem/GroupQnAItem";
 
 const GroupBoard = () => {
 
@@ -27,15 +28,15 @@ const GroupBoard = () => {
     }
 
     const myButtons = [
-        <Button key="recruit" onClick={onClickGoRecruit}>모집정보</Button>,
-        <Button key="list" onClick={onClickGoList}>연주목록</Button>,
-        <Button key="qna" onClick={onClickGoQnA}>Q&A</Button>,
+        <Button key="recruit" sx={{fontSize: res700 ? 12 : 14}} onClick={onClickGoRecruit}>모집정보</Button>,
+        <Button key="list" sx={{fontSize: res700 ? 12 : 14}} onClick={onClickGoList}>연주목록</Button>,
+        <Button key="qna" sx={{fontSize: res700 ? 12 : 14}} onClick={onClickGoQnA}>Q&A</Button>,
     ]
 
     return(
         <Stack sx={{mt:0, pl: res700 ? 0 : 3}}>
             <Stack sx={{mb: 2}} alignItems={res700 ? "center" : ''}>
-                <ButtonGroup variant={"text"} size="large">
+                <ButtonGroup variant={"text"} size={res700 ? "medium" : "large"}>
                     {myButtons}
                 </ButtonGroup>
             </Stack>
@@ -43,6 +44,7 @@ const GroupBoard = () => {
                 <Route path="recruit" element={<GroupRecruit />}/>
                 <Route path="list" element={<GroupConcert />}/>
                 <Route path="qna/*" element={<GroupQnA />}/>
+                <Route path="qna/:qid" element={<GroupQnAItem />}/>
             </Routes>
         </Stack>
     )
