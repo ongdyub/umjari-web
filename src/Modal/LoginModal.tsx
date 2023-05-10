@@ -432,9 +432,9 @@ const LoginModal = (props : any) => {
                                 />
                             </FormControl>
                             <TextField
-                                label="이름"
+                                label="URL"
                                 variant="standard"
-                                helperText={!isLoginMode && "유저 이름을 입력하세요. 프로필에 표시될 이름입니다. 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
+                                helperText={!isLoginMode && "유저 url을 입력하세요. 프로필에 표시되고 /mypage/@url/ 형태로 사용됩니다. 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
                                 value={name}
                                 onChange={(e) => { onChangeName(e.target.value) }}
                                 sx={{
