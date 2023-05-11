@@ -95,13 +95,13 @@ const LoginModal = (props : any) => {
 
     const checkID = (asValue: string) => {
         const regExp : RegExp = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.]{4,20}$/;
-        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*음자리)(?!.*admin)(?!.*umjari).*$/i
         return regExp.test(asValue) && regAdmin.test(asValue);
     }
 
     const checkProfileName = (asValue : string) => {
-        const regExp = /^[a-zA-Z0-9_-]{4,15}$/
-        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        const regExp = /^[가-힣a-zA-Z0-9_-]{4,15}$/
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*음자리)(?!.*admin)(?!.*umjari).*$/i
         return regExp.test(asValue) && regAdmin.test(asValue)
     }
 
@@ -123,7 +123,7 @@ const LoginModal = (props : any) => {
 
     const checkNick = (asValue: string) => {
         const regExp = /^[a-zA-Z0-9가-힣_]{4,15}$/;
-        const regAdmin : RegExp = /^(?!.*관리자)(?!.*admin)(?!.*umjari).*$/i
+        const regAdmin : RegExp = /^(?!.*관리자)(?!.*음자리)(?!.*admin)(?!.*umjari).*$/i
         return regExp.test(asValue) && regAdmin.test(asValue)
     }
 
@@ -441,7 +441,7 @@ const LoginModal = (props : any) => {
                                 <TextField
                                     label="프로필 이름"
                                     variant="standard"
-                                    helperText={!isLoginMode && "프로필 이름을 입력하세요. /mypage/@이름/ 형태로 사용되며, 글 작성 공개 시에 표시되는 이름입니다. "}
+                                    helperText={!isLoginMode && "프로필 이름을 입력하세요. /mypage/@이름/ 형태로 사용되며, 글 작성 공개 시에 표시되는 이름입니다. 특수문자는 _ 만 사용 가능하며 한글/영어/숫자 4-15 자리입니다."}
                                     value={profileName}
                                     onChange={(e) => { onChangeProfileName(e.target.value) }}
                                     sx={{
