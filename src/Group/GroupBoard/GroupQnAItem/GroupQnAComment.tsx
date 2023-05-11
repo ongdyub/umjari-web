@@ -41,12 +41,12 @@ const GroupQnAComment = (props : any) => {
                             }}
                             alt="Profile Img"
                             onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
-                            src={`${item.isAnonymous ? `${process.env.PUBLIC_URL}/Logo_posit.png` : `${item.isAuthor.profileImage}`}`}
+                            src={`${item.isAnonymous ? `${process.env.PUBLIC_URL}/Logo_posit.png` : `${item.authorInfo.profileImage}`}`}
                         />
                     </Avatar>
                 </Stack>
                 <Stack alignContent={"center"} alignItems={"center"} sx={{ml: 2}}>
-                    <Typography sx={{fontWeight: 300, fontSize: res700 ? 11 : 13}}>{item.isAnonymous ? item.nickname : item.isAuthor.profileName}</Typography>
+                    <Typography sx={{fontWeight: 300, fontSize: res700 ? 11 : 13}}>{item.isAnonymous ? item.nickname : item.authorInfo.profileName}</Typography>
                 </Stack>
                 <Stack alignItems="center" flexDirection={"row"} sx={{ml: 'auto'}}>
                     <Stack alignItems="center" flexDirection={"column"}>
@@ -57,7 +57,7 @@ const GroupQnAComment = (props : any) => {
             </Stack>
 
             <Stack sx={{mt:1}}>
-                <Typography>
+                <Typography sx={{width: '100%', wordBreak: 'break-word'}}>
                     {item.content}
                 </Typography>
             </Stack>

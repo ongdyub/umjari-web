@@ -15,7 +15,13 @@ import {useState} from "react";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUser, userSlice} from "../store/slices/user/user";
-import {groupInfo, groupQnAPost} from "../store/slices/group/group";
+import {
+    groupInfo,
+    groupQnAItemGet,
+    groupQnAListGet,
+    groupQnAPost,
+    groupQnAReplyPost
+} from "../store/slices/group/group";
 import {AppDispatch} from "../store";
 
 const style = {
@@ -49,16 +55,32 @@ const GroupQnAWriteModal = (props : any) => {
         const qnaData = {
             title : title,
             content : contents,
-            isPrivate : hide
+            isAnonymous : hide
         }
         const data = {
             qnaData : qnaData,
             token : userState.accessToken,
             id : id
         }
-        const result = dispatch(groupQnAPost(data))
+        const param = {
+            text : '' ,
+            page : 1,
+            sort : 'createAt,DESC',
+        }
+        const result = await dispatch(groupQnAPost(data))
+        console.log(result)
+        if (result.type === `${groupQnAPost.typePrefix}/fulfilled`) {
+            window.alert("작성 성공")
+        } else {
+            if(result.payload == 3001){
+                window.alert("그룹에 속해있지 않은 계정입니다.")
+            }
+            else{
+                window.alert("작성 실패. 네트워크 오류")
+            }
+        }
+        dispatch(groupQnAListGet({id, param}))
         handleClose(true)
-        window.location.reload()
     }
 
     return(

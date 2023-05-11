@@ -84,8 +84,8 @@ const GroupQnAItem = () => {
                 <Divider sx={{width: res700 ? '100%' : '90%', mt: -1}}/>
                 <Stack alignItems="center" sx={{width:'100%'}} flexDirection={'column'}>
 
-                    <Stack alignItems="center" sx={{width: '80%', mt: 2}}>
-                        <Typography gutterBottom sx={{fontWeight: 600, fontSize: res700 ? 14 : 20}}>
+                    <Stack direction={"row"} alignContent={"center"} alignItems="center" sx={{width: '80%', mt: 2}}>
+                        <Typography gutterBottom sx={{width: '100%', fontWeight: 600, fontSize: res700 ? 14 : 20, wordWrap: 'break-word'}}>
                             {groupState.groupQnAItem.title}
                         </Typography>
                     </Stack>
@@ -122,7 +122,7 @@ const GroupQnAItem = () => {
                 </Stack>
 
                 <Stack alignItems="flex-start" sx={{width:'80%', mt: 2, pt:1, pl: 1}} flexDirection={'column'}>
-                    <Typography sx={{fontSize : res700 ? 14 : 18}}>{groupState.groupQnAItem.content}</Typography>
+                    <Typography sx={{fontSize : res700 ? 14 : 18, width: '100%', wordBreak: 'break-word'}}>{groupState.groupQnAItem.content}</Typography>
                 </Stack>
 
                 {/* 댓글 부분 */}

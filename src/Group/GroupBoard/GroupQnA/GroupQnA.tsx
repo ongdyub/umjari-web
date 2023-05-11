@@ -111,7 +111,7 @@ const GroupQnA = () => {
             dispatch(groupStateActions.resetGroupQnA)
         }
 
-    },[dispatch, id, searchParams])
+    },[dispatch, id, searchParams, writeOpen])
 
     useEffect(() => {
         if (groupState.groupQnAList !== null) {
