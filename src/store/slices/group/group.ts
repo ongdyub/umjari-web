@@ -103,14 +103,18 @@ export const groupInfo = createAsyncThunk(
 
 export const groupQnAPost = createAsyncThunk(
     "group/groupQnAPost",
-    async (data : any) => {
-        const response = await axios.post(`/api/v1/group/${data.id}/qna/`,data.qnaData, {
-            headers: {
-                Authorization: `Bearer  ${data.token}`,
-            },
-        })
-        console.log(response.data)
-        return response.data
+    async (data : any, {rejectWithValue}) => {
+        try {
+            const response = await axios.post(`/api/v1/group/${data.id}/qna/`,data.qnaData, {
+                headers: {
+                    Authorization: `Bearer  ${data.token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
     }
 )
 
