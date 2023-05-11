@@ -100,7 +100,7 @@ const LoginModal = (props : any) => {
     }
 
     const checkProfileName = (asValue : string) => {
-        const regExp = /^[가-힣a-zA-Z0-9_-]{4,15}$/
+        const regExp = /^[가-힣a-zA-Z0-9_-]{2,15}$/
         const regAdmin : RegExp = /^(?!.*관리자)(?!.*음자리)(?!.*admin)(?!.*umjari).*$/i
         return regExp.test(asValue) && regAdmin.test(asValue)
     }
@@ -122,7 +122,7 @@ const LoginModal = (props : any) => {
     // }
 
     const checkNick = (asValue: string) => {
-        const regExp = /^[a-zA-Z0-9가-힣_]{3,15}$/;
+        const regExp = /^[a-zA-Z0-9가-힣_]{2,15}$/;
         const regAdmin : RegExp = /^(?!.*관리자)(?!.*음자리)(?!.*admin)(?!.*umjari).*$/i
         return regExp.test(asValue) && regAdmin.test(asValue)
     }
@@ -441,7 +441,7 @@ const LoginModal = (props : any) => {
                                 <TextField
                                     label="프로필 이름"
                                     variant="standard"
-                                    helperText={!isLoginMode && "프로필 이름을 입력하세요. /mypage/@이름/ 형태로 사용되며, 글 작성 공개 시에 표시되는 이름입니다. 특수문자는 _ 만 사용 가능하며 한글/영어/숫자 3-15 자리입니다."}
+                                    helperText={!isLoginMode && "프로필 이름을 입력하세요. /mypage/@이름/ 형태로 사용되며, 글 작성 공개 시에 표시되는 이름입니다. 특수문자는 _ 만 사용 가능하며 한글/영어/숫자 2-15 자리입니다."}
                                     value={profileName}
                                     onChange={(e) => { onChangeProfileName(e.target.value) }}
                                     sx={{
@@ -456,7 +456,7 @@ const LoginModal = (props : any) => {
                                                 borderColor: 'black',
                                             },
                                         },
-                                        width: 'calc(100% - 100px)',
+                                        width: 'calc(100% - 20px)',
                                         mr: 1
                                     }}
                                 />
@@ -518,7 +518,7 @@ const LoginModal = (props : any) => {
                                     <TextField
                                         label="닉네임"
                                         variant="standard"
-                                        helperText={!isLoginMode && "닉네임을 입력해주세요. 글 및 질문 작성 시에 보여지는 닉네임 입니다. 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
+                                        helperText={!isLoginMode && "닉네임을 입력해주세요. 글 및 질문 작성 시에 보여지는 닉네임 입니다. 2-15자리의 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
                                         value={nickname}
                                         disabled={valName}
                                         onChange={(e) => { onChangeNickname(e.target.value) }}
