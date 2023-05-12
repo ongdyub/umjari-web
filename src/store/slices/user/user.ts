@@ -15,7 +15,7 @@ export interface SignUser {
 }
 
 export interface User {
-    user_id : string | null,
+    id : string | null,
     // phone : string | null;
     email : string | null;
     nickname : string | null;
@@ -26,7 +26,7 @@ export interface User {
 }
 
 const initialState: User = {
-    user_id : null,
+    id : null,
     // phone : null,
     email : null,
     nickname : null,
@@ -91,7 +91,7 @@ export const login = createAsyncThunk(
     async (data: Partial<SignUser>, { dispatch }) => {
         await axios.post('/api/v1/auth/login/',data).then(function (response) {
             console.log(response.data)
-            dispatch(userActions.setUserId({user_id: data.userId}))
+            dispatch(userActions.setUserId({id: data.userId}))
             dispatch(userActions.loginUser(response.data));
             return response.data
         })
@@ -116,22 +116,22 @@ export const userSlice = createSlice({
             state,
             action: PayloadAction<Partial<User>>
         ) => {
-            if (action.payload.user_id) {
-                state.user_id = action.payload.user_id;
-                localStorage.setItem("user_id", action.payload.user_id)
+            if (action.payload.id) {
+                state.id = action.payload.id;
+                localStorage.setItem("id", action.payload.id)
             }
         },
         logoutUser: (
             state,
         ) => {
-            state.user_id = null;
+            state.id = null;
             // state.phone = null;
             state.email = null;
             state.nickname = null;
             state.profile_img = null;
             state.isLogin = false;
             localStorage.removeItem("Token")
-            localStorage.removeItem("user_id")
+            localStorage.removeItem("id")
             state.accessToken = null;
         },
         openModal : (

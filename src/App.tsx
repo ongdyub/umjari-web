@@ -93,7 +93,7 @@ function App() {
                     <Route path="/community/:boardName" element={<Board />} />
                     <Route path="/community/:boardName/:id" element={<Article />} />
                     <Route path="/groupsearch" element={<GroupSearch />} />
-                    <Route path="/myconcert/:id/*" element={<MyConcert />} />
+                    <Route path="/myconcert/:profileName/*" element={<MyConcert />} />
                     <Route path="/concert/:id/*" element={<Concert />} />
                     <Route path="/group/:id/*" element={<Group />}/>
                 </Routes>

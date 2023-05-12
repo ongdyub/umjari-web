@@ -12,7 +12,7 @@ import {
     Typography, useMediaQuery, useTheme
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUser, userActions} from "../../store/slices/user/user";
 import { useNavigate } from "react-router"
@@ -66,7 +66,7 @@ const Header = () => {
     const handleCloseUserMenu = (setting : any) => {
         setAnchorElUser(null);
         if(setting === '마이페이지'){
-            navigate(`/myconcert/${userState.user_id}/selfintro`)
+            navigate(`/myconcert/${userState.id}/selfintro`)
         }
         else if(setting === '작성기록'){
             window.alert('준비중입니다.')
@@ -86,6 +86,10 @@ const Header = () => {
     const onClickLogo = () => {
         navigate('/')
     }
+
+    useEffect(() => {
+
+    }, [userState.accessToken, dispatch])
 
     return (
         <AppBar position="static">
