@@ -20,7 +20,7 @@ export interface User {
     // phone : string | null;
     email : string | null;
     profileName : string | null;
-    profileImage : string | null;
+    profileImage : string | null | undefined;
     isLogin : boolean;
     accessToken : string | null;
     isModalOpen : boolean;
@@ -156,13 +156,17 @@ export const userSlice = createSlice({
             state,
         ) => {
             state.isModalOpen = true
-            console.log("open")
         },
         closeModal : (
             state,
         ) => {
             state.isModalOpen = false
-            console.log("close")
+        },
+        setHeaderImage : (
+            state,
+            action: PayloadAction<Partial<User>>
+        ) => {
+            state.profileImage = action.payload.profileImage
         },
         // editUser: (
         //     state,

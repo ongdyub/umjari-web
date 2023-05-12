@@ -29,19 +29,20 @@ const MyConcert = () => {
         }
     },[profileName, dispatch, userState.accessToken])
 
-    if(myConcertState.myDefaultInfo === null && myConcertState.isExist){
-        return(
-            <Stack>
-                로딩중...
-            </Stack>
-        )
-    }
-    if(!myConcertState.isExist){
-        return(
-            <Stack>
-                존재하지 않는 유저입니다.
-            </Stack>
-        )
+    if(myConcertState.myDefaultInfo === null) {
+        if (myConcertState.isExist) {
+            return (
+                <Stack>
+                    로딩중...
+                </Stack>
+            )
+        } else {
+            return(
+                <Stack>
+                    존재하지 않는 유저입니다.
+                </Stack>
+            )
+        }
     }
     else{
         return(

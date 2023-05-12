@@ -41,6 +41,40 @@ export const myConcertDefaultInfoGet = createAsyncThunk(
     }
 )
 
+export const myConcertProfileImageUpload = createAsyncThunk(
+    "myconcert/myConcertProfileImageUpload",
+    async ({token, formData} : {token : string | null, formData : FormData},  {rejectWithValue}) => {
+        try {
+            const response = await axios.post(`/api/v1/image/`,formData,{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const myConcertUserImagePut = createAsyncThunk(
+    "myconcert/myConcertUserImagePut",
+    async ({token, image} : {token : string | null, image : string},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/user/image/`,{image : image},{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const myConcertStateSlice = createSlice({
     name: "myConcertState",
     initialState,
