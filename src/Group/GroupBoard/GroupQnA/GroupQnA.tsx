@@ -118,6 +118,11 @@ const GroupQnA = () => {
             setTotalPage(groupState.groupQnAList.totalPages)
             setPage(groupState.groupQnAList.currentPage)
         }
+
+        return () => {
+            dispatch(groupStateActions.resetGroupQnA)
+        }
+
     }, [groupState.groupQnAList])
 
     return(

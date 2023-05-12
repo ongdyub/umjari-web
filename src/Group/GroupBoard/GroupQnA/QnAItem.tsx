@@ -23,10 +23,10 @@ const QnAItem = (props : any) => {
             <Stack sx={{width: 20}} alignItems={"center"} alignContent={"center"} justifyContent={"center"}>
                 <Typography sx={{color: '#00b0ff', fontSize: 15, fontWeight: 800, pl:1}}>Q.</Typography>
             </Stack>
-            <Stack sx={{pl: res500? 1 : 2, width: res500 ? 'calc(100% - 120px)' : '70%', pr: res500 ? 0.5 : 2}}>
+            <Stack sx={{pl: res500? 1 : 2, width: res500 ? '45%' : '50%', pr: res500 ? 0.5 : 2}}>
                 <Typography sx={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 12}}>{item.title}</Typography>
             </Stack>
-            <Stack sx={{ml: 'auto', mr: res700 ? 1 : -1}}>
+            <Stack sx={{ml: 'auto', width: res500 ? '20%' : '20%', mr: res700 ? 1 : -1}}>
                 <Typography sx={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 9, fontWeight: 200}}>{item.isAnonymous ? item.nickname : item.authorInfo.profileName}</Typography>
             </Stack>
             <Stack sx={{ml: 'auto'}}>

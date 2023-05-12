@@ -6,7 +6,7 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 export interface GroupInfo {
-    id: number
+    id: number,
     name: string,
     logo: string,
     practiceTime: string,
@@ -139,7 +139,6 @@ export const groupQnAListGet = createAsyncThunk(
     "group/groupQnAListGet",
     async ({ id, param }: { id: string | null | undefined, param: any }) => {
         const response = await axios.get(`/api/v1/group/${id}/qna/`, {params : param})
-        console.log(response.data)
         return response.data
     }
 )
