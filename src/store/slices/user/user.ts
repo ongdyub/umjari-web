@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
+import {groupInfo, groupQnAItemGet, groupQnAListGet} from "../group/group";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -18,8 +19,8 @@ export interface User {
     id : string | null,
     // phone : string | null;
     email : string | null;
-    nickname : string | null;
-    profile_img : string | null;
+    profileName : string | null;
+    profileImage : string | null;
     isLogin : boolean;
     accessToken : string | null;
     isModalOpen : boolean;
@@ -29,8 +30,8 @@ const initialState: User = {
     id : null,
     // phone : null,
     email : null,
-    nickname : null,
-    profile_img : null,
+    profileName : null,
+    profileImage : null,
     accessToken : (localStorage.getItem("Token") === null) ? null : localStorage.getItem("Token"),
     isLogin : (localStorage.getItem("Token") !== null),
     isModalOpen : false
@@ -98,6 +99,24 @@ export const login = createAsyncThunk(
     }
 )
 
+export const myInfoGet = createAsyncThunk(
+    "user/myInfoGet",
+    async (token: string, {rejectWithValue}) => {
+        try {
+            const response = await axios.get('/api/v1/user/me/',{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            console.log(response.data)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const userSlice = createSlice({
     name: "user",
     initialState,
@@ -127,8 +146,8 @@ export const userSlice = createSlice({
             state.id = null;
             // state.phone = null;
             state.email = null;
-            state.nickname = null;
-            state.profile_img = null;
+            state.profileName = null;
+            state.profileImage = null;
             state.isLogin = false;
             localStorage.removeItem("Token")
             localStorage.removeItem("id")
@@ -153,6 +172,13 @@ export const userSlice = createSlice({
         //     state.token = null;
         //     state.isLogin = false;
         // },
+    },
+
+    extraReducers: (builder) => {
+        builder.addCase(myInfoGet.fulfilled, (state, action) => {
+            state.profileImage = action.payload.profileImage
+            state.profileName = action.payload.profileName
+        });
     },
 });
 
