@@ -32,7 +32,7 @@ const GroupQnAComment = (props : any) => {
         <Stack sx={{width: '100%',}}>
             <Stack alignItems="center" sx={{width: '100%'}} flexDirection={"row"}>
                 <Stack>
-                    <Avatar sx={{width: 20, height: 20}} alt={`${process.env.PUBLIC_URL}/Logo_posit.png`}>
+                    <Avatar sx={{width: 45, height: 45}} alt={`${process.env.PUBLIC_URL}/Logo_posit.png`}>
                         <Box
                             component="img"
                             sx={{
@@ -46,7 +46,7 @@ const GroupQnAComment = (props : any) => {
                     </Avatar>
                 </Stack>
                 <Stack alignContent={"center"} alignItems={"center"} sx={{ml: 2}}>
-                    <Typography sx={{fontWeight: 300, fontSize: res700 ? 11 : 13}}>{item.isAnonymous ? item.nickname : item.authorInfo.profileName}</Typography>
+                    <Typography sx={{fontWeight: 300, fontSize: res700 ? 14 : 17}}>{item.isAnonymous ? item.nickname : item.authorInfo.profileName}</Typography>
                 </Stack>
                 <Stack alignItems="center" flexDirection={"row"} sx={{ml: 'auto'}}>
                     <Stack alignItems="center" flexDirection={"column"}>
