@@ -1,4 +1,8 @@
 import {Box, Chip, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "../../store";
+import {selectMyConcert} from "../../store/slices/myconcert/myconcert";
 const groupList = [
     {
         name: 'SNUPO',
@@ -25,8 +29,10 @@ const groupList = [
 
 const MyProfile = () => {
 
-    const profile_img = "secure.gravatar.com/avatar/217b46f9ae197e33b88883b0e38f0fa4?s=150&d=identicon"
     const theme = useTheme();
+    const dispatch = useDispatch<AppDispatch>();
+    const myConcertState = useSelector(selectMyConcert)
+    const {profileName} = useParams()
     const res500 = useMediaQuery(theme.breakpoints.down("res500"))
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
@@ -47,9 +53,9 @@ const MyProfile = () => {
                     }}
                     alt="Profile Img"
                     onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
-                    src={"프로필이미지 자리"}
+                    src={`${myConcertState.myDefaultInfo?.profileImage}`}
                 />
-                <Typography sx={{fontWeight: 300, fontSize: res700 ? 20 : 25, mt:2}}>{"umjari"}</Typography>
+                <Typography sx={{fontWeight: 100, fontSize: res700 ? 12 : 15, mt:2, wordBreak: 'break-word'}}>{profileName}</Typography>
             </Stack>
             {
                 res750 ?

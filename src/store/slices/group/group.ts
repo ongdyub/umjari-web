@@ -6,7 +6,7 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 export interface GroupInfo {
-    id: number
+    id: number,
     name: string,
     logo: string,
     practiceTime: string,

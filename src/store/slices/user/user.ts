@@ -108,7 +108,6 @@ export const myInfoGet = createAsyncThunk(
                     Authorization: `Bearer  ${token}`,
                 },
             })
-            console.log(response.data)
             return response.data
         }
         catch (err : any) {
