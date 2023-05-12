@@ -95,7 +95,7 @@ const GroupQnAItem = () => {
 
                     <Stack alignItems="center" sx={{width: '90%', mt:1, mb:1}} flexDirection={"row"}>
                         <Stack>
-                            <Avatar sx={{width: 30, height: 30}} alt={`${process.env.PUBLIC_URL}/Logo_posit.png`}>
+                            <Avatar sx={{width: 45, height: 45}} alt={`${process.env.PUBLIC_URL}/Logo_posit.png`}>
                                 <Box
                                     component="img"
                                     sx={{
@@ -109,7 +109,7 @@ const GroupQnAItem = () => {
                             </Avatar>
                         </Stack>
                         <Stack alignContent={"center"} alignItems={"center"} sx={{ml: 2}}>
-                            <Typography sx={{fontWeight: 900, fontSize: res700 ? 13 : 15}}>{groupState.groupQnAItem.isAnonymous ? groupState.groupQnAItem.nickname : groupState.groupQnAItem.authorInfo.profileName}</Typography>
+                            <Typography sx={{fontWeight: 900, fontSize: res700 ? 16 : 19}}>{groupState.groupQnAItem.isAnonymous ? groupState.groupQnAItem.nickname : groupState.groupQnAItem.authorInfo.profileName}</Typography>
                         </Stack>
                         <Stack alignItems="center" flexDirection={"row"} sx={{ml: 'auto'}}>
                             <Stack alignItems="center" flexDirection={"column"}>
