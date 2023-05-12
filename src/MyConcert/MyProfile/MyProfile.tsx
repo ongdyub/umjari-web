@@ -105,7 +105,7 @@ const MyProfile = () => {
                         height: res750 ? `${height}px` : 133,
                         borderRadius: '20%',
                         objectPosition: 'center',
-                        objectFit: 'fill',
+                        objectFit: 'cover',
                         boxShadow: 'rgb(0 0 0 / 20%) 0px 0px 4px 0px',
                         mt: res500 ? 2 : 2
                     }}
