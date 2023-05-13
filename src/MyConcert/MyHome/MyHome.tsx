@@ -14,7 +14,7 @@ const MyHome = () => {
 
     const profile_img = "secure.gravatar.com/avatar/217b46f9ae197e33b88883b0e38f0fa4?s=150&d=identicon"
     const theme = useTheme();
-    const { id } = useParams();
+    const { profileName } = useParams();
     const navigate = useNavigate();
     const resSize = useMediaQuery(theme.breakpoints.down("md"))
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
@@ -22,19 +22,19 @@ const MyHome = () => {
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
     const onClickGoSelf = () => {
-        navigate(`/myconcert/${id}/selfintro`)
+        navigate(`/myconcert/${profileName}/selfintro`)
     }
     const onClickGoList = () => {
-        navigate(`/myconcert/${id}/list`)
+        navigate(`/myconcert/${profileName}/list`)
     }
     const onClickGoGallery = () => {
-        navigate(`/myconcert/${id}/gallery`)
+        navigate(`/myconcert/${profileName}/gallery`)
     }
     const onClickGoDiary = () => {
-        navigate(`/myconcert/${id}/diary`)
+        navigate(`/myconcert/${profileName}/diary`)
     }
     const onClickGoVisit = () => {
-        navigate(`/myconcert/${id}/visit`)
+        navigate(`/myconcert/${profileName}/visit`)
     }
 
     const myButtons = [
