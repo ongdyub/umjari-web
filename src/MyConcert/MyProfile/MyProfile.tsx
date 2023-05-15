@@ -1,4 +1,5 @@
-import {Box, Button, Chip, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Box, Button, Chip, CircularProgress, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import Backdrop from '@mui/material/Backdrop';
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../store";
@@ -44,6 +45,7 @@ const MyProfile = () => {
 
     const myRef = useRef<HTMLDivElement>(null);
     const [height, setHeight] = useState<number | null | undefined>(null);
+    const [imgLoadingOpen,  setImgLadingOpen] = useState(false)
 
     useEffect(() => {
         const handleResize = () => {
@@ -71,6 +73,9 @@ const MyProfile = () => {
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
     const handleFile = async (e : any) => {
+
+        setImgLadingOpen(true)
+
         const formData = new FormData()
         formData.append('image', e.target.files[0])
 
@@ -81,13 +86,23 @@ const MyProfile = () => {
             const putImage = await dispatch(myConcertUserImagePut({token: userState.accessToken, image: result.payload.url}))
 
             if(putImage.type === `${myConcertUserImagePut.typePrefix}/fulfilled`){
+
+                setImgLadingOpen(false)
+
                 window.alert("프로필이 변경되었습니다.")
                 dispatch(myConcertDefaultInfoGet({token : userState.accessToken, profileName : profileName}))
                 dispatch(userActions.setHeaderImage({profileImage : result.payload.url}))
+
             } else {
-                window.alert("포로필 변경 실패")
+
+                setImgLadingOpen(false)
+
+                window.alert("프로필 변경 실패")
             }
         } else {
+
+            setImgLadingOpen(false)
+
             window.alert("이미지 업로드 실패. 용량(10MB)과 네트워크를 확인해 주세요")
         }
     }
@@ -95,6 +110,12 @@ const MyProfile = () => {
 
     return(
         <Stack direction={res750 ? "row" : 'column'} sx={{width: res750 ? '100%' : 200, height: '100%'}} justifyContent={"flex-start"} alignItems={"center"}>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={imgLoadingOpen}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Stack sx={{mt: 1, mb: 1, pr: res750 ? 2 : '', pl: res750 ? 2 : '', width: '50%'}} justifyContent={"center"} alignItems={"center"}>
                 <Box
                     component="img"
@@ -113,7 +134,7 @@ const MyProfile = () => {
                     onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
                     src={`${myConcertState.myDefaultInfo?.profileImage}`}
                 />
-                <Typography sx={{fontWeight: 100, fontSize: res700 ? 12 : 15, mt:2, wordBreak: 'break-word'}}>{profileName}</Typography>
+                <Typography sx={{fontWeight: 100, fontSize: res700 ? 15 : 17, mt:2, wordBreak: 'break-word'}}>{profileName}</Typography>
                 {
                     myConcertState.myDefaultInfo?.isSelfProfile ?
                         <Button component="label" sx={{mt: 1, pb: -1, maxWidth : 80, minWidth: 80, maxHeight : 30, minHeight: 30}}>
