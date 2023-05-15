@@ -1,4 +1,4 @@
-import {Button, ButtonGroup, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Button, ButtonGroup, Divider, Input, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import {Routes, Route, useParams} from "react-router-dom";
 import SelfIntro from "./SelfIntro/SelfIntro";
 import MyList from "./MyList/MyList";
@@ -6,20 +6,33 @@ import Gallery from "./Gallery/Gallery";
 import Visit from "./Visit/Visit";
 import Diary from "./Diary/Diary";
 import {useNavigate} from "react-router";
+import {useDispatch, useSelector} from "react-redux";
+import {myIntroPut, selectMyConcert} from "../../store/slices/myconcert/myconcert";
+import {selectUser, signUp} from "../../store/slices/user/user";
+import {useState} from "react";
+import {AppDispatch} from "../../store";
 
 
 
 
 const MyHome = () => {
 
-    const profile_img = "secure.gravatar.com/avatar/217b46f9ae197e33b88883b0e38f0fa4?s=150&d=identicon"
+    const myConcertState = useSelector(selectMyConcert)
+
+    //For Token
+    const userState = useSelector(selectUser)
+
     const theme = useTheme();
+    const dispatch = useDispatch<AppDispatch>();
     const { profileName } = useParams();
     const navigate = useNavigate();
     const resSize = useMediaQuery(theme.breakpoints.down("md"))
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
+
+    const [isEdit, setIsEdit] = useState(false)
+    const [introText, setIntroText] = useState('')
 
     const onClickGoSelf = () => {
         navigate(`/myconcert/${profileName}/selfintro`)
@@ -35,6 +48,27 @@ const MyHome = () => {
     }
     const onClickGoVisit = () => {
         navigate(`/myconcert/${profileName}/visit`)
+    }
+
+    const handleEditIntro = async () => {
+
+        if(introText.length > 30){
+            window.alert("길이가 초과되었습니다.")
+            return
+        }
+
+        const result = await dispatch(myIntroPut({token : userState.accessToken, data : {intro : introText}}))
+        console.log(result)
+
+        if (result.type === `${myIntroPut.typePrefix}/fulfilled`) {
+            window.alert("회원가입 성공")
+        } else {
+            console.log(result)
+            console.log(result.payload)
+            window.alert("변경 실패")
+        }
+        setIntroText('')
+        setIsEdit(false)
     }
 
     const myButtons = [
@@ -53,8 +87,22 @@ const MyHome = () => {
                     :
                     null
             }
-            <Stack sx={{width: '100%', mt: 3, mb: 2}} justifyContent={res750 ? "center" : "flex-start"} alignContent={"center"} alignItems={"center"}>
-                <Typography sx={{pl: 2, fontWeight: 300, fontSize: res750 ? 17 : 30, pr: 2}}>한줄 소개 입력 공간한줄 소개 입력 소개 입력 공간</Typography>
+            <Stack sx={{width: '100%', mt: 3, mb: 2, position: 'relative'}} justifyContent={res750 ? "center" : "flex-start"} alignContent={"center"} alignItems={"center"}>
+                {
+                    isEdit ?
+                        <Input sx={{pl: 2, fontWeight: 300, fontSize: res750 ? 14 : 23, pr: 2, width: '70%'}} placeholder="30자 이하의 소개를 입력해주세요." value={introText} onChange={(e) => setIntroText(e.target.value)} />
+                        :
+                        <Typography sx={{pl: 2, fontWeight: 300, fontSize: res750 ? 17 : 23, pr: 2}}>{myConcertState.myDefaultInfo?.intro.length === 0 ? '한줄 소개가 없습니다.' : `${myConcertState.myDefaultInfo?.intro}`}</Typography>
+                }
+                {
+                    myConcertState.myDefaultInfo?.isSelfProfile ?
+                        isEdit ?
+                            <Button onClick={handleEditIntro} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 0, bottom: -20}} disableRipple>작성</Button>
+                            :
+                            <Button onClick={() => setIsEdit(true)} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 0, bottom: -20}} disableRipple>수정</Button>
+                        :
+                        null
+                }
             </Stack>
             <Divider sx={{Width: '90%'}}/>
             <Stack sx={{pl: res750 ? 0 : 6}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
