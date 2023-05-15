@@ -16,7 +16,6 @@ export interface SignUser {
 }
 
 export interface User {
-    id : string | null,
     // phone : string | null;
     email : string | null;
     profileName : string | null;
@@ -27,7 +26,6 @@ export interface User {
 }
 
 const initialState: User = {
-    id : null,
     // phone : null,
     email : null,
     profileName : null,
@@ -92,7 +90,6 @@ export const login = createAsyncThunk(
     async (data: Partial<SignUser>, { dispatch }) => {
         await axios.post('/api/v1/auth/login/',data).then(function (response) {
             console.log(response.data)
-            dispatch(userActions.setUserId({id: data.userId}))
             dispatch(userActions.loginUser(response.data));
             return response.data
         })
@@ -130,19 +127,9 @@ export const userSlice = createSlice({
                 localStorage.setItem("Token", action.payload.accessToken)
             }
         },
-        setUserId: (
-            state,
-            action: PayloadAction<Partial<User>>
-        ) => {
-            if (action.payload.id) {
-                state.id = action.payload.id;
-                localStorage.setItem("id", action.payload.id)
-            }
-        },
         logoutUser: (
             state,
         ) => {
-            state.id = null;
             // state.phone = null;
             state.email = null;
             state.profileName = null;
