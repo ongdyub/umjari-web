@@ -1,35 +1,57 @@
-import {Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
+import {Divider, Stack} from "@mui/material";
 import { useParams } from "react-router-dom";
 import ConcertInfo from "./ConcertInfo/ConcertInfo";
 import ConcertDetail from "./ConcertDetail/ConcertDetail";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../store";
 import {concert, concertStateActions, selectConcert} from "../store/slices/concert/concert";
+import {signUp} from "../store/slices/user/user";
 
 const Concert = () => {
 
-    const theme = useTheme();
     const { id } = useParams();
     const dispatch = useDispatch<AppDispatch>();
-    const res800 = useMediaQuery(theme.breakpoints.down("res800"))
-    const res750 = useMediaQuery(theme.breakpoints.down("res750"))
+    const [exist, setExist] = useState(true)
 
     const concertSelector = useSelector(selectConcert)
 
     useEffect(() => {
-        dispatch(concert(id))
+        const fetchConcert = async () => {
+            const result = await dispatch(concert(id))
+            if (result.type === `${signUp.typePrefix}/fulfilled`) {
+
+            }
+            else{
+                if(result.payload === 4002){
+                    setExist(false)
+                }
+            }
+        }
+
+        fetchConcert()
+
         return () => {
             dispatch(concertStateActions.resetConcert());
         };
     },[id,dispatch])
 
     if(concertSelector.concert === null){
-        return(
-            <div>
-                로딩중
-            </div>
-        )
+        if(exist){
+            return(
+                <div>
+                    로딩중
+                </div>
+            )
+        }
+        else{
+            return(
+                <div>
+                    존재하지 않는 concert 의 id 입니다.
+                </div>
+            )
+        }
+
     }
     else{
         return(

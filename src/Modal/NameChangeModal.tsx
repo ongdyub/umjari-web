@@ -14,7 +14,6 @@ import {
     valNamePost
 } from "../store/slices/user/user";
 import {AppDispatch} from "../store";
-import {selectMyConcert} from "../store/slices/myconcert/myconcert";
 
 const styleLog = (theme: any) => ({
     position: 'absolute',
@@ -37,7 +36,6 @@ const NameChangeModal = (props : any) => {
 
     const dispatch = useDispatch<AppDispatch>();
     const userState = useSelector(selectUser)
-    const myConcertState = useSelector(selectMyConcert)
 
     const [profileName, setProfileName] = useState('')
     const [nickname, setNickname] = useState('')
@@ -106,6 +104,11 @@ const NameChangeModal = (props : any) => {
         }
         if(profileName === '' && userState.profileName !== null){
             data.profileName = userState.profileName
+        }
+
+        if(nickname === '' && profileName === ''){
+            window.alert("변경 사항이 없습니다.")
+            return
         }
 
         if(nickname !== '' && !valName){
