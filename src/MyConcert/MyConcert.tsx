@@ -39,7 +39,7 @@ const MyConcert = () => {
         } else {
             return(
                 <Stack>
-                    존재하지 않는 유저입니다.
+                    {profileName} 은 존재하지 않는 유저입니다.
                 </Stack>
             )
         }
