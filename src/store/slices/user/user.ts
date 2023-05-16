@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
 import {groupInfo, groupQnAItemGet, groupQnAListGet} from "../group/group";
+import {MyDefaultInfo} from "../myconcert/myconcert";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -24,6 +25,7 @@ export interface User {
     accessToken : string | null;
     isModalOpen : boolean;
     nickname : string | null
+    intro : string | null
 }
 
 const initialState: User = {
@@ -34,7 +36,8 @@ const initialState: User = {
     accessToken : (localStorage.getItem("Token") === null) ? null : localStorage.getItem("Token"),
     isLogin : (localStorage.getItem("Token") !== null),
     isModalOpen : false,
-    nickname : null
+    nickname : null,
+    intro : null
 };
 
 export const signUp = createAsyncThunk(
@@ -105,6 +108,24 @@ export const myInfoGet = createAsyncThunk(
     }
 )
 
+export const myNamePut = createAsyncThunk(
+    "user/myNamePut",
+    async ({token, data} : {token : string | null | undefined, data : Partial<User>}, {rejectWithValue}) => {
+        try {
+            const response = await axios.put('/api/v1/user/info/', data,{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            console.log(response.data)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const userSlice = createSlice({
     name: "user",
     initialState,
@@ -154,6 +175,14 @@ export const userSlice = createSlice({
         //     state.token = null;
         //     state.isLogin = false;
         // },
+        setMyName : (state, action: PayloadAction<Partial<User>>) => {
+            if(state.profileName !== null && action.payload.profileName !== undefined){
+                state.profileName = action.payload.profileName
+            }
+            if(state.nickname !== null && action.payload.nickname !== undefined){
+                state.nickname = action.payload.nickname
+            }
+        },
     },
 
     extraReducers: (builder) => {
@@ -161,6 +190,7 @@ export const userSlice = createSlice({
             state.profileImage = action.payload.profileImage
             state.profileName = action.payload.profileName
             state.nickname = action.payload.nickname
+            state.intro = action.payload.intro
         });
     },
 });

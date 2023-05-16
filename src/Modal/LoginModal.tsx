@@ -275,7 +275,7 @@ const LoginModal = (props : any) => {
             else if(result.payload === 13){
                 window.alert("이미 존재하는 이메일 입니다.")
             }
-            else if(result.payload === 13){
+            else if(result.payload === 14){
                 window.alert("이미 존재하는 프로필 이름 입니다.")
             }
             else{
