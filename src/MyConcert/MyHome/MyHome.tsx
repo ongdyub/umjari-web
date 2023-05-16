@@ -7,8 +7,8 @@ import Visit from "./Visit/Visit";
 import Diary from "./Diary/Diary";
 import {useNavigate} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
-import {myIntroPut, selectMyConcert} from "../../store/slices/myconcert/myconcert";
-import {selectUser, signUp} from "../../store/slices/user/user";
+import {myConcertStateActions, myIntroPut, selectMyConcert} from "../../store/slices/myconcert/myconcert";
+import {selectUser} from "../../store/slices/user/user";
 import {useState} from "react";
 import {AppDispatch} from "../../store";
 
@@ -26,8 +26,8 @@ const MyHome = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { profileName } = useParams();
     const navigate = useNavigate();
-    const resSize = useMediaQuery(theme.breakpoints.down("md"))
-    const res550 = useMediaQuery(theme.breakpoints.down("res550"))
+    // const resSize = useMediaQuery(theme.breakpoints.down("md"))
+    // const res550 = useMediaQuery(theme.breakpoints.down("res550"))
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
@@ -57,26 +57,34 @@ const MyHome = () => {
             return
         }
 
-        const result = await dispatch(myIntroPut({token : userState.accessToken, data : {intro : introText}}))
+        const data = {
+            intro: introText,
+            profileName : userState.profileName,
+            nickname : userState.nickname
+        }
+
+        const result = await dispatch(myIntroPut({token : userState.accessToken, data : data}))
         console.log(result)
 
         if (result.type === `${myIntroPut.typePrefix}/fulfilled`) {
-            window.alert("회원가입 성공")
+            dispatch(myConcertStateActions.setMyIntro({intro : introText}))
+            window.alert("변경 성공 성공")
+            setIntroText(introText)
         } else {
             console.log(result)
             console.log(result.payload)
             window.alert("변경 실패")
+            setIntroText('')
         }
-        setIntroText('')
         setIsEdit(false)
     }
 
     const myButtons = [
-        <Button onClick={onClickGoSelf} sx={{fontSize: res700 ? 12 : 14}} key="one">짧은소개</Button>,
-        <Button onClick={onClickGoList} sx={{fontSize: res700 ? 12 : 14}} key="two">연주회목록</Button>,
-        <Button onClick={onClickGoGallery} sx={{fontSize: res700 ? 12 : 14}} key="three">사진첩</Button>,
-        <Button onClick={onClickGoDiary} sx={{fontSize: res700 ? 12 : 14}} key="three">다이어리</Button>,
-        <Button onClick={onClickGoVisit} sx={{fontSize: res700 ? 12 : 14}} key="four">방명록</Button>,
+        <Button onClick={onClickGoSelf} sx={{fontSize: res700 ? 12 : 14}} key="selfintro">짧은소개</Button>,
+        <Button onClick={onClickGoList} sx={{fontSize: res700 ? 12 : 14}} key="list">연주회목록</Button>,
+        <Button onClick={onClickGoGallery} sx={{fontSize: res700 ? 12 : 14}} key="gallery">사진첩</Button>,
+        <Button onClick={onClickGoDiary} sx={{fontSize: res700 ? 12 : 14}} key="diary">다이어리</Button>,
+        <Button onClick={onClickGoVisit} sx={{fontSize: res700 ? 12 : 14}} key="visit">방명록</Button>,
     ]
 
     return (
@@ -92,7 +100,7 @@ const MyHome = () => {
                     isEdit ?
                         <Input sx={{pl: 2, fontWeight: 300, fontSize: res750 ? 14 : 23, pr: 2, width: '70%'}} placeholder="30자 이하의 소개를 입력해주세요." value={introText} onChange={(e) => setIntroText(e.target.value)} />
                         :
-                        <Typography sx={{pl: 2, fontWeight: 300, fontSize: res750 ? 17 : 23, pr: 2}}>{myConcertState.myDefaultInfo?.intro.length === 0 ? '한줄 소개가 없습니다.' : `${myConcertState.myDefaultInfo?.intro}`}</Typography>
+                        <Typography sx={{pl: 2, fontWeight: 300, fontSize: res750 ? 17 : 23, pr: 2}}>{myConcertState.myDefaultInfo?.intro === '' ? '한줄 소개가 없습니다.' : `${myConcertState.myDefaultInfo?.intro}`}</Typography>
                 }
                 {
                     myConcertState.myDefaultInfo?.isSelfProfile ?

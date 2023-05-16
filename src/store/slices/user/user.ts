@@ -23,6 +23,7 @@ export interface User {
     isLogin : boolean;
     accessToken : string | null;
     isModalOpen : boolean;
+    nickname : string | null
 }
 
 const initialState: User = {
@@ -32,17 +33,9 @@ const initialState: User = {
     profileImage : null,
     accessToken : (localStorage.getItem("Token") === null) ? null : localStorage.getItem("Token"),
     isLogin : (localStorage.getItem("Token") !== null),
-    isModalOpen : false
+    isModalOpen : false,
+    nickname : null
 };
-
-export const testPingPong = createAsyncThunk(
-    "user/testPingPong",
-    async () => {
-        const response = await axios.get('/api/v1/ping/')
-        console.log(response)
-        return response.data
-    }
-)
 
 export const signUp = createAsyncThunk(
     "user/signUp",
@@ -89,7 +82,6 @@ export const login = createAsyncThunk(
     "user/login",
     async (data: Partial<SignUser>, { dispatch }) => {
         await axios.post('/api/v1/auth/login/',data).then(function (response) {
-            console.log(response.data)
             dispatch(userActions.loginUser(response.data));
             return response.data
         })
@@ -168,6 +160,7 @@ export const userSlice = createSlice({
         builder.addCase(myInfoGet.fulfilled, (state, action) => {
             state.profileImage = action.payload.profileImage
             state.profileName = action.payload.profileName
+            state.nickname = action.payload.nickname
         });
     },
 });
