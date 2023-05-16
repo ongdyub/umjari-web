@@ -113,8 +113,8 @@ const SelfIntro = () => {
                 </Stack>
             </Stack>
             <Stack sx={{mt: 1, mb: 10}}>
-                {selfList.map((item) => (
-                    <Stack sx={{mt:3, mb:1}}>
+                {selfList.map((item, idx) => (
+                    <Stack key={idx} sx={{mt:3, mb:1}}>
                         {
                             res1000 ?
                                 <Stack justifyContent={"flex-start"}>

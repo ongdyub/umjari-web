@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
-import {SignUser} from "../user/user";
+import {SignUser, User} from "../user/user";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -78,13 +78,14 @@ export const myConcertUserImagePut = createAsyncThunk(
 
 export const myIntroPut = createAsyncThunk(
     "myconcert/myIntroPut",
-    async ({token, data} : {token : string | null | undefined, data : Partial<SignUser>}, {rejectWithValue}) => {
+    async ({token, data} : {token : string | null | undefined, data : Partial<User>}, {rejectWithValue}) => {
         try {
             const response = await axios.put('/api/v1/user/info/', data,{
                 headers: {
                     Authorization: `Bearer  ${token}`,
                 },
             })
+            console.log(response.data)
             return response.data
         }
         catch (err : any) {
@@ -101,6 +102,11 @@ export const myConcertStateSlice = createSlice({
             state.myDefaultInfo = null
             state.isExist = true
         },
+        setMyIntro : (state, action: PayloadAction<Partial<MyDefaultInfo>>) => {
+            if(state.myDefaultInfo !== null && action.payload.intro !== undefined){
+                state.myDefaultInfo.intro = action.payload.intro
+            }
+        }
     },
 
     extraReducers: (builder) => {

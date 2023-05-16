@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
 import {groupInfo, groupQnAItemGet, groupQnAListGet} from "../group/group";
+import {MyDefaultInfo} from "../myconcert/myconcert";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -23,6 +24,8 @@ export interface User {
     isLogin : boolean;
     accessToken : string | null;
     isModalOpen : boolean;
+    nickname : string | null
+    intro : string | null
 }
 
 const initialState: User = {
@@ -32,17 +35,10 @@ const initialState: User = {
     profileImage : null,
     accessToken : (localStorage.getItem("Token") === null) ? null : localStorage.getItem("Token"),
     isLogin : (localStorage.getItem("Token") !== null),
-    isModalOpen : false
+    isModalOpen : false,
+    nickname : null,
+    intro : null
 };
-
-export const testPingPong = createAsyncThunk(
-    "user/testPingPong",
-    async () => {
-        const response = await axios.get('/api/v1/ping/')
-        console.log(response)
-        return response.data
-    }
-)
 
 export const signUp = createAsyncThunk(
     "user/signUp",
@@ -89,7 +85,6 @@ export const login = createAsyncThunk(
     "user/login",
     async (data: Partial<SignUser>, { dispatch }) => {
         await axios.post('/api/v1/auth/login/',data).then(function (response) {
-            console.log(response.data)
             dispatch(userActions.loginUser(response.data));
             return response.data
         })
@@ -105,6 +100,24 @@ export const myInfoGet = createAsyncThunk(
                     Authorization: `Bearer  ${token}`,
                 },
             })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const myNamePut = createAsyncThunk(
+    "user/myNamePut",
+    async ({token, data} : {token : string | null | undefined, data : Partial<User>}, {rejectWithValue}) => {
+        try {
+            const response = await axios.put('/api/v1/user/info/', data,{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            console.log(response.data)
             return response.data
         }
         catch (err : any) {
@@ -162,12 +175,22 @@ export const userSlice = createSlice({
         //     state.token = null;
         //     state.isLogin = false;
         // },
+        setMyName : (state, action: PayloadAction<Partial<User>>) => {
+            if(state.profileName !== null && action.payload.profileName !== undefined){
+                state.profileName = action.payload.profileName
+            }
+            if(state.nickname !== null && action.payload.nickname !== undefined){
+                state.nickname = action.payload.nickname
+            }
+        },
     },
 
     extraReducers: (builder) => {
         builder.addCase(myInfoGet.fulfilled, (state, action) => {
             state.profileImage = action.payload.profileImage
             state.profileName = action.payload.profileName
+            state.nickname = action.payload.nickname
+            state.intro = action.payload.intro
         });
     },
 });

@@ -19,9 +19,10 @@ import { useNavigate } from "react-router"
 import LoginModal from "../../Modal/LoginModal";
 import {AppDispatch} from "../../store";
 import React from 'react'
+import NameChangeModal from "../../Modal/NameChangeModal";
 
 const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
-const settings = ['마이페이지', '작성기록', '설정', '로그아웃', 'Size'];
+const settings = ['마이페이지', '닉네임 변경' ,'작성기록', '설정', '로그아웃', 'Size'];
 
 const Header = () => {
 
@@ -36,6 +37,7 @@ const Header = () => {
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+    const [nameModalOpen, setNameModalOpen] = useState(false)
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -81,6 +83,9 @@ const Header = () => {
         }
         else if(setting === 'Size'){
             window.alert(`현재 기기의 가로는 ${curWidth} 입니다.`)
+        }
+        else if(setting === '닉네임 변경'){
+            setNameModalOpen(true)
         }
     }
 
@@ -237,6 +242,7 @@ const Header = () => {
                 </Toolbar>
             </Container>
             <LoginModal open={userState.isModalOpen}/>
+            <NameChangeModal open={nameModalOpen} close={setNameModalOpen} />
         </AppBar>
     );
 }
