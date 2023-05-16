@@ -14,12 +14,13 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {myInfoGet, selectUser, userActions} from "../../store/slices/user/user";
+import {myInfoGet, selectUser, signUp, userActions} from "../../store/slices/user/user";
 import { useNavigate } from "react-router"
 import LoginModal from "../../Modal/LoginModal";
 import {AppDispatch} from "../../store";
 import React from 'react'
 import NameChangeModal from "../../Modal/NameChangeModal";
+import {concert} from "../../store/slices/concert/concert";
 
 const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
 const settings = ['마이페이지', '닉네임 변경' ,'작성기록', '설정', '로그아웃', 'Size'];
@@ -95,8 +96,23 @@ const Header = () => {
 
     useEffect(() => {
         if(userState.accessToken !== null){
-            const result = dispatch(myInfoGet(userState.accessToken))
+            const fetchToken = async () => {
+                if(userState.accessToken !== null){
+                    const result = await dispatch(myInfoGet(userState.accessToken))
+                    if (result.type === `${myInfoGet.typePrefix}/fulfilled`) {
+
+                    }
+                    else{
+                        window.alert("로그인 유효기간 만료")
+                        dispatch(userActions.logoutUser())
+                        return
+                    }
+                }
+            }
+            fetchToken()
+            dispatch(myInfoGet(userState.accessToken))
         }
+
     }, [userState.accessToken, dispatch])
 
     return (

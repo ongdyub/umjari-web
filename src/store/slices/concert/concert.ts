@@ -55,9 +55,14 @@ export const dashboardList = createAsyncThunk(
 
 export const concert = createAsyncThunk(
     "concert/concert",
-    async (id: string | number | undefined) => {
-        const response = await axios.get(`/api/v1/concert/${id}/`)
-        return response.data
+    async (id: string | number | undefined,  {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/concert/${id}/`)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
     }
 )
 
