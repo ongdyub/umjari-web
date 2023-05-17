@@ -20,6 +20,8 @@ const MyConcert = () => {
     const userState = useSelector(selectUser)
     const myConcertState = useSelector(selectMyConcert)
 
+    {/* TODO handle my and another user group list*/}
+
     useEffect(() => {
 
         dispatch(myConcertDefaultInfoGet({token : userState.accessToken, profileName : profileName}))

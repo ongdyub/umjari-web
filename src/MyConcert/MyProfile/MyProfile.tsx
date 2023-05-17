@@ -1,4 +1,4 @@
-import {Box, Button, Chip, CircularProgress, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Box, Button, CircularProgress, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import Backdrop from '@mui/material/Backdrop';
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -127,11 +127,24 @@ const MyProfile = () => {
                     :
                     <Divider sx={{width: '80%', mb:2}}/>
             }
+            {/* TODO */}
+            {/* Not user State, Load from my concert API because It runs every user*/}
             <Stack direction={res750 ? "row" : 'column'} justifyContent={"flex-start"} sx={{position: 'relative', width: '80%',height: '100%', flexWrap: res750 ? 'wrap' : '', pl: res750 ? 1 : 0, pr: res750 ? 1 : 0, pt:2 }}>
-                <Button onClick={() => setOpenGroupEdit(true)} sx={{cursor: 'pointer', maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute',bottom: 0, right: 5}} disableRipple>수정</Button>
-                {userState.career.map((item) => (
-                    <MyCareer key={item.groupId} idx={item.groupId} groupId={item.groupId} groupName={item.groupName} joinedAt={item.joinedAt} leavedAt={item.leavedAt}  />
-                ))}
+                {
+                    myConcertState.myDefaultInfo?.isSelfProfile ?
+                        <Button onClick={() => setOpenGroupEdit(true)} sx={{cursor: 'pointer', maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute',bottom: 0, right: 5}} disableRipple>수정</Button>
+                        :
+                        null
+                }
+                {
+                    myConcertState.myDefaultInfo?.isSelfProfile ?
+                        userState.career.map((item) => (
+                            <MyCareer key={item.groupId} idx={item.groupId} groupId={item.groupId} groupName={item.groupName} joinedAt={item.joinedAt} leavedAt={item.leavedAt}  />
+                        ))
+                        :
+                        null
+                }
+                {/* TODO null state to another user group information*/}
             </Stack>
             {
                 res750 ?

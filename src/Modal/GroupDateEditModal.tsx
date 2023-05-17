@@ -3,12 +3,11 @@ import {
     Modal,
     Stack,
 } from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {
     selectUser,
 } from "../store/slices/user/user";
 import MyCareerTimeEdit from "../MyConcert/MyProfile/MyCareer/MyCareerTimeEdit/MyCareerTimeEdit";
-import {AppDispatch} from "../store";
 
 const styleLog = (theme: any) => ({
     position: 'absolute',
