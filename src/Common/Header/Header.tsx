@@ -14,7 +14,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {myInfoGet, selectUser, signUp, userActions} from "../../store/slices/user/user";
+import {myInfoGet, selectUser, signUp, userActions, userGroupGet} from "../../store/slices/user/user";
 import { useNavigate } from "react-router"
 import LoginModal from "../../Modal/LoginModal";
 import {AppDispatch} from "../../store";
@@ -100,7 +100,7 @@ const Header = () => {
                 if(userState.accessToken !== null){
                     const result = await dispatch(myInfoGet(userState.accessToken))
                     if (result.type === `${myInfoGet.typePrefix}/fulfilled`) {
-
+                        dispatch(userGroupGet(userState.accessToken))
                     }
                     else{
                         window.alert("로그인 유효기간 만료")

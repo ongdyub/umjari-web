@@ -46,7 +46,7 @@ const MyConcert = () => {
     }
     else{
         return(
-            <Stack sx={{height: '1000px'}}>
+            <Stack sx={{height: '800px'}}>
                 <Stack direction={res750 ? "column" : "row"}>
                     <MyProfile />
                     {

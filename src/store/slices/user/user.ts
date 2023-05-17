@@ -16,6 +16,14 @@ export interface SignUser {
     // phoneNumber: string;
 }
 
+export interface UserGroup {
+    groupId: number;
+    groupName : string;
+    joinedAt: string | null
+    leavedAt: string | null
+    memberType : string
+}
+
 export interface User {
     // phone : string | null;
     email : string | null;
@@ -26,6 +34,7 @@ export interface User {
     isModalOpen : boolean;
     nickname : string | null
     intro : string | null
+    career : [UserGroup] | []
 }
 
 const initialState: User = {
@@ -37,7 +46,8 @@ const initialState: User = {
     isLogin : (localStorage.getItem("Token") !== null),
     isModalOpen : false,
     nickname : null,
-    intro : null
+    intro : null,
+    career : []
 };
 
 export const signUp = createAsyncThunk(
@@ -126,6 +136,42 @@ export const myNamePut = createAsyncThunk(
     }
 )
 
+export const userGroupGet = createAsyncThunk(
+    "user/userGroupGet",
+    async (token : string | null | undefined, {rejectWithValue}) => {
+        try {
+            const response = await axios.get('/api/v1/user/my-group/',{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            console.log(response.data)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const userGroupTimePut = createAsyncThunk(
+    "user/userGroupTimePut",
+    async ({data, token} : {data : Partial<UserGroup>, token : string | undefined | null}, {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/group/${data.groupId}/register/timestamp/`,{joinedAt : data.joinedAt, leavedAt : data.leavedAt},{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            console.log(response.data)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const userSlice = createSlice({
     name: "user",
     initialState,
@@ -191,6 +237,9 @@ export const userSlice = createSlice({
             state.profileName = action.payload.profileName
             state.nickname = action.payload.nickname
             state.intro = action.payload.intro
+        });
+        builder.addCase(userGroupGet.fulfilled, (state, action) => {
+            state.career = action.payload.career
         });
     },
 });

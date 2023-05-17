@@ -13,6 +13,15 @@ export interface MyDefaultInfo {
     email: string,
     intro: string,
     isSelfProfile: boolean
+    career : [myGroup] | []
+}
+
+export interface myGroup {
+    groupId: number;
+    groupName : string;
+    joinedAt: string | null
+    leavedAt: string | null
+    memberType : string
 }
 
 export interface MyConcertState {

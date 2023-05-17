@@ -107,7 +107,7 @@ const MyHome = () => {
                         isEdit ?
                             <Button onClick={handleEditIntro} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 0, bottom: -20}} disableRipple>작성</Button>
                             :
-                            <Button onClick={() => setIsEdit(true)} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 0, bottom: -20}} disableRipple>수정</Button>
+                            <Button onClick={() => setIsEdit(true)} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 5, bottom: -20}} disableRipple>수정</Button>
                         :
                         null
                 }
