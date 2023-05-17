@@ -3,6 +3,7 @@ import axios from "axios";
 import { RootState } from "../..";
 import {groupInfo, groupQnAItemGet, groupQnAListGet} from "../group/group";
 import {MyDefaultInfo} from "../myconcert/myconcert";
+import {useSelector} from "react-redux";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -103,9 +104,12 @@ export const login = createAsyncThunk(
 
 export const myInfoGet = createAsyncThunk(
     "user/myInfoGet",
-    async (token: string, {rejectWithValue}) => {
+    async (token : string, {rejectWithValue}) => {
         try {
-            const response = await axios.get('/api/v1/user/me/',{
+
+            const userState = useSelector(selectUser)
+
+            const response = await axios.get(`/api/v1/user/profile-name/${userState.profileName}/`,{
                 headers: {
                     Authorization: `Bearer  ${token}`,
                 },

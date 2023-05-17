@@ -95,23 +95,24 @@ const Header = () => {
     }
 
     useEffect(() => {
-        if(userState.accessToken !== null){
-            const fetchToken = async () => {
-                if(userState.accessToken !== null){
-                    const result = await dispatch(myInfoGet(userState.accessToken))
-                    if (result.type === `${myInfoGet.typePrefix}/fulfilled`) {
-                        dispatch(userGroupGet(userState.accessToken))
-                    }
-                    else{
-                        window.alert("로그인 유효기간 만료")
-                        dispatch(userActions.logoutUser())
-                        return
-                    }
-                }
-            }
-            fetchToken()
-            dispatch(myInfoGet(userState.accessToken))
-        }
+        // if(userState.accessToken !== null){
+        //     //TODO 토큰 요청 보낸 뒤에 isSelfProfile 값이 T면 토큰 유효, 아니면 만료 처리방식
+        //     const fetchToken = async () => {
+        //         if(userState.accessToken !== null){
+        //             const result = await dispatch(myInfoGet(userState.accessToken))
+        //             if (result.type === `${myInfoGet.typePrefix}/fulfilled`) {
+        //                 dispatch(userGroupGet(userState.accessToken))
+        //             }
+        //             else{
+        //                 window.alert("로그인 유효기간 만료")
+        //                 dispatch(userActions.logoutUser())
+        //                 return
+        //             }
+        //         }
+        //     }
+        //     fetchToken()
+        //     dispatch(myInfoGet(userState.accessToken))
+        // }
 
     }, [userState.accessToken, dispatch])
 

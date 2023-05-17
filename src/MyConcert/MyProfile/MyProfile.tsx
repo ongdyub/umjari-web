@@ -136,14 +136,9 @@ const MyProfile = () => {
                         :
                         null
                 }
-                {
-                    myConcertState.myDefaultInfo?.isSelfProfile ?
-                        userState.career.map((item) => (
-                            <MyCareer key={item.groupId} idx={item.groupId} groupId={item.groupId} groupName={item.groupName} joinedAt={item.joinedAt} leavedAt={item.leavedAt}  />
-                        ))
-                        :
-                        null
-                }
+                {myConcertState.myDefaultInfo?.career.map((item) => (
+                    <MyCareer key={item.groupId} idx={item.groupId} groupId={item.groupId} groupName={item.groupName} joinedAt={item.joinedAt} leavedAt={item.leavedAt}  />
+                ))}
                 {/* TODO null state to another user group information*/}
             </Stack>
             {
