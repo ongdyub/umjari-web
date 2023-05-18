@@ -82,7 +82,6 @@ const NameChangeModal = (props : any) => {
             nickname : nickname
         }
         const result = await dispatch(valNamePost(data))
-        console.log(result)
         if (result.type === `${valNamePost.typePrefix}/fulfilled`) {
             window.alert("확인 성공")
             setValName(true)
@@ -123,7 +122,6 @@ const NameChangeModal = (props : any) => {
             window.alert("변경 완료")
             close(false)
         } else {
-            console.log(result.payload)
             if(result.payload === 12){
                 window.alert("이미 존재하는 닉네임 입니다.")
             }

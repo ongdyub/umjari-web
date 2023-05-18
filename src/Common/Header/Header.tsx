@@ -65,7 +65,6 @@ const Header = () => {
     };
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
-        console.log("open user")
     };
     const handleCloseUserMenu = (setting : any) => {
         setAnchorElUser(null);
@@ -95,26 +94,26 @@ const Header = () => {
     }
 
     useEffect(() => {
-        // if(userState.accessToken !== null){
-        //     //TODO 토큰 요청 보낸 뒤에 isSelfProfile 값이 T면 토큰 유효, 아니면 만료 처리방식
-        //     const fetchToken = async () => {
-        //         if(userState.accessToken !== null){
-        //             const result = await dispatch(myInfoGet(userState.accessToken))
-        //             if (result.type === `${myInfoGet.typePrefix}/fulfilled`) {
-        //                 dispatch(userGroupGet(userState.accessToken))
-        //             }
-        //             else{
-        //                 window.alert("로그인 유효기간 만료")
-        //                 dispatch(userActions.logoutUser())
-        //                 return
-        //             }
-        //         }
-        //     }
-        //     fetchToken()
-        //     dispatch(myInfoGet(userState.accessToken))
-        // }
+        if(userState.accessToken !== null && userState.profileName !== null){
+            //TODO 토큰 요청 보낸 뒤에 isSelfProfile 값이 T면 토큰 유효, 아니면 만료 처리방식
+            const fetchToken = async () => {
+                if(userState.accessToken !== null && userState.profileName !== null){
+                    const result = await dispatch(myInfoGet({token : userState.accessToken, profileName : userState.profileName}))
+                    if (result.type === `${myInfoGet.typePrefix}/fulfilled`) {
+                        dispatch(userGroupGet(userState.accessToken))
+                    }
+                    else{
+                        window.alert("로그인 유효기간 만료")
+                        dispatch(userActions.logoutUser())
+                        return
+                    }
+                }
+            }
+            fetchToken()
+            dispatch(myInfoGet({token : userState.accessToken, profileName : userState.profileName}))
+        }
 
-    }, [userState.accessToken, dispatch])
+    }, [userState.accessToken, userState.profileName, dispatch])
 
     return (
         <AppBar position="static">

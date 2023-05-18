@@ -94,7 +94,6 @@ export const myIntroPut = createAsyncThunk(
                     Authorization: `Bearer  ${token}`,
                 },
             })
-            console.log(response.data)
             return response.data
         }
         catch (err : any) {

@@ -45,7 +45,6 @@ const GroupRecruit = () => {
     const [contents, setContents] = useState('');
 
     const handleEdit = () => {
-        console.log(contents)
         dispatch(dummyActions.setWrite(contents))
         navigate('/group/3/recruit')
     }

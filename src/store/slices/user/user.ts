@@ -41,7 +41,7 @@ export interface User {
 const initialState: User = {
     // phone : null,
     email : null,
-    profileName : null,
+    profileName : (localStorage.getItem("profileName") === null) ? null : localStorage.getItem("profileName"),
     profileImage : null,
     accessToken : (localStorage.getItem("Token") === null) ? null : localStorage.getItem("Token"),
     isLogin : (localStorage.getItem("Token") !== null),
@@ -104,12 +104,10 @@ export const login = createAsyncThunk(
 
 export const myInfoGet = createAsyncThunk(
     "user/myInfoGet",
-    async (token : string, {rejectWithValue}) => {
+    async ({token, profileName} : { token : string, profileName : string}, {rejectWithValue}) => {
         try {
 
-            const userState = useSelector(selectUser)
-
-            const response = await axios.get(`/api/v1/user/profile-name/${userState.profileName}/`,{
+            const response = await axios.get(`/api/v1/user/profile-name/${profileName}/`,{
                 headers: {
                     Authorization: `Bearer  ${token}`,
                 },
@@ -131,7 +129,6 @@ export const myNamePut = createAsyncThunk(
                     Authorization: `Bearer  ${token}`,
                 },
             })
-            console.log(response.data)
             return response.data
         }
         catch (err : any) {
@@ -149,7 +146,6 @@ export const userGroupGet = createAsyncThunk(
                     Authorization: `Bearer  ${token}`,
                 },
             })
-            console.log(response.data)
             return response.data
         }
         catch (err : any) {
@@ -167,7 +163,6 @@ export const userGroupTimePut = createAsyncThunk(
                     Authorization: `Bearer  ${token}`,
                 },
             })
-            console.log(response.data)
             return response.data
         }
         catch (err : any) {
@@ -185,6 +180,10 @@ export const userSlice = createSlice({
             action: PayloadAction<Partial<User>>
         ) => {
             state.isLogin = true;
+            if (action.payload.profileName) {
+                state.profileName = action.payload.profileName
+                localStorage.setItem("profileName", action.payload.profileName)
+            }
             if (action.payload.accessToken) {
                 state.accessToken = action.payload.accessToken
                 localStorage.setItem("Token", action.payload.accessToken)
@@ -200,7 +199,10 @@ export const userSlice = createSlice({
             state.isLogin = false;
             localStorage.removeItem("Token")
             localStorage.removeItem("id")
+            localStorage.removeItem("profileName")
             state.accessToken = null;
+            state.nickname = null;
+            state.career = [];
         },
         openModal : (
             state,
@@ -226,8 +228,9 @@ export const userSlice = createSlice({
         //     state.isLogin = false;
         // },
         setMyName : (state, action: PayloadAction<Partial<User>>) => {
-            if(state.profileName !== null && action.payload.profileName !== undefined){
+            if(state.profileName !== null && action.payload.profileName !== undefined && action.payload.profileName !== null){
                 state.profileName = action.payload.profileName
+                localStorage.setItem("profileName", action.payload.profileName)
             }
             if(state.nickname !== null && action.payload.nickname !== undefined){
                 state.nickname = action.payload.nickname

@@ -64,15 +64,12 @@ const MyHome = () => {
         }
 
         const result = await dispatch(myIntroPut({token : userState.accessToken, data : data}))
-        console.log(result)
 
         if (result.type === `${myIntroPut.typePrefix}/fulfilled`) {
             dispatch(myConcertStateActions.setMyIntro({intro : introText}))
             window.alert("변경 성공 성공")
             setIntroText(introText)
         } else {
-            console.log(result)
-            console.log(result.payload)
             window.alert("변경 실패")
             setIntroText('')
         }

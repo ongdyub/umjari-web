@@ -43,7 +43,6 @@ const DetailInfo = () => {
     const [contents, setContents] = useState('');
 
     const handleEdit = () => {
-        console.log(contents)
         dispatch(dummyActions.setWrite(contents))
         navigate('/concert/3/info')
     }

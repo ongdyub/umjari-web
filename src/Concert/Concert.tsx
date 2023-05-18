@@ -19,7 +19,7 @@ const Concert = () => {
     useEffect(() => {
         const fetchConcert = async () => {
             const result = await dispatch(concert(id))
-            if (result.type === `${signUp.typePrefix}/fulfilled`) {
+            if (result.type === `${concert.typePrefix}/fulfilled`) {
 
             }
             else{

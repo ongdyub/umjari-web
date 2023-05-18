@@ -68,7 +68,6 @@ const GroupQnAWriteModal = (props : any) => {
             sort : 'createAt,DESC',
         }
         const result = await dispatch(groupQnAPost(data))
-        console.log(result)
         if (result.type === `${groupQnAPost.typePrefix}/fulfilled`) {
             window.alert("작성 성공")
         } else {
