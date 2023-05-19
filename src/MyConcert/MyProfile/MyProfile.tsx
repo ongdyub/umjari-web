@@ -1,4 +1,4 @@
-import {Box, Button, Chip, CircularProgress, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Box, Button, CircularProgress, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import Backdrop from '@mui/material/Backdrop';
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -11,41 +11,15 @@ import {
 } from "../../store/slices/myconcert/myconcert";
 import {useEffect, useRef, useState} from "react";
 import {selectUser, userActions} from "../../store/slices/user/user";
-
-const groupList = [
-    {
-        name: 'SNUPO',
-        join: '2018.10',
-        end : ''
-    },
-    {
-        name: '56사단 군악대',
-        join: '2019.10',
-        end : '2021.04'
-    },
-    {
-        name: 'SNUGO',
-        join: '2022.04',
-        end : ''
-    },
-    {
-        name: '가우디움',
-        join: '2022.05',
-        end : '2022.10'
-    },
-    {
-        name: 'AOU',
-        join: '2022.05',
-        end : '2022.10'
-    },
-]
-
+import MyCareer from "./MyCareer/MyCareer";
+import GroupDateEditModal from "../../Modal/GroupDateEditModal";
 
 const MyProfile = () => {
 
     const myRef = useRef<HTMLDivElement>(null);
     const [height, setHeight] = useState<number | null | undefined>(null);
     const [imgLoadingOpen,  setImgLadingOpen] = useState(false)
+    const [openGroupEdit, setOpenGroupEdit] = useState(false)
 
     useEffect(() => {
         const handleResize = () => {
@@ -79,19 +53,22 @@ const MyProfile = () => {
         const formData = new FormData()
         formData.append('image', e.target.files[0])
 
-        const result = await dispatch(myConcertProfileImageUpload({token : userState.accessToken, formData : formData}))
+        const result = await dispatch(myConcertProfileImageUpload({token: userState.accessToken, formData: formData}))
 
         if (result.type === `${myConcertProfileImageUpload.typePrefix}/fulfilled`) {
 
-            const putImage = await dispatch(myConcertUserImagePut({token: userState.accessToken, image: result.payload.url}))
+            const putImage = await dispatch(myConcertUserImagePut({
+                token: userState.accessToken,
+                image: result.payload.url
+            }))
 
-            if(putImage.type === `${myConcertUserImagePut.typePrefix}/fulfilled`){
+            if (putImage.type === `${myConcertUserImagePut.typePrefix}/fulfilled`) {
 
                 setImgLadingOpen(false)
 
                 window.alert("프로필이 변경되었습니다.")
-                dispatch(myConcertDefaultInfoGet({token : userState.accessToken, profileName : profileName}))
-                dispatch(userActions.setHeaderImage({profileImage : result.payload.url}))
+                dispatch(myConcertDefaultInfoGet({token: userState.accessToken, profileName: profileName}))
+                dispatch(userActions.setHeaderImage({profileImage: result.payload.url}))
 
             } else {
 
@@ -106,7 +83,6 @@ const MyProfile = () => {
             window.alert("이미지 업로드 실패. 용량(10MB)과 네트워크를 확인해 주세요")
         }
     }
-
 
     return(
         <Stack direction={res750 ? "row" : 'column'} sx={{width: res750 ? '100%' : 200, height: '100%'}} justifyContent={"flex-start"} alignItems={"center"}>
@@ -151,31 +127,19 @@ const MyProfile = () => {
                     :
                     <Divider sx={{width: '80%', mb:2}}/>
             }
-            <Stack direction={res750 ? "row" : 'column'} justifyContent={"flex-start"} sx={{width: '80%', flexWrap: res750 ? 'wrap' : '', pl: res750 ? 1 : 0, pr: res750 ? 1 : 0, pt:2 }}>
-                {groupList.map((item, idx) => (
-                    <Stack key={idx} justifyContent={"center"} sx={{width: res750 ? 'auto' : '100%', mb: res750 ? 1 : 3, flexWrap: res750 ? 'wrap' : '', mr: res750 ? 2 : 0, ml: res750 ? 2 : 0}} direction={"column"}>
-                        {
-                            res750 ?
-                                <Chip label={item.name} sx={{fontSize : res500 ? 10 : 13, width: '100%', height: res500 ? 20 : 30}} />
-                                :
-                                <Typography sx={{fontWeight: 900, fontSize: res500 ? 8 : 17, color: '#111111'}}>{item.name}</Typography>
-                        }
-                        {
-                            res750 ?
-                                <Stack direction={"row"} justifyContent={"flex-start"} alignItems={"center"} sx={{width: 'auto', mt:0.5}}>
-                                    <Typography sx={{fontWeight: 100, fontSize: res500 ? 10 : 12}}>{item.join}</Typography>
-                                    <Typography sx={{fontWeight: 100, fontSize: res500 ? 10 : 12, ml:0.5, mr: 0.5}}>~</Typography>
-                                    <Typography sx={{fontWeight: 100, fontSize: res500 ? 10 : 12}}>{item.end}</Typography>
-                                </Stack>
-                                :
-                                <Stack direction={"row"} justifyContent={"flex-start"} sx={{width: '100%', mt:1}}>
-                                    <Typography sx={{fontWeight: 100, fontSize: res500 ? 10 : 12}}>{item.join}</Typography>
-                                    <Typography sx={{fontWeight: 100, fontSize: res500 ? 10 : 12, ml:0.5, mr: 0.5}}>~</Typography>
-                                    <Typography sx={{fontWeight: 100, fontSize: res500 ? 10 : 12}}>{item.end}</Typography>
-                                </Stack>
-                        }
-                    </Stack>
+            {/* TODO */}
+            {/* Not user State, Load from my concert API because It runs every user*/}
+            <Stack direction={res750 ? "row" : 'column'} justifyContent={"flex-start"} sx={{position: 'relative', width: '80%',height: '100%', flexWrap: res750 ? 'wrap' : '', pl: res750 ? 1 : 0, pr: res750 ? 1 : 0, pt:2 }}>
+                {
+                    myConcertState.myDefaultInfo?.isSelfProfile ?
+                        <Button onClick={() => setOpenGroupEdit(true)} sx={{cursor: 'pointer', maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute',bottom: 0, right: 5}} disableRipple>수정</Button>
+                        :
+                        null
+                }
+                {myConcertState.myDefaultInfo?.career.map((item) => (
+                    <MyCareer key={item.groupId} idx={item.groupId} groupId={item.groupId} groupName={item.groupName} joinedAt={item.joinedAt} leavedAt={item.leavedAt}  />
                 ))}
+                {/* TODO null state to another user group information*/}
             </Stack>
             {
                 res750 ?
@@ -183,6 +147,7 @@ const MyProfile = () => {
                     :
                     <Divider sx={{width: '80%', mb:2}}/>
             }
+            <GroupDateEditModal open={openGroupEdit} close={setOpenGroupEdit} />
         </Stack>
     )
 }

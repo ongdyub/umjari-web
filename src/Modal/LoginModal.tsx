@@ -179,7 +179,6 @@ const LoginModal = (props : any) => {
             token : authCode
         }
         const result = await dispatch(valCode(data))
-        console.log(result)
         if (result.type === `${valCode.typePrefix}/fulfilled`) {
             window.alert("인증 성공")
             setValEmail(true)
@@ -193,7 +192,6 @@ const LoginModal = (props : any) => {
             nickname : nickname
         }
         const result = await dispatch(valNamePost(data))
-        console.log(result)
         if (result.type === `${valNamePost.typePrefix}/fulfilled`) {
             window.alert("확인 성공")
             setValName(true)
@@ -233,7 +231,6 @@ const LoginModal = (props : any) => {
         }
 
         const result = await dispatch(login(data))
-        console.log(result)
 
         if (result.type === `${login.typePrefix}/fulfilled`) {
             window.alert("로그인 성공")

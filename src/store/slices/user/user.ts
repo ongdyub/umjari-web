@@ -3,6 +3,7 @@ import axios from "axios";
 import { RootState } from "../..";
 import {groupInfo, groupQnAItemGet, groupQnAListGet} from "../group/group";
 import {MyDefaultInfo} from "../myconcert/myconcert";
+import {useSelector} from "react-redux";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -16,6 +17,14 @@ export interface SignUser {
     // phoneNumber: string;
 }
 
+export interface UserGroup {
+    groupId: number;
+    groupName : string;
+    joinedAt: string | null
+    leavedAt: string | null
+    memberType : string
+}
+
 export interface User {
     // phone : string | null;
     email : string | null;
@@ -26,18 +35,20 @@ export interface User {
     isModalOpen : boolean;
     nickname : string | null
     intro : string | null
+    career : [UserGroup] | []
 }
 
 const initialState: User = {
     // phone : null,
     email : null,
-    profileName : null,
+    profileName : (localStorage.getItem("profileName") === null) ? null : localStorage.getItem("profileName"),
     profileImage : null,
     accessToken : (localStorage.getItem("Token") === null) ? null : localStorage.getItem("Token"),
     isLogin : (localStorage.getItem("Token") !== null),
     isModalOpen : false,
     nickname : null,
-    intro : null
+    intro : null,
+    career : []
 };
 
 export const signUp = createAsyncThunk(
@@ -93,9 +104,10 @@ export const login = createAsyncThunk(
 
 export const myInfoGet = createAsyncThunk(
     "user/myInfoGet",
-    async (token: string, {rejectWithValue}) => {
+    async ({token, profileName} : { token : string, profileName : string}, {rejectWithValue}) => {
         try {
-            const response = await axios.get('/api/v1/user/me/',{
+
+            const response = await axios.get(`/api/v1/user/profile-name/${profileName}/`,{
                 headers: {
                     Authorization: `Bearer  ${token}`,
                 },
@@ -117,7 +129,40 @@ export const myNamePut = createAsyncThunk(
                     Authorization: `Bearer  ${token}`,
                 },
             })
-            console.log(response.data)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const userGroupGet = createAsyncThunk(
+    "user/userGroupGet",
+    async (token : string | null | undefined, {rejectWithValue}) => {
+        try {
+            const response = await axios.get('/api/v1/user/my-group/',{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const userGroupTimePut = createAsyncThunk(
+    "user/userGroupTimePut",
+    async ({data, token} : {data : Partial<UserGroup>, token : string | undefined | null}, {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/group/${data.groupId}/register/timestamp/`,{joinedAt : data.joinedAt, leavedAt : data.leavedAt},{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
             return response.data
         }
         catch (err : any) {
@@ -135,6 +180,10 @@ export const userSlice = createSlice({
             action: PayloadAction<Partial<User>>
         ) => {
             state.isLogin = true;
+            if (action.payload.profileName) {
+                state.profileName = action.payload.profileName
+                localStorage.setItem("profileName", action.payload.profileName)
+            }
             if (action.payload.accessToken) {
                 state.accessToken = action.payload.accessToken
                 localStorage.setItem("Token", action.payload.accessToken)
@@ -150,7 +199,10 @@ export const userSlice = createSlice({
             state.isLogin = false;
             localStorage.removeItem("Token")
             localStorage.removeItem("id")
+            localStorage.removeItem("profileName")
             state.accessToken = null;
+            state.nickname = null;
+            state.career = [];
         },
         openModal : (
             state,
@@ -176,8 +228,9 @@ export const userSlice = createSlice({
         //     state.isLogin = false;
         // },
         setMyName : (state, action: PayloadAction<Partial<User>>) => {
-            if(state.profileName !== null && action.payload.profileName !== undefined){
+            if(state.profileName !== null && action.payload.profileName !== undefined && action.payload.profileName !== null){
                 state.profileName = action.payload.profileName
+                localStorage.setItem("profileName", action.payload.profileName)
             }
             if(state.nickname !== null && action.payload.nickname !== undefined){
                 state.nickname = action.payload.nickname
@@ -191,6 +244,9 @@ export const userSlice = createSlice({
             state.profileName = action.payload.profileName
             state.nickname = action.payload.nickname
             state.intro = action.payload.intro
+        });
+        builder.addCase(userGroupGet.fulfilled, (state, action) => {
+            state.career = action.payload.career
         });
     },
 });

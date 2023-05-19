@@ -82,7 +82,6 @@ const NameChangeModal = (props : any) => {
             nickname : nickname
         }
         const result = await dispatch(valNamePost(data))
-        console.log(result)
         if (result.type === `${valNamePost.typePrefix}/fulfilled`) {
             window.alert("확인 성공")
             setValName(true)
@@ -121,9 +120,8 @@ const NameChangeModal = (props : any) => {
         if (result.type === `${myNamePut.typePrefix}/fulfilled`) {
             dispatch(userActions.setMyName({profileName : data.profileName, nickname : data.nickname}))
             window.alert("변경 완료")
-            close(false)
+            handleClose()
         } else {
-            console.log(result.payload)
             if(result.payload === 12){
                 window.alert("이미 존재하는 닉네임 입니다.")
             }
@@ -188,7 +186,7 @@ const NameChangeModal = (props : any) => {
                             <Stack sx={{width: '100%', flexDirection: 'column', alignItems: 'center', alignContent: 'center'}}>
                                 <Stack sx={{width: '100%', flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
                                     <TextField
-                                        label="닉네임"
+                                        label={`현재 닉네임 : ${userState.nickname}`}
                                         variant="standard"
                                         helperText={"닉네임을 입력해주세요. 글 및 질문 작성 시에 보여지는 닉네임 입니다. 2-15자리의 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
                                         value={nickname}

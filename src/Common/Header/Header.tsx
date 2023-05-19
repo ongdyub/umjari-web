@@ -14,7 +14,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {myInfoGet, selectUser, signUp, userActions} from "../../store/slices/user/user";
+import {myInfoGet, selectUser, signUp, userActions, userGroupGet} from "../../store/slices/user/user";
 import { useNavigate } from "react-router"
 import LoginModal from "../../Modal/LoginModal";
 import {AppDispatch} from "../../store";
@@ -65,7 +65,6 @@ const Header = () => {
     };
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
-        console.log("open user")
     };
     const handleCloseUserMenu = (setting : any) => {
         setAnchorElUser(null);
@@ -95,12 +94,12 @@ const Header = () => {
     }
 
     useEffect(() => {
-        if(userState.accessToken !== null){
+        if(userState.accessToken !== null && userState.profileName !== null){
             const fetchToken = async () => {
-                if(userState.accessToken !== null){
-                    const result = await dispatch(myInfoGet(userState.accessToken))
-                    if (result.type === `${myInfoGet.typePrefix}/fulfilled`) {
-
+                if(userState.accessToken !== null && userState.profileName !== null){
+                    const result = await dispatch(myInfoGet({token : userState.accessToken, profileName : userState.profileName}))
+                    if (result.payload.isSelfProfile) {
+                        dispatch(userGroupGet(userState.accessToken))
                     }
                     else{
                         window.alert("로그인 유효기간 만료")
@@ -110,10 +109,10 @@ const Header = () => {
                 }
             }
             fetchToken()
-            dispatch(myInfoGet(userState.accessToken))
+            dispatch(myInfoGet({token : userState.accessToken, profileName : userState.profileName}))
         }
 
-    }, [userState.accessToken, dispatch])
+    }, [userState.accessToken, userState.profileName, dispatch])
 
     return (
         <AppBar position="static">

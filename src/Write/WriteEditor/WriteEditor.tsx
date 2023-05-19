@@ -108,9 +108,7 @@ const WriteEditor = () => {
 
 
     const handleSubmit = () => {
-        console.log(contents)
         dispatch(dummyActions.setWrite(contents))
-        console.log(dummySelector.write)
         navigate('/community/전체/2')
     }
 

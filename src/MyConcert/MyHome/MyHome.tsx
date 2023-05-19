@@ -64,15 +64,12 @@ const MyHome = () => {
         }
 
         const result = await dispatch(myIntroPut({token : userState.accessToken, data : data}))
-        console.log(result)
 
         if (result.type === `${myIntroPut.typePrefix}/fulfilled`) {
             dispatch(myConcertStateActions.setMyIntro({intro : introText}))
             window.alert("변경 성공 성공")
             setIntroText(introText)
         } else {
-            console.log(result)
-            console.log(result.payload)
             window.alert("변경 실패")
             setIntroText('')
         }
@@ -105,9 +102,9 @@ const MyHome = () => {
                 {
                     myConcertState.myDefaultInfo?.isSelfProfile ?
                         isEdit ?
-                            <Button onClick={handleEditIntro} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 0, bottom: -20}} disableRipple>작성</Button>
+                            <Button onClick={handleEditIntro} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 5, bottom: -15}} disableRipple>작성</Button>
                             :
-                            <Button onClick={() => setIsEdit(true)} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 0, bottom: -20}} disableRipple>수정</Button>
+                            <Button onClick={() => setIsEdit(true)} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 5, bottom: -15}} disableRipple>수정</Button>
                         :
                         null
                 }
