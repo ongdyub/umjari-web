@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
-import {SignUser, User} from "../user/user";
+import {User} from "../user/user";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -102,6 +102,23 @@ export const myIntroPut = createAsyncThunk(
     }
 )
 
+export const myconcertGroupGet = createAsyncThunk(
+    "myconcert/myconcertGroupGet",
+    async (token : string | null | undefined, {rejectWithValue}) => {
+        try {
+            const response = await axios.get('/api/v1/user/my-group/',{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const myConcertStateSlice = createSlice({
     name: "myConcertState",
     initialState,
@@ -129,6 +146,11 @@ export const myConcertStateSlice = createSlice({
         builder.addCase(myIntroPut.fulfilled, (state, action) => {
             if(action.payload.intro !== null && state.myDefaultInfo){
                 state.myDefaultInfo.intro  = action.payload.intro
+            }
+        });
+        builder.addCase(myconcertGroupGet.fulfilled, (state, action) => {
+            if(state.myDefaultInfo !== null){
+                state.myDefaultInfo.career = action.payload.career
             }
         });
     },

@@ -95,11 +95,10 @@ const Header = () => {
 
     useEffect(() => {
         if(userState.accessToken !== null && userState.profileName !== null){
-            //TODO 토큰 요청 보낸 뒤에 isSelfProfile 값이 T면 토큰 유효, 아니면 만료 처리방식
             const fetchToken = async () => {
                 if(userState.accessToken !== null && userState.profileName !== null){
                     const result = await dispatch(myInfoGet({token : userState.accessToken, profileName : userState.profileName}))
-                    if (result.type === `${myInfoGet.typePrefix}/fulfilled`) {
+                    if (result.payload.isSelfProfile) {
                         dispatch(userGroupGet(userState.accessToken))
                     }
                     else{

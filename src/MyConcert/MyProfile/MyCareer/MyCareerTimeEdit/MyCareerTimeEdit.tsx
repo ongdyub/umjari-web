@@ -2,7 +2,8 @@ import {Button, Divider, Stack, TextField, Typography} from "@mui/material";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../../../store";
-import {selectUser, userGroupGet, userGroupTimePut} from "../../../../store/slices/user/user";
+import {selectUser, userGroupTimePut} from "../../../../store/slices/user/user";
+import {myconcertGroupGet} from "../../../../store/slices/myconcert/myconcert";
 
 const MyCareerTimeEdit = (props : any) => {
 
@@ -40,7 +41,7 @@ const MyCareerTimeEdit = (props : any) => {
         const result = await dispatch(userGroupTimePut({data : data, token : userState.accessToken}))
 
         if (result.type === `${userGroupTimePut.typePrefix}/fulfilled`) {
-            dispatch(userGroupGet(userState.accessToken))
+            dispatch(myconcertGroupGet(userState.accessToken))
             window.alert("변경 완료")
         } else {
             window.alert("네트워크 오류")
