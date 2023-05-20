@@ -1,4 +1,4 @@
-import {Button, ButtonGroup, Stack} from "@mui/material";
+import {Button, ButtonGroup, Stack, useMediaQuery, useTheme} from "@mui/material";
 import {Route, Routes, useParams} from "react-router-dom";
 import Visit from "../../MyConcert/MyHome/Visit/Visit";
 import DetailInfo from "./DetailInfo/DetailInfo";
@@ -7,11 +7,15 @@ import ConcertComment from "./ConcertComment/ConcertComment";
 import ConcertMember from "./ConcertMember/ConcertMember";
 import {useNavigate} from "react-router";
 import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {selectDummy} from "../../store/slices/dummy/dummy";
 
 
 
 const ConcertDetail = () => {
 
+    const theme = useTheme()
+    const res600 = useMediaQuery('(max-width:600px)')
     const navigate = useNavigate();
     const { id } = useParams();
     const onClickGoInfo = () => {
@@ -34,12 +38,10 @@ const ConcertDetail = () => {
         <Button onClick={onClickGoMember} key="member">연주자</Button>,
     ]
 
-
-
     return(
-        <Stack sx={{mt:1, pl: 3}}>
-            <Stack sx={{mb: 3}}>
-                <ButtonGroup variant={"text"} size="large">
+        <Stack sx={{mt:1, pl: res600 ? 0 : 3}}>
+            <Stack sx={{mb: 3}} justifyContent={res600 ? 'center' : 'flex-start'} direction={res600 ? 'row' : 'column'}>
+                <ButtonGroup sx={{width: 'auto'}} variant={"text"} size="large" >
                     {myButtons}
                 </ButtonGroup>
             </Stack>

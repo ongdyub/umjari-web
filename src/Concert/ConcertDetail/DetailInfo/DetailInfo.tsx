@@ -1,9 +1,12 @@
 import {Button, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import ReactQuill from "react-quill";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {dummyActions, selectDummy} from "../../../store/slices/dummy/dummy";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {selectUser} from "../../../store/slices/user/user";
+import {selectConcert} from "../../../store/slices/concert/concert";
+import ProgramInfo from "./ProgramInfo";
 
 const modules = {
     toolbar: {
@@ -33,7 +36,11 @@ const DetailInfo = () => {
     const theme = useTheme()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { id } = useParams();
+
     const dummySelector = useSelector(selectDummy)
+    const userState = useSelector(selectUser)
+    const concertState = useSelector(selectConcert)
     const res1100 = useMediaQuery('(max-width:1099px)')
     const res800 = useMediaQuery('(max-width:800px)')
     const res600 = useMediaQuery('(max-width:600px)')
@@ -42,33 +49,61 @@ const DetailInfo = () => {
     const [mode, setMode] = useState(true)
     const [contents, setContents] = useState('');
 
+    const [isAdminGroup, setIsAdminGroup] = useState(false)
+
     const handleEdit = () => {
         dispatch(dummyActions.setWrite(contents))
         navigate('/concert/3/info')
     }
+
+    useEffect(() => {
+        if(userState.isLogin){
+            const userGroup = userState.career.find((userGroup) => userGroup.groupId === concertState.concert?.groupId)
+
+            if(userGroup !== null && userGroup !== undefined && userGroup.memberType === 'ADMIN'){
+                setIsAdminGroup(true)
+            }
+        }
+    },[userState.career, concertState.concert])
+
     return(
-        <Stack justifyContent={"flex-start"}>
-            <Divider sx={{width: '90%', mt:-1}} />
-            <Stack sx={{width: 'calc(100% - 24px)', mt:1}}>
-                <ReactQuill
-                    value={dummySelector.write}
-                    readOnly={true}
-                    theme={"bubble"}
-                />
-                <ReactQuill
-                    className={"quill"}
-                    style={{width: '95%', marginBottom: '60px', height: '500px' }}
-                    theme="snow"
-                    modules={modules}
-                    formats={formats}
-                    value={contents}
-                    onChange={(e) => setContents(e)}
-                />
+        <Stack justifyContent={res600 ? 'center' : 'flex-start'} alignItems={'center'} sx={{mb: 10}}>
+            <Divider sx={{width: res600 ? '90%' : '100%', mt:-1}} />
+            <Stack sx={{width : res600 ? '90%' : '100%'}}>
+                <Typography sx={{fontSize: 35, fontWeight: 100, fontFamily: "Open Sans", mt: 0.5}}>Program</Typography>
+                {
+                    concertState.concert?.setList.map((item) => (
+                        <ProgramInfo key={item.id} item={item} />
+                    ))
+                }
             </Stack>
-            <Divider sx={{width: '90%'}} />
-            <Stack direction={"row"} sx={{mt:1, mb:10}}>
-                <Button variant={"outlined"} onClick={handleEdit}>수정하기</Button>
-            </Stack>
+            {
+                isAdminGroup ?
+                    <>
+                        <Stack sx={{width: 'calc(100% - 24px)', mt:1}}>
+                            <ReactQuill
+                                value={dummySelector.write}
+                                readOnly={true}
+                                theme={"bubble"}
+                            />
+                            <ReactQuill
+                                className={"quill"}
+                                style={{width: '95%', marginBottom: '60px', height: '500px' }}
+                                theme="snow"
+                                modules={modules}
+                                formats={formats}
+                                value={contents}
+                                onChange={(e) => setContents(e)}
+                            />
+                        </Stack>
+                        <Divider sx={{width: '90%'}} />
+                        <Stack direction={"row"} sx={{mt:1, mb:10}}>
+                            <Button variant={"outlined"} onClick={handleEdit}>수정하기</Button>
+                        </Stack>
+                    </>
+                    :
+                    null
+            }
         </Stack>
     )
 }
