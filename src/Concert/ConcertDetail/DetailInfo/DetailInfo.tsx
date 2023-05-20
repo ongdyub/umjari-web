@@ -1,9 +1,11 @@
 import {Button, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import ReactQuill from "react-quill";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {dummyActions, selectDummy} from "../../../store/slices/dummy/dummy";
 import {useState} from "react";
+import {selectUser} from "../../../store/slices/user/user";
+import {selectConcert} from "../../../store/slices/concert/concert";
 
 const modules = {
     toolbar: {
@@ -33,7 +35,11 @@ const DetailInfo = () => {
     const theme = useTheme()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { id } = useParams();
+
     const dummySelector = useSelector(selectDummy)
+    const userState = useSelector(selectUser)
+    const concertState = useSelector(selectConcert)
     const res1100 = useMediaQuery('(max-width:1099px)')
     const res800 = useMediaQuery('(max-width:800px)')
     const res600 = useMediaQuery('(max-width:600px)')
@@ -47,28 +53,35 @@ const DetailInfo = () => {
         navigate('/concert/3/info')
     }
     return(
-        <Stack justifyContent={"flex-start"}>
-            <Divider sx={{width: '90%', mt:-1}} />
-            <Stack sx={{width: 'calc(100% - 24px)', mt:1}}>
-                <ReactQuill
-                    value={dummySelector.write}
-                    readOnly={true}
-                    theme={"bubble"}
-                />
-                <ReactQuill
-                    className={"quill"}
-                    style={{width: '95%', marginBottom: '60px', height: '500px' }}
-                    theme="snow"
-                    modules={modules}
-                    formats={formats}
-                    value={contents}
-                    onChange={(e) => setContents(e)}
-                />
-            </Stack>
-            <Divider sx={{width: '90%'}} />
-            <Stack direction={"row"} sx={{mt:1, mb:10}}>
-                <Button variant={"outlined"} onClick={handleEdit}>수정하기</Button>
-            </Stack>
+        <Stack justifyContent={res600 ? 'center' : 'flex-start'} alignItems={'center'}>
+            <Divider sx={{width: res600 ? '90%' : '100%', mt:-1}} />
+            {
+                userState.career !== undefined && userState.career.filter((userGroup) => userGroup.groupId === concertState.concert?.groupId)[0].memberType === 'ADMIN' ?
+                    <>
+                        <Stack sx={{width: 'calc(100% - 24px)', mt:1}}>
+                            <ReactQuill
+                                value={dummySelector.write}
+                                readOnly={true}
+                                theme={"bubble"}
+                            />
+                            <ReactQuill
+                                className={"quill"}
+                                style={{width: '95%', marginBottom: '60px', height: '500px' }}
+                                theme="snow"
+                                modules={modules}
+                                formats={formats}
+                                value={contents}
+                                onChange={(e) => setContents(e)}
+                            />
+                        </Stack>
+                        <Divider sx={{width: '90%'}} />
+                        <Stack direction={"row"} sx={{mt:1, mb:10}}>
+                            <Button variant={"outlined"} onClick={handleEdit}>수정하기</Button>
+                        </Stack>
+                    </>
+                    :
+                    null
+            }
         </Stack>
     )
 }
