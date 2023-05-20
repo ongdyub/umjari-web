@@ -3,7 +3,7 @@ import ReactQuill from "react-quill";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import {dummyActions, selectDummy} from "../../../store/slices/dummy/dummy";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {selectUser} from "../../../store/slices/user/user";
 import {selectConcert} from "../../../store/slices/concert/concert";
 
@@ -48,15 +48,28 @@ const DetailInfo = () => {
     const [mode, setMode] = useState(true)
     const [contents, setContents] = useState('');
 
+    const [isAdminGroup, setIsAdminGroup] = useState(false)
+
     const handleEdit = () => {
         dispatch(dummyActions.setWrite(contents))
         navigate('/concert/3/info')
     }
+
+    useEffect(() => {
+        if(userState.isLogin){
+            const userGroup = userState.career.find((userGroup) => userGroup.groupId === concertState.concert?.groupId)
+
+            if(userGroup !== null && userGroup !== undefined && userGroup.memberType === 'ADMIN'){
+                setIsAdminGroup(true)
+            }
+        }
+    },[userState.career, concertState.concert])
+
     return(
         <Stack justifyContent={res600 ? 'center' : 'flex-start'} alignItems={'center'}>
             <Divider sx={{width: res600 ? '90%' : '100%', mt:-1}} />
             {
-                userState.career !== undefined && userState.career.filter((userGroup) => userGroup.groupId === concertState.concert?.groupId)[0].memberType === 'ADMIN' ?
+                isAdminGroup ?
                     <>
                         <Stack sx={{width: 'calc(100% - 24px)', mt:1}}>
                             <ReactQuill

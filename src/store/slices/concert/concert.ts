@@ -4,6 +4,20 @@ import { RootState } from "../..";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+export interface GroupSetList {
+    id: number,
+    musicInfo: {
+        id: number,
+        composerEng: string,
+        shortComposerEng: string,
+        composerKor: string,
+        shortComposerKor: string,
+        nameEng: string,
+        shortNameEng: string,
+        nameKor: string,
+        shortNameKor: string
+    }
+}
 export interface Concert {
     id: number,
     groupId: number,
@@ -20,7 +34,8 @@ export interface Concert {
     concertRunningTime: number,
     fee: number,
     region: string,
-    regionDetail: string
+    regionDetail: string,
+    setList : [GroupSetList]
 }
 
 export interface ConcertList {
