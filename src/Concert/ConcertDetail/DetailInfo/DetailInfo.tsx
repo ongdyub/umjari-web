@@ -67,7 +67,7 @@ const DetailInfo = () => {
     },[userState.career, concertState.concert])
 
     return(
-        <Stack justifyContent={res600 ? 'center' : 'flex-start'} alignItems={'center'}>
+        <Stack justifyContent={res600 ? 'center' : 'flex-start'} alignItems={'center'} sx={{mb: 10}}>
             <Divider sx={{width: res600 ? '90%' : '100%', mt:-1}} />
             <Stack sx={{width : res600 ? '90%' : '100%'}}>
                 <Typography sx={{fontSize: 35, fontWeight: 100, fontFamily: "Open Sans", mt: 0.5}}>Program</Typography>
