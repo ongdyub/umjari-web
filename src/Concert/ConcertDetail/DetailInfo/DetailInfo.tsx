@@ -6,6 +6,7 @@ import {dummyActions, selectDummy} from "../../../store/slices/dummy/dummy";
 import {useEffect, useState} from "react";
 import {selectUser} from "../../../store/slices/user/user";
 import {selectConcert} from "../../../store/slices/concert/concert";
+import ProgramInfo from "./ProgramInfo";
 
 const modules = {
     toolbar: {
@@ -68,6 +69,14 @@ const DetailInfo = () => {
     return(
         <Stack justifyContent={res600 ? 'center' : 'flex-start'} alignItems={'center'}>
             <Divider sx={{width: res600 ? '90%' : '100%', mt:-1}} />
+            <Stack sx={{width : res600 ? '90%' : '100%'}}>
+                <Typography sx={{fontSize: 35, fontWeight: 100, fontFamily: "Open Sans", mt: 0.5}}>Program</Typography>
+                {
+                    concertState.concert?.setList.map((item) => (
+                        <ProgramInfo key={item.id} item={item} />
+                    ))
+                }
+            </Stack>
             {
                 isAdminGroup ?
                     <>
