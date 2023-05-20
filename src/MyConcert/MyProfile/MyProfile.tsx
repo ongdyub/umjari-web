@@ -127,19 +127,24 @@ const MyProfile = () => {
                     :
                     <Divider sx={{width: '80%', mb:2}}/>
             }
-            {/* TODO */}
-            {/* Not user State, Load from my concert API because It runs every user*/}
             <Stack direction={res750 ? "row" : 'column'} justifyContent={"flex-start"} sx={{position: 'relative', width: '80%',height: '100%', flexWrap: res750 ? 'wrap' : '', pl: res750 ? 1 : 0, pr: res750 ? 1 : 0, pt:2 }}>
                 {
                     myConcertState.myDefaultInfo?.isSelfProfile ?
-                        <Button onClick={() => setOpenGroupEdit(true)} sx={{cursor: 'pointer', maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute',bottom: 0, right: 5}} disableRipple>수정</Button>
+                        myConcertState.myDefaultInfo.career.length === 0 || false ?
+                            null
+                            :
+                            <Button onClick={() => setOpenGroupEdit(true)} sx={{cursor: 'pointer', maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute',bottom: 0, right: 5}} disableRipple>수정</Button>
                         :
                         null
                 }
-                {myConcertState.myDefaultInfo?.career.map((item) => (
-                    <MyCareer key={item.groupId} idx={item.groupId} groupId={item.groupId} groupName={item.groupName} joinedAt={item.joinedAt} leavedAt={item.leavedAt}  />
-                ))}
-                {/* TODO null state to another user group information*/}
+                {
+                    myConcertState.myDefaultInfo?.career.length === 0 || false ?
+                        <Typography>속한 그룹이 없습니다.</Typography>
+                        :
+                        myConcertState.myDefaultInfo?.career.map((item) => (
+                            <MyCareer key={item.groupId} idx={item.groupId} groupId={item.groupId} groupName={item.groupName} joinedAt={item.joinedAt} leavedAt={item.leavedAt}  />
+                        ))
+                }
             </Stack>
             {
                 res750 ?
