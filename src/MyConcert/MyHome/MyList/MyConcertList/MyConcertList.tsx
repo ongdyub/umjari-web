@@ -7,7 +7,7 @@ const MyConcertList = (props : any) => {
     const [expanded, setExpanded] = useState(false)
 
     return(
-        <Card sx={{mb: 5, mt:3, width: '60%'}}>
+        <Card sx={{mb: 5, mt:3, width: '40%'}}>
             <Stack sx={{cursor: 'pointer'}} onClick={() => setExpanded(!expanded)}>
                 <CardMedia
                     component="img"
