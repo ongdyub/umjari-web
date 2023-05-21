@@ -76,19 +76,21 @@ const SelfIntro = () => {
         },
     ]
     const sort = ['작곡가', '곡명', '파트', '단체']
-    const direction = ['오름차순', '내립차순']
+    const direction = ['오름차순', '내림차순']
     const res1000 = useMediaQuery(theme.breakpoints.down("res1000"))
+    const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
     return(
-        <Stack sx={{mt: 2}}>
+        <Stack sx={{mt: 2, width: '100%'}} alignItems={res750 ? 'center' : ''}>
             <Divider sx={{width: '90%', color: '#292929'}} />
             <Stack sx={{mt: 2}} direction={"row"}>
-                <Stack sx={{width: 110, mr: 5}} >
+                <Stack sx={{width: 80, mr: 5}} >
                     <TextField
                         select
                         defaultValue="작곡가"
                         helperText="정렬기준"
                         variant="standard"
+                        sx={{fontSize: 9}}
                     >
                         {sort.map((option) => (
                             <MenuItem key={option} value={option}>
@@ -97,7 +99,7 @@ const SelfIntro = () => {
                         ))}
                     </TextField>
                 </Stack>
-                <Stack sx={{width: 110}}>
+                <Stack sx={{width: 80}}>
                     <TextField
                         select
                         defaultValue="오름차순"
@@ -112,15 +114,15 @@ const SelfIntro = () => {
                     </TextField>
                 </Stack>
             </Stack>
-            <Stack sx={{mt: 1, mb: 10}}>
+            <Stack sx={{mt: 1, mb: 10, width: '100%'}}>
                 {selfList.map((item, idx) => (
-                    <Stack key={idx} sx={{mt:3, mb:1}}>
+                    <Stack key={idx} sx={{mt:3, mb:1, width: '100%'}} alignItems={res750 ? 'center' : ''}>
                         {
-                            res1000 ?
-                                <Stack justifyContent={"flex-start"}>
-                                    <Stack direction={'row'} justifyContent={"flex-start"} alignItems={"center"} alignContent={"center"} sx={{width: '100%'}}>
+                            res750 ?
+                                <Stack justifyContent={"center"} alignItems={'center'} sx={{width: '100%'}}>
+                                    <Stack direction={'row'} justifyContent={"center"} alignItems={"center"} alignContent={"center"} sx={{width: '100%'}}>
                                         <Stack justifyContent={"flex-start"} sx={{width: '35%'}}>
-                                            <Typography variant={"caption"} sx={{fontWeight: 900, fontSize: 15}}>{item.composer}</Typography>
+                                            <Typography variant={"caption"} sx={{fontWeight: 900, fontSize: 12}}>{item.composer}</Typography>
                                         </Stack>
                                         <Stack justifyContent={"flex-start"} sx={{width: '20%'}}>
                                             <Typography variant={"subtitle2"}>{item.part}</Typography>
@@ -129,12 +131,12 @@ const SelfIntro = () => {
                                             <Typography variant={"caption"} sx={{fontWeight: 300, fontSize: 12}}>{item.group}</Typography>
                                         </Stack>
                                     </Stack>
-                                    <Stack justifyContent={"flex-start"} sx={{}}>
-                                        <Typography variant={"overline"} sx={{fontWeight: 200, fontSize: 16}}>{item.title}</Typography>
+                                    <Stack direction={'row'} justifyContent={"center"} sx={{width: '100%'}}>
+                                        <Typography variant={"overline"} sx={{fontWeight: 200, fontSize: 14}}>{item.title}</Typography>
                                     </Stack>
                                 </Stack>
                                 :
-                                <Stack direction={"row"} justifyContent={"flex-start"} alignItems={"center"}>
+                                <Stack sx={{width: '100%'}} direction={"row"} justifyContent={"flex-start"} alignItems={"center"}>
                                     <Stack sx={{width: '22%'}}>
                                         <Typography variant={"caption"} sx={{fontWeight: 900, fontSize: 15}}>{item.composer}</Typography>
                                     </Stack>
@@ -149,7 +151,7 @@ const SelfIntro = () => {
                                     </Stack>
                                 </Stack>
                         }
-                        <Divider sx={{width: '90%', mt:1}} />
+                        <Divider sx={{width: '80%', mt:1}} />
                     </Stack>
                 ))}
             </Stack>

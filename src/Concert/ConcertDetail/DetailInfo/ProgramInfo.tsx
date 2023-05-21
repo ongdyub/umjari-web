@@ -11,7 +11,7 @@ const ProgramInfo = (props : any) => {
                 <Typography variant={"caption"} sx={{fontWeight: 900, fontSize: 15}}>{item.musicInfo.shortComposerEng}</Typography>
             </Stack>
             <Stack>
-                <Typography variant={"overline"} sx={{fontWeight: 200, fontSize: 16}}>{item.musicInfo.nameEng}</Typography>
+                <Typography variant={"overline"} sx={{fontWeight: 200, fontSize: 13}}>{item.musicInfo.nameEng}</Typography>
             </Stack>
             <Divider sx={{width: '100%', mb:1}} />
         </Stack>
