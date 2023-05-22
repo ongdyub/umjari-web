@@ -118,7 +118,10 @@ export const concertStateSlice = createSlice({
     reducers: {
         resetConcert: (state) => {
             state.concert = null
-        }
+        },
+        resetParticipants: (state) => {
+            state.participants = []
+        },
     },
 
     extraReducers: (builder) => {
