@@ -108,14 +108,32 @@ const ConcertMember = () => {
                                 <Typography sx={{fontSize: 35, fontWeight: 100, fontFamily: "Open Sans"}}>{item.part}</Typography>
                             </Stack>
                             <Stack direction={"row"} alignContent={"center"} justifyContent={"flex-start"} flexWrap={'wrap'} sx={{width : '100%'}}>
-                                {item.principal.map((item) => (
+                                {item.master.map((item) => (
                                         <Stack onClick={() => navigate(`/myconcert/${item.profileName}/selfintro`)} key={item.id} direction="row" spacing={5} sx={{mr:2, mb:2, cursor: 'pointer', height: 44}}>
-                                            <Stack sx={{borderRadius: 20, bgcolor: '#212121',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
+                                            <Stack sx={{borderRadius: 20, bgcolor: '#c51162',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
                                                 <Avatar alt={item.profileName} src={`${item.profileImage}`} sx={{width: 33, height: 33}} />
                                                 <Typography sx={{ml: 2, fontSize: 15, fontWeight: 400, color:'#ffffff', mr:1}}>{item.profileName}</Typography>
                                                 <FaCrown color={'#ffffff'}/>
                                             </Stack>
                                         </Stack>
+                                ))}
+                                {item.principal.map((item) => (
+                                    <Stack onClick={() => navigate(`/myconcert/${item.profileName}/selfintro`)} key={item.id} direction="row" spacing={5} sx={{mr:2, mb:2, cursor: 'pointer', height: 44}}>
+                                        <Stack sx={{borderRadius: 20, bgcolor: '#212121',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
+                                            <Avatar alt={item.profileName} src={`${item.profileImage}`} sx={{width: 33, height: 33}} />
+                                            <Typography sx={{ml: 2, fontSize: 15, fontWeight: 400, color:'#ffffff', mr:1}}>{item.profileName}</Typography>
+                                            <FaCrown color={'#ffffff'}/>
+                                        </Stack>
+                                    </Stack>
+                                ))}
+                                {item.assistantPrincipal.map((item) => (
+                                    <Stack onClick={() => navigate(`/myconcert/${item.profileName}/selfintro`)} key={item.id} direction="row" spacing={5} sx={{mr:2, mb:2, cursor: 'pointer', height: 44}}>
+                                        <Stack sx={{borderRadius: 20, bgcolor: '#546e7a',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
+                                            <Avatar alt={item.profileName} src={`${item.profileImage}`} sx={{width: 33, height: 33}} />
+                                            <Typography sx={{ml: 2, fontSize: 15, fontWeight: 400, color:'#ffffff', mr:1}}>{item.profileName}</Typography>
+                                            <FaCrown color={'#ffffff'}/>
+                                        </Stack>
+                                    </Stack>
                                 ))}
                                 {item.member.map((item,idx) => (
                                     <Stack onClick={() => navigate(`/myconcert/${item.profileName}/selfintro`)} key={idx} direction="row" spacing={5} sx={{mr:2, mb:2, cursor: 'pointer', height: 44}}>
