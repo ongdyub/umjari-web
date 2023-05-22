@@ -1,4 +1,4 @@
-import {Avatar, Button, Chip, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Avatar, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import { FaCrown } from 'react-icons/fa';
 import {useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
@@ -109,13 +109,31 @@ const ConcertMember = () => {
                             </Stack>
                             <Stack direction={"row"} alignContent={"center"} justifyContent={"flex-start"} flexWrap={'wrap'} sx={{width : '100%'}}>
                                 {item.master.map((item) => (
-                                        <Stack onClick={() => navigate(`/myconcert/${item.profileName}/selfintro`)} key={item.id} direction="row" spacing={5} sx={{mr:2, mb: res500 ? 1 : 0,mt: res500 ? 1 : 0,cursor: 'pointer', height: 48, width: 160}}>
-                                            <Stack sx={{borderRadius: 20, bgcolor: '#212121',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
+                                        <Stack onClick={() => navigate(`/myconcert/${item.profileName}/selfintro`)} key={item.id} direction="row" spacing={5} sx={{mr:2, mb:2, cursor: 'pointer', height: 44}}>
+                                            <Stack sx={{borderRadius: 20, bgcolor: '#c51162',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
                                                 <Avatar alt={item.profileName} src={`${item.profileImage}`} sx={{width: 33, height: 33}} />
                                                 <Typography sx={{ml: 2, fontSize: 15, fontWeight: 400, color:'#ffffff', mr:1}}>{item.profileName}</Typography>
                                                 <FaCrown color={'#ffffff'}/>
                                             </Stack>
                                         </Stack>
+                                ))}
+                                {item.principal.map((item) => (
+                                    <Stack onClick={() => navigate(`/myconcert/${item.profileName}/selfintro`)} key={item.id} direction="row" spacing={5} sx={{mr:2, mb:2, cursor: 'pointer', height: 44}}>
+                                        <Stack sx={{borderRadius: 20, bgcolor: '#212121',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
+                                            <Avatar alt={item.profileName} src={`${item.profileImage}`} sx={{width: 33, height: 33}} />
+                                            <Typography sx={{ml: 2, fontSize: 15, fontWeight: 400, color:'#ffffff', mr:1}}>{item.profileName}</Typography>
+                                            <FaCrown color={'#ffffff'}/>
+                                        </Stack>
+                                    </Stack>
+                                ))}
+                                {item.assistantPrincipal.map((item) => (
+                                    <Stack onClick={() => navigate(`/myconcert/${item.profileName}/selfintro`)} key={item.id} direction="row" spacing={5} sx={{mr:2, mb:2, cursor: 'pointer', height: 44}}>
+                                        <Stack sx={{borderRadius: 20, bgcolor: '#546e7a',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
+                                            <Avatar alt={item.profileName} src={`${item.profileImage}`} sx={{width: 33, height: 33}} />
+                                            <Typography sx={{ml: 2, fontSize: 15, fontWeight: 400, color:'#ffffff', mr:1}}>{item.profileName}</Typography>
+                                            <FaCrown color={'#ffffff'}/>
+                                        </Stack>
+                                    </Stack>
                                 ))}
                                 {item.member.map((item,idx) => (
                                     <Stack onClick={() => navigate(`/myconcert/${item.profileName}/selfintro`)} key={idx} direction="row" spacing={5} sx={{mr:2, mb:2, cursor: 'pointer', height: 44}}>
