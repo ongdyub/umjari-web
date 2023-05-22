@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import { RootState } from "../..";
+import {RootState} from "../..";
+
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -18,6 +19,21 @@ export interface GroupSetList {
         shortNameKor: string
     }
 }
+
+export interface Participant {
+    id: number,
+    profileName : string,
+    profileImage : string
+}
+
+export interface ConcertParticipate {
+    part: string,
+    master: [Participant] | [],
+    principal: [Participant] | [],
+    assistantPrincipal: [Participant] | [],
+    "member": [Participant] | [],
+}
+
 export interface Concert {
     id: number,
     groupId: number,
@@ -47,11 +63,13 @@ export interface ConcertList {
 
 export interface ConcertState {
     concert : Concert | null,
+    participants : [ConcertParticipate] | [],
     concertList: ConcertList
 }
 
 const initialState: ConcertState = {
     concert: null,
+    participants : [],
     concertList: {
         totalPages: 0,
         totalElements: 0,
@@ -81,6 +99,19 @@ export const concert = createAsyncThunk(
     }
 )
 
+export const concertMemberGet = createAsyncThunk(
+    "concert/concertMemberGet",
+    async (id: string | number | undefined,  {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/concert/${id}/participant/`)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const concertStateSlice = createSlice({
     name: "concertState",
     initialState,
@@ -96,6 +127,17 @@ export const concertStateSlice = createSlice({
         });
         builder.addCase(concert.fulfilled, (state, action) => {
             state.concert = action.payload
+        });
+        builder.addCase(concertMemberGet.fulfilled, (state, action) => {
+            const participants = action.payload.participants
+
+            const sortRule = ['Vn 1st', 'Vn 2nd', 'Va', 'Vc', 'Db', 'Fl', 'Picc', 'Ob', 'E.H', 'Cl', 'Fg', 'Hn', 'Trp', 'Trb', 'Tub', 'Timp', 'Perc', 'Harp']
+
+            state.participants = participants.sort((a: any, b: any) => {
+                const partA = sortRule.indexOf(a.part);
+                const partB = sortRule.indexOf(b.part);
+                return partA - partB;
+            })
         });
     },
 });
