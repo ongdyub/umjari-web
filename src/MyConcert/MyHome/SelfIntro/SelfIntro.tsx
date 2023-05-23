@@ -5,7 +5,6 @@ import {
     Select,
     SelectChangeEvent,
     Stack,
-    TextField,
     Typography,
     useMediaQuery,
     useTheme
@@ -99,6 +98,7 @@ const SelfIntro = () => {
     const sort = ['작곡가', '곡명', '파트', '단체']
     const direction = ['오름차순', '내림차순']
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
+    const res800 = useMediaQuery(theme.breakpoints.down("res800"))
 
     const [sortRule, setSortRule] = useState('작곡가')
     const [sortDirection, setSortDirection] = useState('오름차순')
@@ -119,7 +119,7 @@ const SelfIntro = () => {
 
     useEffect(() => {
         dispatch(myConcertStateActions.sortMySelfIntro({rule: sortRule, direction: sortDirection}))
-    },[sortRule, sortDirection])
+    },[dispatch, sortRule, sortDirection])
 
     return(
         <Stack sx={{mt: 2, width: '100%'}} alignItems={res750 ? 'center' : ''}>
@@ -156,9 +156,9 @@ const SelfIntro = () => {
             </Stack>
             <Stack sx={{mt: 1, mb: 10, width: '100%'}}>
                 {myconcertState.mySelfIntro.map((item, idx) => (
-                    <Stack key={idx} sx={{mt:0.5, mb:1, width: '100%'}} alignItems={res750 ? 'center' : ''}>
+                    <Stack key={idx} sx={{mt:0.5, mb:1, width: '100%'}} alignItems={res800 ? 'center' : ''}>
                         {
-                            res750 ?
+                            res800 ?
                                 <Card sx={{width: '80%', pb: 0}}>
                                     <CardContent sx={{pb : 0}}>
                                         <Stack direction={'row'} justifyContent={"flex-start"} alignItems={"center"} alignContent={"center"} sx={{width: '100%', mb: 0.5}}>
