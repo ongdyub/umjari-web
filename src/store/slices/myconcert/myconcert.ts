@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
-import { RootState } from "../..";
+import {RootState} from "../..";
 import {User} from "../user/user";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -16,6 +16,15 @@ export interface MyDefaultInfo {
     career : [myGroup] | []
 }
 
+export interface MySelfIntro {
+    id: number,
+    shortComposerEng: string,
+    nameEng: string,
+    part: string,
+    detailPart: string,
+    groupName: string
+}
+
 export interface myGroup {
     groupId: number;
     groupName : string;
@@ -26,11 +35,13 @@ export interface myGroup {
 
 export interface MyConcertState {
     myDefaultInfo : MyDefaultInfo | null,
+    mySelfIntro : [MySelfIntro] | [],
     isExist : boolean
 }
 
 const initialState: MyConcertState = {
     myDefaultInfo : null,
+    mySelfIntro : [],
     isExist : true
 };
 
@@ -119,6 +130,19 @@ export const myconcertGroupGet = createAsyncThunk(
     }
 )
 
+export const mySelfIntroGet = createAsyncThunk(
+    "myconcert/mySelfIntroGet",
+    async (profileName : string | null | undefined, {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/user/profile-name/${profileName}/joined-concert/`)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const myConcertStateSlice = createSlice({
     name: "myConcertState",
     initialState,
@@ -126,6 +150,73 @@ export const myConcertStateSlice = createSlice({
         resetMyConcertDefaultInfo : (state) => {
             state.myDefaultInfo = null
             state.isExist = true
+        },
+        resetMySelfIntro : (state) => {
+            state.mySelfIntro = []
+        },
+        sortMySelfIntro : (state, action: PayloadAction<any>) => {
+            if(action.payload.rule === '시간'){
+
+            }
+            else if(action.payload.rule === '작곡가'){
+                state.mySelfIntro = state.mySelfIntro.sort((a: any, b: any) => {
+                    const partA = a.shortComposerEng;
+                    const partB = b.shortComposerEng;
+
+                    if(partA === partB){
+                        const partA = a.nameEng;
+                        const partB = b.nameEng;
+                        return partA.localeCompare(partB);
+                    }
+                    return partA.localeCompare(partB);
+                })
+
+                if(action.payload.direction === '내림차순'){
+                    state.mySelfIntro.reverse()
+                }
+            }
+            else if(action.payload.rule === '곡명'){
+                state.mySelfIntro = state.mySelfIntro.sort((a: any, b: any) => {
+                    const partA = a.nameEng;
+                    const partB = b.nameEng;
+
+                    if(partA === partB){
+                        const partA = a.shortComposerEng;
+                        const partB = b.shortComposerEng;
+                        return partA.localeCompare(partB);
+                    }
+
+                    return partA.localeCompare(partB);
+                })
+
+                if(action.payload.direction === '내림차순'){
+                    state.mySelfIntro.reverse()
+                }
+            }
+            else if(action.payload.rule === '파트'){
+                const sortRule = ['Vn 1st', 'Vn 2nd', 'Va', 'Vc', 'Db', 'Fl', 'Picc', 'Ob', 'E.H', 'Cl', 'Fg', 'Hn', 'Trp', 'Trb', 'Tub', 'Timp', 'Perc', 'Harp']
+
+                state.mySelfIntro = state.mySelfIntro.sort((a: any, b: any) => {
+                    const partA = sortRule.indexOf(a.part);
+                    const partB = sortRule.indexOf(b.part);
+                    return partA - partB;
+                })
+
+                if(action.payload.direction === '내림차순'){
+                    state.mySelfIntro.reverse()
+                }
+            }
+            else if(action.payload.rule === '단체'){
+                state.mySelfIntro = state.mySelfIntro.sort((a: any, b: any) => {
+                    const partA = a.groupName;
+                    const partB = b.groupName;
+                    return partA.localeCompare(partB);
+                })
+
+                if(action.payload.direction === '내림차순'){
+                    state.mySelfIntro.reverse()
+                }
+            }
         },
         setMyIntro : (state, action: PayloadAction<Partial<MyDefaultInfo>>) => {
             if(state.myDefaultInfo !== null && action.payload.intro !== undefined){
@@ -152,6 +243,21 @@ export const myConcertStateSlice = createSlice({
             if(state.myDefaultInfo !== null){
                 state.myDefaultInfo.career = action.payload.career
             }
+        });
+        builder.addCase(mySelfIntroGet.fulfilled, (state, action) => {
+            state.mySelfIntro = action.payload.participatedConcerts
+
+            state.mySelfIntro = state.mySelfIntro.sort((a: any, b: any) => {
+                const partA = a.shortComposerEng;
+                const partB = b.shortComposerEng;
+
+                if(partA === partB){
+                    const partA = a.nameEng;
+                    const partB = b.nameEng;
+                    return partA.localeCompare(partB);
+                }
+                return partA.localeCompare(partB);
+            })
         });
     },
 });

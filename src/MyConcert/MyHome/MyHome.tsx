@@ -110,7 +110,7 @@ const MyHome = () => {
                 }
             </Stack>
             <Divider sx={{Width: '90%'}}/>
-            <Stack sx={{pl: res750 ? 0 : 6}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
+            <Stack sx={{pl: res750 ? 0 : 6, width: '100%'}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
                 <Stack sx={{mt:2}}>
                     <ButtonGroup variant={"text"} size={"small"}>
                         {myButtons}

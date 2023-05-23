@@ -42,6 +42,7 @@ const blueTheme = createTheme({
             light: '#ffffff',
             dark : '#111111'
         },
+
     },
     breakpoints: {
         values: {
