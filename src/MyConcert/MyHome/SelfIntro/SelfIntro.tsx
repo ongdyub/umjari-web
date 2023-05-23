@@ -180,12 +180,13 @@ const SelfIntro = () => {
                                     </CardContent>
                                 </Card>
                                 :
-                                <Card sx={{width: '95%', pb: 0}}>
-                                    <CardContent sx={{pb: 0, mb:-1, mt: -1, width: '100%'}}>
-                                        <Stack sx={{width: '100%'}} direction={"row"} justifyContent={"flex-end"} alignItems={"center"}>
+                                <Card sx={{width: '95%', pb: 0, display: 'flex', alignItems: 'center'}}>
+                                    <CardContent sx={{pb: 0, mb:-1.7, mt: -1, width: '100%'}}>
+                                        <Stack sx={{width: '100%', height: 'auto'}} direction={"row"} justifyContent={"flex-end"} alignItems={"center"}>
                                             <Stack sx={{mr: 'auto'}}>
-                                                <Typography sx={{fontWeight: 600, fontSize: 15}}>{item.shortComposerEng}</Typography>
+                                                <Typography sx={{fontWeight: 600, fontSize: 13}}>{item.shortComposerEng}</Typography>
                                             </Stack>
+                                            <Divider orientation={'vertical'} sx={{height: '15px', border: 'solid 0.5px grey', mr: 1, ml: 1}}/>
                                             <Stack sx={{width: '55%'}}>
                                                 <Typography variant={"caption"} sx={{fontWeight: 200, fontSize: 14}}>{item.nameEng}</Typography>
                                             </Stack>
