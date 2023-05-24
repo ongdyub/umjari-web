@@ -43,8 +43,8 @@ const NameChangeModal = (props : any) => {
         >
             <Fade in={open}>
                 <Stack spacing={2} sx={styleLog}>
-                    {userState.career.map((item) => (
-                        <MyCareerTimeEdit item={item} />
+                    {userState.career.map((item, idx) => (
+                        <MyCareerTimeEdit key={idx} item={item} />
                     ))}
                 </Stack>
             </Fade>

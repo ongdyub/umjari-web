@@ -22,7 +22,10 @@ export interface MySelfIntro {
     nameEng: string,
     part: string,
     detailPart: string,
-    groupName: string
+    groupName: string,
+    role : string,
+    concertDate : string,
+    concertMusicId : number
 }
 
 export interface myGroup {
@@ -156,7 +159,19 @@ export const myConcertStateSlice = createSlice({
         },
         sortMySelfIntro : (state, action: PayloadAction<any>) => {
             if(action.payload.rule === '시간'){
+                state.mySelfIntro = state.mySelfIntro.sort((a: any, b: any) => {
+                    const partA = a.concertDate;
+                    const partB = b.concertDate;
 
+                    if(partA === partB){
+                        return a.concertMusicId - b.concertMusicId
+                    }
+                    return partA.localeCompare(partB);
+                })
+
+                if(action.payload.direction === '내림차순'){
+                    state.mySelfIntro.reverse()
+                }
             }
             else if(action.payload.rule === '작곡가'){
                 state.mySelfIntro = state.mySelfIntro.sort((a: any, b: any) => {
@@ -164,8 +179,8 @@ export const myConcertStateSlice = createSlice({
                     const partB = b.shortComposerEng;
 
                     if(partA === partB){
-                        const partA = a.nameEng;
-                        const partB = b.nameEng;
+                        const partA = a.concertDate;
+                        const partB = b.concertDate;
                         return partA.localeCompare(partB);
                     }
                     return partA.localeCompare(partB);
@@ -199,6 +214,12 @@ export const myConcertStateSlice = createSlice({
                 state.mySelfIntro = state.mySelfIntro.sort((a: any, b: any) => {
                     const partA = sortRule.indexOf(a.part);
                     const partB = sortRule.indexOf(b.part);
+
+                    if(partA === partB){
+                        const partA = a.concertDate;
+                        const partB = b.concertDate;
+                        return partA.localeCompare(partB);
+                    }
                     return partA - partB;
                 })
 
@@ -210,6 +231,13 @@ export const myConcertStateSlice = createSlice({
                 state.mySelfIntro = state.mySelfIntro.sort((a: any, b: any) => {
                     const partA = a.groupName;
                     const partB = b.groupName;
+
+                    if(partA === partB){
+                        const partA = a.concertDate;
+                        const partB = b.concertDate;
+                        return partA.localeCompare(partB);
+                    }
+
                     return partA.localeCompare(partB);
                 })
 

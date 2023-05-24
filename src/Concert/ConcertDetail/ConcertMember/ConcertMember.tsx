@@ -1,89 +1,17 @@
-import {Avatar, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Avatar, Divider, Stack, Typography} from "@mui/material";
 import { FaCrown } from 'react-icons/fa';
+import {GiQueenCrown} from 'react-icons/gi'
+import {CgCrown} from 'react-icons/cg'
 import {useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../../store";
 import {concertMemberGet, concertStateActions, selectConcert} from "../../../store/slices/concert/concert";
 
-// const playerData = [
-//     {
-//         role: 'Conductor',
-//         head: [],
-//         member: ['지휘자']
-//     },
-//     {
-//         role: 'Vn1',
-//         head: ['퍼스트', '수석진'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Vn2',
-//         head: ['이이이'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문','김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Va',
-//         head: ['김김김', '이이이'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Vc',
-//         head: ['김김김', '이이이'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Db',
-//         head: ['김김김'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Fl',
-//         head: ['김김김'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Cl',
-//         head: ['김김김'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Ob',
-//         head: ['김김김'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Fg',
-//         head: ['김김김', '이이이'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Hn',
-//         head: ['김김김', '이이이'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Trp',
-//         head: [],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Trb',
-//         head: ['김김김', '이이이'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-//     {
-//         role: 'Tub',
-//         head: ['김김김', '이이이'],
-//         member: ['김김김', '이이이', '박박박', '최최최', '한한한', '정정정', '윤윤윤', '오오오', '권권권', '유유유', '문문문']
-//     },
-// ]
 
 const ConcertMember = () => {
 
-    const theme = useTheme();
     const navigate = useNavigate()
-    const res500 = useMediaQuery(theme.breakpoints.down("res500"))
     const { id } = useParams();
     const dispatch = useDispatch<AppDispatch>();
 
@@ -110,16 +38,16 @@ const ConcertMember = () => {
                             <Stack direction={"row"} alignContent={"center"} justifyContent={"flex-start"} flexWrap={'wrap'} sx={{width : '100%'}}>
                                 {item.master.map((item) => (
                                         <Stack onClick={() => navigate(`/myconcert/${item.profileName}/selfintro`)} key={item.id} direction="row" spacing={5} sx={{mr:2, mb:2, cursor: 'pointer', height: 44}}>
-                                            <Stack sx={{borderRadius: 20, bgcolor: '#c51162',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
+                                            <Stack sx={{borderRadius: 20, bgcolor: '#000000',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
                                                 <Avatar alt={item.profileName} src={`${item.profileImage}`} sx={{width: 33, height: 33}} />
-                                                <Typography sx={{ml: 2, fontSize: 15, fontWeight: 400, color:'#ffffff', mr:1}}>{item.profileName}</Typography>
-                                                <FaCrown color={'#ffffff'}/>
+                                                <Typography sx={{ml: 2, fontSize: 15, fontWeight: 600, color:'#ffffff', mr:1}}>{item.profileName}</Typography>
+                                                <GiQueenCrown color={'#ffff00'} />
                                             </Stack>
                                         </Stack>
                                 ))}
                                 {item.principal.map((item) => (
                                     <Stack onClick={() => navigate(`/myconcert/${item.profileName}/selfintro`)} key={item.id} direction="row" spacing={5} sx={{mr:2, mb:2, cursor: 'pointer', height: 44}}>
-                                        <Stack sx={{borderRadius: 20, bgcolor: '#212121',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
+                                        <Stack sx={{borderRadius: 20, bgcolor: '#444444',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
                                             <Avatar alt={item.profileName} src={`${item.profileImage}`} sx={{width: 33, height: 33}} />
                                             <Typography sx={{ml: 2, fontSize: 15, fontWeight: 400, color:'#ffffff', mr:1}}>{item.profileName}</Typography>
                                             <FaCrown color={'#ffffff'}/>
@@ -131,7 +59,7 @@ const ConcertMember = () => {
                                         <Stack sx={{borderRadius: 20, bgcolor: '#546e7a',pt:1, pl:1.5, pr:3, pb:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
                                             <Avatar alt={item.profileName} src={`${item.profileImage}`} sx={{width: 33, height: 33}} />
                                             <Typography sx={{ml: 2, fontSize: 15, fontWeight: 400, color:'#ffffff', mr:1}}>{item.profileName}</Typography>
-                                            <FaCrown color={'#ffffff'}/>
+                                            <CgCrown color={'#ffffff'}/>
                                         </Stack>
                                     </Stack>
                                 ))}
