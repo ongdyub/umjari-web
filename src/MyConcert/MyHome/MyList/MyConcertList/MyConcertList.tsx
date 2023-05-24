@@ -72,27 +72,27 @@ const MyConcertList = (props : any) => {
                     {item.participatedList.map((item : any) => (
                         <Stack sx={{width: '100%', cursor: 'pointer', mb: 1}} alignItems={'center'} onClick={() => setExpanded(!expanded)}>
 
-                            <Typography variant="subtitle2" sx={{mt:1, mb: 1, fontWeight: 800, fontSize: 10}}>
+                            <Typography variant="subtitle2" sx={{mt:1, mb: 1, fontWeight: 800, fontSize: 13}}>
                                 {item.shortComposerEng}
                             </Typography>
 
-                            <Divider orientation={"horizontal"} sx={{width: '40%'}}/>
+                            <Divider orientation={"horizontal"} sx={{width: '50%'}}/>
 
-                            <Stack sx={{width: '80%', mt:1, mb:1}} direction={'row'} justifyContent={'space-around'} alignItems={'center'}>
+                            <Stack sx={{width: '70%', mt:0.5, mb:0.5}} direction={'row'} justifyContent={'space-around'} alignItems={'center'}>
                                 <Chip variant={"outlined"} label={`${item.part} ${item.detailPart === '.' ? '' : item.detailPart}`} sx={{fontSize: 10, color : color[item.part], borderColor : color[item.part]}} size="small" />
                                 {RoleComponent[item.role]}
                             </Stack>
 
-                            <Divider orientation={"horizontal"} sx={{width: '40%'}}/>
+                            <Divider orientation={"horizontal"} sx={{width: '50%'}}/>
 
-                            <Stack direction={"row"} justifyContent={"flex-start"} alignContent={"center"} alignItems={"center"} sx={{width: '50%', mt:1}}>
-                                <Typography variant="caption"sx={{fontWeight: 400, fontSize: 6}}>{item.nameEng}</Typography>
+                            <Stack direction={"column"} justifyContent={"flex-start"} alignContent={"center"} alignItems={"center"} sx={{width: '85%', mt:0.5}}>
+                                <Typography variant="caption"sx={{fontWeight: 400, fontSize: 13}}>{item.nameEng}</Typography>
                             </Stack>
-                            <Divider orientation={"horizontal"} sx={{width: '90%', mt: 1}}/>
+                            <Divider orientation={"horizontal"} sx={{width: '90%', mt: 0.5}}/>
                         </Stack>
                     ))}
                     <CardActions sx={{mt:-1.5,mb:-0.5, display: 'flex', justifyContent: 'center'}}>
-                        <Button onClick={() => navigate(`/concert/${item.id}/review`)} size="small" sx={{fontSize: 5,maxHeight:20, minHeight:20, maxWidth: 50, minWidth:50}}>후기 쓰기</Button>
+                        <Button onClick={() => navigate(`/concert/${item.id}/review`)} size="small" sx={{fontSize: 8,maxHeight:20, minHeight:20, maxWidth: 50, minWidth:50}}>후기 쓰기</Button>
                     </CardActions>
                     {/*<Stack onClick={() => setExpanded(!expanded)} justifyContent={"flex-end"} sx={{marginLeft: 'auto', position: 'relative', bottom:10, right: 25, minWidth: 145, cursor: 'pointer'}}>*/}
                     {/*    <Stack justifyContent={"flex-end"}  direction={"row"}>*/}
