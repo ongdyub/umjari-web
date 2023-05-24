@@ -18,8 +18,8 @@ const Visit = () => {
             <VisitList item={1} write={true} />
             {/*item에 본인 아이디, 이미지링크 붙여놓기*/}
             {
-                itemData.map((item) => (
-                    <VisitList item={item} write={false} />
+                itemData.map((item,idx) => (
+                    <VisitList key={idx} item={item} write={false} />
                 ))
             }
             <Stack alignItems="center" sx={{width:'100%', height: '80px'}} flexDirection={'row'} justifyContent="center" alignContent="center">

@@ -43,11 +43,11 @@ const VisitList = (props : any) => {
                             width: res750 ? 133 : 133,
                             height: res750 ? 133 : 133,
                             borderRadius: '20%',
-                            objectFit: 'cover',
+                            objectFit: 'contain',
                             boxShadow: 'rgb(0 0 0 / 6%) 0px 0px 4px 0px'
                         }}
                         alt="대충 본인 프사"
-                        src={`/img/${item}.jpg`}
+                        src={`${process.env.PUBLIC_URL}/Thumbnail_trans_white.png`}
                     />
                 </Stack>
                 {

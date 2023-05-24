@@ -9,11 +9,50 @@ import {
     useMediaQuery,
     useTheme
 } from "@mui/material";
+import { FaCrown } from 'react-icons/fa';
+import {GiQueenCrown} from 'react-icons/gi'
+import {CgCrown} from 'react-icons/cg'
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {ReactElement, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../../store";
 import {myConcertStateActions, mySelfIntroGet, selectMyConcert} from "../../../store/slices/myconcert/myconcert";
+
+interface ColorMap {
+    [key: string]: string;
+}
+
+const color : ColorMap = {
+    "Vn 1st" : '#dd2c00',
+    "Vn 2nd" : '#ff9100',
+    "Va" : '#ffeb3b',
+    "Vc" : '#795548',
+    "Db" : '#3e2723',
+    "Fl" : '#03a9f4',
+    "Picc" : '#26a69a',
+    "Ob" : '#dce775',
+    "E.H." : '#9e9d24',
+    "Cl" : '#7e57c2',
+    "Fg" : '#4527a0',
+    "Hn" : '#ab47bc',
+    "Trp" : '#6a1b9a',
+    "Trb" : '#e91e63',
+    "Tub" : '#c2185b',
+    "Timp" : '#78909c',
+    "Perc" : '#263238',
+    "Harp" : '#ffcdd2',
+}
+
+interface RoleMap {
+    [key: string] : ReactElement | null
+}
+
+const RoleComponent  : RoleMap= {
+    'MASTER' : <Stack direction={"row"} alignItems={'center'} sx={{width: 25, height: 25,borderRadius: 10, pl:0.55, bgcolor: 'black'}}><GiQueenCrown color={'#ffff00'}/></Stack>,
+    'PRINCIPAL' : <Stack direction={"row"} alignItems={'center'} sx={{width: 25, height: 25,borderRadius: 10, pl:0.55, bgcolor: 'black'}}><FaCrown color={'white'} /></Stack>,
+    'ASSISTANT_PRINCIPAL' : <Stack direction={"row"} alignItems={'center'} sx={{width: 25, height: 25,borderRadius: 10, pl:0.55, bgcolor: '#546e7a'}}><CgCrown color={'white'} /></Stack>,
+    'MEMBER': null
+}
 
 const SelfIntro = () => {
 
@@ -22,80 +61,7 @@ const SelfIntro = () => {
     const { profileName } = useParams();
 
     const myconcertState = useSelector(selectMyConcert)
-    // const selfList = [
-    //     {
-    //         composer: 'J. Brahms',
-    //         part: 'Vn 2nd',
-    //         title: 'Academic Festival Overture, Op. 80',
-    //         role: '',
-    //         group: 'SNUPO'
-    //     },
-    //     {
-    //         composer: 'J. Brahms',
-    //         part: 'Vn 2nd',
-    //         title: 'Symphony No. 2 in D Major, Op. 73',
-    //         role: '',
-    //         group: 'SNUPO'
-    //     },
-    //     {
-    //         composer: 'J. Brahms',
-    //         part: 'Vn 1st',
-    //         title: 'Symphony No. 4 in e minor, Op. 98',
-    //         role: '',
-    //         group: 'SNUPO'
-    //     },
-    //     {
-    //         composer: 'J. Brahms',
-    //         part: 'Vn 1st',
-    //         title: 'Academic Festival Overture, Op. 80',
-    //         role: '',
-    //         group: 'SNUPO'
-    //     },
-    //     {
-    //         composer: 'P. I. Tchaikovsky',
-    //         part: 'Vn 2nd',
-    //         title: 'Excerpts from Swan Lake, Op. 20',
-    //         role: '',
-    //         group: 'SNUPO'
-    //     },
-    //     {
-    //         composer: 'P. I. Tchaikovsky',
-    //         part: 'Trp 1st',
-    //         title: 'The Sleeping Beauty (suite), Op. 66a',
-    //         role: '',
-    //         group: 'SNUPO'
-    //     },
-    //     {
-    //         composer: 'P. I. Tchaikovsky',
-    //         part: 'Vn 1st',
-    //         title: 'Symphony No.5 in e minor, Op.64',
-    //         role: '',
-    //         group: 'SNUPO'
-    //     },
-    //     {
-    //         composer: 'P. I. Tchaikovsky',
-    //         part: 'Trp 3rd',
-    //         title: 'Symphony No.5 in e minor, Op.64',
-    //         role: '',
-    //         group: 'SNUPO'
-    //     },
-    //     {
-    //         composer: 'J. Sibelius',
-    //         part: 'Trp 1st',
-    //         title: 'Symphony No. 1 in e minor, Op. 39',
-    //         role: '',
-    //         group: 'SNUPO'
-    //     },
-    //     {
-    //         composer: 'J. Sibelius',
-    //         part: 'Vn 2nd',
-    //         title: 'Symphony No. 2 in D Major, Op. 43',
-    //         role: '',
-    //         group: 'SNUPO'
-    //     },
-    // ]
-    // const sort = ['시간','작곡가', '곡명', '파트', '단체']
-    const sort = ['작곡가', '곡명', '파트', '단체']
+    const sort = ['작곡가', '곡명', '파트', '시간', '단체']
     const direction = ['오름차순', '내림차순']
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
     const res800 = useMediaQuery(theme.breakpoints.down("res800"))
@@ -159,28 +125,32 @@ const SelfIntro = () => {
                     <Stack key={idx} sx={{mt:0.5, mb:1, width: '100%'}} alignItems={res800 ? 'center' : ''}>
                         {
                             res800 ?
-                                <Card sx={{width: '80%', pb: 0}}>
+                                <Card sx={{width: '80%', pb: 0, border: `0.5px solid ${color[item.part]}`}}>
                                     <CardContent sx={{pb : 0}}>
-                                        <Stack direction={'row'} justifyContent={"flex-start"} alignItems={"center"} alignContent={"center"} sx={{width: '100%', mb: 0.5}}>
-                                            <Stack justifyContent={"flex-start"}>
+                                        <Stack direction={'row'} justifyContent={"flex-end"} alignItems={"center"} alignContent={"center"} sx={{width: '100%', mb: 0.5}}>
+                                            <Stack justifyContent={"flex-start"} sx={{mr: 'auto'}}>
                                                 <Typography variant={"subtitle2"} sx={{fontWeight: 800, fontSize: 13}}>{item.shortComposerEng}</Typography>
                                             </Stack>
-                                            <Stack justifyContent={"flex-start"} sx={{ml: 'auto'}}>
-                                                <Chip variant={"outlined"} label={`${item.part} ${item.detailPart}`} color={'info'} size="small" />
+                                            <Stack justifyContent={"flex-start"} alignItems={'center'} sx={{mt: -1}}>
+                                                {RoleComponent[item.role]}
+                                            </Stack>
+                                            <Stack justifyContent={"flex-start"} alignItems={'center'} sx={{ml: 1,mt: -1}}>
+                                                <Chip variant={"outlined"} label={`${item.part} ${item.detailPart === '.' ? '' : item.detailPart}`} sx={{color : color[item.part], borderColor : color[item.part]}} size="small" />
                                             </Stack>
                                         </Stack>
                                         <Divider sx={{width: '100%'}} />
                                         <Stack direction={'row'} justifyContent={"flex-start"} sx={{width: '100%', mt:1, mb:1}}>
-                                            <Typography variant={"caption"} sx={{fontWeight: 200, fontSize: 12}}>{item.nameEng}</Typography>
+                                            <Typography variant={"caption"} sx={{fontWeight: 400, fontSize: 12}}>{item.nameEng}</Typography>
                                         </Stack>
                                         <Divider sx={{width: '100%'}} />
-                                        <Stack direction={'row'} justifyContent={"flex-end"} sx={{mt: 1, mb:-2}}>
+                                        <Stack direction={'row'} justifyContent={"flex-end"} sx={{mt: 1, mb:-2}} alignItems={'center'}>
                                             <Typography variant={"caption"} sx={{fontWeight: 300, fontSize: 12}}>{item.groupName}</Typography>
+                                            <Typography variant={"caption"} sx={{ml: 2, fontSize: 4, color: 'grey'}}>{item.concertDate.slice(2,10)}</Typography>
                                         </Stack>
                                     </CardContent>
                                 </Card>
                                 :
-                                <Card sx={{width: '95%', pb: 0, display: 'flex', alignItems: 'center'}}>
+                                <Card sx={{width: '95%', pb: 0, display: 'flex', alignItems: 'center', border: `0.5px solid ${color[item.part]}`}}>
                                     <CardContent sx={{pb: 0, mb:-1.7, mt: -1, width: '100%'}}>
                                         <Stack sx={{width: '100%', height: 'auto'}} direction={"row"} justifyContent={"flex-end"} alignItems={"center"}>
                                             <Stack sx={{mr: 'auto'}}>
@@ -190,11 +160,13 @@ const SelfIntro = () => {
                                             <Stack sx={{width: '55%'}}>
                                                 <Typography variant={"caption"} sx={{fontWeight: 200, fontSize: 14}}>{item.nameEng}</Typography>
                                             </Stack>
-                                            <Stack sx={{width: '15%'}} alignItems={"center"}>
-                                                <Chip variant={"outlined"} label={`${item.part} ${item.detailPart}`} color={'info'} size="small" />
+                                            {RoleComponent[item.role]}
+                                            <Stack sx={{width: '12%', ml:0.5}} alignItems={"center"}>
+                                                <Chip variant={"outlined"} label={`${item.part} ${item.detailPart === '.' ? '' : item.detailPart}`} sx={{color : color[item.part], borderColor : color[item.part]}} size="small" />
                                             </Stack>
-                                            <Stack sx={{width: '10%'}} alignItems={"center"}>
-                                                <Typography variant={"caption"} sx={{fontSize: 11}}>{item.groupName}</Typography>
+                                            <Stack sx={{width: '8%'}} alignItems={"center"} alignContent={"center"}>
+                                                <Typography variant={"caption"} sx={{fontSize: 6, pt:0.5}}>{item.groupName}</Typography>
+                                                <Typography variant={"caption"} sx={{fontSize: 4, color: 'grey'}}>{item.concertDate.slice(2,10)}</Typography>
                                             </Stack>
                                         </Stack>
                                     </CardContent>
