@@ -68,25 +68,22 @@ const MyConcertList = (props : any) => {
                     alt="Live from space album cover"
                     onClick={() => setExpanded(!expanded)}
                 />
-                <Collapse in={expanded} orientation={"vertical"} timeout="auto" unmountOnExit>
+                <Collapse sx={{mt:1}} in={expanded} orientation={"vertical"} timeout="auto" unmountOnExit>
                     {item.participatedList.map((item : any) => (
                         <Stack sx={{width: '100%', cursor: 'pointer', mb: 0.5}} alignItems={'center'} onClick={() => setExpanded(!expanded)}>
 
-                            <Typography variant="subtitle2" sx={{mt:1, fontWeight: 800, fontSize: 13}}>
-                                {item.shortComposerEng}
-                            </Typography>
-
-                            <Divider orientation={"horizontal"} sx={{width: '50%'}}/>
-
-                            <Stack sx={{width: '70%', mt:0.5, mb:0.5}} direction={'row'} justifyContent={'space-around'} alignItems={'center'}>
-                                <Chip variant={"outlined"} label={`${item.part} ${item.detailPart === '.' ? '' : item.detailPart}`} sx={{fontSize: 9, color : color[item.part], borderColor : color[item.part], maxHeight:20, minHeight:20, maxWidth: 60, minWidth:60}} size="small" />
+                            <Stack sx={{width: '80%', mt:1.5, mb:0.5}} direction={'row'} alignItems={'center'} justifyContent={'flex-end'}>
+                                <Typography variant="caption" sx={{fontWeight: 600, fontSize: 12, mr: 'auto'}}>
+                                    {item.shortComposerEng}
+                                </Typography>
+                                <Chip variant={"outlined"} label={`${item.part} ${item.detailPart === '.' ? '' : item.detailPart}`} sx={{fontSize: 8, color : color[item.part], borderColor : color[item.part], maxHeight:20, minHeight:20, mr: 1}} size="small" />
                                 {RoleComponent[item.role]}
                             </Stack>
 
-                            <Divider orientation={"horizontal"} sx={{width: '50%'}}/>
+                            <Divider orientation={"horizontal"} sx={{width: '80%'}}/>
 
                             <Stack direction={"column"} justifyContent={"flex-start"} alignContent={"center"} alignItems={"center"} sx={{width: '80%', mt:0.5}}>
-                                <Typography variant="caption"sx={{fontWeight: 400, fontSize: 14}}>{item.nameEng}</Typography>
+                                <Typography  variant="overline"  sx={{fontSize: 14, color: 'grey'}}>{item.nameEng}</Typography>
                             </Stack>
                             <Divider orientation={"horizontal"} sx={{width: '90%', mt: 0.5}}/>
                         </Stack>
