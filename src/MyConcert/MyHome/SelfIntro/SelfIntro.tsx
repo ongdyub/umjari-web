@@ -145,7 +145,7 @@ const SelfIntro = () => {
                                         <Divider sx={{width: '100%'}} />
                                         <Stack direction={'row'} justifyContent={"flex-end"} sx={{mt: 1, mb:-2}} alignItems={'center'}>
                                             <Typography variant={"caption"} sx={{fontWeight: 300, fontSize: 12}}>{item.groupName}</Typography>
-                                            <Typography variant={"caption"} sx={{ml: 2, fontSize: 4, color: 'grey'}}>{item.concertDate.slice(2,10)}</Typography>
+                                            <Typography variant={"caption"} sx={{ml: 2, fontSize: 8, color: 'grey'}}>{item.concertDate.slice(2,10)}</Typography>
                                         </Stack>
                                     </CardContent>
                                 </Card>
