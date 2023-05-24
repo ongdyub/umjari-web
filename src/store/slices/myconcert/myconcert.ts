@@ -6,6 +6,14 @@ import {User} from "../user/user";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+export interface myGroup {
+    groupId: number;
+    groupName : string;
+    joinedAt: string | null
+    leavedAt: string | null
+    memberType : string
+}
+
 export interface MyDefaultInfo {
     id: number,
     profileName: string,
@@ -28,23 +36,35 @@ export interface MySelfIntro {
     concertMusicId : number
 }
 
-export interface myGroup {
-    groupId: number;
-    groupName : string;
-    joinedAt: string | null
-    leavedAt: string | null
-    memberType : string
+export interface ParticipatedList {
+    shortComposerEng: string,
+    nameEng: string,
+    part: string,
+    detailPart: string,
+    groupName: string,
+    role: string
+}
+
+export interface MyList {
+    id: number,
+    concertPoster: string,
+    title: string,
+    concertDate: string,
+    regionDetail: string,
+    participatedList: [ParticipatedList] | []
 }
 
 export interface MyConcertState {
     myDefaultInfo : MyDefaultInfo | null,
     mySelfIntro : [MySelfIntro] | [],
+    myList : [MyList] | [],
     isExist : boolean
 }
 
 const initialState: MyConcertState = {
     myDefaultInfo : null,
     mySelfIntro : [],
+    myList : [],
     isExist : true
 };
 
@@ -146,6 +166,19 @@ export const mySelfIntroGet = createAsyncThunk(
     }
 )
 
+export const myListGet = createAsyncThunk(
+    "myconcert/myListGet",
+    async (profileName : string | null | undefined, {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/user/profile-name/${profileName}/joined-concert/poster/`)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const myConcertStateSlice = createSlice({
     name: "myConcertState",
     initialState,
@@ -156,6 +189,9 @@ export const myConcertStateSlice = createSlice({
         },
         resetMySelfIntro : (state) => {
             state.mySelfIntro = []
+        },
+        resetMyList : (state) => {
+            state.myList = []
         },
         sortMySelfIntro : (state, action: PayloadAction<any>) => {
             if(action.payload.rule === '시간'){
@@ -246,6 +282,43 @@ export const myConcertStateSlice = createSlice({
                 }
             }
         },
+        sortMyList : (state, action: PayloadAction<any>) => {
+            if(action.payload.rule === '시간'){
+                state.myList = state.myList.sort((a: any, b: any) => {
+                    const partA = a.concertDate;
+                    const partB = b.concertDate;
+
+                    if(partA === partB){
+                        const partA = a.groupName;
+                        const partB = b.groupName;
+                        return partA.localeCompare(partB);
+                    }
+                    return partA.localeCompare(partB);
+                })
+
+                if(action.payload.direction === '내림차순'){
+                    state.myList.reverse()
+                }
+            }
+            else if(action.payload.rule === '단체'){
+                state.myList = state.myList.sort((a: any, b: any) => {
+                    const partA = a.groupName;
+                    const partB = b.groupName;
+
+                    if(partA === partB){
+                        const partA = a.concertDate;
+                        const partB = b.concertDate;
+                        return partA.localeCompare(partB);
+                    }
+
+                    return partA.localeCompare(partB);
+                })
+
+                if(action.payload.direction === '내림차순'){
+                    state.myList.reverse()
+                }
+            }
+        },
         setMyIntro : (state, action: PayloadAction<Partial<MyDefaultInfo>>) => {
             if(state.myDefaultInfo !== null && action.payload.intro !== undefined){
                 state.myDefaultInfo.intro = action.payload.intro
@@ -283,6 +356,19 @@ export const myConcertStateSlice = createSlice({
                     const partA = a.nameEng;
                     const partB = b.nameEng;
                     return partA.localeCompare(partB);
+                }
+                return partA.localeCompare(partB);
+            })
+        });
+        builder.addCase(myListGet.fulfilled, (state, action) => {
+            state.myList = action.payload.participatedConcerts
+
+            state.myList = state.myList.sort((a: any, b: any) => {
+                const partA = a.concertDate;
+                const partB = b.concertDate;
+
+                if(partA === partB){
+                    return a.id - b.id;
                 }
                 return partA.localeCompare(partB);
             })
