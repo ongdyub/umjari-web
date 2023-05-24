@@ -125,9 +125,9 @@ const MyList = () => {
                 {
                     res750 ?
                         <Stack sx={{width: '90%'}} alignItems={"center"} justifyContent={'center'}>
-                            <Grid container columns={15} spacing={2} >
+                            <Grid container columns={14} spacing={1} >
                                 {myconcertState.myList.map((item) => (
-                                    <Grid sx={{mt: 1}} item xs={5} direction={'row'} alignItems={'center'} >
+                                    <Grid sx={{mt: 0.5}} item xs={7} direction={'row'} alignItems={'center'} >
                                         <MyConcertList item={item} />
                                     </Grid>
                                 ))}
