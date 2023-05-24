@@ -14,7 +14,7 @@ const ConcertList = () => {
         const params = {
             regionParent : null,
             region_child : null,
-            startDate : null,
+            startDate : '2021-01-01',
             endDate : null,
             text : "",
             sort : "concertDate,ASC",

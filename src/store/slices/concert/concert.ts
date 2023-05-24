@@ -134,7 +134,7 @@ export const concertStateSlice = createSlice({
         builder.addCase(concertMemberGet.fulfilled, (state, action) => {
             const participants = action.payload.participants
 
-            const sortRule = ['Vn 1st', 'Vn 2nd', 'Va', 'Vc', 'Db', 'Fl', 'Picc', 'Ob', 'E.H', 'Cl', 'Fg', 'Hn', 'Trp', 'Trb', 'Tub', 'Timp', 'Perc', 'Harp']
+            const sortRule = ['Vn 1st', 'Vn 2nd', 'Va', 'Vc', 'Db', 'Fl', 'Picc', 'Ob', 'E.H', 'Cl', 'Fg', 'Hn', 'Trp', 'Cornet', 'Trb', 'Tub', 'Timp', 'Perc', 'Harp']
 
             state.participants = participants.sort((a: any, b: any) => {
                 const partA = sortRule.indexOf(a.part);
