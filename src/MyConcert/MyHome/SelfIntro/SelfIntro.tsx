@@ -165,8 +165,8 @@ const SelfIntro = () => {
                                                 <Chip variant={"outlined"} label={`${item.part} ${item.detailPart === '.' ? '' : item.detailPart}`} sx={{color : color[item.part], borderColor : color[item.part]}} size="small" />
                                             </Stack>
                                             <Stack sx={{width: '8%'}} alignItems={"center"} alignContent={"center"}>
-                                                <Typography variant={"caption"} sx={{fontSize: 6, pt:0.5}}>{item.groupName}</Typography>
-                                                <Typography variant={"caption"} sx={{fontSize: 4, color: 'grey'}}>{item.concertDate.slice(2,10)}</Typography>
+                                                <Typography variant={"caption"} sx={{fontSize: 10, pt:0.5}}>{item.groupName}</Typography>
+                                                <Typography variant={"caption"} sx={{fontSize: 10, color: 'grey'}}>{item.concertDate.slice(2,10)}</Typography>
                                             </Stack>
                                         </Stack>
                                     </CardContent>
