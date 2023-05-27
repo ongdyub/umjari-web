@@ -7,10 +7,13 @@ import 'react-quill/dist/quill.snow.css';
 import {useDispatch, useSelector} from "react-redux";
 import {dummyActions, selectDummy} from "../../store/slices/dummy/dummy";
 import {useNavigate} from "react-router-dom";
+import {selectUser, userActions} from "../../store/slices/user/user";
+import {EditorWrite, postCommunity} from "../../store/slices/editor/editor";
+import {AppDispatch} from "../../store";
 
 const boardList = [
     {
-        name: '전체 게시판',
+        name: '전체게시판',
         ID: 12
     },
     {
@@ -93,41 +96,69 @@ const formats = [
 
 const WriteEditor = () => {
     const theme = useTheme()
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
     const dummySelector = useSelector(selectDummy)
+    const userState = useSelector(selectUser)
+
+
     const res1100 = useMediaQuery('(max-width:1099px)')
-    const res800 = useMediaQuery('(max-width:800px)')
+    const res750 = useMediaQuery(theme.breakpoints.down("res750"))
     const res600 = useMediaQuery('(max-width:600px)')
     const resMd = useMediaQuery(theme.breakpoints.down("md"))
 
     const [contents, setContents] = useState('');
     const [title, setTitle] = useState('')
-    const [board, setBoard] = useState('')
+    const [board, setBoard] = useState<string>('전체게시판')
+    const [hide, setHide] = useState(false)
 
 
 
     const handleSubmit = () => {
-        dispatch(dummyActions.setWrite(contents))
-        navigate('/community/전체/2')
+        if(!userState.isLogin){
+            dispatch(userActions.openModal())
+            return
+        }
+        if(title === ''){
+            window.alert('제목을 입력해주세요.')
+            return
+        }
+        if(title.length > 50){
+            window.alert('제목을 50자 이하로 입력해 주세요')
+            return
+        }
+        if(contents === ''){
+            window.alert('본문을 입력해주세요.')
+        }
+        if(contents.length > 5000){
+            window.alert('본문 내용이 너무 깁니다.')
+            return
+        }
+        const data = {
+            title : title,
+            content : contents,
+            isAnonymous : hide
+        }
+        const result = dispatch(postCommunity({data , token : userState.accessToken, inst_name : 'VIOLIN'}))
+        console.log(result)
     }
 
+
+
     return(
-        <Stack justifyContent="flex-start" alignItems="center" sx={{width: res800 ? '100%' : resMd ? 'calc(100% - 205px)' : 'calc(100% - 325px)'}}>
-            <Stack justifyContent="space-around" direction={ res600 ? "column" : "row"} sx={{width: '95%', mb: 1, mt: 1}}>
-                <TextField sx={{width: res600 ? '100%' : '70%'}} id="standard-basic" label="제목을 입력해주세요" variant="standard" value={title} onChange={(e) => setTitle(e.target.value)} />
-                <Stack justifyContent="flex-end" sx={{width: res600 ? '100%' : '25%', mt: res600 ? 2 : ''}}>
-                    <FormControl variant="standard" sx={{width: '100%'}}>
+        <Stack justifyContent="flex-start" alignItems="center" sx={{mb: 5, width: res750 ? '100%' : resMd ? 'calc(100% - 205px)' : 'calc(100% - 325px)'}}>
+            <Stack justifyContent={res750 ? "center" : "space-around"} direction={"column"} sx={{width: '90%', mb: 1, mt: 1}}>
+                <TextField sx={{width: res750 ? '100%' : '100%'}} label="제목을 입력해주세요" variant="standard" value={title} onChange={(e) => setTitle(e.target.value)} />
+                <Stack justifyContent={'flex-end'} alignItems={'center'} direction={"row"} sx={{width: '100%', mt: 2}}>
+                    <FormControl variant="standard" sx={{width: '50%', mr: 'auto'}}>
                         <Select
-                            labelId="demo-simple-select-standard-label"
-                            id="demo-simple-select-standard"
                             value={board}
                             onChange={(e) => setBoard(e.target.value)}
-                            label="Board"
+                            defaultValue={"전체게시판"}
                         >
-                            {boardList.map((item) => (
+                            {boardList.map((item, idx) => (
                                 <MenuItem
-                                    key={item.ID}
+                                    key={idx}
                                     value={item.name}
                                 >
                                     {item.name}
@@ -135,20 +166,24 @@ const WriteEditor = () => {
                             ))}
                         </Select>
                     </FormControl>
+                    {
+                        hide ?
+                            <Button variant={"contained"} sx={{bgcolor: 'red', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(false)}>비공개</Button>
+                            :
+                            <Button variant={"contained"} sx={{bgcolor: 'green', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(true)}>공개</Button>
+                    }
+                    <Button variant="outlined" onClick={handleSubmit} sx={{ml: 1, maxWidth: 60, minWidth: 60, maxHeight: 30, minHeight: 30}}>작성</Button>
                 </Stack>
             </Stack>
             <ReactQuill
                 className={"quill"}
-                style={{width: '95%', marginBottom: '60px', height: '500px' }}
+                style={{width: '90%', marginTop: 1, height: '500px' }}
                 theme="snow"
                 modules={modules}
                 formats={formats}
                 value={contents}
                 onChange={(e) => setContents(e)}
             />
-            <Stack justifyContent="flex-start" sx={{mt: res1100? 5 : 0}}>
-                <Button variant="outlined" onClick={handleSubmit}>작성하기</Button>
-            </Stack>
         </Stack>
     )
 }

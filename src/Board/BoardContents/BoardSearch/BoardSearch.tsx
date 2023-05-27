@@ -13,6 +13,9 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {selectUser, userActions} from "../../../store/slices/user/user";
+import {AppDispatch} from "../../../store";
 
 const boardList = [
     {
@@ -77,7 +80,9 @@ const boardList = [
 const BoardSearch = () => {
 
     const theme = useTheme();
+    const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
+    const userState = useSelector(selectUser)
     const res600 = useMediaQuery('(max-width:600px)')
     const res800 = useMediaQuery('(max-width:800px)')
 
@@ -94,6 +99,10 @@ const BoardSearch = () => {
         );
     };
     const handleWrite = () => {
+        if(!userState.isLogin){
+            dispatch(userActions.openModal())
+            return
+        }
         navigate('/write')
     }
 
@@ -115,10 +124,10 @@ const BoardSearch = () => {
                     </Stack>
                     <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 175}}>
                         <ButtonGroup variant="text" aria-label="text button group">
-                            <Button sx={{fontSize: 12}}>인기글</Button>
-                            <Button sx={{fontSize: 12}}>댓글</Button>
-                            <Button sx={{fontSize: 12}}>조회</Button>
-                            <Button sx={{fontSize: 12}}>추천</Button>
+                            <Button sx={{fontSize: 10}}>인기글</Button>
+                            <Button sx={{fontSize: 10}}>댓글</Button>
+                            <Button sx={{fontSize: 10}}>조회</Button>
+                            <Button sx={{fontSize: 10}}>추천</Button>
                         </ButtonGroup>
                     </Stack>
                     <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 60}}>

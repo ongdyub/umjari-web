@@ -4,6 +4,7 @@ import userReducer from "./slices/user/user";
 import concertStateReducer from "./slices/concert/concert"
 import groupStateReducer from "./slices/group/group"
 import myConcertStateReducer from  "./slices/myconcert/myconcert"
+import editorStateReducer from  "./slices/editor/editor"
 
 export const store = configureStore({
     reducer : {
@@ -11,6 +12,7 @@ export const store = configureStore({
         concertState : concertStateReducer,
         groupState : groupStateReducer,
         myConcertState : myConcertStateReducer,
+        editorState : editorStateReducer,
         dummy : dummyReducer
     },
 });
