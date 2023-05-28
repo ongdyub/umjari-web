@@ -40,7 +40,7 @@ const Group = () => {
     }
     else{
         return(
-            <Stack sx={{height: 1000}}>
+            <Stack sx={{height: 800}}>
                 <Stack>
                     <GroupInfo groupData={groupSelector.groupInfo} />
                     <Divider orientation={"horizontal"} sx={{mt:1, mb:1, width: '100%'}}/>
