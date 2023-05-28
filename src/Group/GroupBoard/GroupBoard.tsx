@@ -13,7 +13,7 @@ import GroupQnAItem from "./GroupQnAItem/GroupQnAItem";
 const GroupBoard = () => {
 
     const theme = useTheme();
-    const res750 = useMediaQuery(theme.breakpoints.down("res750"))
+    const res700 = useMediaQuery(theme.breakpoints.down("res700"))
 
     const navigate = useNavigate();
     const { id } = useParams();
@@ -28,15 +28,15 @@ const GroupBoard = () => {
     }
 
     const myButtons = [
-        <Button key="recruit" sx={{fontSize: res750 ? 12 : 14, pl:2, pr: 2}} onClick={onClickGoRecruit}>모집정보</Button>,
-        <Button key="list" sx={{fontSize: res750 ? 12 : 14, pl:2, pr: 2}} onClick={onClickGoList}>연주목록</Button>,
-        <Button key="qna" sx={{fontSize: res750 ? 12 : 14, pl:2, pr: 2}} onClick={onClickGoQnA}>Q&A</Button>,
+        <Button key="recruit" sx={{fontSize: res700 ? 12 : 14}} onClick={onClickGoRecruit}>모집정보</Button>,
+        <Button key="list" sx={{fontSize: res700 ? 12 : 14}} onClick={onClickGoList}>연주목록</Button>,
+        <Button key="qna" sx={{fontSize: res700 ? 12 : 14}} onClick={onClickGoQnA}>Q&A</Button>,
     ]
 
     return(
-        <Stack sx={{mt:0, pl: res750 ? 0 : 3, width: '100%'}}>
-            <Stack sx={{mb: 2}} direction={"row"} justifyContent={res750 ? "center" : ''} alignItems={res750 ? 'center' : ''}>
-                <ButtonGroup variant={"text"} size={"small"}>
+        <Stack sx={{mt:0, pl: res700 ? 0 : 3}}>
+            <Stack sx={{mb: 2}} alignItems={res700 ? "center" : ''}>
+                <ButtonGroup variant={"text"} size={res700 ? "medium" : "large"}>
                     {myButtons}
                 </ButtonGroup>
             </Stack>

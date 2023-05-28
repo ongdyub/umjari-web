@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
 import {SignUser} from "../user/user";
-import {Concert} from "../concert/concert";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -76,21 +75,13 @@ export interface GroupQnAList {
     currentPage: number
 }
 
-export interface GroupConcertList {
-    contents: [Partial<Concert>] | [],
-    totalPages: number,
-    totalElements: number,
-    currentPage: number
-}
-
 export interface GroupState {
     groupInfo: GroupInfo | null,
     groupRecruit: GroupRecruit | null,
     groupExist: boolean,
 
     groupQnAList : GroupQnAList | null,
-    groupQnAItem : GroupQnAItem | null,
-    groupConcertList : GroupConcertList | null
+    groupQnAItem : GroupQnAItem | null
 }
 
 const initialState: GroupState = {
@@ -99,8 +90,7 @@ const initialState: GroupState = {
     groupExist : true,
 
     groupQnAList : null,
-    groupQnAItem : null,
-    groupConcertList : null
+    groupQnAItem : null
 };
 
 export const groupInfo = createAsyncThunk(
@@ -165,20 +155,6 @@ export const groupQnAItemGet = createAsyncThunk(
     }
 )
 
-export const groupConcertListGet = createAsyncThunk(
-    "group/groupConcertListGet",
-    async ({id, params}: {id : string | number | undefined, params : any},  {rejectWithValue}) => {
-        try {
-            const response = await axios.get(`/api/v1/group/${id}/concerts/`,{params : params})
-            console.log(response.data)
-            return response.data
-        }
-        catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
-        }
-    }
-)
-
 // export const concert = createAsyncThunk(
 //     "concert/concert",
 //     async (id: string | number | undefined) => {
@@ -201,27 +177,6 @@ export const groupStateSlice = createSlice({
         resetGroupQnAItem : (state) => {
             state.groupQnAItem = null
         },
-        resetGroupConcertList : (state) => {
-            state.groupConcertList = null
-        },
-        sortGroupList : (state, action: PayloadAction<any>) => {
-            if (action.payload.rule === '시간') {
-                if(state.groupConcertList !== null && state.groupConcertList.contents !== null){
-                    state.groupConcertList.contents = state.groupConcertList?.contents.sort((a: any, b: any) => {
-                        const partA = a.concertDate;
-                        const partB = b.concertDate;
-
-                        return partA.localeCompare(partB);
-                    })
-                }
-
-                if(state.groupConcertList !== null && state.groupConcertList.contents !== null){
-                    if (action.payload.direction === '내림차순') {
-                        state.groupConcertList.contents.reverse()
-                    }
-                }
-            }
-        }
     },
 
     extraReducers: (builder) => {
@@ -237,18 +192,6 @@ export const groupStateSlice = createSlice({
         });
         builder.addCase(groupQnAItemGet.fulfilled, (state, action) => {
             state.groupQnAItem = action.payload
-        });
-        builder.addCase(groupConcertListGet.fulfilled, (state, action) => {
-            state.groupConcertList = action.payload
-
-            if(state.groupConcertList !== null && state.groupConcertList.contents !== null){
-                state.groupConcertList.contents = state.groupConcertList?.contents.sort((a: any, b: any) => {
-                    const partA = a.concertDate;
-                    const partB = b.concertDate;
-
-                    return partA.localeCompare(partB);
-                })
-            }
         });
     },
 });
