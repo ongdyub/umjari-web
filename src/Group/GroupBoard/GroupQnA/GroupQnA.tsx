@@ -30,7 +30,7 @@ const GroupQnA = () => {
     const { id } = useParams();
     const groupState = useSelector(selectGroup)
     const userState = useSelector(selectUser)
-    const res750 = useMediaQuery(theme.breakpoints.down("res750"))
+    const res700 = useMediaQuery(theme.breakpoints.down("res700"))
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -127,9 +127,9 @@ const GroupQnA = () => {
 
     return(
         <Stack sx={{mb:10}}>
-            <Divider sx={{width: res750 ? '100%' : '90%', mt: -1}}/>
-            <Stack direction={res750 ? "column" : 'row'} alignItems={res750 ? "center" : ''} justifyContent={res750 ? "center" : ''} sx={{mb: 3, mt: 1}}>
-                <FormControl variant="standard" sx={{mt : res750 ? 1 : 1,width: res750 ? '80%' : 350}}>
+            <Divider sx={{width: res700 ? '100%' : '90%', mt: -1}}/>
+            <Stack direction={res700 ? "column" : 'row'} alignItems={res700 ? "center" : ''} justifyContent={res700 ? "center" : ''} sx={{mb: 3, mt: 1}}>
+                <FormControl variant="standard" sx={{mt : res700 ? 1 : 1,width: res700 ? '80%' : 350}}>
                     <InputLabel htmlFor="standard-adornment-amount">검색어를 입력하세요</InputLabel>
                     <Input
                         id="standard-adornment-amount"
@@ -141,15 +141,15 @@ const GroupQnA = () => {
                 </FormControl>
 
                 <Stack direction={"row"}>
-                    <Button variant={"outlined"} sx={{ml: 2, mt: res750 ? 2: 1.5, fontSize : res750 ? 11 : 14}} onClick={onClickTextSearch}>검색하기</Button>
-                    <Button variant={"contained"} sx={{ml: 2, mt: res750 ? 2: 1.5, fontSize : res750 ? 11 : 14}} onClick={onClickWrite}>작성하기</Button>
+                    <Button variant={"outlined"} sx={{ml: 2, mt: res700 ? 2: 1.5, fontSize : res700 ? 11 : 14}} onClick={onClickTextSearch}>검색하기</Button>
+                    <Button variant={"contained"} sx={{ml: 2, mt: res700 ? 2: 1.5, fontSize : res700 ? 11 : 14}} onClick={onClickWrite}>작성하기</Button>
                 </Stack>
 
             </Stack>
 
-            <Divider sx={{width: '100%', mt: res750 ? -1 : 0, mb: -1}} />
+            <Divider sx={{width: '100%', mt: res700 ? -1 : 0, mb: -1}} />
 
-            <Stack sx={{pr: 3, pt: 3, width: '100%', pl: res750 ? 3 : 0}}>
+            <Stack sx={{pr: 3, pt: 3, width: '100%', pl: res700 ? 3 : 0}}>
                 <Grid container columns={14}>
                     {
                         groupState.groupQnAList?.contents.map((item) => (
@@ -162,7 +162,7 @@ const GroupQnA = () => {
             </Stack>
 
             <Stack alignItems="center" sx={{width:'100%'}} flexDirection={'row'} justifyContent="center" alignContent="center">
-                <Pagination sx={{display: 'flex', width: '80%',justifyContent: "center", alignItems:"center"}} size={res750 ? "small" : "large"} count={totalPage} page={page} onChange={handlePage} defaultPage={1} siblingCount={1} boundaryCount={1}/>
+                <Pagination sx={{display: 'flex', width: '80%',justifyContent: "center", alignItems:"center"}} size={res700 ? "small" : "large"} count={totalPage} page={page} onChange={handlePage} defaultPage={1} siblingCount={1} boundaryCount={1}/>
             </Stack>
             <GroupQnAWriteModal open={writeOpen} handleClose={handleWriteClose}/>
         </Stack>
