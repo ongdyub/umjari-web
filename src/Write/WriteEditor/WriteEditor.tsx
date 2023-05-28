@@ -5,68 +5,76 @@ import './WriteEditor.scss'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import {useDispatch, useSelector} from "react-redux";
-import {dummyActions, selectDummy} from "../../store/slices/dummy/dummy";
 import {useNavigate} from "react-router-dom";
 import {selectUser, userActions} from "../../store/slices/user/user";
-import {EditorWrite, postCommunity} from "../../store/slices/editor/editor";
+import {postCommunity} from "../../store/slices/editor/editor";
 import {AppDispatch} from "../../store";
 
 const boardList = [
     {
-        name: '전체게시판',
-        ID: 12
-    },
-    {
         name: '바이올린',
-        ID: 0
+        ID: 0,
+        enum : 'VIOLIN'
     },
     {
         name: '비올라',
-        ID: 1
+        ID: 3,
+        enum : 'VIOLA'
     },
     {
         name: '첼로',
-        ID: 2
+        ID: 4,
+        enum : 'CELLO'
     },
     {
         name: '베이스',
-        ID: 3
+        ID: 5,
+        enum : 'BASS'
     },
     {
         name: '플루트',
-        ID: 4
+        ID: 6,
+        enum : 'FLUTE'
     },
     {
         name: '클라리넷',
-        ID: 5
+        ID: 8,
+        enum : 'CLARINET'
     },
     {
         name: '오보에',
-        ID: 6
+        ID: 12,
+        enum : 'OBOE'
     },
     {
         name: '바순',
-        ID: 7
+        ID: 14,
+        enum : 'BASSOON'
     },
     {
         name: '호른',
-        ID: 8
+        ID: 16,
+        enum : 'HORN'
     },
     {
         name: '트럼펫',
-        ID: 9
+        ID: 17,
+        enum : 'TRUMPET'
     },
     {
         name: '트롬본',
-        ID: 10
+        ID: 19,
+        enum : 'TROMBONE'
     },
     {
         name: '튜바',
-        ID: 11
+        ID: 21,
+        enum : 'TUBA'
     },
     {
         name: '타악기',
-        ID: 13
+        ID: 22,
+        enum : 'PERCUSSION_INSTRUMENT'
     },
 
 ]
@@ -98,21 +106,15 @@ const WriteEditor = () => {
     const theme = useTheme()
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
-    const dummySelector = useSelector(selectDummy)
     const userState = useSelector(selectUser)
 
-
-    const res1100 = useMediaQuery('(max-width:1099px)')
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
-    const res600 = useMediaQuery('(max-width:600px)')
     const resMd = useMediaQuery(theme.breakpoints.down("md"))
 
     const [contents, setContents] = useState('');
     const [title, setTitle] = useState('')
-    const [board, setBoard] = useState<string>('전체게시판')
+    const [board, setBoard] = useState<string>('VIOLIN')
     const [hide, setHide] = useState(false)
-
-
 
     const handleSubmit = () => {
         if(!userState.isLogin){
@@ -123,12 +125,17 @@ const WriteEditor = () => {
             window.alert('제목을 입력해주세요.')
             return
         }
+        if(board === ''){
+            window.alert('게시판을 선택하세요.')
+            return
+        }
         if(title.length > 50){
             window.alert('제목을 50자 이하로 입력해 주세요')
             return
         }
-        if(contents === ''){
+        if(contents === '' || contents === '<p><br></p>'){
             window.alert('본문을 입력해주세요.')
+            return
         }
         if(contents.length > 5000){
             window.alert('본문 내용이 너무 깁니다.')
@@ -139,11 +146,9 @@ const WriteEditor = () => {
             content : contents,
             isAnonymous : hide
         }
-        const result = dispatch(postCommunity({data , token : userState.accessToken, inst_name : 'VIOLIN'}))
-        console.log(result)
+        dispatch(postCommunity({data , token : userState.accessToken, inst_name : board}))
+        navigate(`/community/전체게시판`)
     }
-
-
 
     return(
         <Stack justifyContent="flex-start" alignItems="center" sx={{mb: 5, width: res750 ? '100%' : resMd ? 'calc(100% - 205px)' : 'calc(100% - 325px)'}}>
@@ -154,12 +159,11 @@ const WriteEditor = () => {
                         <Select
                             value={board}
                             onChange={(e) => setBoard(e.target.value)}
-                            defaultValue={"전체게시판"}
                         >
                             {boardList.map((item, idx) => (
                                 <MenuItem
                                     key={idx}
-                                    value={item.name}
+                                    value={item.enum}
                                 >
                                     {item.name}
                                 </MenuItem>

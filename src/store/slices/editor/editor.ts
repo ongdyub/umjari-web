@@ -1,10 +1,10 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 import {RootState} from "../..";
-import {groupQnAItemGet} from "../group/group";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
 
 export interface EditorWrite {
     title : string,
@@ -35,15 +35,23 @@ export const postCommunity = createAsyncThunk(
 )
 
 
+
+
+
 export const editorStateSlice = createSlice({
     name: "editorState",
     initialState,
     reducers: {
+        resetGroupInfo: () => {
+        },
     },
 
     extraReducers: (builder) => {
         builder.addCase(postCommunity.fulfilled, (state, action) => {
             window.alert('작성 완료')
+        });
+        builder.addCase(postCommunity.rejected, (state, action) => {
+            window.alert('작성 실패')
         });
     },
 });
