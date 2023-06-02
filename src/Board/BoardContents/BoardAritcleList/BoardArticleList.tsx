@@ -4,10 +4,11 @@ import {selectDummy} from "../../../store/slices/dummy/dummy";
 import BoardArticle from "./BoardArticle/BoardArticle";
 import {useParams} from "react-router-dom";
 
-const BoardArticleList = () => {
+const BoardArticleList = (props : any) => {
+
+    const {boardName, articleList} = props
 
     const dummySelector = useSelector(selectDummy)
-    const {boardName} = useParams<string>()
 
     return(
         <List sx={{width: '100%'}}>

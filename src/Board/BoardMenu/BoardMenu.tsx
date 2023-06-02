@@ -87,7 +87,7 @@ const BoardMenu = () => {
     }
 
     return(
-        <Stack justifyContent="flex-start" alignItems="center" sx={{height: res800 ? '65px' : '1000px', width: res800 ? '100%' : '160px', bgcolor: '#292929', minWidth: '160px' }}>
+        <Stack zIndex={10} justifyContent="flex-start" alignItems="center" sx={{height: res800 ? '65px' : '1000px', width: res800 ? '100%' : '160px', bgcolor: '#292929', minWidth: '160px' }}>
             {res800 ?
                 <List component="nav" sx={{width: '100%', justifyContent:"flex-start", alignItems:"center"}}>
                     {boardList.filter((item) => (item.name === selectedIndex)).map((item, idx) => (
