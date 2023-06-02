@@ -17,7 +17,6 @@ import {myConcertStateActions, myListGet, selectMyConcert} from "../../../store/
 import {GiQueenCrown} from "react-icons/gi";
 import {FaCrown} from "react-icons/fa";
 import {CgCrown} from "react-icons/cg";
-import {groupFrom} from "../../../store/slices/dummy/dummy";
 
 interface ColorMap {
     [key: string]: string;
@@ -86,6 +85,9 @@ const MyList = () => {
 
     useEffect(() => {
         dispatch(myConcertStateActions.sortMyList({rule: sortRule, direction: sortDirection}))
+        return () => {
+            dispatch(myConcertStateActions.resetMyList())
+        }
     },[dispatch, sortRule, sortDirection])
 
     return(
