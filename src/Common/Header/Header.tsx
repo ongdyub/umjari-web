@@ -6,7 +6,7 @@ import {
     Container, Divider,
     IconButton,
     Menu,
-    MenuItem, Stack,
+    MenuItem,
     Toolbar,
     Tooltip,
     Typography, useMediaQuery, useTheme
@@ -14,15 +14,14 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {myInfoGet, selectUser, signUp, userActions, userGroupGet} from "../../store/slices/user/user";
+import {myInfoGet, selectUser, userActions, userGroupGet} from "../../store/slices/user/user";
 import { useNavigate } from "react-router"
 import LoginModal from "../../Modal/LoginModal";
 import {AppDispatch} from "../../store";
 import React from 'react'
 import NameChangeModal from "../../Modal/NameChangeModal";
-import {concert} from "../../store/slices/concert/concert";
 
-const pages = ['홈', '커뮤니티', '단체검색하기', '중고거래 및 대여', '객원모집'];
+const pages = ['홈', '커뮤니티', '단체검색', '장터', '객원모집'];
 const settings = ['마이페이지', '닉네임 변경' ,'작성기록', '설정', '로그아웃', 'Size'];
 
 const Header = () => {
@@ -53,10 +52,10 @@ const Header = () => {
         else if(page === '커뮤니티'){
             navigate('/community/전체게시판')
         }
-        else if(page === '단체검색하기'){
+        else if(page === '단체검색'){
             navigate('/groupsearch')
         }
-        else if(page === '중고거래 및 대여'){
+        else if(page === '장터'){
             window.alert("준비 중 입니다.")
         }
         else if(page === '객원모집'){
@@ -90,7 +89,12 @@ const Header = () => {
     }
 
     const onClickLogo = () => {
-        navigate('/')
+        if(window.location.pathname === '/'){
+            window.location.reload()
+        }
+        else{
+            navigate('/')
+        }
     }
 
     useEffect(() => {
