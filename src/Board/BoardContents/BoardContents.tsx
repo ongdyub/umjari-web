@@ -13,7 +13,7 @@ const BoardContents = () => {
     return(
         <Stack justifyContent="flex-start" alignItems="center" sx={{height: res800 ? 'auto' : '1000px', width: res800 ? '100%' : resMd ? 'calc(100% - 164px)' : 'calc(100% - 325px)'}}>
             <BoardSearch />
-            <Divider orientation={"horizontal"} sx={{width: '100%', mt: -3}} />
+            <Divider orientation={"horizontal"} sx={{width: '100%', mt: res800 ? -3 : 0}} />
             <BoardArticleList boardName={boardName} />
             <Divider orientation={"horizontal"} sx={{width: '100%'}} />
             <BoardUtil />
