@@ -167,9 +167,9 @@ export const groupQnAItemGet = createAsyncThunk(
 
 export const groupConcertListGet = createAsyncThunk(
     "group/groupConcertListGet",
-    async ({id, params}: {id : string | number | undefined, params : any},  {rejectWithValue}) => {
+    async ({id, param}: {id : string | number | undefined, param : any},  {rejectWithValue}) => {
         try {
-            const response = await axios.get(`/api/v1/group/${id}/concerts/`,{params : params})
+            const response = await axios.get(`/api/v1/group/${id}/concerts/`,{params : param})
             console.log(response.data)
             return response.data
         }
@@ -241,14 +241,14 @@ export const groupStateSlice = createSlice({
         builder.addCase(groupConcertListGet.fulfilled, (state, action) => {
             state.groupConcertList = action.payload
 
-            if(state.groupConcertList !== null && state.groupConcertList.contents !== null){
-                state.groupConcertList.contents = state.groupConcertList?.contents.sort((a: any, b: any) => {
-                    const partA = a.concertDate;
-                    const partB = b.concertDate;
-
-                    return partA.localeCompare(partB);
-                })
-            }
+            // if(state.groupConcertList !== null && state.groupConcertList.contents !== null){
+            //     state.groupConcertList.contents = state.groupConcertList?.contents.sort((a: any, b: any) => {
+            //         const partA = a.concertDate;
+            //         const partB = b.concertDate;
+            //
+            //         return partA.localeCompare(partB);
+            //     })
+            // }
         });
     },
 });
