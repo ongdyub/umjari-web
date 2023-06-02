@@ -2,22 +2,17 @@ import {
     Collapse,
     Divider,
     List,
-    ListItem,
     ListItemButton,
-    ListItemIcon,
-    ListItemText,
     Stack, Typography,
     useMediaQuery,
-    useTheme
 } from "@mui/material";
-import DraftsIcon from '@mui/icons-material/Drafts';
 import {useState} from "react";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const boardList = [
     {
-        name: '전체 게시판',
+        name: '전체게시판',
         ID: 12
     },
     {
@@ -72,17 +67,15 @@ const boardList = [
         name: '타악기',
         ID: 13
     },
-    {
-        name: '객원모집',
-        ID: 14
-    },
 ]
 
 const BoardMenu = () => {
 
     const navigate = useNavigate()
+    const { boardName } = useParams();
     const res800 = useMediaQuery('(max-width:800px)')
-    const [selectedIndex, setSelectedIndex] = useState(0)
+
+    const [selectedIndex, setSelectedIndex] = useState(boardName)
     const [open, setOpen] = useState(false)
     const menuOpen = () => {
         setOpen((!open))
@@ -97,7 +90,7 @@ const BoardMenu = () => {
         <Stack justifyContent="flex-start" alignItems="center" sx={{height: res800 ? 'auto' : '1000px', width: res800 ? '100%' : '160px', bgcolor: '#292929', minWidth: '160px' }}>
             {res800 ?
                 <List component="nav" sx={{width: '100%', justifyContent:"flex-start", alignItems:"center"}}>
-                    {boardList.filter((item) => (item.ID == selectedIndex)).map((item) => (
+                    {boardList.filter((item) => (item.name === selectedIndex)).map((item) => (
                         <Stack onClick={menuOpen} justifyContent="flex-start" alignItems="center" sx={{width: '100%'}}>
                             <Divider sx={{width: '40%', border: 'solid 0.4px white'}} />
                             <ListItemButton sx={{width: '100%', display: 'flex', justifyContent:"center", alignItems:"center"}}>
@@ -110,7 +103,7 @@ const BoardMenu = () => {
                     ))}
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         {boardList.map((item) => (
-                            <Stack onClick={() => handleMiniMenu(item)} justifyContent="flex-start" alignItems="center" sx={{width: '100%', bgcolor: selectedIndex === item.ID ? 'primary.light' : ''}}>
+                            <Stack onClick={() => handleMiniMenu(item)} justifyContent="flex-start" alignItems="center" sx={{width: '100%', bgcolor: selectedIndex === item.name ? 'primary.light' : ''}}>
                                 <Divider sx={{width: '40%', border: 'solid 0.4px white'}} />
                                 <ListItemButton sx={{width: '100%', display: 'flex', justifyContent:"center", alignItems:"center"}}>
                                     <Typography sx={{pt:1, pb: 1, color: 'white', width: 'auto'}}>
@@ -124,7 +117,7 @@ const BoardMenu = () => {
                 :
                 <List component="nav" sx={{width: '100%', justifyContent:"flex-start", alignItems:"center"}}>
                     {boardList.map((item) => (
-                        <Stack onClick={() => handleMiniMenu(item)} justifyContent="flex-start" alignItems="center" sx={{width: '100%', bgcolor: selectedIndex === item.ID ? 'primary.light' : ''}}>
+                        <Stack onClick={() => handleMiniMenu(item)} justifyContent="flex-start" alignItems="center" sx={{width: '100%', bgcolor: selectedIndex === item.name ? 'primary.light' : ''}}>
                             <Divider sx={{width: '40%', border: 'solid 0.4px white'}} />
                             <ListItemButton sx={{width: '100%', display: 'flex', justifyContent:"center", alignItems:"center"}}>
                                 <Typography sx={{pt:1, pb: 1, color: 'white', width: 'auto'}}>
