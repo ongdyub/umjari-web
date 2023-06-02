@@ -12,7 +12,6 @@ const Board = () => {
         <Stack sx={{height: '1000px'}}>
             <Stack justifyContent="flex-start" direction={res800 ? 'column' : 'row'}>
                 <BoardMenu />
-                {/*boardcontents 는 menu 따라서 달라짐*/}
                 <BoardContents />
                 {
                     resSize ?
