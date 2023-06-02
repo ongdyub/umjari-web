@@ -107,10 +107,10 @@ const BoardSearch = () => {
 
     if (res800){
         return(
-            <Stack alignItems="center" sx={{width:'100%', height: '140px', mt: -2}} flexDirection={'column'}>
-                <Stack alignItems="center" sx={{width:'100%', height: '100px'}} flexDirection={'row'} justifyContent="space-around">
-                    <Stack justifyContent="flex-end" sx={{height: 50, ml:3}}>
-                        <FormControl variant="standard" sx={{width: 150}}>
+            <Stack alignItems="center" sx={{width:'100%', height: 'auto', mt: 1, mb: 1}} flexDirection={'column'} justifyContent="space-around">
+                <Stack sx={{width: '95%'}} alignItems="center" direction={'row'} justifyContent="space-between">
+                    <Stack justifyContent="flex-end" sx={{height: 50, width: '27%'}}>
+                        <FormControl variant="standard" sx={{width: '100%'}}>
                             <InputLabel htmlFor="standard-adornment-amount">검색어를 입력하세요</InputLabel>
                             <Input
                                 id="standard-adornment-amount"
@@ -121,24 +121,9 @@ const BoardSearch = () => {
                             />
                         </FormControl>
                     </Stack>
-                    <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 175}}>
-                        <ButtonGroup variant="text" aria-label="text button group">
-                            <Button sx={{fontSize: 10}}>인기글</Button>
-                            <Button sx={{fontSize: 10}}>댓글</Button>
-                            <Button sx={{fontSize: 10}}>조회</Button>
-                            <Button sx={{fontSize: 10}}>추천</Button>
-                        </ButtonGroup>
-                    </Stack>
-                    <Stack justifyContent="flex-end" sx={{height: 50, minWidth: 60}}>
-                        <ButtonGroup variant="text" aria-label="text button group">
-                            <Button sx={{fontSize: 12, fontWeight: 1800}} variant={"outlined"} onClick={handleWrite}>글쓰기</Button>
-                        </ButtonGroup>
-                    </Stack>
-                </Stack>
 
-                <Stack alignItems="center" sx={{width:'100%', height: '50px', mt: -5}} flexDirection={'row'}>
-                    <Stack justifyContent="flex-end" sx={{height: 50, ml: 6}}>
-                        <FormControl variant="standard" sx={{width: 100}}>
+                    <Stack justifyContent="flex-end" sx={{height: 50, width: '22%'}}>
+                        <FormControl variant="standard" sx={{width: '100%'}}>
                             <Select
                                 labelId="demo-simple-select-standard-label"
                                 id="demo-simple-select-standard"
@@ -158,8 +143,8 @@ const BoardSearch = () => {
                             </Select>
                         </FormControl>
                     </Stack>
-                    <Stack justifyContent="flex-end" sx={{height: 50, ml: 5}}>
-                        <FormControl variant="standard" sx={{width: 100}}>
+                    <Stack justifyContent="flex-end" sx={{height: 50, width: '22%'}}>
+                        <FormControl variant="standard" sx={{width: '100%'}}>
                             <Select
                                 labelId="demo-simple-select-standard-label"
                                 id="demo-simple-select-standard"
@@ -178,6 +163,23 @@ const BoardSearch = () => {
                                 ))}
                             </Select>
                         </FormControl>
+                    </Stack>
+                    <Stack justifyContent="flex-end" sx={{height: 50, width: '17%'}}>
+                        <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={() => window.alert("준비중입니다.")}>검색</Button>
+                    </Stack>
+                </Stack>
+                <Stack sx={{width: '95%'}} alignItems="center" direction={'row'}>
+                    <Stack justifyContent="flex-end" sx={{height: 50, width: '70%'}}>
+                        <ButtonGroup variant="text" aria-label="text button group">
+                            <Button sx={{fontSize: 12}}>인기글</Button>
+                            <Button sx={{fontSize: 12}}>댓글</Button>
+                            <Button sx={{fontSize: 12}}>조회</Button>
+                            <Button sx={{fontSize: 12}}>추천</Button>
+                        </ButtonGroup>
+                    </Stack>
+
+                    <Stack justifyContent="flex-end" sx={{height: 50, width: '17%', ml: 'auto'}}>
+                        <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={handleWrite}>작성</Button>
                     </Stack>
                 </Stack>
             </Stack>
@@ -257,7 +259,7 @@ const BoardSearch = () => {
                     </Stack>
 
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '10%', ml: 'auto', mr: '2.5%'}}>
-                        <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={handleWrite}>작성</Button>
+                        <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={handleWrite}>작</Button>
                     </Stack>
                 </Stack>
             </Stack>
