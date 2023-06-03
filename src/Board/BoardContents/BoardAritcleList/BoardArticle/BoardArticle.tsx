@@ -1,33 +1,45 @@
-import {ListItem, Typography} from "@mui/material";
+import {ListItem, Stack, Typography} from "@mui/material";
 import CommentIcon from "@mui/icons-material/Comment";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import MouseIcon from "@mui/icons-material/Mouse";
-import {articleForm} from "../../../../store/slices/dummy/dummy";
 import './BoardArticle.scss'
+import {useNavigate} from "react-router-dom";
 
-const BoardArticle = (props : articleForm) => {
-    const {boardName, author, like, comment, visit, title} = props
+const BoardArticle = (props : any) => {
+    const {item} = props
+    const navigate = useNavigate()
+
+    const onClickAuthor = () => {
+        if(item.isAnonymous){
+            window.alert("익명글입니다.")
+        }
+        else{
+            navigate(`/myconcert/${item.authorInfo.profileName}/selfintro`)
+        }
+    }
 
     return(
-        <ListItem className={"board-article-responsive-box"} sx={{width: '100%'}} divider >
-            <Typography display="block" sx={{minWidth: 70, maxWidth: 70,textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12, fontWeight: 'bold', color: '#868e96', textAlign: 'center'}}>
-                {boardName}
+        <ListItem className={"board-article-responsive-box"} sx={{width: '100%', justifyContent: 'space-between'}} divider >
+            <Typography display="block" sx={{minWidth: 65, maxWidth: 65,textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 10, fontWeight: 'bold', color: '#868e96', textAlign: 'center'}}>
+                {item.board}
             </Typography>
-            <Typography display="block" variant={"subtitle2"} sx={{pl: 2, pr:2, minWidth: '50%', maxWidth: '50%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 15, fontWeight: 600, color: '#333'}} >
-                {title}
+            <Typography display="block" variant={"subtitle2"} sx={{pl: 2, pr:2, minWidth: '45%', maxWidth: '45%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 13, fontWeight: 600, color: '#333'}} >
+                {item.title}
             </Typography>
+            <Stack sx={{minWidth: '17%', maxWidth: '17%'}} direction={'row'} justifyContent={'center'}>
+                <Typography onClick={onClickAuthor} sx={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12, cursor: 'pointer'}}>
+                    {item.isAnonymous ? item.nickname : item.authorInfo.profileName}
+                </Typography>
+            </Stack>
             <Typography sx={{pr: 1,minWidth: '10%', maxWidth: '10%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
-                <CommentIcon sx={{color: 'black', pt: 0.2,pr: 0.2, width: 12, height: 12}} /> {comment}
+                <CommentIcon sx={{color: 'black', pt: 0.2,pr: 0.2, width: 12, height: 12}} /> {item.replyCount}
             </Typography>
-            <Typography sx={{minWidth: '15%', maxWidth: '15%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
-                {author}
+            <Typography className={"board-article-responsive-like"} sx={{minWidth: '9%', maxWidth: '9%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
+                <ThumbUpAltIcon sx={{color: 'red',pt: 0.6,pr: 0.5, width: 13, height: 13}} />{0}
             </Typography>
-            <Typography className={"board-article-responsive-like"} sx={{pl: 1, minWidth: '9%', maxWidth: '9%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
-                <ThumbUpAltIcon sx={{color: 'red',pt: 0.6,pr: 0.5, width: 13, height: 13}} />{like}
-            </Typography>
-            <Typography className={"board-article-responsive"} sx={{pl: 1, minWidth: '7%', maxWidth: '7%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
-                <MouseIcon sx={{color: 'blue',pt: 0.6,pr: 0.5, width: 11, height: 11}}/>{visit}
-            </Typography>
+            {/*<Typography className={"board-article-responsive"} sx={{minWidth: '8%', maxWidth: '8%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>*/}
+            {/*    <MouseIcon sx={{color: 'blue',pt: 0.6,pr: 0.5, width: 11, height: 11}}/>-*/}
+            {/*</Typography>*/}
         </ListItem>
     )
 }
