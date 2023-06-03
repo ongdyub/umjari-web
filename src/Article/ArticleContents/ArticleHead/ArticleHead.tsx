@@ -3,11 +3,22 @@ import MouseIcon from "@mui/icons-material/Mouse";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import {useSelector} from "react-redux";
 import {selectArticle} from "../../../store/slices/article/article";
+import {useNavigate} from "react-router-dom";
 
 const ArticleHead = () => {
 
     const articleState = useSelector(selectArticle)
     const dayjs = require('dayjs');
+    const navigate = useNavigate()
+
+    const onClickAuthor = () => {
+        if(articleState.anonymous){
+            window.alert("익명글입니다.")
+        }
+        else{
+            navigate(`/myconcert/${articleState.authorInfo.profileName}/selfintro`)
+        }
+    }
 
     return(
         <Stack alignItems="center" sx={{width:'100%'}} flexDirection={'column'}>
@@ -27,7 +38,7 @@ const ArticleHead = () => {
                     }
                 </Stack>
                 <Stack alignContent={"center"} alignItems={"center"} sx={{ml: 2}}>
-                    <Typography sx={{fontWeight: 900, fontSize: 15}}>{articleState.anonymous ? articleState.nickname : articleState.authorInfo.profileName}</Typography>
+                    <Typography onClick={onClickAuthor} sx={{cursor: 'pointer',fontWeight: 900, fontSize: 15}}>{articleState.anonymous ? articleState.nickname : articleState.authorInfo.profileName}</Typography>
                 </Stack>
                 <Stack alignItems="center" flexDirection={"row"} sx={{ml: 'auto'}}>
                     <Stack alignItems="center" flexDirection={"column"} sx={{mr: 1}}>
@@ -41,8 +52,8 @@ const ArticleHead = () => {
                         </Stack>
                     </Stack>
                     <Stack alignItems="center" flexDirection={"column"}>
-                        <Typography variant="caption" sx={{color: 'grey'}}>{dayjs(articleState.createAt).format('YYYY/MM/DD HH:mm')}</Typography>
-                        <Typography variant="caption" sx={{color: 'grey'}}>{dayjs(articleState.updatedAt).format('YYYY/MM/DD HH:mm')}</Typography>
+                        <Typography variant="caption" sx={{color: 'grey'}}>{dayjs(articleState.createAt).format('MM/DD HH:mm')}</Typography>
+                        <Typography variant="caption" sx={{color: 'grey'}}>{dayjs(articleState.updatedAt).format('MM/DD HH:mm')}</Typography>
                     </Stack>
                 </Stack>
             </Stack>
