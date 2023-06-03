@@ -127,6 +127,7 @@ export const concertStateSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(dashboardList.fulfilled, (state, action) => {
             state.concertList = action.payload
+            state.concertList.contents.reverse()
         });
         builder.addCase(concert.fulfilled, (state, action) => {
             state.concert = action.payload
