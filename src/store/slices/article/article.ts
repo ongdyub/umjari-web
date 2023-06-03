@@ -14,6 +14,12 @@ export interface ArticleReplyItem {
     author: boolean
 }
 
+export interface AuthorInfo {
+    id : number,
+    profileName : string,
+    profileImage : string
+}
+
 export interface Article {
     replies : [ArticleReplyItem] | [],
     id: number,
@@ -23,7 +29,9 @@ export interface Article {
     board: string,
     updatedAt: string,
     createAt: string,
-    author: boolean
+    author: boolean,
+    nickname: string,
+    authorInfo : AuthorInfo
 }
 const initialState: Article = {
     replies : [],
@@ -34,12 +42,18 @@ const initialState: Article = {
     board: '',
     updatedAt: '',
     createAt: '',
-    author: false
+    author: false,
+    nickname : '',
+    authorInfo : {
+        id : 0,
+        profileName : '',
+        profileImage : ''
+    }
 };
 
 export const articleGet = createAsyncThunk(
     "article/articleGet",
-    async ({boardType, id, token}: {boardType : string | number | undefined, id : string | number | undefined, token : string | number | undefined,},  {rejectWithValue}) => {
+    async ({boardType, id, token}: {boardType : string | number | undefined, id : string | null | undefined, token : string | null | undefined,},  {rejectWithValue}) => {
         try {
             const boardList = [
                 {
@@ -122,7 +136,7 @@ export const articleStateSlice = createSlice({
     name: "articleState",
     initialState,
     reducers: {
-        resetBoardList: (state) => {
+        resetArticle: (state) => {
             state.id = 0
             state.content = ''
             state.anonymous = false
@@ -132,6 +146,12 @@ export const articleStateSlice = createSlice({
             state.replies = []
             state.author = false
             state.createAt = ''
+            state.authorInfo = {
+                id : 0,
+                profileName : '',
+                profileImage : ''
+            }
+            state.nickname = ''
         },
     },
 
@@ -139,13 +159,16 @@ export const articleStateSlice = createSlice({
         builder.addCase(articleGet.fulfilled, (state, action) => {
             state.id = action.payload.id
             state.content = action.payload.content
-            state.anonymous = action.payload.anonymous
+            state.anonymous = action.payload.isAnonymous
             state.title = action.payload.title
             state.board = action.payload.board
             state.updatedAt = action.payload.updatedAt
             state.replies = action.payload.replies
-            state.author = action.payload.author
+            state.author = action.payload.isAuthor
             state.createAt = action.payload.createAt
+            state.nickname = action.payload.nickname
+            state.authorInfo = action.payload.authorInfo
+
             const scrollToTop = () => {
                 window.scrollTo({
                     top: 0,
