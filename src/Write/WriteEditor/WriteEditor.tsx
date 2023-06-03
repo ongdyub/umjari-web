@@ -68,7 +68,6 @@ const boardList = [
         name: '타악기',
         enum : 'PERCUSSION_INSTRUMENT'
     },
-
 ]
 
 const formats = [

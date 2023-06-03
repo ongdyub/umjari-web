@@ -8,7 +8,7 @@ import {
     MenuItem,
     Select,
     Stack,
-    TextField, Theme, useMediaQuery, useTheme
+    useMediaQuery, useTheme
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {useState} from "react";
@@ -19,62 +19,65 @@ import {AppDispatch} from "../../../store";
 
 const boardList = [
     {
-        name: '전체 게시판',
-        ID: 12
+        name: '전체',
+        enum : 'ALL'
+    },
+    {
+        name: '자유게시판',
+        enum : 'FREE'
     },
     {
         name: '바이올린',
-        ID: 0
+        enum : 'VIOLIN'
     },
     {
         name: '비올라',
-        ID: 1
+        enum : 'VIOLA'
     },
     {
         name: '첼로',
-        ID: 2
+        enum : 'CELLO'
     },
     {
         name: '베이스',
-        ID: 3
+        enum : 'BASS'
     },
     {
         name: '플루트',
-        ID: 4
+        enum : 'FLUTE'
     },
     {
         name: '클라리넷',
-        ID: 5
+        enum : 'CLARINET'
     },
     {
         name: '오보에',
-        ID: 6
+        enum : 'OBOE'
     },
     {
         name: '바순',
-        ID: 7
+        enum : 'BASSOON'
     },
     {
         name: '호른',
-        ID: 8
+        enum : 'HORN'
     },
     {
         name: '트럼펫',
-        ID: 9
+        enum : 'TRUMPET'
     },
     {
         name: '트롬본',
-        ID: 10
+        enum : 'TROMBONE'
     },
     {
         name: '튜바',
-        ID: 11
+        enum : 'TUBA'
     },
     {
         name: '타악기',
-        ID: 13
+        enum : 'PERCUSSION_INSTRUMENT'
     },
-
 ]
 
 const BoardSearch = () => {
@@ -85,18 +88,11 @@ const BoardSearch = () => {
     const userState = useSelector(selectUser)
     const res800 = useMediaQuery(theme.breakpoints.down('res800'))
 
-    const searchList = ['제목', '내용', '작성자', '댓글 내용', '댓글 작성자']
+    const searchList = ['전체','제목', '내용', '작성자', '댓글내용', '댓글작성자']
     const [searchWord, setSearchWord] = useState('')
-    const [personName, setPersonName] = useState<string[]>([]);
+    const [boardName, setBoardName] = useState('ALL');
+    const [searchRange, setSearchRange] = useState('전체')
 
-    const handleChange = (e: any) => {
-        const {
-            target: { value },
-        } = e;
-        setPersonName(
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
     const handleWrite = () => {
         if(!userState.isLogin){
             dispatch(userActions.openModal())
@@ -125,17 +121,14 @@ const BoardSearch = () => {
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '22%'}}>
                         <FormControl variant="standard" sx={{width: '100%'}}>
                             <Select
-                                labelId="demo-simple-select-standard-label"
-                                id="demo-simple-select-standard"
-                                value={personName}
-                                onChange={handleChange}
-                                label="Age"
+                                value={boardName}
+                                onChange={(e) => setBoardName(e.target.value)}
                                 sx={{fontSize: 11}}
                             >
-                                {boardList.map((item) => (
+                                {boardList.map((item,idx) => (
                                     <MenuItem
-                                        key={item.ID}
-                                        value={item.name}
+                                        key={idx}
+                                        value={item.enum}
                                     >
                                         {item.name}
                                     </MenuItem>
@@ -146,16 +139,13 @@ const BoardSearch = () => {
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '22%'}}>
                         <FormControl variant="standard" sx={{width: '100%'}}>
                             <Select
-                                labelId="demo-simple-select-standard-label"
-                                id="demo-simple-select-standard"
-                                value={personName}
-                                onChange={handleChange}
-                                label="Age"
+                                value={searchRange}
+                                onChange={(e) => setSearchRange(e.target.value)}
                                 sx={{fontSize: 11}}
                             >
-                                {searchList.map((name) => (
+                                {searchList.map((name, idx) => (
                                     <MenuItem
-                                        key={name}
+                                        key={idx}
                                         value={name}
                                     >
                                         {name}
@@ -170,7 +160,7 @@ const BoardSearch = () => {
                 </Stack>
                 <Stack sx={{width: '95%'}} alignItems="center" direction={'row'}>
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '70%'}}>
-                        <ButtonGroup variant="text" aria-label="text button group">
+                        <ButtonGroup onClick={() => window.alert("준비중입니다.")} variant="text" aria-label="text button group">
                             <Button sx={{fontSize: 12}}>인기글</Button>
                             <Button sx={{fontSize: 12}}>댓글</Button>
                             <Button sx={{fontSize: 12}}>조회</Button>
@@ -205,17 +195,14 @@ const BoardSearch = () => {
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '17%'}}>
                         <FormControl variant="standard" sx={{width: '100%'}}>
                             <Select
-                                labelId="demo-simple-select-standard-label"
-                                id="demo-simple-select-standard"
-                                value={personName}
-                                onChange={handleChange}
-                                label="Age"
+                                value={boardName}
+                                onChange={(e) => setBoardName(e.target.value)}
                                 sx={{fontSize: 14}}
                             >
-                                {boardList.map((item) => (
+                                {boardList.map((item, idx) => (
                                     <MenuItem
-                                        key={item.ID}
-                                        value={item.name}
+                                        key={idx}
+                                        value={item.enum}
                                     >
                                         {item.name}
                                     </MenuItem>
@@ -226,16 +213,13 @@ const BoardSearch = () => {
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '17%'}}>
                         <FormControl variant="standard" sx={{width: '100%'}}>
                             <Select
-                                labelId="demo-simple-select-standard-label"
-                                id="demo-simple-select-standard"
-                                value={personName}
-                                onChange={handleChange}
-                                label="Age"
+                                value={searchRange}
+                                onChange={(e) => setSearchRange(e.target.value)}
                                 sx={{fontSize: 14}}
                             >
-                                {searchList.map((name) => (
+                                {searchList.map((name,idx) => (
                                     <MenuItem
-                                        key={name}
+                                        key={idx}
                                         value={name}
                                     >
                                         {name}
@@ -250,7 +234,7 @@ const BoardSearch = () => {
                 </Stack>
                 <Stack sx={{width: '95%'}} alignItems="center" direction={'row'}>
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '35%', ml: '4%'}}>
-                        <ButtonGroup variant="text" aria-label="text button group">
+                        <ButtonGroup onClick={() => window.alert("준비중입니다.")} variant="text" aria-label="text button group">
                             <Button sx={{fontSize: 12}}>인기글</Button>
                             <Button sx={{fontSize: 12}}>댓글</Button>
                             <Button sx={{fontSize: 12}}>조회</Button>
