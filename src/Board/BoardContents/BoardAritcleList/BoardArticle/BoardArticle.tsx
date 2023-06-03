@@ -10,11 +10,11 @@ const BoardArticle = (props : any) => {
     const navigate = useNavigate()
 
     const onClickBoard = () => {
-        navigate(`/community/${item.boardName}`)
+        navigate(`/community/${item.board}`)
     }
 
     const onClickTitle = () => {
-        navigate(`/community/${item.boardName}/${item.id}`)
+        navigate(`/community/${item.board}/${item.id}`)
     }
 
     const onClickAuthor = () => {
