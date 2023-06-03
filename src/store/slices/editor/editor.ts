@@ -47,10 +47,10 @@ export const editorStateSlice = createSlice({
     },
 
     extraReducers: (builder) => {
-        builder.addCase(postCommunity.fulfilled, (state, action) => {
+        builder.addCase(postCommunity.fulfilled, () => {
             window.alert('작성 완료')
         });
-        builder.addCase(postCommunity.rejected, (state, action) => {
+        builder.addCase(postCommunity.rejected, () => {
             window.alert('작성 실패')
         });
     },

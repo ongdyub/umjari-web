@@ -13,59 +13,48 @@ import {useNavigate, useParams} from "react-router-dom";
 const boardList = [
     {
         name: '전체게시판',
-        ID: 12
+    },
+    {
+        name: '자유게시판',
     },
     {
         name: '바이올린',
-        ID: 0
     },
     {
         name: '비올라',
-        ID: 1
     },
     {
         name: '첼로',
-        ID: 2
     },
     {
         name: '베이스',
-        ID: 3
     },
     {
         name: '플루트',
-        ID: 4
     },
     {
         name: '클라리넷',
-        ID: 5
     },
     {
         name: '오보에',
-        ID: 6
     },
     {
         name: '바순',
-        ID: 7
     },
     {
         name: '호른',
-        ID: 8
     },
     {
         name: '트럼펫',
-        ID: 9
     },
     {
         name: '트롬본',
-        ID: 10
     },
     {
         name: '튜바',
-        ID: 11
     },
     {
         name: '타악기',
-        ID: 13
     },
 ]
 

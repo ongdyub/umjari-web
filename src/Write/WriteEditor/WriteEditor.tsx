@@ -1,6 +1,6 @@
 import {Button, FormControl, MenuItem, Select, Stack, TextField, useMediaQuery, useTheme} from "@mui/material";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import {useState} from "react";
+import {useRef, useMemo, useState} from "react";
 import './WriteEditor.scss'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -9,89 +9,66 @@ import {useNavigate} from "react-router-dom";
 import {selectUser, userActions} from "../../store/slices/user/user";
 import {postCommunity} from "../../store/slices/editor/editor";
 import {AppDispatch} from "../../store";
+import axios from "axios";
 
 const boardList = [
     {
+        name: '자유게시판',
+        enum : 'FREE'
+    },
+    {
         name: '바이올린',
-        ID: 0,
         enum : 'VIOLIN'
     },
     {
         name: '비올라',
-        ID: 3,
         enum : 'VIOLA'
     },
     {
         name: '첼로',
-        ID: 4,
         enum : 'CELLO'
     },
     {
         name: '베이스',
-        ID: 5,
         enum : 'BASS'
     },
     {
         name: '플루트',
-        ID: 6,
         enum : 'FLUTE'
     },
     {
         name: '클라리넷',
-        ID: 8,
         enum : 'CLARINET'
     },
     {
         name: '오보에',
-        ID: 12,
         enum : 'OBOE'
     },
     {
         name: '바순',
-        ID: 14,
         enum : 'BASSOON'
     },
     {
         name: '호른',
-        ID: 16,
         enum : 'HORN'
     },
     {
         name: '트럼펫',
-        ID: 17,
         enum : 'TRUMPET'
     },
     {
         name: '트롬본',
-        ID: 19,
         enum : 'TROMBONE'
     },
     {
         name: '튜바',
-        ID: 21,
         enum : 'TUBA'
     },
     {
         name: '타악기',
-        ID: 22,
         enum : 'PERCUSSION_INSTRUMENT'
     },
-
 ]
-const modules = {
-    toolbar: {
-        container: [
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            [{ 'font': [] }],
-            [{ 'align': [] }],
-            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }, 'link'],
-            [{ 'color': ['#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', '#ffffff', '#facccc', '#ffebcc', '#ffffcc', '#cce8cc', '#cce0f5', '#ebd6ff', '#bbbbbb', '#f06666', '#ffc266', '#ffff66', '#66b966', '#66a3e0', '#c285ff', '#888888', '#a10000', '#b26b00', '#b2b200', '#006100', '#0047b2', '#6b24b2', '#444444', '#5c0000', '#663d00', '#666600', '#003700', '#002966', '#3d1466', 'custom-color'] }, { 'background': [] }],
-            ['image', 'video'],
-            ['clean']
-        ],
-    },
-}
 
 const formats = [
     'font',
@@ -103,20 +80,96 @@ const formats = [
 ]
 
 const WriteEditor = () => {
+
+    const QuillRef = useRef<ReactQuill>();
+    const userState = useSelector(selectUser)
+
+    const imageHandler = () => {
+        const input = document.createElement("input");
+        const formData = new FormData();
+        let url = "";
+
+        input.setAttribute("type", "file");
+        input.setAttribute("accept", "image/*");
+        input.click();
+
+        input.onchange = async () => {
+            const file = input.files;
+            if (file !== null) {
+                formData.append("image", file[0]);
+
+                // 저의 경우 파일 이미지를 서버에 저장했기 때문에
+                // 백엔드 개발자분과 통신을 통해 이미지를 저장하고 불러왔습니다.
+                try {
+                    const res = await axios.post(`/api/v1/image/`,formData,{
+                        headers: {
+                            Authorization: `Bearer  ${userState.accessToken}`,
+                        },
+                    })
+
+                    // 백엔드 개발자 분이 통신 성공시에 보내주는 이미지 url을 변수에 담는다.
+                    url = res.data.url;
+
+                    // 커서의 위치를 알고 해당 위치에 이미지 태그를 넣어주는 코드
+                    // 해당 DOM의 데이터가 필요하기에 useRef를 사용한다.
+                    const range = QuillRef.current?.getEditor().getSelection()?.index;
+                    if (range !== null && range !== undefined) {
+                        let quill = QuillRef.current?.getEditor();
+
+                        quill?.setSelection(range, 1);
+
+                        quill?.clipboard.dangerouslyPasteHTML(
+                            range,
+                            `<img src=${url} alt="이미지 태그가 삽입됩니다." />`
+                        );
+                    }
+
+                    return { ...res, success: true };
+                } catch (error) {
+                    window.alert("이미지 삽입 실패")
+                    const err : any = error
+                    return { ...err.response, success: false };
+                }
+            }
+        };
+    }
+
+    const modules = useMemo(() => {
+        return {
+            toolbar: {
+                container: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'font': [] }],
+                    [{ 'align': [] }],
+                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }, 'link'],
+                    [{ 'color': ['#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', '#ffffff', '#facccc', '#ffebcc', '#ffffcc', '#cce8cc', '#cce0f5', '#ebd6ff', '#bbbbbb', '#f06666', '#ffc266', '#ffff66', '#66b966', '#66a3e0', '#c285ff', '#888888', '#a10000', '#b26b00', '#b2b200', '#006100', '#0047b2', '#6b24b2', '#444444', '#5c0000', '#663d00', '#666600', '#003700', '#002966', '#3d1466', 'custom-color'] }, { 'background': [] }],
+                    ['image', 'video'],
+                    ['clean']
+                ],
+                handlers: {
+                    image: imageHandler,
+                }
+            },
+        }
+    },[])
+
     const theme = useTheme()
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
-    const userState = useSelector(selectUser)
 
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
     const resMd = useMediaQuery(theme.breakpoints.down("md"))
 
     const [contents, setContents] = useState('');
     const [title, setTitle] = useState('')
-    const [board, setBoard] = useState<string>('VIOLIN')
+    const [board, setBoard] = useState<string>('FREE')
     const [hide, setHide] = useState(false)
 
-    const handleSubmit = () => {
+
+
+    const handleSubmit = async () => {
+        console.log(contents)
         if(!userState.isLogin){
             dispatch(userActions.openModal())
             return
@@ -137,17 +190,24 @@ const WriteEditor = () => {
             window.alert('본문을 입력해주세요.')
             return
         }
-        if(contents.length > 5000){
+        if(contents.length > 10000){
             window.alert('본문 내용이 너무 깁니다.')
             return
         }
         const data = {
             title : title,
             content : contents,
-            isAnonymous : hide
+            isAnonymous : false
         }
-        dispatch(postCommunity({data , token : userState.accessToken, inst_name : board}))
-        navigate(`/community/전체게시판`)
+        const result = await dispatch(postCommunity({data , token : userState.accessToken, inst_name : board}))
+        if (result.type === `${postCommunity.typePrefix}/fulfilled`) {
+            navigate(`/community/전체게시판`)
+        }
+        else {
+            console.log(result.payload)
+            window.alert("오류 발생. 다시 시도해주세요")
+        }
+
     }
 
     return(
@@ -170,16 +230,21 @@ const WriteEditor = () => {
                             ))}
                         </Select>
                     </FormControl>
-                    {
-                        hide ?
-                            <Button variant={"contained"} sx={{bgcolor: 'red', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(false)}>비공개</Button>
-                            :
-                            <Button variant={"contained"} sx={{bgcolor: 'green', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(true)}>공개</Button>
-                    }
+                    {/*{*/}
+                    {/*    hide ?*/}
+                    {/*        <Button variant={"contained"} sx={{bgcolor: 'red', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(false)}>비공개</Button>*/}
+                    {/*        :*/}
+                    {/*        <Button variant={"contained"} sx={{bgcolor: 'green', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(true)}>공개</Button>*/}
+                    {/*}*/}
                     <Button variant="outlined" onClick={handleSubmit} sx={{ml: 1, maxWidth: 60, minWidth: 60, maxHeight: 30, minHeight: 30}}>작성</Button>
                 </Stack>
             </Stack>
             <ReactQuill
+                ref={(element) => {
+                    if (element !== null) {
+                        QuillRef.current = element;
+                    }
+                }}
                 className={"quill"}
                 style={{width: '90%', marginTop: 1, height: '500px' }}
                 theme="snow"
