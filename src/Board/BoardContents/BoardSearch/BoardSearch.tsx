@@ -259,7 +259,7 @@ const BoardSearch = () => {
                     </Stack>
 
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '10%', ml: 'auto', mr: '2.5%'}}>
-                        <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={handleWrite}>작</Button>
+                        <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={handleWrite}>작성</Button>
                     </Stack>
                 </Stack>
             </Stack>
