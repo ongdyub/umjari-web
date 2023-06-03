@@ -9,6 +9,14 @@ const BoardArticle = (props : any) => {
     const {item} = props
     const navigate = useNavigate()
 
+    const onClickBoard = () => {
+        navigate(`/community/${item.boardName}`)
+    }
+
+    const onClickTitle = () => {
+        navigate(`/community/${item.boardName}/${item.id}`)
+    }
+
     const onClickAuthor = () => {
         if(item.isAnonymous){
             window.alert("익명글입니다.")
@@ -20,10 +28,10 @@ const BoardArticle = (props : any) => {
 
     return(
         <ListItem className={"board-article-responsive-box"} sx={{width: '100%', justifyContent: 'space-between'}} divider >
-            <Typography display="block" sx={{minWidth: 65, maxWidth: 65,textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 10, fontWeight: 'bold', color: '#868e96', textAlign: 'center'}}>
+            <Typography onClick={onClickBoard} display="block" sx={{cursor: 'pointer',minWidth: 65, maxWidth: 65,textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 10, fontWeight: 'bold', color: '#868e96', textAlign: 'center'}}>
                 {item.board}
             </Typography>
-            <Typography display="block" variant={"subtitle2"} sx={{pl: 2, pr:2, minWidth: '45%', maxWidth: '45%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 13, fontWeight: 600, color: '#333'}} >
+            <Typography onClick={onClickTitle} display="block" variant={"subtitle2"} sx={{cursor: 'pointer', pl: 2, pr:2, minWidth: '45%', maxWidth: '45%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 13, fontWeight: 600, color: '#333'}} >
                 {item.title}
             </Typography>
             <Stack sx={{minWidth: '17%', maxWidth: '17%'}} direction={'row'} justifyContent={'center'}>

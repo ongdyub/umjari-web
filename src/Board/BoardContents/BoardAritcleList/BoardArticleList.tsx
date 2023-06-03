@@ -12,7 +12,9 @@ const BoardArticleList = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useDispatch<AppDispatch>()
 
-    const [page, setPage] = useState(1);
+    const pageParam = searchParams.get('page');
+    const initialPage = pageParam === null ? 1 : parseInt(pageParam);
+    const [page, setPage] = useState(initialPage);
     const [totalPage, setTotalPage] = useState(1)
 
     const handlePage = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -24,19 +26,19 @@ const BoardArticleList = () => {
     const boardState = useSelector(selectBoard)
 
     useEffect(() => {
-        setPage(1)
-        dispatch(boardListGet({boardType : boardName, param : {page : 1}}))
-        return () => {
-            dispatch(boardStateActions.resetBoardList())
-        }
-    },[boardName, dispatch])
 
-    useEffect(() => {
         dispatch(boardListGet({boardType : boardName, param : {page : page}}))
         return () => {
             dispatch(boardStateActions.resetBoardList())
         }
-    },[page, dispatch])
+    },[page, boardName, dispatch])
+
+    // useEffect(() => {
+    //     dispatch(boardListGet({boardType : boardName, param : {page : page}}))
+    //     return () => {
+    //         dispatch(boardStateActions.resetBoardList())
+    //     }
+    // },[page, dispatch])
 
     useEffect(() => {
         setTotalPage(boardState.totalPages)
