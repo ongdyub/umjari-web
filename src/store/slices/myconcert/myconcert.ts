@@ -361,9 +361,7 @@ export const myConcertStateSlice = createSlice({
             })
         });
         builder.addCase(myListGet.fulfilled, (state, action) => {
-            state.myList = action.payload.participatedConcerts
-
-            state.myList = state.myList.sort((a: any, b: any) => {
+            state.myList = action.payload.participatedConcerts.sort((a: any, b: any) => {
                 const partA = a.concertDate;
                 const partB = b.concertDate;
 

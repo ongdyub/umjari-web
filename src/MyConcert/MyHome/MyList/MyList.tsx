@@ -85,9 +85,6 @@ const MyList = () => {
 
     useEffect(() => {
         dispatch(myConcertStateActions.sortMyList({rule: sortRule, direction: sortDirection}))
-        return () => {
-            dispatch(myConcertStateActions.resetMyList())
-        }
     },[dispatch, sortRule, sortDirection])
 
     return(
@@ -138,7 +135,7 @@ const MyList = () => {
                         :
                         myconcertState.myList.map((item) => (
                             <Card key={item.id} sx={{position: 'relative', display: 'flex', mb: 2, width: '90%', height: 290, border: '0.4px solid black'}}>
-                                <Stack sx={{height: '100%', width: 206}}>
+                                <Stack sx={{height: '100%', width: 206}} direction={'row'} justifyContent={'center'}>
                                     <CardMedia
                                         component="img"
                                         sx={{ objectFit: 'contain', height: 'auto', width: '100%' }}
