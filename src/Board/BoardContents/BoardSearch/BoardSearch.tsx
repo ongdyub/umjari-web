@@ -19,7 +19,7 @@ import {AppDispatch} from "../../../store";
 
 const boardList = [
     {
-        name: '전체',
+        name: '전체게시판',
         enum : 'ALL'
     },
     {
