@@ -1,33 +1,53 @@
-import {articleForm} from "../../../store/slices/dummy/dummy";
 import {ListItem, Typography} from "@mui/material";
 import CommentIcon from '@mui/icons-material/Comment';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import MouseIcon from '@mui/icons-material/Mouse';
 import './MiniArticle.scss'
+import {useNavigate} from "react-router-dom";
 
-const MiniArticle = (props : articleForm) => {
+const MiniArticle = (props : any) => {
 
-    const {boardName, author, like, comment, visit, title} = props
+    const {item} = props
+
+    const navigate = useNavigate()
+
+    const onClickBoard = () => {
+        navigate(`/community/${item.board}`)
+    }
+
+    const onClickTitle = () => {
+        navigate(`/community/${item.board}/${item.id}`)
+    }
+
+    const onClickAuthor = () => {
+        if(item.isAnonymous){
+            window.alert("익명글입니다.")
+        }
+        else{
+            navigate(`/myconcert/${item.authorInfo.profileName}/selfintro`)
+        }
+    }
 
     return(
         <ListItem className={"mini-article-responsive-box"} sx={{width: '100%'}} divider >
-            <Typography display="block" sx={{minWidth: 70, maxWidth: 70,textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12, fontWeight: 'bold', color: '#868e96', textAlign: 'center'}}>
-                {boardName}
+            <Typography onClick={onClickBoard} display="block" sx={{cursor: 'pointer',minWidth: 70, maxWidth: 70,textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12, fontWeight: 'bold', color: '#868e96', textAlign: 'center'}}>
+                {item.board}
             </Typography>
-            <Typography display="block" variant={"subtitle2"} sx={{pl: 2, pr:2, minWidth: '50%', maxWidth: '50%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 15, fontWeight: 600, color: '#333'}} >
-                {title}
+            <Typography onClick={onClickTitle} display="block" variant={"subtitle2"} sx={{cursor : 'pointer',pl: 2, pr:2, minWidth: '50%', maxWidth: '50%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 15, fontWeight: 600, color: '#333'}} >
+                {item.title}
             </Typography>
             <Typography className={"mini-article-responsive"} sx={{pr: 1,minWidth: '8%', maxWidth: '8%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 13}}>
-                <CommentIcon sx={{pt: 0.2,pr: 0.2, width: 10, height: 10}} /> {comment}
+                <CommentIcon sx={{pt: 0.2,pr: 0.2, width: 10, height: 10}} /> {item.replyCount}
             </Typography>
-            <Typography sx={{minWidth: '15%', maxWidth: '15%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
-                {author}
+            <Typography onClick={onClickAuthor} sx={{cursor : 'pointer',minWidth: '15%', maxWidth: '15%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
+                {item.isAnonymous ? item.nickname : item.authorInfo.profileName}
             </Typography>
             <Typography sx={{pl: 1, minWidth: '10%', maxWidth: '10%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
-                <ThumbUpAltIcon sx={{color: 'red',pt: 0.6,pr: 0.5, width: 15, height: 15}} />{like}
+                <ThumbUpAltIcon sx={{color: 'red',pt: 0.6,pr: 0.5, width: 15, height: 15}} />{0}
             </Typography>
             <Typography className={"mini-article-responsive"} sx={{pl: 1, minWidth: '8%', maxWidth: '8%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
-                <MouseIcon sx={{color: 'blue',pt: 0.6,pr: 0.5, width: 15, height: 15}}/>{visit}
+                {/*<MouseIcon sx={{color: 'blue',pt: 0.6,pr: 0.5, width: 15, height: 15}}/>{visit}*/}
+                <MouseIcon sx={{color: 'blue',pt: 0.6,pr: 0.5, width: 15, height: 15}}/>-
             </Typography>
         </ListItem>
     )

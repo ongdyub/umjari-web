@@ -26,7 +26,6 @@ const BoardArticleList = () => {
     const boardState = useSelector(selectBoard)
 
     useEffect(() => {
-
         dispatch(boardListGet({boardType : boardName, param : {page : page}}))
         return () => {
             dispatch(boardStateActions.resetBoardList())
