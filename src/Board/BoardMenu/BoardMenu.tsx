@@ -6,7 +6,7 @@ import {
     Stack, Typography,
     useMediaQuery,
 } from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import {useNavigate, useParams} from "react-router-dom";
 
@@ -74,6 +74,10 @@ const BoardMenu = () => {
         setOpen(!open)
         navigate(`/community/${item.name.replace(/(\s*)/g,'')}`)
     }
+
+    useEffect(() => {
+        setSelectedIndex(boardName)
+    },[boardName])
 
     return(
         <Stack zIndex={10} justifyContent="flex-start" alignItems="center" sx={{height: res800 ? '65px' : '1000px', width: res800 ? '100%' : '160px', bgcolor: '#292929', minWidth: '160px' }}>

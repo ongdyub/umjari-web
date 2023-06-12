@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 import {RootState} from "../..";
+import {matchBoardName} from "../board/board";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -11,7 +12,13 @@ export interface ArticleReplyItem {
     content: string,
     updatedAt: string,
     createAt: string,
-    author: boolean
+    author: boolean,
+    isDeleted: boolean
+    isAnonymous : boolean,
+    isAuthor : boolean,
+    isLiked : boolean,
+    likeCount : number,
+    authorInfo : AuthorInfo
 }
 
 export interface AuthorInfo {
@@ -55,69 +62,8 @@ export const articleGet = createAsyncThunk(
     "article/articleGet",
     async ({boardType, id, token}: {boardType : string | number | undefined, id : string | null | undefined, token : string | null | undefined,},  {rejectWithValue}) => {
         try {
-            const boardList = [
-                {
-                    name: '전체',
-                    enum : 'ALL'
-                },
-                {
-                    name: '자유게시판',
-                    enum : 'FREE'
-                },
-                {
-                    name: '바이올린',
-                    enum : 'VIOLIN'
-                },
-                {
-                    name: '비올라',
-                    enum : 'VIOLA'
-                },
-                {
-                    name: '첼로',
-                    enum : 'CELLO'
-                },
-                {
-                    name: '베이스',
-                    enum : 'BASS'
-                },
-                {
-                    name: '플루트',
-                    enum : 'FLUTE'
-                },
-                {
-                    name: '클라리넷',
-                    enum : 'CLARINET'
-                },
-                {
-                    name: '오보에',
-                    enum : 'OBOE'
-                },
-                {
-                    name: '바순',
-                    enum : 'BASSOON'
-                },
-                {
-                    name: '호른',
-                    enum : 'HORN'
-                },
-                {
-                    name: '트럼펫',
-                    enum : 'TRUMPET'
-                },
-                {
-                    name: '트롬본',
-                    enum : 'TROMBONE'
-                },
-                {
-                    name: '튜바',
-                    enum : 'TUBA'
-                },
-                {
-                    name: '타악기',
-                    enum : 'PERCUSSION_INSTRUMENT'
-                },
-            ]
-            const board = boardList.find(board => board.name === boardType)
+
+            const board = matchBoardName(boardType)
             if(token === null){
                 const response = await axios.get(`/api/v1/board/${board?.enum}/post/${id}/`,)
                 console.log(response.data)
@@ -143,69 +89,7 @@ export const articleDelete = createAsyncThunk(
     "article/articleDelete",
     async ({boardType, id, token}: {boardType : string | number | undefined, id : string | null | undefined, token : string | null | undefined,},  {rejectWithValue}) => {
         try {
-            const boardList = [
-                {
-                    name: '전체',
-                    enum : 'ALL'
-                },
-                {
-                    name: '자유게시판',
-                    enum : 'FREE'
-                },
-                {
-                    name: '바이올린',
-                    enum : 'VIOLIN'
-                },
-                {
-                    name: '비올라',
-                    enum : 'VIOLA'
-                },
-                {
-                    name: '첼로',
-                    enum : 'CELLO'
-                },
-                {
-                    name: '베이스',
-                    enum : 'BASS'
-                },
-                {
-                    name: '플루트',
-                    enum : 'FLUTE'
-                },
-                {
-                    name: '클라리넷',
-                    enum : 'CLARINET'
-                },
-                {
-                    name: '오보에',
-                    enum : 'OBOE'
-                },
-                {
-                    name: '바순',
-                    enum : 'BASSOON'
-                },
-                {
-                    name: '호른',
-                    enum : 'HORN'
-                },
-                {
-                    name: '트럼펫',
-                    enum : 'TRUMPET'
-                },
-                {
-                    name: '트롬본',
-                    enum : 'TROMBONE'
-                },
-                {
-                    name: '튜바',
-                    enum : 'TUBA'
-                },
-                {
-                    name: '타악기',
-                    enum : 'PERCUSSION_INSTRUMENT'
-                },
-            ]
-            const board = boardList.find(board => board.name === boardType)
+            const board = matchBoardName(boardType)
             const response = await axios.delete(`/api/v1/board/${board?.enum}/post/${id}/`,{
                 headers: {
                     Authorization: `Bearer  ${token}`,
@@ -304,69 +188,7 @@ export const articleReplyDelete = createAsyncThunk(
     "article/articleReplyDelete",
     async ({boardType, id, rId, token}: {boardType : string | number | undefined, id : string | null | undefined, rId : string | null | undefined, token : string | null | undefined,},  {rejectWithValue}) => {
         try {
-            const boardList = [
-                {
-                    name: '전체',
-                    enum : 'ALL'
-                },
-                {
-                    name: '자유게시판',
-                    enum : 'FREE'
-                },
-                {
-                    name: '바이올린',
-                    enum : 'VIOLIN'
-                },
-                {
-                    name: '비올라',
-                    enum : 'VIOLA'
-                },
-                {
-                    name: '첼로',
-                    enum : 'CELLO'
-                },
-                {
-                    name: '베이스',
-                    enum : 'BASS'
-                },
-                {
-                    name: '플루트',
-                    enum : 'FLUTE'
-                },
-                {
-                    name: '클라리넷',
-                    enum : 'CLARINET'
-                },
-                {
-                    name: '오보에',
-                    enum : 'OBOE'
-                },
-                {
-                    name: '바순',
-                    enum : 'BASSOON'
-                },
-                {
-                    name: '호른',
-                    enum : 'HORN'
-                },
-                {
-                    name: '트럼펫',
-                    enum : 'TRUMPET'
-                },
-                {
-                    name: '트롬본',
-                    enum : 'TROMBONE'
-                },
-                {
-                    name: '튜바',
-                    enum : 'TUBA'
-                },
-                {
-                    name: '타악기',
-                    enum : 'PERCUSSION_INSTRUMENT'
-                },
-            ]
-            const board = boardList.find(board => board.name === boardType)
+            const board = matchBoardName(boardType)
             const response = await axios.delete(`/api/v1/board/${board?.enum}/post/${id}/reply/${rId}/`,{
                 headers: {
                     Authorization: `Bearer  ${token}`,

@@ -17,7 +17,6 @@ const Comment = (props : any) => {
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
 
     const handleDeleteArticleReply = async () => {
-        window.alert("준비중입니다.")
         const result = await dispatch(articleReplyDelete({boardType : boardName, id : id, rId : item.id, token : userState.accessToken}))
 
         if (result.type === `${articleReplyDelete.typePrefix}/fulfilled`) {
@@ -30,47 +29,68 @@ const Comment = (props : any) => {
         }
     }
 
-    return(
-        <Stack sx={{width: '100%',}}>
-            <Stack sx={{width: '100%', mt:1,mb: 2}} direction={"row"}>
-                <Stack sx={{mr: 3}}>
-                    {
-                        item.isAnonymous ?
-                            <Avatar sx={{height:32, width: 32}}>A</Avatar>
-                            :
-                            <Avatar alt={`${item.authorInfo.profileName}`} src={`${item.authorInfo.profileImage}`} sx={{height:32, width: 32}} />
-                    }
-                </Stack>
-                <Stack justifyContent={"center"} alignContent={"center"} alignItems={"center"} textAlign={"center"}>
-                    <Typography sx={{fontWeight: 900, fontSize: 15}}>{item.isAnonymous ? item.nickname : item.authorInfo.profileName}</Typography>
-                </Stack>
-                <Stack alignItems="center" flexDirection={"row"} sx={{ml: 'auto'}}>
-                    <Stack alignItems="center" flexDirection={"column"}>
-                        <Typography variant="caption" sx={{color: 'grey', fontSize : res700 ? 7 : 12}}>{dayjs(item.createAt).format('YYYY-MM-DD HH:mm')}</Typography>
-                        <Typography variant="caption" sx={{color: 'grey', fontSize : res700 ? 7 : 12}}>{dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm')}</Typography>
+    if(item.isDeleted){
+        return(
+            <Stack sx={{width: '100%',}}>
+                <Stack sx={{width: '100%', mt:0,mb: 0}} direction={"row"}>
+                    <Stack justifyContent={"center"} alignContent={"center"} alignItems={"center"} textAlign={"center"} sx={{mr:3}}>
+                        <Typography>
+                            {item.content}
+                        </Typography>
+                    </Stack>
+                    <Stack alignItems="center" flexDirection={"row"} sx={{ml: 'auto'}}>
+                        <Stack alignItems="center" flexDirection={"column"}>
+                            <Typography variant="caption" sx={{color: 'grey', fontSize : res700 ? 7 : 12}}>{dayjs(item.createAt).format('YYYY-MM-DD HH:mm')}</Typography>
+                            <Typography variant="caption" sx={{color: 'grey', fontSize : res700 ? 7 : 12}}>{dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm')}</Typography>
+                        </Stack>
                     </Stack>
                 </Stack>
+                <Divider orientation={"horizontal"} sx={{width: '100%', mt:1, mb:1}}/>
             </Stack>
-            <Stack sx={{mb:1}}>
-                <Typography>
-                    {item.content}
-                </Typography>
-            </Stack>
-            <Stack alignItems="center" sx={{width: '100%'}} flexDirection={"row"} justifyContent={"space-between"}>
-                {
-                    item.isAuthor === true ?
-                        <Stack alignItems={"center"} sx={{ml: 'auto'}} flexDirection={"row"}>
-                            <Button size={"small"} color={"info"} onClick={() => window.alert("준비중입니다.")}>수정</Button>
-                            <Button size={"small"} color={"error"} onClick={handleDeleteArticleReply} >삭제</Button>
+        )
+    }
+    else {
+        return(
+            <Stack sx={{width: '100%',}}>
+                <Stack sx={{width: '100%', mt:1,mb: 2}} direction={"row"}>
+                    <Stack sx={{mr: 3}}>
+                        {
+                            item.isAnonymous ?
+                                <Avatar sx={{height:32, width: 32}}>A</Avatar>
+                                :
+                                <Avatar alt={`${item.authorInfo.profileName}`} src={`${item.authorInfo.profileImage}`} sx={{height:32, width: 32}} />
+                        }
+                    </Stack>
+                    <Stack justifyContent={"center"} alignContent={"center"} alignItems={"center"} textAlign={"center"}>
+                        <Typography sx={{fontWeight: 900, fontSize: 15}}>{item.isAnonymous ? item.nickname : item.authorInfo.profileName}</Typography>
+                    </Stack>
+                    <Stack alignItems="center" flexDirection={"row"} sx={{ml: 'auto'}}>
+                        <Stack alignItems="center" flexDirection={"column"}>
+                            <Typography variant="caption" sx={{color: 'grey', fontSize : res700 ? 7 : 12}}>{dayjs(item.createAt).format('YYYY-MM-DD HH:mm')}</Typography>
+                            <Typography variant="caption" sx={{color: 'grey', fontSize : res700 ? 7 : 12}}>{dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm')}</Typography>
                         </Stack>
-                        :
-                        null
-                }
+                    </Stack>
+                </Stack>
+                <Stack sx={{mb:1}}>
+                    <Typography>
+                        {item.content}
+                    </Typography>
+                </Stack>
+                <Stack alignItems="center" sx={{width: '100%'}} flexDirection={"row"} justifyContent={"space-between"}>
+                    {
+                        item.isAuthor === true ?
+                            <Stack alignItems={"center"} sx={{ml: 'auto'}} flexDirection={"row"}>
+                                <Button size={"small"} color={"info"} onClick={() => window.alert("준비중입니다.")}>수정</Button>
+                                <Button size={"small"} color={"error"} onClick={handleDeleteArticleReply} >삭제</Button>
+                            </Stack>
+                            :
+                            null
+                    }
+                </Stack>
+                <Divider orientation={"horizontal"} sx={{width: '100%', mt:1, mb:1}}/>
             </Stack>
-            <Divider orientation={"horizontal"} sx={{width: '100%', mt:1, mb:1}}/>
-        </Stack>
-    )
-
+        )
+    }
 }
 
 export default Comment
