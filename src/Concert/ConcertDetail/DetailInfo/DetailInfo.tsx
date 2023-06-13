@@ -19,6 +19,7 @@ const DetailInfo = () => {
     const res600 = useMediaQuery('(max-width:600px)')
 
     const [editMode, setEditMode] = useState(false)
+    const [setList, setSetList] = useState(false)
     const [contents, setContents] = useState<string>(concertState.concert === null ? '' : concertState.concert.concertInfo);
 
     const [isAdminGroup, setIsAdminGroup] = useState(false)
@@ -46,6 +47,10 @@ const DetailInfo = () => {
         }
     }
 
+    const changeSetList = () => {
+
+    }
+
     useEffect(() => {
         if(userState.isLogin){
             const userGroup = userState.career.find((userGroup) => userGroup.groupId === concertState.concert?.groupId)
@@ -60,10 +65,26 @@ const DetailInfo = () => {
         <Stack justifyContent={res600 ? 'center' : 'flex-start'} alignItems={'center'} sx={{mb: 10}}>
             <Divider sx={{width: res600 ? '90%' : '100%', mt:-1}} />
             <Stack sx={{width : res600 ? '90%' : '100%'}}>
-                <Typography sx={{fontSize: 35, fontWeight: 100, fontFamily: "Open Sans", mt: 0.5, mb: 1}}>Program</Typography>
+                <Stack sx={{width: '100%'}} direction={'row'} justifyContent={'flex-start'}>
+                    <Typography sx={{fontSize: 35, fontWeight: 100, fontFamily: "Open Sans", mt: 0.5, mb: 1}}>Program</Typography>
+                    <Stack direction={'row'} alignItems={'center'} sx={{ml : 1,height: '100%'}}>
+                        {
+                            isAdminGroup ?
+                                setList ?
+                                    <>
+                                        <Button color={"info"} size={"small"} onClick={changeSetList}>변경</Button>
+                                        <Button color={"success"} size={"small"} onClick={() => setSetList(false)}>취소</Button>
+                                    </>
+                                    :
+                                    <Button color={"warning"} size={"small"} onClick={() => setSetList(true)}>수정</Button>
+                                :
+                                null
+                        }
+                    </Stack>
+                </Stack>
                 {
                     concertState.concert?.setList.map((item) => (
-                        <ProgramInfo key={item.id} item={item} />
+                        <ProgramInfo key={item.id} item={item} edit={setList} />
                     ))
                 }
             </Stack>
@@ -73,7 +94,10 @@ const DetailInfo = () => {
                     {
                         isAdminGroup ?
                             editMode ?
-                                <Button color={"info"} size={"small"} onClick={handleEdit}>작성</Button>
+                                <>
+                                    <Button color={"info"} size={"small"} onClick={handleEdit}>작성</Button>
+                                    <Button color={"success"} size={"small"} onClick={() => setEditMode(false)}>취소</Button>
+                                </>
                                 :
                                 <Button color={"warning"} size={"small"} onClick={() => setEditMode(true)}>수정</Button>
                             :
