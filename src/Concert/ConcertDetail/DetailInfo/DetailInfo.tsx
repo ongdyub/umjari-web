@@ -1,34 +1,49 @@
-import {Button, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
-import ReactQuill from "react-quill";
+import {Button, Divider, Stack, Typography, useMediaQuery} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 import {selectUser} from "../../../store/slices/user/user";
-import {selectConcert} from "../../../store/slices/concert/concert";
+import {concertInfoPut, selectConcert} from "../../../store/slices/concert/concert";
 import ProgramInfo from "./ProgramInfo";
 import 'react-quill/dist/quill.snow.css'
 import ConcertInfoEdit from "../../ConcertInfo/ConcertInfoEdit";
+import {AppDispatch} from "../../../store";
+import ReactQuill from 'react-quill';
 
 const DetailInfo = () => {
-    const theme = useTheme()
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>()
     const { id } = useParams();
-    const QuillRef = useRef<ReactQuill>();
 
     const userState = useSelector(selectUser)
     const concertState = useSelector(selectConcert)
-    const res1100 = useMediaQuery('(max-width:1099px)')
-    const res800 = useMediaQuery('(max-width:800px)')
     const res600 = useMediaQuery('(max-width:600px)')
-    const resMd = useMediaQuery(theme.breakpoints.down("md"))
 
     const [editMode, setEditMode] = useState(false)
+    const [contents, setContents] = useState<string>(concertState.concert === null ? '' : concertState.concert.concertInfo);
 
     const [isAdminGroup, setIsAdminGroup] = useState(false)
 
-    const handleEdit = () => {
-        setEditMode(false)
+    const handleEdit = async () => {
+        const data = {
+            concertInfo : contents
+        }
+
+        if(contents === '' || contents === '<p><br></p>'){
+            window.alert('본문을 입력해주세요.')
+            return
+        }
+        if(contents.length > 10000){
+            window.alert('본문 내용이 너무 깁니다.')
+            return
+        }
+        const result = await dispatch(concertInfoPut({data : data, token : userState.accessToken, id : id}))
+
+        if(result.type === `${concertInfoPut.typePrefix}/fulfilled`){
+            setEditMode(false)
+        }
+        else{
+            return
+        }
     }
 
     useEffect(() => {
@@ -39,7 +54,7 @@ const DetailInfo = () => {
                 setIsAdminGroup(true)
             }
         }
-    },[userState.career, concertState.concert])
+    },[userState.career, concertState.concert, userState.isLogin])
 
     return(
         <Stack justifyContent={res600 ? 'center' : 'flex-start'} alignItems={'center'} sx={{mb: 10}}>
@@ -68,7 +83,7 @@ const DetailInfo = () => {
             </Stack>
             {
                 editMode ?
-                    <ConcertInfoEdit />
+                    <ConcertInfoEdit contents={contents} setContents={setContents} />
                     :
                     <Stack sx={{width : res600 ? '90%' : '100%', mt : -1.5}}>
                         <ReactQuill

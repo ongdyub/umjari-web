@@ -112,6 +112,23 @@ export const concertMemberGet = createAsyncThunk(
     }
 )
 
+export const concertInfoPut = createAsyncThunk(
+    "concert/concertInfoPut",
+    async ({data, token, id} : {data : any, token : string | number | undefined | null, id : string | number | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/concert/${id}/info/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const concertStateSlice = createSlice({
     name: "concertState",
     initialState,
@@ -142,6 +159,15 @@ export const concertStateSlice = createSlice({
                 const partB = sortRule.indexOf(b.part);
                 return partA - partB;
             })
+        });
+        builder.addCase(concertInfoPut.fulfilled, (state, action) => {
+            if(state.concert !== null){
+                state.concert.concertInfo = action.meta.arg.data.concertInfo
+            }
+            window.alert("변경 성공")
+        });
+        builder.addCase(concertInfoPut.rejected, (state, action) => {
+            window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
         });
     },
 });

@@ -1,10 +1,15 @@
-import {Stack, useMediaQuery, useTheme} from "@mui/material";
-import ReactQuill from "react-quill";
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate, useParams} from "react-router-dom";
-import {useMemo, useRef, useState} from "react";
+import { Quill } from 'react-quill';
+import {Stack, useMediaQuery} from "@mui/material";
+import {useSelector} from "react-redux";
+import {useMemo, useRef} from "react";
 import axios from "axios";
 import {selectUser} from "../../store/slices/user/user";
+import React from 'react';
+import ReactQuill from 'react-quill';
+
+import ImageResize from '@looop/quill-image-resize-module-react';
+
+Quill.register('modules/ImageResize', ImageResize);
 
 const formats = [
     'font',
@@ -15,7 +20,7 @@ const formats = [
     'align', 'color', 'background',
 ]
 
-const ConcertInfoEdit = () => {
+const ConcertInfoEdit = (props : any) => {
 
     const imageHandler = () => {
         const input = document.createElement("input");
@@ -69,6 +74,8 @@ const ConcertInfoEdit = () => {
 
     const modules = useMemo(() => {
         return {
+            imageActions: {},
+            imageFormats: {},
             toolbar: {
                 container: [
                     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
@@ -82,22 +89,19 @@ const ConcertInfoEdit = () => {
                 ],
                 handlers: {
                     image: imageHandler,
-                }
+                },
             },
         }
     },[])
 
-    const theme = useTheme()
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const { id } = useParams();
+    const {contents, setContents} = props
     const QuillRef = useRef<ReactQuill>();
 
     const userState = useSelector(selectUser)
 
     const res600 = useMediaQuery('(max-width:600px)')
 
-    const [contents, setContents] = useState('');
+
 
     return(
         <Stack sx={{width : res600 ? '95%' : '100%', mb: 10}}>
