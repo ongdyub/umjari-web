@@ -169,7 +169,7 @@ const WriteEditor = () => {
 
 
     const handleSubmit = async () => {
-        console.log(contents)
+
         if(!userState.isLogin){
             dispatch(userActions.openModal())
             return

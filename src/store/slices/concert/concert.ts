@@ -1,6 +1,8 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import {RootState} from "../..";
+import {AppDispatch, RootState} from "../..";
+import { produce, Draft } from 'immer';
+import {useDispatch} from "react-redux";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -112,6 +114,57 @@ export const concertMemberGet = createAsyncThunk(
     }
 )
 
+export const concertInfoPut = createAsyncThunk(
+    "concert/concertInfoPut",
+    async ({data, token, id} : {data : any, token : string | number | undefined | null, id : string | number | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/concert/${id}/info/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const concertSetListDelete = createAsyncThunk(
+    "concert/concertSetListDelete",
+    async ({data, token, id} : {data : any, token : string | number | undefined | null, id : string | number | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/concert/${id}/set-list/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const concertSetListAdd = createAsyncThunk(
+    "concert/concertSetListAdd",
+    async ({data, token, id} : {data : any, token : string | number | undefined | null, id : string | number | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/concert/${id}/set-list/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const concertStateSlice = createSlice({
     name: "concertState",
     initialState,
@@ -142,6 +195,49 @@ export const concertStateSlice = createSlice({
                 const partB = sortRule.indexOf(b.part);
                 return partA - partB;
             })
+        });
+        builder.addCase(concertInfoPut.fulfilled, (state, action) => {
+            if(state.concert !== null){
+                state.concert.concertInfo = action.meta.arg.data.concertInfo
+            }
+            window.alert("변경 성공")
+        });
+        builder.addCase(concertInfoPut.rejected, (state, action) => {
+            if(action.payload === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+            }
+        });
+        builder.addCase(concertSetListDelete.fulfilled, (state, action) => {
+            console.log(action)
+            if(state.concert !== null){
+                const remainIds = action.meta.arg.data.musicIds
+                state.concert.setList = produce(state.concert.setList, (draftSetList: Draft<GroupSetList>[]) => {
+                    return draftSetList.filter((item: GroupSetList) => remainIds.includes(item.musicInfo.id));
+                });
+            }
+            window.alert("변경 성공")
+        });
+        builder.addCase(concertSetListDelete.rejected, (state, action) => {
+            if(action.payload === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+            }
+        });
+        builder.addCase(concertSetListAdd.fulfilled, (state, action) => {
+            window.alert("추가 성공")
+        });
+        builder.addCase(concertSetListAdd.rejected, (state, action) => {
+            if(action.payload === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+            }
         });
     },
 });

@@ -22,6 +22,7 @@ const styleReg = (theme: any) => ({
     p: 3,
     height: '90%',
     overflow: 'scroll',
+    '&::-webkit-scrollbar': {display: 'none'},
     [theme.breakpoints.down('850')]: {
         width: 0.8,
     },
@@ -37,6 +38,7 @@ const styleLog = (theme: any) => ({
     boxShadow: 24,
     p: 3,
     overflow: 'scroll',
+    '&::-webkit-scrollbar': {display: 'none'},
     [theme.breakpoints.down('850')]: {
         width: 0.8,
     },
