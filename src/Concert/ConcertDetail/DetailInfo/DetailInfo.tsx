@@ -32,7 +32,7 @@ const DetailInfo = () => {
             window.alert('본문을 입력해주세요.')
             return
         }
-        if(contents.length > 10000){
+        if(contents.length > 5000){
             window.alert('본문 내용이 너무 깁니다.')
             return
         }

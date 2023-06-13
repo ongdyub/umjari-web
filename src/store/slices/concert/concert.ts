@@ -167,7 +167,13 @@ export const concertStateSlice = createSlice({
             window.alert("변경 성공")
         });
         builder.addCase(concertInfoPut.rejected, (state, action) => {
-            window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+            console.log(action)
+            if(action.payload === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+            }
         });
     },
 });
