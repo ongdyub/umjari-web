@@ -1,15 +1,12 @@
-import { Quill } from 'react-quill';
 import {Stack, useMediaQuery} from "@mui/material";
 import {useSelector} from "react-redux";
 import {useMemo, useRef} from "react";
 import axios from "axios";
 import {selectUser} from "../../store/slices/user/user";
-import React from 'react';
-import ReactQuill from 'react-quill';
-
-import ImageResize from '@looop/quill-image-resize-module-react';
-
-Quill.register('modules/ImageResize', ImageResize);
+import ReactQuill, { Quill } from 'react-quill';
+import React from 'react'
+import { ImageResize } from "quill-image-resize-module-ts";
+Quill.register("modules/ImageResize", ImageResize);
 
 const formats = [
     'font',
@@ -74,8 +71,6 @@ const ConcertInfoEdit = (props : any) => {
 
     const modules = useMemo(() => {
         return {
-            imageActions: {},
-            imageFormats: {},
             toolbar: {
                 container: [
                     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
@@ -90,6 +85,10 @@ const ConcertInfoEdit = (props : any) => {
                 handlers: {
                     image: imageHandler,
                 },
+            },
+            ImageResize: {
+                parchment: Quill.import("parchment"),
+                modules: ["Resize", "DisplaySize"],
             },
         }
     },[])

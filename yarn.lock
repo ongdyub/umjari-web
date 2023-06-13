@@ -8881,14 +8881,20 @@
     "quill" "^1.2.2"
     "raw-loader" "^0.5.1"
 
-"quill-image-resize-module@^3.0.0":
-  "integrity" "sha512-1TZBnUxU/WIx5dPyVjQ9yN7C6mLZSp04HyWBEMqT320DIq4MW4JgzlOPDZX5ZpBM3bU6sacU4kTLUc8VgYQZYw=="
-  "resolved" "https://registry.npmjs.org/quill-image-resize-module/-/quill-image-resize-module-3.0.0.tgz"
-  "version" "3.0.0"
+"quill-image-resize-module-ts@^3.0.3":
+  "integrity" "sha512-NMWw67zCfGxE0AyPTVLWMTAs71eKerd+jJJqu9ZuPBGZl7vc+Jtb+tmfx33pC3h0deVYqgOMXYzbFBIRmu/WuQ=="
+  "resolved" "https://registry.npmjs.org/quill-image-resize-module-ts/-/quill-image-resize-module-ts-3.0.3.tgz"
+  "version" "3.0.3"
   dependencies:
     "lodash" "^4.17.4"
+    "quill" "^1.3.4"
+
+"quill-image-resize-module@^1.0.0":
+  "integrity" "sha512-3VHVbmLeM6jC7tT5u5iywYrXSI+lG+x+icsR29FjfFgfPC0JOxB+rjQp4fqN8AGMK5ibLcOUxaTfUmrwfP6nYA=="
+  "resolved" "https://registry.npmjs.org/quill-image-resize-module/-/quill-image-resize-module-1.0.0.tgz"
+  "version" "1.0.0"
+  dependencies:
     "quill" "^1.2.2"
-    "raw-loader" "^0.5.1"
 
 "quill-image-resize@^3.0.9":
   "integrity" "sha512-5Dk0nixhbFsCwSWtPU9qqqtfM2gURfaP+pbBhQvAoMJoF4p99xbAibfAI3gsZJkbWUodoK2iAPf1V5oTSpv9ww=="
@@ -8906,7 +8912,7 @@
   dependencies:
     "extend" "^3.0.2"
 
-"quill@^1.2.2", "quill@^1.3.6", "quill@^1.3.7":
+"quill@^1.2.2", "quill@^1.3.4", "quill@^1.3.6", "quill@^1.3.7":
   "integrity" "sha512-hG/DVzh/TiknWtE6QmWAF/pxoZKYxfe3J/d/+ShUWkDvvkZQVTPeVmUJVu1uE6DDooC4fWTiCLh84ul89oNz5g=="
   "resolved" "https://registry.npmjs.org/quill/-/quill-1.3.7.tgz"
   "version" "1.3.7"
@@ -9094,61 +9100,6 @@
   dependencies:
     "@remix-run/router" "1.2.1"
 
-"react-scripts@^5.0.1":
-  "integrity" "sha512-8VAmEm/ZAwQzJ+GOMLbBsTdDKOpuZh7RPs0UymvBR2vRk4iZWCskjbFnxqjrzoIvlNNRZ3QJFx6/qDSi6zSnaQ=="
-  "resolved" "https://registry.npmjs.org/react-scripts/-/react-scripts-5.0.1.tgz"
-  "version" "5.0.1"
-  dependencies:
-    "@babel/core" "^7.16.0"
-    "@pmmmwh/react-refresh-webpack-plugin" "^0.5.3"
-    "@svgr/webpack" "^5.5.0"
-    "babel-jest" "^27.4.2"
-    "babel-loader" "^8.2.3"
-    "babel-plugin-named-asset-import" "^0.3.8"
-    "babel-preset-react-app" "^10.0.1"
-    "bfj" "^7.0.2"
-    "browserslist" "^4.18.1"
-    "camelcase" "^6.2.1"
-    "case-sensitive-paths-webpack-plugin" "^2.4.0"
-    "css-loader" "^6.5.1"
-    "css-minimizer-webpack-plugin" "^3.2.0"
-    "dotenv" "^10.0.0"
-    "dotenv-expand" "^5.1.0"
-    "eslint" "^8.3.0"
-    "eslint-config-react-app" "^7.0.1"
-    "eslint-webpack-plugin" "^3.1.1"
-    "file-loader" "^6.2.0"
-    "fs-extra" "^10.0.0"
-    "html-webpack-plugin" "^5.5.0"
-    "identity-obj-proxy" "^3.0.0"
-    "jest" "^27.4.3"
-    "jest-resolve" "^27.4.2"
-    "jest-watch-typeahead" "^1.0.0"
-    "mini-css-extract-plugin" "^2.4.5"
-    "postcss" "^8.4.4"
-    "postcss-flexbugs-fixes" "^5.0.2"
-    "postcss-loader" "^6.2.1"
-    "postcss-normalize" "^10.0.1"
-    "postcss-preset-env" "^7.0.1"
-    "prompts" "^2.4.2"
-    "react-app-polyfill" "^3.0.0"
-    "react-dev-utils" "^12.0.1"
-    "react-refresh" "^0.11.0"
-    "resolve" "^1.20.0"
-    "resolve-url-loader" "^4.0.0"
-    "sass-loader" "^12.3.0"
-    "semver" "^7.3.5"
-    "source-map-loader" "^3.0.0"
-    "style-loader" "^3.3.1"
-    "tailwindcss" "^3.0.2"
-    "terser-webpack-plugin" "^5.2.5"
-    "webpack" "^5.64.4"
-    "webpack-dev-server" "^4.6.0"
-    "webpack-manifest-plugin" "^4.0.2"
-    "workbox-webpack-plugin" "^6.4.1"
-  optionalDependencies:
-    "fsevents" "^2.3.2"
-
 "react-toastify@^9.1.2":
   "integrity" "sha512-PBfzXO5jMGEtdYR5jxrORlNZZe/EuOkwvwKijMatsZZm8IZwLj01YvobeJYNjFcA6uy6CVrx2fzL9GWbhWPTDA=="
   "resolved" "https://registry.npmjs.org/react-toastify/-/react-toastify-9.1.2.tgz"
@@ -9166,7 +9117,7 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
-"react@*", "react@^16 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^17.0.0 || ^18.0.0", "react@^17.0.2 || ^18.0.0", "react@^18.0.0", "react@^18.2.0", "react@>= 16", "react@>= 16.8.0", "react@>=0.14.0", "react@>=16", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@0.13.x || 0.14.x || ^15.0.0-0 || 15.x.x || ^16.0.0-0 || ^16.x.x || ^17.x.x || ^18.x.x", "react@0.14 || 15 || 16 || 17 || 18":
+"react@*", "react@^16 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^17.0.0 || ^18.0.0", "react@^17.0.2 || ^18.0.0", "react@^18.0.0", "react@^18.2.0", "react@>= 16.8.0", "react@>=0.14.0", "react@>=16", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@0.13.x || 0.14.x || ^15.0.0-0 || 15.x.x || ^16.0.0-0 || ^16.x.x || ^17.x.x || ^18.x.x", "react@0.14 || 15 || 16 || 17 || 18":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
@@ -10553,7 +10504,7 @@
   dependencies:
     "is-typedarray" "^1.0.0"
 
-"typescript@^3.2.1 || ^4", "typescript@^4.9.4", "typescript@>= 2.7", "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta":
+"typescript@^4.9.4", "typescript@>= 2.7", "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta":
   "integrity" "sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg=="
   "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.9.4.tgz"
   "version" "4.9.4"
