@@ -42,8 +42,7 @@ export const editorStateSlice = createSlice({
     name: "editorState",
     initialState,
     reducers: {
-        resetGroupInfo: () => {
-        },
+
     },
 
     extraReducers: (builder) => {
