@@ -9,6 +9,7 @@ import 'react-quill/dist/quill.snow.css'
 import ConcertInfoEdit from "../../ConcertInfo/ConcertInfoEdit";
 import {AppDispatch} from "../../../store";
 import ReactQuill from 'react-quill';
+import AddMusicModal from "../../../Modal/AddMusicModal";
 
 const DetailInfo = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -18,6 +19,7 @@ const DetailInfo = () => {
     const concertState = useSelector(selectConcert)
     const res600 = useMediaQuery('(max-width:600px)')
 
+    const [addMode, setAddMode] = useState<boolean>(false)
     const [editMode, setEditMode] = useState(false)
     const [setList, setSetList] = useState(false)
     const [contents, setContents] = useState<string>(concertState.concert === null ? '' : concertState.concert.concertInfo);
@@ -47,10 +49,6 @@ const DetailInfo = () => {
         }
     }
 
-    const changeSetList = () => {
-
-    }
-
     useEffect(() => {
         if(userState.isLogin){
             const userGroup = userState.career.find((userGroup) => userGroup.groupId === concertState.concert?.groupId)
@@ -72,8 +70,8 @@ const DetailInfo = () => {
                             isAdminGroup ?
                                 setList ?
                                     <>
-                                        <Button color={"info"} size={"small"} onClick={changeSetList}>변경</Button>
                                         <Button color={"success"} size={"small"} onClick={() => setSetList(false)}>취소</Button>
+                                        <Button color={"info"} size={"small"} onClick={() => setAddMode(true)}>추가</Button>
                                     </>
                                     :
                                     <Button color={"warning"} size={"small"} onClick={() => setSetList(true)}>수정</Button>
@@ -118,6 +116,7 @@ const DetailInfo = () => {
                         />
                     </Stack>
             }
+            <AddMusicModal open={addMode} setOpen={setAddMode} />
         </Stack>
     )
 }
