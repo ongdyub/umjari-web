@@ -2,7 +2,17 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import {Divider, FormControl, Input, InputAdornment, Stack, Typography, Card} from "@mui/material";
+import {
+    Divider,
+    FormControl,
+    Input,
+    InputAdornment,
+    Stack,
+    Typography,
+    Card,
+    useTheme,
+    useMediaQuery
+} from "@mui/material";
 import {useEffect, useState} from "react";
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from "@mui/icons-material/Search";
@@ -22,14 +32,16 @@ const style = {
     width: 400,
     bgcolor: 'background.paper',
     boxShadow: 24,
-    overflow: 'scroll',
-    '&::-webkit-scrollbar': {display: 'none'},
     pt: 2,
     px: 3,
     pb: 3,
 };
 
 const ChildModal = () => {
+    const theme = useTheme();
+
+    const res550 = useMediaQuery(theme.breakpoints.down("res550"))
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
@@ -40,7 +52,7 @@ const ChildModal = () => {
 
     return (
         <React.Fragment>
-            <Button sx={{ml: 'auto',maxWidth: 50, minWidth: 50, maxHeight: 25, minHeight: 25, fontSize : 10}} size={"small"} variant={"contained"} onClick={handleOpen}>곡 추가</Button>
+            <Button sx={{ml: 'auto',maxWidth: 55, minWidth: 55, maxHeight: 30, minHeight: 30, fontSize : res550 ? 8 : 10}} size={"small"} variant={"contained"} onClick={handleOpen}>곡 추가</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -149,21 +161,26 @@ const AddMusicModal = (props : any) => {
                         <Typography sx={{fontSize : 12}}>총 {musicState.counts}개의 검색 결과가 있습니다.</Typography>
                     </Stack>
                     <Divider sx={{width: '100%', mt: 0.5}} />
-                    {
-                        musicState.musicList.map((item, idx) => (
-                            <Card key={idx} sx={{width: '100%', alignItems: 'center', shadows: 10, mb:1}}>
-                                <Stack direction={"row"} alignItems={'center'}>
-                                    <Typography sx={{fontWeight: 600, fontSize: 11, pl:1, pt: 0.5}}>{item.shortComposerEng}</Typography>
-                                    <IconButton aria-label="delete" size="small" sx={{ml: 'auto'}} onClick={() => onClickAddMusic(item.id)}>
-                                        <AddIcon fontSize="inherit" sx={{color: 'blue'}} />
-                                    </IconButton>
-                                </Stack>
-                                <Stack direction={"row"} alignItems={'center'}>
-                                    <Typography variant={"caption"} sx={{fontWeight: 200, fontSize: 12, pl: 1, mb:1}}>{item.shortNameEng}</Typography>
-                                </Stack>
-                            </Card>
-                        ))
-                    }
+                    <Stack sx={{height: '80%',overflowY: 'scroll', '&::-webkit-scrollbar': {display: 'none'}}}>
+                        <Stack>
+                            {
+                                musicState.musicList.map((item, idx) => (
+                                    <Card key={idx} sx={{width: '100%', alignItems: 'center', shadows: 10, mb:1}}>
+                                        <Stack direction={"row"} alignItems={'center'}>
+                                            <Typography sx={{fontWeight: 600, fontSize: 11, pl:1, pt: 0.5}}>{item.shortComposerEng}</Typography>
+                                            <IconButton aria-label="delete" size="small" sx={{ml: 'auto'}} onClick={() => onClickAddMusic(item.id)}>
+                                                <AddIcon fontSize="inherit" sx={{color: 'blue'}} />
+                                            </IconButton>
+                                        </Stack>
+                                        <Stack direction={"row"} alignItems={'center'}>
+                                            <Typography variant={"caption"} sx={{fontWeight: 200, fontSize: 12, pl: 1, mb:1}}>{item.shortNameEng}</Typography>
+                                        </Stack>
+                                    </Card>
+                                ))
+                            }
+                        </Stack>
+                    </Stack>
+
                 </Box>
             </Modal>
         </div>
