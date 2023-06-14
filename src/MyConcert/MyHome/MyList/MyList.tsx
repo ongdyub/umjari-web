@@ -134,8 +134,8 @@ const MyList = () => {
                         </Stack>
                         :
                         myconcertState.myList.map((item) => (
-                            <Card key={item.id} sx={{position: 'relative', display: 'flex', mb: 2, width: '90%', height: 290, border: '0.4px solid black'}}>
-                                <Stack sx={{height: '100%', width: 206}} direction={'row'} justifyContent={'center'}>
+                            <Card key={item.id} sx={{position: 'relative', display: 'flex', mb: 2, width: '90%', height: 'auto', shadow : 45, boxShadow: 30}}>
+                                <Stack sx={{height: '100%', width: '246px'}} direction={'row'} alignItems={'center'}>
                                     <CardMedia
                                         component="img"
                                         sx={{ objectFit: 'contain', height: 'auto', width: '100%' }}
@@ -144,7 +144,7 @@ const MyList = () => {
                                     />
                                 </Stack>
 
-                                <Stack sx={{flexDirection: 'column', ml: 4, pt: 2, width: 'calc(100% - 250px)'}}>
+                                <Stack sx={{flexDirection: 'column', ml: 4, pt: 2, width: 'calc(100% - 300px)'}}>
                                     {item.participatedList.map((item, idx) => (
                                         <Stack key={idx} sx={{width: '100%'}}>
                                             <Stack direction={"row"} alignContent={"center"} alignItems={"center"}>
