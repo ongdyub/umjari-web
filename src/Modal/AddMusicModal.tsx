@@ -18,7 +18,7 @@ import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from "@mui/icons-material/Search";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../store";
-import {musicListGet, selectMusic} from "../store/slices/music/music";
+import {musicItemAdd, musicListGet, selectMusic} from "../store/slices/music/music";
 import IconButton from '@mui/material/IconButton';
 import {concert, concertSetListAdd, selectConcert} from "../store/slices/concert/concert";
 import {selectUser} from "../store/slices/user/user";
@@ -26,7 +26,7 @@ import {useParams} from "react-router-dom";
 
 const style = {
     position: 'absolute' as 'absolute',
-    top: '45%',
+    top: '48%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
@@ -39,10 +39,21 @@ const style = {
 
 const ChildModal = () => {
     const theme = useTheme();
+    const userState = useSelector(selectUser)
+    const dispatch = useDispatch<AppDispatch>()
 
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
 
     const [open, setOpen] = useState(false);
+    const [composerEng, setComposerEng] = useState<string>('')
+    const [shortComposerEng, setShortComposerEng] = useState<string>('')
+    const [composerKor, setComposerKor] = useState<string>('')
+    const [shortComposerKor, setShortComposerKor] = useState<string>('')
+    const [nameEng, setNameEng] = useState<string>('')
+    const [shortNameEng, setShortNameEng] = useState<string>('')
+    const [nameKor, setNameKor] = useState<string>('')
+    const [shortNameKor, setShortNameKor] = useState<string>('')
+
     const handleOpen = () => {
         setOpen(true);
     };
@@ -50,17 +61,159 @@ const ChildModal = () => {
         setOpen(false);
     };
 
+    const addMusicItem = async () => {
+        if(composerEng === '' || shortComposerEng === '' || composerKor === '' || shortComposerKor === '' || nameEng === '' || shortNameEng === '' || nameKor === '' || shortNameKor === ''){
+            window.alert("공백을 채워주세요")
+            return
+        }
+        else{
+            const data = {
+                composerEng : composerEng,
+                shortComposerEng : shortComposerEng,
+                composerKor : composerKor,
+                shortComposerKor : shortComposerKor,
+                nameEng : nameEng,
+                shortNameEng : shortNameEng,
+                nameKor : nameKor,
+                shortNameKor : shortNameKor
+            }
+            const result = await dispatch(musicItemAdd({data : data, token : userState.accessToken}))
+
+            if(result.type === `${musicItemAdd.typePrefix}/fulfilled`){
+                setOpen(false)
+            }
+        }
+
+    }
+
     return (
         <React.Fragment>
-            <Button sx={{ml: 'auto',maxWidth: 55, minWidth: 55, maxHeight: 30, minHeight: 30, fontSize : res550 ? 8 : 10}} size={"small"} variant={"contained"} onClick={handleOpen}>곡 추가</Button>
+            <Button sx={{ml: 'auto',maxWidth: res550 ? 50 : 55, minWidth: res550 ? 50 : 55, maxHeight: 30, minHeight: 30, fontSize : res550 ? 7 : 10}} size={"small"} variant={"contained"} onClick={handleOpen}>곡 추가</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="child-modal-title"
                 aria-describedby="child-modal-description"
             >
-                <Box sx={{ ...style, width: 200 }}>
-                    <Button onClick={handleClose}>Close Child Modal</Button>
+                <Box sx={{ ...style, width: '95%', height: '85%', overflowY: 'scroll', '&::-webkit-scrollbar': {display: 'none'} }}>
+                    <Stack sx={{width: '100%', mb: 2}}>
+                        <Stack direction={"row"} alignItems={'center'} sx={{mt: 1}}>
+                            <Typography sx={{mr:1, fontSize: 14}}>작곡가 영문 풀네임</Typography>
+                            <Typography variant={"caption"} sx={{color: 'grey', fontSize: 8}}>ex) Pyotr Ilyich Tchaikovsky</Typography>
+                        </Stack>
+                        <Stack sx={{mt: -1}}>
+                            <Input
+                                id="standard-adornment-amount"
+                                sx={{fontSize: 12, pt: 0.5}}
+                                value={composerEng}
+                                onChange={(e) => setComposerEng(e.target.value)}
+                            />
+                        </Stack>
+                    </Stack>
+                    <Stack sx={{width: '100%', mb: 2}}>
+                        <Stack direction={"row"} alignItems={'center'}>
+                            <Typography sx={{mr:1, fontSize : 14}}>작곡가 영문 약칭</Typography>
+                            <Typography variant={"caption"} sx={{color: 'grey', fontSize: 8}}>ex) P. I. Tchaikovsky</Typography>
+                        </Stack>
+                        <Stack sx={{mt: -1}}>
+                            <Input
+                                id="standard-adornment-amount"
+                                sx={{fontSize: 12, pt: 0.5}}
+                                value={shortComposerEng}
+                                onChange={(e) => setShortComposerEng(e.target.value)}
+                            />
+                        </Stack>
+                    </Stack>
+                    <Stack sx={{width: '100%', mb: 2}}>
+                        <Stack direction={"row"} alignItems={'center'}>
+                            <Typography sx={{mr:1, fontSize: 14}}>작곡가 한글 풀네임</Typography>
+                            <Typography variant={"caption"} sx={{color: 'grey', fontSize: 8}}>ex) 표토르 일리치 차이코프스키</Typography>
+                        </Stack>
+                        <Stack sx={{mt: -1}}>
+                            <Input
+                                id="standard-adornment-amount"
+                                sx={{fontSize: 12, pt: 0.5}}
+                                value={composerKor}
+                                onChange={(e) => setComposerKor(e.target.value)}
+                            />
+                        </Stack>
+                    </Stack>
+                    <Stack sx={{width: '100%', mb: 2}}>
+                        <Stack direction={"row"} alignItems={'center'}>
+                            <Typography sx={{mr:1, fontSize:14}}>작곡가 한글 약칭</Typography>
+                            <Typography variant={"caption"} sx={{color: 'grey', fontSize: 8}}>ex) 차이코프스키</Typography>
+                        </Stack>
+                        <Stack sx={{mt: -1}}>
+                            <Input
+                                id="standard-adornment-amount"
+                                sx={{fontSize: 12, pt: 0.5}}
+                                value={shortComposerKor}
+                                onChange={(e) => setShortComposerKor(e.target.value)}
+                            />
+                        </Stack>
+                    </Stack>
+                    <Stack sx={{width: '100%', mb: 2}}>
+                        <Stack direction={"row"} alignItems={'center'}>
+                            <Typography sx={{mr:1, fontSize:14}}>곡명 영문 풀네임</Typography>
+                            <Typography variant={"caption"} sx={{color: 'grey', fontSize: 7}}>ex) Symphony No. 5 in e minor, Op. 64</Typography>
+                        </Stack>
+                        <Stack sx={{mt: -1}}>
+                            <Input
+                                id="standard-adornment-amount"
+                                sx={{fontSize: 12, pt: 0.5}}
+                                value={nameEng}
+                                onChange={(e) => setNameEng(e.target.value)}
+                            />
+                        </Stack>
+                    </Stack>
+                    <Stack sx={{width: '100%', mb: 2}}>
+                        <Stack direction={"row"} alignItems={'center'}>
+                            <Typography sx={{mr:1, fontSize: 14}}>곡명 영문 약칭</Typography>
+                            <Typography variant={"caption"} sx={{color: 'grey', fontSize: 7}}>ex) Symphony No. 5</Typography>
+                        </Stack>
+                        <Stack sx={{mt: -1}}>
+                            <Input
+                                id="standard-adornment-amount"
+                                sx={{fontSize: 12, pt: 0.5}}
+                                value={shortNameEng}
+                                onChange={(e) => setShortNameEng(e.target.value)}
+                            />
+                        </Stack>
+                    </Stack>
+                    <Stack sx={{width: '100%', mb: 2}}>
+                        <Stack direction={"row"} alignItems={'center'}>
+                            <Typography sx={{mr:1, fontSize: 14}}>곡명 한글 풀네임</Typography>
+                            <Typography variant={"caption"} sx={{color: 'grey', fontSize: 8}}>ex) 교향곡 제 5번 e단조 Op. 64</Typography>
+                        </Stack>
+                        <Stack sx={{mt: -1}}>
+                            <Input
+                                id="standard-adornment-amount"
+                                sx={{fontSize: 12, pt: 0.5}}
+                                value={nameKor}
+                                onChange={(e) => setNameKor(e.target.value)}
+                            />
+                        </Stack>
+                    </Stack>
+                    <Stack sx={{width: '100%', mb: 2}}>
+                        <Stack direction={"row"} alignItems={'center'}>
+                            <Typography sx={{mr:1, fontSize:14}}>곡명 한글 약칭</Typography>
+                            <Typography variant={"caption"} sx={{color: 'grey', fontSize: 8}}>ex) 교향곡 5번</Typography>
+                        </Stack>
+                        <Stack sx={{mt: -1}}>
+                            <Input
+                                id="standard-adornment-amount"
+                                sx={{fontSize: 12, pt: 0.5}}
+                                value={shortNameKor}
+                                onChange={(e) => setShortNameKor(e.target.value)}
+                            />
+                        </Stack>
+                    </Stack>
+                    <Stack direction={'row'}>
+                        <Typography variant={'body2'} color={'error'} sx={{pr: 2}}>추가한 곡에 대한 정보는 수정 및 삭제가 불가능 하니 오타가 없는지 다시한번 확인해 주세요. 잘못된 곡을 등록 할 시에 검색이 그대로 실행되기 때문에 오타에 다시 한번 주의하시기 바랍니다.</Typography>
+                        <Stack direction={'row'} justifyContent={'flex-end'} alignItems={'center'}>
+                            <Button variant={'contained'} size={'small'} onClick={addMusicItem}>추가</Button>
+                        </Stack>
+                    </Stack>
                 </Box>
             </Modal>
         </React.Fragment>
@@ -124,7 +277,7 @@ const AddMusicModal = (props : any) => {
                 aria-labelledby="parent-modal-title"
                 aria-describedby="parent-modal-description"
             >
-                <Box sx={{...style, width: '85%', height: '80%'}}>
+                <Box sx={{...style, width: '85%', height: '90%'}}>
                     <Stack direction={"row"} sx={{width: '100%'}} alignItems={'center'}>
                         <Stack sx={{width: '90%'}}>
                             <Stack direction={"row"} alignItems={'center'}>
@@ -167,20 +320,22 @@ const AddMusicModal = (props : any) => {
                                 musicState.musicList.map((item, idx) => (
                                     <Card key={idx} sx={{width: '100%', alignItems: 'center', shadows: 10, mb:1}}>
                                         <Stack direction={"row"} alignItems={'center'}>
-                                            <Typography sx={{fontWeight: 600, fontSize: 11, pl:1, pt: 0.5}}>{item.shortComposerEng}</Typography>
+                                            <Typography sx={{fontWeight: 600, fontSize: 11, pl:1, pt: 0.5}}>{item.composerEng}</Typography>
                                             <IconButton aria-label="delete" size="small" sx={{ml: 'auto'}} onClick={() => onClickAddMusic(item.id)}>
                                                 <AddIcon fontSize="inherit" sx={{color: 'blue'}} />
                                             </IconButton>
                                         </Stack>
                                         <Stack direction={"row"} alignItems={'center'}>
-                                            <Typography variant={"caption"} sx={{fontWeight: 200, fontSize: 12, pl: 1, mb:1}}>{item.shortNameEng}</Typography>
+                                            <Typography variant={"caption"} sx={{fontWeight: 200, fontSize: 12, pl: 1, mb:1}}>{item.nameEng}</Typography>
+                                        </Stack>
+                                        <Stack direction={"row"} alignItems={'center'}>
+                                            <Typography variant={"caption"} sx={{fontWeight: 400, fontSize: 10, pl: 1, mb:1}}>{item.nameKor}</Typography>
                                         </Stack>
                                     </Card>
                                 ))
                             }
                         </Stack>
                     </Stack>
-
                 </Box>
             </Modal>
         </div>
