@@ -22,7 +22,7 @@ interface ColorMap {
     [key: string]: string;
 }
 
-const color : ColorMap = {
+export const color : ColorMap = {
     "Vn 1st" : '#dd2c00',
     "Vn 2nd" : '#ff9100',
     "Va" : '#ffeb3b',

@@ -245,7 +245,7 @@ export const myConcertStateSlice = createSlice({
                 }
             }
             else if(action.payload.rule === '파트'){
-                const sortRule = ['Vn 1st', 'Vn 2nd', 'Va', 'Vc', 'Db', 'Fl', 'Picc', 'Ob', 'E.H', 'Cl', 'Fg', 'Hn', 'Trp', 'Trb', 'Cornet', 'Tub', 'Timp', 'Perc', 'Harp']
+                const sortRule = ['Vn 1st', 'Vn 2nd', 'Va', 'Vc', 'Db', 'Fl', 'Picc', 'Ob', 'E.H', 'Cl', 'Fg', 'Hn', 'Trp', 'Trb', 'Cnt', 'Tub', 'Timp', 'Perc', 'Harp']
 
                 state.mySelfIntro = state.mySelfIntro.sort((a: any, b: any) => {
                     const partA = sortRule.indexOf(a.part);

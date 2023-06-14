@@ -1,8 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-import {AppDispatch, RootState} from "../..";
+import {RootState} from "../..";
 import { produce, Draft } from 'immer';
-import {useDispatch} from "react-redux";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -165,6 +164,23 @@ export const concertSetListAdd = createAsyncThunk(
     }
 )
 
+export const concertMemberAdd = createAsyncThunk(
+    "concert/concertMemberAdd",
+    async ({data, token, id, cmId} : {data : any, token : string | number | undefined | null, id : string | number | undefined | null, cmId : string | number | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/concert/${id}/concert-music/${cmId}/participant/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const concertStateSlice = createSlice({
     name: "concertState",
     initialState,
@@ -188,7 +204,7 @@ export const concertStateSlice = createSlice({
         builder.addCase(concertMemberGet.fulfilled, (state, action) => {
             const participants = action.payload.participants
 
-            const sortRule = ['Vn 1st', 'Vn 2nd', 'Va', 'Vc', 'Db', 'Fl', 'Picc', 'Ob', 'E.H', 'Cl', 'Fg', 'Hn', 'Trp', 'Cornet', 'Trb', 'Tub', 'Timp', 'Perc', 'Harp']
+            const sortRule = ['Vn 1st', 'Vn 2nd', 'Va', 'Vc', 'Db', 'Fl', 'Picc', 'Ob', 'E.H', 'Cl', 'Fg', 'Hn', 'Trp', 'Cnt', 'Trb', 'Tub', 'Timp', 'Perc', 'Harp']
 
             state.participants = participants.sort((a: any, b: any) => {
                 const partA = sortRule.indexOf(a.part);
@@ -228,10 +244,21 @@ export const concertStateSlice = createSlice({
                 window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
             }
         });
-        builder.addCase(concertSetListAdd.fulfilled, (state, action) => {
+        builder.addCase(concertSetListAdd.fulfilled, () => {
             window.alert("추가 성공")
         });
         builder.addCase(concertSetListAdd.rejected, (state, action) => {
+            if(action.payload === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+            }
+        });
+        builder.addCase(concertMemberAdd.fulfilled, () => {
+            window.alert("실패한 유저들은 아래와 같습니다.")
+        });
+        builder.addCase(concertMemberAdd.rejected, (state, action) => {
             if(action.payload === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }
