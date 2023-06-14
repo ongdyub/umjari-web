@@ -1,4 +1,4 @@
-import {Box, Button, FormControl, Input, MenuItem, Modal, Select, Stack, Typography} from "@mui/material";
+import {Box, Button, FormControl, Input, MenuItem, Modal, Select, Stack, Typography, Divider} from "@mui/material";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {concertMemberAdd, selectConcert} from "../store/slices/concert/concert";
@@ -12,7 +12,7 @@ import {selectUser} from "../store/slices/user/user";
 
 const style = {
     position: 'absolute' as 'absolute',
-    top: '45%',
+    top: '47%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '85%',
@@ -208,11 +208,13 @@ const AddConcertMemberModal = (props : any) => {
                         </IconButton>
                     </Stack>
                 </Stack>
-                <Stack sx={{height: '70%', width: '100%', overflowY: 'scroll', '&::-webkit-scrollbar': {display: 'none'}}}>
+                <Divider sx={{width: '100%'}} />
+                <Stack sx={{height: '67%', width: '100%', overflowY: 'scroll', '&::-webkit-scrollbar': {display: 'none'}}}>
                     {userList.map((item, idx) => (
                         <AddConcertMemberList key={idx} item={item} idx={idx} handleDeleteUserList={handleDeleteUserList} />
                     ))}
                 </Stack>
+                <Divider sx={{width: '100%'}} />
                 <Stack direction={'row'} justifyContent={'flex-end'} alignItems={'center'} sx={{mt:1}}>
                     <Button variant={'contained'} size={'small'} sx={{fontSize : 10, maxWidth: 60, minWidth: 60}} onClick={handleAddMember}>추가</Button>
                 </Stack>
