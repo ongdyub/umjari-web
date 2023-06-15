@@ -285,7 +285,7 @@ export const concertStateSlice = createSlice({
             }
         });
         builder.addCase(concertMemberDelete.fulfilled, () => {
-            window.alert("삭제에 실패한 유저들은 리스트에 남아있습니다.")
+            window.alert("반영 완료.")
         });
         builder.addCase(concertMemberDelete.rejected, (state, action) => {
             if(action.payload === 3001){

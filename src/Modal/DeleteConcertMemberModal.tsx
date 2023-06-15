@@ -62,14 +62,12 @@ const DeleteConcertMemberModal = (props : any) => {
         }
         const result = await dispatch(concertMemberDelete({data, token : userState.accessToken, id : id, cmId : curSetMusic}))
         if(result.type === `${concertMemberDelete.typePrefix}/fulfilled`){
-            console.log(result.meta.arg.data.userIds)
-            setUserList(result.meta.arg.data.userIds)
+            // console.log(result.meta.arg.data.userIds)
+            // setUserList(result.meta.arg.data.userIds)
+            setOpen(false)
         }
     }
 
-    useEffect(() => {
-
-    },[curSetMusic])
     return(
         <Modal
             open={open}
@@ -138,6 +136,7 @@ const DeleteConcertMemberModal = (props : any) => {
                 </Stack>
                 <Divider sx={{width: '100%'}} />
                 <Stack direction={'row'} justifyContent={'flex-end'} alignItems={'center'} sx={{mt:1}}>
+                    <Typography sx={{fontSize: 8, pr: 2}}>완료 알림 이후 반영이 되지 않는 경우는 ID 입력 시 오타가 발생한 경우니 ID 목록을 다시한번 확인해주세요.</Typography>
                     <Button variant={'contained'} size={'small'} sx={{fontSize : 10, maxWidth: 60, minWidth: 60}} color={"error"} onClick={handleDeleteMember}>삭제</Button>
                 </Stack>
             </Box>

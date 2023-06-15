@@ -28,15 +28,6 @@ const ConcertMember = () => {
     const [open, setOpen] = useState<boolean>(false)
     const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
 
-    useEffect(() => {
-        if(!open || !deleteOpen){
-            dispatch(concertMemberGet(id))
-        }
-        return () => {
-            dispatch(concertStateActions.resetParticipants())
-        }
-    },[id,dispatch,open,deleteOpen])
-
     const handleAddMemberModalOpen = () => {
         if(concertState.concert === null || concertState.concert.setList === null || Array.isArray(concertState.concert.setList) && concertState.concert.setList.length < 1){
             window.alert("곡을 먼저 추가하세요")
@@ -55,6 +46,15 @@ const ConcertMember = () => {
             setDeleteOpen(true)
         }
     }
+
+    useEffect(() => {
+        if(!open || !deleteOpen){
+            dispatch(concertMemberGet(id))
+        }
+        return () => {
+            dispatch(concertStateActions.resetParticipants())
+        }
+    },[id,dispatch,open,deleteOpen])
 
     useEffect(() => {
         if(userState.isLogin){
@@ -127,8 +127,15 @@ const ConcertMember = () => {
                     :
                     null
             }
-            <AddConcertMemberModal open={open} setOpen={setOpen} />
-            <DeleteConcertMemberModal open={deleteOpen} setOpen={setDeleteOpen} />
+            {
+                concertState.concert === null || concertState.concert.setList.length < 1 ?
+                    null
+                    :
+                    <>
+                        <AddConcertMemberModal open={open} setOpen={setOpen} />
+                        <DeleteConcertMemberModal open={deleteOpen} setOpen={setDeleteOpen} />
+                    </>
+            }
         </Stack>
     );
 }
