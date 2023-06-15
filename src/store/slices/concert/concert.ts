@@ -181,6 +181,24 @@ export const concertMemberAdd = createAsyncThunk(
     }
 )
 
+export const concertMemberDelete = createAsyncThunk(
+    "concert/concertMemberDelete",
+    async ({data, token, id, cmId} : {data : any, token : string | number | undefined | null, id : string | number | undefined | null, cmId : string | number | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.delete(`/api/v1/concert/${id}/concert-music/${cmId}/participant/`, {
+                data : data,
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const concertStateSlice = createSlice({
     name: "concertState",
     initialState,
@@ -256,9 +274,20 @@ export const concertStateSlice = createSlice({
             }
         });
         builder.addCase(concertMemberAdd.fulfilled, () => {
-            window.alert("실패한 유저들은 아래와 같습니다.")
+
         });
         builder.addCase(concertMemberAdd.rejected, (state, action) => {
+            if(action.payload === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+            }
+        });
+        builder.addCase(concertMemberDelete.fulfilled, () => {
+            window.alert("삭제에 실패한 유저들은 리스트에 남아있습니다.")
+        });
+        builder.addCase(concertMemberDelete.rejected, (state, action) => {
             if(action.payload === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }

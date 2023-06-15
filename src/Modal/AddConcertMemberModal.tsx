@@ -1,5 +1,5 @@
 import {Box, Button, FormControl, Input, MenuItem, Modal, Select, Stack, Typography, Divider} from "@mui/material";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {concertMemberAdd, selectConcert} from "../store/slices/concert/concert";
 import * as React from "react";
@@ -82,7 +82,6 @@ const AddConcertMemberModal = (props : any) => {
     }
 
     const handleAddMember = async () => {
-
         if(userList.length < 1){
             window.alert("추가된 멤버가 없습니다.")
             return
@@ -93,14 +92,13 @@ const AddConcertMemberModal = (props : any) => {
         const result = await dispatch(concertMemberAdd({data, token : userState.accessToken, id : id, cmId : curSetMusic}))
         if(result.type === `${concertMemberAdd.typePrefix}/fulfilled`){
             const failedUserIdList = result.payload.failedUsers.map((item : any) => item.userId)
-            console.log(failedUserIdList)
-            setUserList(userList.filter((item) => (failedUserIdList.includes(item.userId))))
+
+            let failedString = '['
+            failedUserIdList.map((item : string) => failedString = failedString + item + ', ')
+            failedString = failedString + ']'
+            window.alert("추가에 실패한 유저들은 다음과 같습니다 : " + failedString)
         }
     }
-
-    useEffect(() => {
-        console.log(curSetMusic)
-    },[curSetMusic])
 
     return (
         <Modal
@@ -216,6 +214,7 @@ const AddConcertMemberModal = (props : any) => {
                 </Stack>
                 <Divider sx={{width: '100%'}} />
                 <Stack direction={'row'} justifyContent={'flex-end'} alignItems={'center'} sx={{mt:1}}>
+                    <Typography sx={{fontSize: 8}}>현악기의 경우 세부 파트를 . 으로 설정하셔야 1st가 중복으로 출력되지 않습니다.</Typography>
                     <Button variant={'contained'} size={'small'} sx={{fontSize : 10, maxWidth: 60, minWidth: 60}} onClick={handleAddMember}>추가</Button>
                 </Stack>
             </Box>
