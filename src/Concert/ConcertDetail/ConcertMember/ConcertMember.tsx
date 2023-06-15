@@ -9,6 +9,7 @@ import {AppDispatch} from "../../../store";
 import {concertMemberGet, concertStateActions, selectConcert} from "../../../store/slices/concert/concert";
 import {selectUser} from "../../../store/slices/user/user";
 import AddConcertMemberModal from "../../../Modal/AddConcertMemberModal";
+import DeleteConcertMemberModal from "../../../Modal/DeleteConcertMemberModal";
 
 
 const ConcertMember = () => {
@@ -25,14 +26,16 @@ const ConcertMember = () => {
 
     const [isAdminGroup, setIsAdminGroup] = useState(false)
     const [open, setOpen] = useState<boolean>(false)
+    const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
 
     useEffect(() => {
-        dispatch(concertMemberGet(id))
-
+        if(!open || !deleteOpen){
+            dispatch(concertMemberGet(id))
+        }
         return () => {
             dispatch(concertStateActions.resetParticipants())
         }
-    },[id,dispatch])
+    },[id,dispatch,open,deleteOpen])
 
     const handleAddMemberModalOpen = () => {
         if(concertState.concert === null || concertState.concert.setList === null || Array.isArray(concertState.concert.setList) && concertState.concert.setList.length < 1){
@@ -41,6 +44,15 @@ const ConcertMember = () => {
         }
         else{
             setOpen(true)
+        }
+    }
+    const handleDeleteMemberModalOpen = () => {
+        if(concertState.concert === null || concertState.concert.setList === null || Array.isArray(concertState.concert.setList) && concertState.concert.setList.length < 1){
+            window.alert("곡을 먼저 추가하세요")
+            return
+        }
+        else{
+            setDeleteOpen(true)
         }
     }
 
@@ -109,13 +121,14 @@ const ConcertMember = () => {
             {
                 isAdminGroup ?
                     <Stack sx={{width: '90%', mb : 5}} direction={'row'} alignItems={'center'} justifyContent={'flex-end'}>
-                        <Button size={"small"} color={"error"} variant={"contained"} sx={{mr:1}} >멤버 삭제</Button>
+                        <Button size={"small"} color={"error"} variant={"contained"} sx={{mr:1}} onClick={handleDeleteMemberModalOpen} >멤버 삭제</Button>
                         <Button size={"small"} variant={"contained"} onClick={handleAddMemberModalOpen}>멤버 추가</Button>
                     </Stack>
                     :
                     null
             }
             <AddConcertMemberModal open={open} setOpen={setOpen} />
+            <DeleteConcertMemberModal open={deleteOpen} setOpen={setDeleteOpen} />
         </Stack>
     );
 }
