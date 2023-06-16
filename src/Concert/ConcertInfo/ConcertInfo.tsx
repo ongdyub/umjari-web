@@ -34,8 +34,8 @@ const fontInfo = {
     pr:2
 }
 
-const region_parents = ["서울시","경기도", "수원시", "부산시",]
-const region_child = [
+export const region_parents = ["서울시","경기도", "수원시", "부산시",]
+export const region_child = [
     ["강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"],
     ['가평시', '고양시', '과천시', '광명시', '광주시', '구리시', '군포시', '김포시', '남양주시', '동두천시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시', '양주시', '양평시', '여주시', '연천시', '오산시', '용인시', '의왕시', '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시'],
     ["권선구", "영통구", "장안구", "팔달구"],
@@ -154,8 +154,16 @@ const ConcertInfo = (props : any) => {
             window.alert("가격을 입력해주세요.")
             return
         }
+        if(parseInt(fee) < 0 || !Number.isInteger(parseFloat(fee))){
+            window.alert("가격은 0 이상의 정수여야합니다.")
+            return
+        }
         if(concertRunningTime === ''|| concertRunningTime.length < 1){
-            window.alert("가격을 입력해주세요.")
+            window.alert("러닝타임을 입력해주세요.")
+            return
+        }
+        if(parseInt(concertRunningTime) <= 0 || !Number.isInteger(parseFloat(concertRunningTime))){
+            window.alert("러닝타임은 0보다 큰 정수여야합니다.")
             return
         }
 
@@ -181,6 +189,9 @@ const ConcertInfo = (props : any) => {
         if(result.type == `${concertDetailPut.typePrefix}/fulfilled`){
             dispatch(concert(id))
             setEditMode(false)
+        }
+        else{
+            return
         }
     }
 
