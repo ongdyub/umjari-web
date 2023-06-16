@@ -80,7 +80,7 @@ const MyProfile = () => {
 
             setImgLadingOpen(false)
 
-            window.alert("이미지 업로드 실패. 용량(10MB)과 네트워크를 확인해 주세요")
+            window.alert("이미지 업로드 실패. 용량(50MB)과 네트워크를 확인해 주세요")
         }
     }
 

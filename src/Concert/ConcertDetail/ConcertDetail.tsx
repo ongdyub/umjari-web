@@ -1,20 +1,13 @@
-import {Button, ButtonGroup, Stack, useMediaQuery, useTheme} from "@mui/material";
+import {Button, ButtonGroup, Stack, useMediaQuery} from "@mui/material";
 import {Route, Routes, useParams} from "react-router-dom";
-import Visit from "../../MyConcert/MyHome/Visit/Visit";
 import DetailInfo from "./DetailInfo/DetailInfo";
 import Review from "./Review/Review";
 import ConcertComment from "./ConcertComment/ConcertComment";
 import ConcertMember from "./ConcertMember/ConcertMember";
 import {useNavigate} from "react-router";
-import {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {selectDummy} from "../../store/slices/dummy/dummy";
-
-
 
 const ConcertDetail = () => {
 
-    const theme = useTheme()
     const res600 = useMediaQuery('(max-width:600px)')
     const navigate = useNavigate();
     const { id } = useParams();

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import {BreakpointOverrides, createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import MainPage from "./MainPage/MainPage";
 import Header from "./Common/Header/Header";
@@ -44,7 +44,7 @@ const blueTheme = createTheme({
         },
 
     },
-    breakpoints: {
+    breakpoints : {
         values: {
             xs: 0,
             res300: 300,

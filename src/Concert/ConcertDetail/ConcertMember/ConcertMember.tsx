@@ -28,15 +28,6 @@ const ConcertMember = () => {
     const [open, setOpen] = useState<boolean>(false)
     const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
 
-    useEffect(() => {
-        if(!open || !deleteOpen){
-            dispatch(concertMemberGet(id))
-        }
-        return () => {
-            dispatch(concertStateActions.resetParticipants())
-        }
-    },[id,dispatch,open,deleteOpen])
-
     const handleAddMemberModalOpen = () => {
         if(concertState.concert === null || concertState.concert.setList === null || Array.isArray(concertState.concert.setList) && concertState.concert.setList.length < 1){
             window.alert("곡을 먼저 추가하세요")
@@ -57,6 +48,15 @@ const ConcertMember = () => {
     }
 
     useEffect(() => {
+        if(!open || !deleteOpen){
+            dispatch(concertMemberGet(id))
+        }
+        return () => {
+            dispatch(concertStateActions.resetParticipants())
+        }
+    },[id,dispatch,open,deleteOpen])
+
+    useEffect(() => {
         if(userState.isLogin){
             const userGroup = userState.career.find((userGroup) => userGroup.groupId === concertState.concert?.groupId)
 
@@ -67,7 +67,7 @@ const ConcertMember = () => {
     },[userState.career, concertState.concert, userState.isLogin])
 
     return (
-        <Stack justifyContent={"flex-start"} sx={{width: '100%'}}>
+        <Stack justifyContent={"flex-start"} sx={{width: '100%', mb:10}}>
             <Divider sx={{width: '90%', mt: -1}}/>
             <Stack sx={{mt: 2, pl:5, pr: 5, mb:2}}>
                 {
@@ -127,8 +127,15 @@ const ConcertMember = () => {
                     :
                     null
             }
-            <AddConcertMemberModal open={open} setOpen={setOpen} />
-            <DeleteConcertMemberModal open={deleteOpen} setOpen={setDeleteOpen} />
+            {
+                concertState.concert === null || concertState.concert.setList.length < 1 ?
+                    null
+                    :
+                    <>
+                        <AddConcertMemberModal open={open} setOpen={setOpen} />
+                        <DeleteConcertMemberModal open={deleteOpen} setOpen={setDeleteOpen} />
+                    </>
+            }
         </Stack>
     );
 }

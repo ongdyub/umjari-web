@@ -179,6 +179,24 @@ export const groupConcertListGet = createAsyncThunk(
     }
 )
 
+export const groupInfoPut = createAsyncThunk(
+    "group/groupInfoPut",
+    async ({data, token, id} : {data : any, token : string | number | undefined | null, id : string | number | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/group/${id}/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+
 // export const concert = createAsyncThunk(
 //     "concert/concert",
 //     async (id: string | number | undefined) => {
@@ -249,6 +267,17 @@ export const groupStateSlice = createSlice({
             //         return partA.localeCompare(partB);
             //     })
             // }
+        });
+        builder.addCase(groupInfoPut.fulfilled, (state, action) => {
+            window.alert("변경 완료")
+        });
+        builder.addCase(groupInfoPut.rejected, (state, action) => {
+            if(action.payload === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("변경 실패. 다시 시도하거나 다시 로그인해주세요")
+            }
         });
     },
 });
