@@ -67,7 +67,7 @@ const ConcertMember = () => {
     },[userState.career, concertState.concert, userState.isLogin])
 
     return (
-        <Stack justifyContent={"flex-start"} sx={{width: '100%'}}>
+        <Stack justifyContent={"flex-start"} sx={{width: '100%', mb:10}}>
             <Divider sx={{width: '90%', mt: -1}}/>
             <Stack sx={{mt: 2, pl:5, pr: 5, mb:2}}>
                 {

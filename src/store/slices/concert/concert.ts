@@ -199,6 +199,23 @@ export const concertMemberDelete = createAsyncThunk(
     }
 )
 
+export const concertDetailPut = createAsyncThunk(
+    "concert/concertDetailPut",
+    async ({data, token, id} : {data : any, token : string | number | undefined | null, id : string | number | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/concert/${id}/details/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const concertStateSlice = createSlice({
     name: "concertState",
     initialState,
@@ -288,6 +305,17 @@ export const concertStateSlice = createSlice({
             window.alert("반영 완료.")
         });
         builder.addCase(concertMemberDelete.rejected, (state, action) => {
+            if(action.payload === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+            }
+        });
+        builder.addCase(concertDetailPut.fulfilled, () => {
+            window.alert("반영 완료.")
+        });
+        builder.addCase(concertDetailPut.rejected, (state, action) => {
             if(action.payload === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }
