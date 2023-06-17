@@ -73,7 +73,7 @@ const MyConcertList = (props : any) => {
                         <Stack sx={{width: '100%', cursor: 'pointer', mb: 0.5}} alignItems={'center'} onClick={() => setExpanded(!expanded)}>
 
                             <Stack sx={{width: '80%', mt:1.5, mb:0.5}} direction={'row'} alignItems={'center'} justifyContent={'flex-end'}>
-                                <Typography variant="caption" sx={{fontWeight: 600, fontSize: 12, mr: 'auto'}}>
+                                <Typography variant="caption" sx={{fontWeight: 300, fontSize: 12, mr: 'auto'}}>
                                     {item.shortComposerEng}
                                 </Typography>
                                 <Chip variant={"outlined"} label={`${item.part} ${item.detailPart === '.' ? '' : item.detailPart}`} sx={{fontSize: 8, color : color[item.part], borderColor : color[item.part], maxHeight:20, minHeight:20, mr: 1}} size="small" />
@@ -83,7 +83,7 @@ const MyConcertList = (props : any) => {
                             <Divider orientation={"horizontal"} sx={{width: '80%'}}/>
 
                             <Stack direction={"column"} justifyContent={"flex-start"} alignContent={"center"} alignItems={"center"} sx={{width: '80%', mt:0.5}}>
-                                <Typography  variant="overline"  sx={{fontSize: 14, color: 'grey'}}>{item.nameEng}</Typography>
+                                <Typography  variant="body2"  sx={{fontSize: 12, color: 'grey', fontWeight: 800}}>{item.nameEng}</Typography>
                             </Stack>
                             <Divider orientation={"horizontal"} sx={{width: '90%', mt: 0.5}}/>
                         </Stack>

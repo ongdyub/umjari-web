@@ -14,7 +14,7 @@ import {
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUser} from "../../store/slices/user/user";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import * as React from "react";
 import {region_child, region_parents} from "../../Concert/ConcertInfo/ConcertInfo";
 import {myConcertProfileImageUpload} from "../../store/slices/myconcert/myconcert";
@@ -28,6 +28,7 @@ const GroupInfo = (props : any) => {
 
     const theme = useTheme();
     const {id} = useParams()
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
 
@@ -387,7 +388,10 @@ const GroupInfo = (props : any) => {
                                     <Button size={"small"} variant={'contained'} color={'success'} sx={{ml : 1,maxWidth: 45, minWidth: 45, fontSize: 11}} onClick={() => setEditMode(false)} >취소</Button>
                                 </>
                                 :
-                                <Button size={"small"} sx={{maxWidth: 45, minWidth: 45, fontSize: 11}} variant={'contained'} color={'warning'} onClick={() => setEditMode(true)} >수정</Button>
+                                <>
+                                    <Button size={"small"} sx={{maxWidth: 45, minWidth: 45, fontSize: 11}} variant={'contained'} color={'warning'} onClick={() => setEditMode(true)} >수정</Button>
+                                    <Button size={"small"} variant={'contained'} color={"secondary"} sx={{ml : 1,maxWidth: 80, minWidth: 80, fontSize: 11}} onClick={() => navigate(`/add/${id}`)} >공연추가</Button>
+                                </>
                             :
                             null
                     }

@@ -11,6 +11,7 @@ import GroupSearch from "./GroupSearch/GroupSearch";
 import MyConcert from "./MyConcert/MyConcert";
 import Concert from "./Concert/Concert";
 import Group from "./Group/Group";
+import AddConcert from "./AddConcert/AddConcert";
 
 declare module '@mui/material/styles' {
     interface BreakpointOverrides {
@@ -38,7 +39,7 @@ const blueTheme = createTheme({
             dark : '#252525',
         },
         secondary: {
-            main : '#313131',
+            main : '#ba68c8',
             light: '#ffffff',
             dark : '#111111'
         },
@@ -97,6 +98,7 @@ function App() {
                     <Route path="/myconcert/:profileName/*" element={<MyConcert />} />
                     <Route path="/concert/:id/*" element={<Concert />} />
                     <Route path="/group/:id/*" element={<Group />}/>
+                    <Route path="/add/:id" element={<AddConcert />} />
                 </Routes>
             </BrowserRouter >
         </div>
