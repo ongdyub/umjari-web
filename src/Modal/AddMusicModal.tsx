@@ -260,8 +260,8 @@ const AddMusicModal = (props : any) => {
 
     useEffect(() => {
         const params = {
-            composerEng : searchComposer,
-            nameEng : searchName
+            composer : searchComposer,
+            name : searchName
         }
 
         dispatch(musicListGet(params))
