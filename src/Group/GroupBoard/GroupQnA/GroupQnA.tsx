@@ -164,7 +164,7 @@ const GroupQnA = () => {
             <Stack alignItems="center" sx={{width:'100%'}} flexDirection={'row'} justifyContent="center" alignContent="center">
                 <Pagination sx={{display: 'flex', width: '80%',justifyContent: "center", alignItems:"center"}} size={res750 ? "small" : "large"} count={totalPage} page={page} onChange={handlePage} defaultPage={1} siblingCount={1} boundaryCount={1}/>
             </Stack>
-            <GroupQnAWriteModal open={writeOpen} handleClose={handleWriteClose}/>
+            <GroupQnAWriteModal open={writeOpen} handleClose={handleWriteClose} mode={'write'}/>
         </Stack>
     )
 }

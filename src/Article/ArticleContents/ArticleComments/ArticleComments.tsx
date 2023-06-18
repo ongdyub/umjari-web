@@ -50,6 +50,10 @@ const ArticleComments = () => {
                 content : replyText,
                 isAnonymous : false
             }
+            if(replyText === '' || replyText.length < 1){
+                window.alert("댓글 내용을 적어주세요.")
+                return
+            }
             const result = await dispatch(articleReplyPost({boardType : boardName, id, token: userState.accessToken, data}))
             if (result.type === `${articleReplyPost.typePrefix}/fulfilled`) {
                 window.alert("댓글 작성 성공")

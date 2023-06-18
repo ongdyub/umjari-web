@@ -203,6 +203,24 @@ export const articleReplyDelete = createAsyncThunk(
     }
 )
 
+export const articleReplyEdit = createAsyncThunk(
+    "article/articleReplyEdit",
+    async ({boardType, id, rId, token, data}: {boardType : string | number | undefined, id : string | null | undefined, rId : string | null | undefined, token : string | null | undefined, data : any},  {rejectWithValue}) => {
+        try {
+            const board = matchBoardName(boardType)
+            const response = await axios.put(`/api/v1/board/${board?.enum}/post/${id}/reply/${rId}/`, data,{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const articleStateSlice = createSlice({
     name: "articleState",
     initialState,
@@ -249,6 +267,9 @@ export const articleStateSlice = createSlice({
             scrollToTop()
         });
         builder.addCase(articleReplyDelete.rejected, () => {
+            window.alert("오류 발생. 다시 시도해주세요")
+        });
+        builder.addCase(articleReplyEdit.rejected, () => {
             window.alert("오류 발생. 다시 시도해주세요")
         });
     },
