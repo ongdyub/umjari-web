@@ -1,13 +1,14 @@
 import {Button, Divider, Stack, TextField, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import IconButton from '@mui/material/IconButton';
 import Comment from "../../../Common/Comment/Comment";
 import {articleDelete, articleGet, articleReplyPost, selectArticle} from "../../../store/slices/article/article";
 import {selectUser, userActions} from "../../../store/slices/user/user";
 import {AppDispatch} from "../../../store";
 import {useNavigate, useParams} from "react-router-dom";
+import DeleteConfirmModal from "../../../Modal/DeleteConfirmModal";
 
 const ArticleComments = () => {
 
@@ -16,6 +17,8 @@ const ArticleComments = () => {
     const {boardName, id} = useParams()
     const [thumb, setThumb] = useState(false)
     const [replyText, setReplyText] = useState('')
+    const [open, setOpen] = useState(false)
+    const [confirm, setConfirm] = useState(false)
     const articleState = useSelector(selectArticle)
     const userState = useSelector(selectUser)
 
@@ -50,6 +53,10 @@ const ArticleComments = () => {
                 content : replyText,
                 isAnonymous : false
             }
+            if(replyText === '' || replyText.length < 1){
+                window.alert("댓글 내용을 적어주세요.")
+                return
+            }
             const result = await dispatch(articleReplyPost({boardType : boardName, id, token: userState.accessToken, data}))
             if (result.type === `${articleReplyPost.typePrefix}/fulfilled`) {
                 window.alert("댓글 작성 성공")
@@ -69,6 +76,12 @@ const ArticleComments = () => {
         }
     }
 
+    useEffect(() => {
+        if(confirm){
+            handleDeleteArticle().then(() => window.alert("처리 완료"))
+        }
+    },[confirm])
+
     return(
         <Stack alignItems="center" sx={{width:'100%'}} flexDirection={'column'}>
             <Stack alignItems="center" sx={{width: '80%', mt:1}} flexDirection={"row"} justifyContent={"space-between"}>
@@ -76,8 +89,8 @@ const ArticleComments = () => {
                 {
                     articleState.author ?
                         <Stack alignItems={"center"} sx={{ml: 'auto'}} flexDirection={"row"}>
-                            <Button size={"small"} color={"info"} onClick={() => window.alert("준비중입니다.")}>수정</Button>
-                            <Button size={"small"} color={"error"} onClick={handleDeleteArticle} >삭제</Button>
+                            <Button size={"small"} color={"info"} onClick={() => navigate(`/community/${boardName}/${id}/edit`)}>수정</Button>
+                            <Button size={"small"} color={"error"} onClick={() => setOpen(true)} >삭제</Button>
                         </Stack>
                         :
                         null
@@ -106,6 +119,12 @@ const ArticleComments = () => {
                     <Button size={"medium"} onClick={handleSubmitReply}>작성하기</Button>
                 </Stack>
             </Stack>
+            {
+                open ?
+                    <DeleteConfirmModal open={open} setOpen={setOpen} setConfirm={setConfirm} />
+                    :
+                    null
+            }
         </Stack>
     )
 }

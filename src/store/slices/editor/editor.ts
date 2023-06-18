@@ -34,7 +34,22 @@ export const postCommunity = createAsyncThunk(
     }
 )
 
-
+export const editCommunity = createAsyncThunk(
+    "editor/editCommunity",
+    async ({data, token, inst_name, id} : {data : any, token : string | undefined | null, inst_name : string | null | undefined, id : string | null | number | undefined},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/board/${inst_name}/post/${id}/`, {...data, board : inst_name}, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
 
 
 
@@ -50,6 +65,12 @@ export const editorStateSlice = createSlice({
             window.alert('작성 완료')
         });
         builder.addCase(postCommunity.rejected, () => {
+            window.alert('작성 실패')
+        });
+        builder.addCase(editCommunity.fulfilled, () => {
+            window.alert('작성 완료')
+        });
+        builder.addCase(editCommunity.rejected, () => {
             window.alert('작성 실패')
         });
     },

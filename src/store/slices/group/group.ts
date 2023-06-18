@@ -128,6 +128,23 @@ export const groupQnAPost = createAsyncThunk(
     }
 )
 
+export const groupQnAPut = createAsyncThunk(
+    "group/groupQnAPut",
+    async (data : any, {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/group/${data.id}/qna/${data.qid}/`,data.qnaData, {
+                headers: {
+                    Authorization: `Bearer  ${data.token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const groupQnAReplyPost = createAsyncThunk(
 "group/groupQnAReplyPost",
     async ({ id, qid, token, data }: { id: string | null | undefined, qid: string | null | undefined, token : string | null | undefined, data : any }, {rejectWithValue}) => {

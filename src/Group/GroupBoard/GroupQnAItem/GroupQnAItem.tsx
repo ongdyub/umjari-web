@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import {selectDummy} from "../../../store/slices/dummy/dummy";
 import {selectUser, userActions, valEmailPost} from "../../../store/slices/user/user";
 import GroupQnAComment from "./GroupQnAComment";
+import GroupQnAWriteModal from "../../../Modal/GroupQnAWriteModal";
 
 
 const GroupQnAItem = () => {
@@ -21,13 +22,25 @@ const GroupQnAItem = () => {
 
     const groupState = useSelector(selectGroup)
     const userState = useSelector(selectUser)
-    const dummySelector = useSelector(selectDummy);
 
     const [replyText, setReplyText] = useState('')
     const [hide, setHide] = useState(false)
+    const [writeOpen, setWriteOpen] = useState<boolean>(false)
 
-    const res500 = useMediaQuery(theme.breakpoints.down("res500"))
+    const handleWriteClose = () => {
+        setWriteOpen(false)
+    }
+
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
+
+    const onClickAuthor = () => {
+        if(groupState.groupQnAItem !== null && groupState.groupQnAItem?.isAnonymous){
+            window.alert("익명글입니다.")
+        }
+        else{
+            navigate(`/myconcert/${groupState.groupQnAItem?.authorInfo.profileName}/selfintro`)
+        }
+    }
 
     const handleFocus = () => {
         if(userState.isLogin){
@@ -39,6 +52,10 @@ const GroupQnAItem = () => {
     }
 
     const handleSubmitReply = async () => {
+        if(replyText === ''){
+            window.alert("댓글을 입력하세요")
+            return
+        }
         if(userState.isLogin){
             const data = {
                 content : replyText,
@@ -106,7 +123,7 @@ const GroupQnAItem = () => {
                             </Avatar>
                         </Stack>
                         <Stack alignContent={"center"} alignItems={"center"} sx={{ml: 2}}>
-                            <Typography sx={{fontWeight: 900, fontSize: res700 ? 16 : 19}}>{groupState.groupQnAItem.isAnonymous ? groupState.groupQnAItem.nickname : groupState.groupQnAItem.authorInfo.profileName}</Typography>
+                            <Typography onClick={onClickAuthor} sx={{cursor:'pointer',fontWeight: 900, fontSize: res700 ? 16 : 19}}>{groupState.groupQnAItem.isAnonymous ? groupState.groupQnAItem.nickname : groupState.groupQnAItem.authorInfo.profileName}</Typography>
                         </Stack>
                         <Stack alignItems="center" flexDirection={"row"} sx={{ml: 'auto'}}>
                             <Stack alignItems="center" flexDirection={"column"}>
@@ -130,7 +147,7 @@ const GroupQnAItem = () => {
                     {
                         groupState.groupQnAItem.isAuthor ?
                             <Stack alignItems={"center"} sx={{ml: 'auto'}} flexDirection={"row"}>
-                                <Button size={"small"} color={"info"} onClick={() => window.alert("구현 예정입니다.")}>수정</Button>
+                                <Button size={"small"} color={"info"} onClick={() => setWriteOpen(true)}>수정</Button>
                                 <Button size={"small"} color={"error"} onClick={() => window.alert("구현 예정입니다.")} >삭제</Button>
                             </Stack>
                             :
@@ -165,7 +182,7 @@ const GroupQnAItem = () => {
                         }
                     </Stack>
                 </Stack>
-
+                <GroupQnAWriteModal open={writeOpen} handleClose={handleWriteClose} mode={'edit'}/>
             </Stack>
         )
     }

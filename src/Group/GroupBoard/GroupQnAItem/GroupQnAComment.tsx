@@ -28,6 +28,15 @@ const GroupQnAComment = (props : any) => {
     const res500 = useMediaQuery(theme.breakpoints.down("res500"))
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
 
+    const onClickAuthor = () => {
+        if(item.isAnonymous){
+            window.alert("익명글입니다.")
+        }
+        else{
+            navigate(`/myconcert/${item.authorInfo.profileName}/selfintro`)
+        }
+    }
+
     return(
         <Stack sx={{width: '100%',}}>
             <Stack alignItems="center" sx={{width: '100%'}} flexDirection={"row"}>
@@ -47,7 +56,7 @@ const GroupQnAComment = (props : any) => {
                     </Avatar>
                 </Stack>
                 <Stack alignContent={"center"} alignItems={"center"} sx={{ml: 2}}>
-                    <Typography sx={{fontWeight: 300, fontSize: res700 ? 14 : 17}}>{item.isAnonymous ? item.nickname : item.authorInfo.profileName}</Typography>
+                    <Typography onClick={onClickAuthor} sx={{cursor : 'pointer',fontWeight: 300, fontSize: res700 ? 14 : 17}}>{item.isAnonymous ? item.nickname : item.authorInfo.profileName}</Typography>
                 </Stack>
                 <Stack alignItems="center" flexDirection={"row"} sx={{ml: 'auto'}}>
                     <Stack alignItems="center" flexDirection={"column"}>
