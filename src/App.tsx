@@ -93,7 +93,8 @@ function App() {
                     <Route path="/" element={<MainPage />} />
                     <Route path="/write" element={<Write />} />
                     <Route path="/community/:boardName" element={<Board />} />
-                    <Route path="/community/:boardName/:id" element={<Article />} />
+                    <Route path="/community/:boardName/:id/*" element={<Article />} />
+                    <Route path="/community/:boardName/:id/edit" element={<Write mode={'edit'} />} />
                     <Route path="/groupsearch" element={<GroupSearch />} />
                     <Route path="/myconcert/:profileName/*" element={<MyConcert />} />
                     <Route path="/concert/:id/*" element={<Concert />} />

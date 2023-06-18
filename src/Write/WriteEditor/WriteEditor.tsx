@@ -1,15 +1,17 @@
 import {Button, FormControl, MenuItem, Select, Stack, TextField, useMediaQuery, useTheme} from "@mui/material";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import {useRef, useMemo, useState} from "react";
+import {useRef, useMemo, useState, useEffect} from "react";
 import './WriteEditor.scss'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {selectUser, userActions} from "../../store/slices/user/user";
-import {postCommunity} from "../../store/slices/editor/editor";
+import {editCommunity, postCommunity} from "../../store/slices/editor/editor";
 import {AppDispatch} from "../../store";
 import axios from "axios";
+import {articleGet, selectArticle} from "../../store/slices/article/article";
+import {matchBoardName} from "../../store/slices/board/board";
 
 const boardList = [
     {
@@ -79,8 +81,8 @@ const formats = [
     'align', 'color', 'background',
 ]
 
-const WriteEditor = () => {
-
+const WriteEditor = (props : any) => {
+    const {mode} = props
     const QuillRef = useRef<ReactQuill>();
     const userState = useSelector(selectUser)
 
@@ -158,6 +160,8 @@ const WriteEditor = () => {
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
 
+    const articleState = useSelector(selectArticle)
+
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
     const resMd = useMediaQuery(theme.breakpoints.down("md"))
 
@@ -166,7 +170,7 @@ const WriteEditor = () => {
     const [board, setBoard] = useState<string>('FREE')
     const [hide, setHide] = useState(false)
 
-
+    const {boardName, id} = useParams()
 
     const handleSubmit = async () => {
 
@@ -199,16 +203,39 @@ const WriteEditor = () => {
             content : contents,
             isAnonymous : false
         }
-        const result = await dispatch(postCommunity({data , token : userState.accessToken, inst_name : board}))
-        if (result.type === `${postCommunity.typePrefix}/fulfilled`) {
-            navigate(`/community/전체게시판`)
+        if(mode === 'edit'){
+            const result = await dispatch(editCommunity({data , token : userState.accessToken, inst_name : board, id : id}))
+            if (result.type === `${editCommunity.typePrefix}/fulfilled`) {
+                navigate(`/community/${matchBoardName(board)?.name}/${id}`)
+            }
+            else {
+                console.log(result.payload)
+                window.alert("오류 발생. 다시 시도해주세요")
+            }
         }
-        else {
-            console.log(result.payload)
-            window.alert("오류 발생. 다시 시도해주세요")
+        else{
+            const result = await dispatch(postCommunity({data , token : userState.accessToken, inst_name : board}))
+            if (result.type === `${postCommunity.typePrefix}/fulfilled`) {
+                navigate(`/community/전체게시판`)
+            }
+            else {
+                console.log(result.payload)
+                window.alert("오류 발생. 다시 시도해주세요")
+            }
         }
-
     }
+
+    useEffect(() => {
+        if(mode === 'edit'){
+            dispatch(articleGet({boardType : boardName, id : id, token : userState.accessToken}))
+            setTitle(articleState.title)
+            setContents(articleState.content)
+            const match = matchBoardName(articleState.board)
+            if(match !== undefined){
+                setBoard(match.enum)
+            }
+        }
+    },[])
 
     return(
         <Stack justifyContent="flex-start" alignItems="center" sx={{mb: 5, width: res750 ? '100%' : resMd ? 'calc(100% - 205px)' : 'calc(100% - 325px)'}}>
@@ -217,6 +244,7 @@ const WriteEditor = () => {
                 <Stack justifyContent={'flex-end'} alignItems={'center'} direction={"row"} sx={{width: '100%', mt: 2}}>
                     <FormControl variant="standard" sx={{width: '50%', mr: 'auto'}}>
                         <Select
+                            disabled={mode === 'edit'}
                             value={board}
                             onChange={(e) => setBoard(e.target.value)}
                         >
