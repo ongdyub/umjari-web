@@ -3,10 +3,11 @@ import dayjs from "dayjs";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../../store";
 import {useNavigate, useParams} from "react-router-dom";
-import {selectGroup} from "../../../store/slices/group/group";
+import {groupQnAItemGet, groupQnAReplyDelete, selectGroup} from "../../../store/slices/group/group";
 import {selectUser} from "../../../store/slices/user/user";
 import {selectDummy} from "../../../store/slices/dummy/dummy";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import DeleteConfirmModal from "../../../Modal/DeleteConfirmModal";
 
 
 const GroupQnAComment = (props : any) => {
@@ -24,8 +25,9 @@ const GroupQnAComment = (props : any) => {
 
     const [replyText, setReplyText] = useState('')
     const [hide, setHide] = useState(false)
+    const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
 
-    const res500 = useMediaQuery(theme.breakpoints.down("res500"))
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
 
     const onClickAuthor = () => {
@@ -36,6 +38,14 @@ const GroupQnAComment = (props : any) => {
             navigate(`/myconcert/${item.authorInfo.profileName}/selfintro`)
         }
     }
+
+    useEffect(() => {
+        if(confirm){
+            dispatch(groupQnAReplyDelete({id: id, qid : qid, rid : item.id, token : userState.accessToken}))
+            setDeleteOpen(false)
+            window.location.reload()
+        }
+    },[confirm])
 
     return(
         <Stack sx={{width: '100%',}}>
@@ -76,15 +86,20 @@ const GroupQnAComment = (props : any) => {
                 {
                     item.isAuthor === true ?
                         <Stack alignItems={"center"} sx={{ml: 'auto'}} flexDirection={"row"}>
-                            <Button size={"small"} color={"info"} onClick={() => window.alert("구현 예정입니다.")}>수정</Button>
-                            <Button size={"small"} color={"error"} onClick={() => window.alert("구현 예정입니다.")} >삭제</Button>
+                            {/*<Button size={"small"} color={"info"} onClick={() => window.alert("구현 예정입니다.")}>수정</Button>*/}
+                            <Button size={"small"} color={"error"} onClick={() => setDeleteOpen(true)} >삭제</Button>
                         </Stack>
                         :
                         null
                 }
             </Stack>
-
             <Divider orientation={"horizontal"} sx={{width: '100%', mt:1, mb:1}}/>
+            {
+                deleteOpen ?
+                    <DeleteConfirmModal open={deleteOpen} setOpen={setDeleteOpen} setConfirm={setConfirm} />
+                    :
+                    null
+            }
         </Stack>
     )
 }

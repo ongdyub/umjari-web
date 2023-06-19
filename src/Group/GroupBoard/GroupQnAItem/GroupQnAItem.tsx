@@ -1,16 +1,20 @@
 import {Avatar, Box, Button, Divider, Stack, TextField, Typography, useMediaQuery, useTheme} from "@mui/material";
 import {useNavigate, useParams} from "react-router-dom";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import MouseIcon from "@mui/icons-material/Mouse";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../../store";
-import {groupQnAItemGet, groupQnAReplyPost, groupStateActions, selectGroup} from "../../../store/slices/group/group";
+import {
+    groupQnADelete,
+    groupQnAItemGet,
+    groupQnAReplyPost,
+    groupStateActions,
+    selectGroup
+} from "../../../store/slices/group/group";
 import dayjs from "dayjs";
-import {selectDummy} from "../../../store/slices/dummy/dummy";
-import {selectUser, userActions, valEmailPost} from "../../../store/slices/user/user";
+import {selectUser, userActions} from "../../../store/slices/user/user";
 import GroupQnAComment from "./GroupQnAComment";
 import GroupQnAWriteModal from "../../../Modal/GroupQnAWriteModal";
+import DeleteConfirmModal from "../../../Modal/DeleteConfirmModal";
 
 
 const GroupQnAItem = () => {
@@ -26,6 +30,8 @@ const GroupQnAItem = () => {
     const [replyText, setReplyText] = useState('')
     const [hide, setHide] = useState(false)
     const [writeOpen, setWriteOpen] = useState<boolean>(false)
+    const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
 
     const handleWriteClose = () => {
         setWriteOpen(false)
@@ -67,6 +73,10 @@ const GroupQnAItem = () => {
                 setReplyText('')
                 dispatch(groupQnAItemGet({id, qid, token : userState.accessToken}))
             } else {
+                if(result.payload == 4003){
+                    window.alert("존재하지 않는 글입니다.")
+                    navigate(-1)
+                }
                 if(result.payload == 3001){
                     window.alert("그룹에 속해있지 않은 계정입니다.")
                 }
@@ -81,16 +91,32 @@ const GroupQnAItem = () => {
     }
 
     useEffect(() => {
+        if(confirm){
+            dispatch(groupQnADelete({id : id, qid : qid, token : userState.accessToken}))
+            setDeleteOpen(false)
+        }
+    },[confirm])
+
+    useEffect(() => {
         dispatch(groupQnAItemGet({id, qid, token : userState.accessToken}))
 
         return () => {
             dispatch(groupStateActions.resetGroupQnAItem())
         }
-    },[id, dispatch])
+    },[id, dispatch, confirm])
 
     if(groupState.groupQnAItem === null){
+        if(!groupState.groupQnAExist){
+            return(
+                <div>
+                        존재하지 않는 QnA ID 입니다.
+                </div>
+            )
+        }
         return(
-            <div>로딩중...</div>
+            <div>
+                로딩중
+            </div>
         )
     }
     else{
@@ -148,7 +174,7 @@ const GroupQnAItem = () => {
                         groupState.groupQnAItem.isAuthor ?
                             <Stack alignItems={"center"} sx={{ml: 'auto'}} flexDirection={"row"}>
                                 <Button size={"small"} color={"info"} onClick={() => setWriteOpen(true)}>수정</Button>
-                                <Button size={"small"} color={"error"} onClick={() => window.alert("구현 예정입니다.")} >삭제</Button>
+                                <Button size={"small"} color={"error"} onClick={() => setDeleteOpen(true)} >삭제</Button>
                             </Stack>
                             :
                             null
@@ -183,6 +209,12 @@ const GroupQnAItem = () => {
                     </Stack>
                 </Stack>
                 <GroupQnAWriteModal open={writeOpen} handleClose={handleWriteClose} mode={'edit'}/>
+                {
+                    deleteOpen ?
+                        <DeleteConfirmModal open={deleteOpen} setOpen={setDeleteOpen} setConfirm={setConfirm} />
+                        :
+                        null
+                }
             </Stack>
         )
     }

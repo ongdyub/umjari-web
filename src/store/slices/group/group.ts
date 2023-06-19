@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
-import {SignUser} from "../user/user";
 import {Concert} from "../concert/concert";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -90,6 +89,7 @@ export interface GroupState {
 
     groupQnAList : GroupQnAList | null,
     groupQnAItem : GroupQnAItem | null,
+    groupQnAExist : boolean,
     groupConcertList : GroupConcertList | null
 }
 
@@ -100,6 +100,7 @@ const initialState: GroupState = {
 
     groupQnAList : null,
     groupQnAItem : null,
+    groupQnAExist : true,
     groupConcertList : null
 };
 
@@ -118,6 +119,23 @@ export const groupQnAPost = createAsyncThunk(
             const response = await axios.post(`/api/v1/group/${data.id}/qna/`,data.qnaData, {
                 headers: {
                     Authorization: `Bearer  ${data.token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const groupQnADelete = createAsyncThunk(
+    "group/groupQnADelete",
+    async ({id, qid, token} : any, {rejectWithValue}) => {
+        try {
+            const response = await axios.delete(`/api/v1/group/${id}/qna/${qid}/`, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
                 },
             })
             return response.data
@@ -150,6 +168,23 @@ export const groupQnAReplyPost = createAsyncThunk(
     async ({ id, qid, token, data }: { id: string | null | undefined, qid: string | null | undefined, token : string | null | undefined, data : any }, {rejectWithValue}) => {
         try {
             const response = await axios.post(`/api/v1/group/${id}/qna/${qid}/reply/`,data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const groupQnAReplyDelete = createAsyncThunk(
+    "group/groupQnAReplyDelete",
+    async ({ id, qid, rid, token }: { id: string | null | undefined, qid: string | null | undefined, rid: any, token : string | null | undefined}, {rejectWithValue}) => {
+        try {
+            const response = await axios.delete(`/api/v1/group/${id}/qna/${qid}/reply/${rid}/`, {
                 headers: {
                     Authorization: `Bearer  ${token}`,
                 },
@@ -264,7 +299,7 @@ export const groupStateSlice = createSlice({
             state.groupExist = true
             state.groupInfo = action.payload
         });
-        builder.addCase(groupInfo.rejected, (state, action) => {
+        builder.addCase(groupInfo.rejected, (state) => {
             state.groupExist = false
         });
         builder.addCase(groupQnAListGet.fulfilled, (state, action) => {
@@ -272,6 +307,10 @@ export const groupStateSlice = createSlice({
         });
         builder.addCase(groupQnAItemGet.fulfilled, (state, action) => {
             state.groupQnAItem = action.payload
+            state.groupQnAExist = true
+        });
+        builder.addCase(groupQnAItemGet.rejected, (state) => {
+            state.groupQnAExist = false
         });
         builder.addCase(groupConcertListGet.fulfilled, (state, action) => {
             state.groupConcertList = action.payload
@@ -285,7 +324,7 @@ export const groupStateSlice = createSlice({
             //     })
             // }
         });
-        builder.addCase(groupInfoPut.fulfilled, (state, action) => {
+        builder.addCase(groupInfoPut.fulfilled, () => {
             window.alert("변경 완료")
         });
         builder.addCase(groupInfoPut.rejected, (state, action) => {
@@ -294,6 +333,26 @@ export const groupStateSlice = createSlice({
             }
             else{
                 window.alert("변경 실패. 다시 시도하거나 다시 로그인해주세요")
+            }
+        });
+        builder.addCase(groupQnADelete.fulfilled, () => {
+            window.alert("삭제 완료")
+        });
+        builder.addCase(groupQnADelete.rejected, (state, action) => {
+            console.log(action)
+            if(action.payload === 2){
+                window.alert("댓글이 존재해 삭제가 불가능합니다.")
+            }
+            if(action.payload === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+        });
+        builder.addCase(groupQnAReplyDelete.fulfilled, () => {
+            window.alert("삭제 완료")
+        });
+        builder.addCase(groupQnAReplyDelete.rejected, (state, action) => {
+            if(action.payload === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
             }
         });
     },
