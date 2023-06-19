@@ -43,7 +43,7 @@ const MiniArticle = (props : any) => {
                 {item.isAnonymous ? item.nickname : item.authorInfo.profileName}
             </Typography>
             <Typography sx={{pl: 1, minWidth: '10%', maxWidth: '10%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
-                <ThumbUpAltIcon sx={{color: 'red',pt: 0.6,pr: 0.5, width: 15, height: 15}} />{0}
+                <ThumbUpAltIcon sx={{color: 'red',pt: 0.6,pr: 0.5, width: 15, height: 15}} />{item.likeCount}
             </Typography>
             <Typography className={"mini-article-responsive"} sx={{pl: 1, minWidth: '8%', maxWidth: '8%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
                 {/*<MouseIcon sx={{color: 'blue',pt: 0.6,pr: 0.5, width: 15, height: 15}}/>{visit}*/}

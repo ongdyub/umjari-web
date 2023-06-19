@@ -38,7 +38,9 @@ export interface Article {
     createAt: string,
     author: boolean,
     nickname: string,
-    authorInfo : AuthorInfo
+    authorInfo : AuthorInfo,
+    isLiked: boolean,
+    likeCount: number
 }
 const initialState: Article = {
     replies : [],
@@ -55,7 +57,9 @@ const initialState: Article = {
         id : 0,
         profileName : '',
         profileImage : ''
-    }
+    },
+    isLiked : false,
+    likeCount : 0
 };
 
 export const articleGet = createAsyncThunk(
@@ -95,7 +99,6 @@ export const articleDelete = createAsyncThunk(
                     Authorization: `Bearer  ${token}`,
                 },
             })
-            console.log(response.data)
             return response.data
         }
         catch (err : any) {
@@ -221,6 +224,24 @@ export const articleReplyEdit = createAsyncThunk(
     }
 )
 
+export const articleLikePut = createAsyncThunk(
+    "article/articleLikePut",
+    async ({boardType, id, token}: {boardType : string | number | undefined, id : string | null | undefined, token : string | null | undefined},  {rejectWithValue}) => {
+        try {
+            const board = matchBoardName(boardType)
+            const response = await axios.put(`/api/v1/board/${board?.enum}/post/${id}/likes/`, {},{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const articleStateSlice = createSlice({
     name: "articleState",
     initialState,
@@ -241,6 +262,8 @@ export const articleStateSlice = createSlice({
                 profileImage : ''
             }
             state.nickname = ''
+            state.isLiked = false
+            state.likeCount = 0
         },
     },
 
@@ -257,6 +280,8 @@ export const articleStateSlice = createSlice({
             state.createAt = action.payload.createAt
             state.nickname = action.payload.nickname
             state.authorInfo = action.payload.authorInfo
+            state.isLiked = action.payload.isLiked
+            state.likeCount = action.payload.likeCount
 
             const scrollToTop = () => {
                 window.scrollTo({
@@ -270,6 +295,18 @@ export const articleStateSlice = createSlice({
             window.alert("오류 발생. 다시 시도해주세요")
         });
         builder.addCase(articleReplyEdit.rejected, () => {
+            window.alert("오류 발생. 다시 시도해주세요")
+        });
+        builder.addCase(articleLikePut.fulfilled, (state) => {
+            if(state.isLiked){
+                state.likeCount -= 1
+            }
+            else{
+                state.likeCount += 1
+            }
+            state.isLiked = !state.isLiked
+        });
+        builder.addCase(articleLikePut.rejected, () => {
             window.alert("오류 발생. 다시 시도해주세요")
         });
     },

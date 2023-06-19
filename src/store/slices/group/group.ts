@@ -222,7 +222,6 @@ export const groupConcertListGet = createAsyncThunk(
     async ({id, param}: {id : string | number | undefined, param : any},  {rejectWithValue}) => {
         try {
             const response = await axios.get(`/api/v1/group/${id}/concerts/`,{params : param})
-            console.log(response.data)
             return response.data
         }
         catch (err : any) {
