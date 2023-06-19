@@ -3,9 +3,8 @@ import dayjs from "dayjs";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../../store";
 import {useNavigate, useParams} from "react-router-dom";
-import {groupQnAItemGet, groupQnAReplyDelete, selectGroup} from "../../../store/slices/group/group";
+import {groupQnAReplyDelete} from "../../../store/slices/group/group";
 import {selectUser} from "../../../store/slices/user/user";
-import {selectDummy} from "../../../store/slices/dummy/dummy";
 import {useEffect, useState} from "react";
 import DeleteConfirmModal from "../../../Modal/DeleteConfirmModal";
 
@@ -19,12 +18,8 @@ const GroupQnAComment = (props : any) => {
     const { id, qid } = useParams();
     const navigate = useNavigate()
 
-    const groupState = useSelector(selectGroup)
     const userState = useSelector(selectUser)
-    const dummySelector = useSelector(selectDummy);
 
-    const [replyText, setReplyText] = useState('')
-    const [hide, setHide] = useState(false)
     const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
     const [confirm, setConfirm] = useState<boolean>(false)
 
