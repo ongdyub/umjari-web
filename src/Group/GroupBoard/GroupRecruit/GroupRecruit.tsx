@@ -143,6 +143,10 @@ const GroupRecruit = () => {
     const [recruitList, setRecruitList] = useState<Array<any>>(groupState.groupRecruit === null ? [] : groupState.groupRecruit.recruitInstruments === null ? [] : getInstrumentNames(groupState.groupRecruit.recruitInstruments))
 
     const handleInstList = (item : any) => {
+        if(!groupState.groupRecruit?.recruit){
+            window.alert("모집중으로 먼저 상태를 변경해주세요")
+            return
+        }
         if(recruitList.includes(item.name)){
             setRecruitList(recruitList.filter((cur) => (cur !== item.name)))
             setRecruitEnumList(recruitEnumList.filter((cur) => (cur !== item.enum)))
@@ -208,16 +212,16 @@ const GroupRecruit = () => {
                 <Divider sx={{width: res700 ? '90%' : '100%', mt:-1}}/>
                 <Stack sx={{width : res700 ? '90%' : '100%'}}>
                     <Stack sx={{width: '100%'}} direction={'row'} justifyContent={'flex-start'} alignItems={'center'}>
-                        <Typography sx={{fontSize: 30, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>모집 악기</Typography>
+                        <Typography sx={{fontSize: res700 ? 20:30, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>모집 악기</Typography>
                         {
                             groupState.groupRecruit.recruit ?
-                                <Typography color={'info'} sx={{fontSize: 15, fontWeight: 700, fontFamily: "Open Sans", mt: 1, mb: 1, ml:3}}>모집중</Typography>
+                                <Typography color={'info'} sx={{fontSize: res700 ? 10 : 15, fontWeight: 700, fontFamily: "Open Sans", mt: 1, mb: 1, ml:2}}>모집중</Typography>
                                 :
-                                <Typography color={'error'} sx={{fontSize: 15, fontWeight: 700, fontFamily: "Open Sans", mt: 1, mb: 1, ml:3}}>마감</Typography>
+                                <Typography color={'error'} sx={{fontSize: res700 ? 10 : 15, fontWeight: 700, fontFamily: "Open Sans", mt: 1, mb: 1, ml:2}}>마감</Typography>
                         }
                         {
                             isAdminGroup && edit ?
-                                <Button onClick={handleIsRecruit} variant={"contained"} sx={{bgcolor : groupState.groupRecruit.recruit ? 'black' : 'grey' ,ml:3,maxWidth: 50, minWidth: 50,maxHeight: 30,minHeight: 30, fontSize : 9}} size={"small"} >{groupState.groupRecruit.recruit ? '모집중' : '마감'}</Button>
+                                <Button onClick={handleIsRecruit} variant={"contained"} sx={{bgcolor : groupState.groupRecruit.recruit ? 'grey' : 'black' ,ml:1,maxWidth: 60, minWidth: 60,maxHeight: 30,minHeight: 30, fontSize : 9}} size={"small"} >{groupState.groupRecruit.recruit ? '마감하기' : '모집하기'}</Button>
                                 :
                                 null
                         }
@@ -251,7 +255,7 @@ const GroupRecruit = () => {
                 </Stack>
                 <Divider sx={{width: res700 ? '100%' : '90%', mt: res700 ? 1 : 2, mb: res700 ? 1: 2}}/>
                 <Stack direction={'row'} justifyContent={'flex-start'} sx={{width : res700 ? '90%' : '100%'}}>
-                    <Typography sx={{fontSize: 30, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>상세정보</Typography>
+                    <Typography sx={{fontSize: res700 ? 20:30, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>상세정보</Typography>
                 </Stack>
                 {
                     isAdminGroup ?
