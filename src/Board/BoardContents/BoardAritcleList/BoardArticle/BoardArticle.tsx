@@ -43,7 +43,7 @@ const BoardArticle = (props : any) => {
                 <CommentIcon sx={{color: 'black', pt: 0.2,pr: 0.2, width: 12, height: 12}} /> {item.replyCount}
             </Typography>
             <Typography className={"board-article-responsive-like"} sx={{minWidth: '9%', maxWidth: '9%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
-                <ThumbUpAltIcon sx={{color: 'red',pt: 0.6,pr: 0.5, width: 13, height: 13}} />{0}
+                <ThumbUpAltIcon sx={{color: 'red',pt: 0.6,pr: 0.5, width: 13, height: 13}} />{item.likeCount}
             </Typography>
             {/*<Typography className={"board-article-responsive"} sx={{minWidth: '8%', maxWidth: '8%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>*/}
             {/*    <MouseIcon sx={{color: 'blue',pt: 0.6,pr: 0.5, width: 11, height: 11}}/>-*/}

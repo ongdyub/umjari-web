@@ -44,7 +44,7 @@ const ArticleHead = () => {
                     <Stack alignItems="center" flexDirection={"column"} sx={{mr: 1}}>
                         <Stack alignItems="center" flexDirection={"row"} justifyContent={"space-between"} sx={{width: 55}}>
                             <ThumbUpAltIcon sx={{color: 'red', width:15, height: 15}} />
-                            <Typography variant="caption" sx={{color: 'black'}}>0</Typography>
+                            <Typography variant="caption" sx={{color: 'black'}}>{articleState.likeCount}</Typography>
                         </Stack>
                         <Stack alignItems="center" flexDirection={"row"} justifyContent={"space-between"} sx={{width: 55}}>
                             <MouseIcon sx={{color: 'blue', width:15, height: 15}}/>

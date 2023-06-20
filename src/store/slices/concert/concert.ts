@@ -279,7 +279,6 @@ export const concertStateSlice = createSlice({
             }
         });
         builder.addCase(concertSetListDelete.fulfilled, (state, action) => {
-            console.log(action)
             if(state.concert !== null){
                 const remainIds = action.meta.arg.data.musicIds
                 state.concert.setList = produce(state.concert.setList, (draftSetList: Draft<GroupSetList>[]) => {

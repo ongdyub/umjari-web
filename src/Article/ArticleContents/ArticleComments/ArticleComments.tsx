@@ -4,7 +4,13 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import {useEffect, useState} from "react";
 import IconButton from '@mui/material/IconButton';
 import Comment from "../../../Common/Comment/Comment";
-import {articleDelete, articleGet, articleReplyPost, selectArticle} from "../../../store/slices/article/article";
+import {
+    articleDelete,
+    articleGet,
+    articleLikePut,
+    articleReplyPost,
+    selectArticle
+} from "../../../store/slices/article/article";
 import {selectUser, userActions} from "../../../store/slices/user/user";
 import {AppDispatch} from "../../../store";
 import {useNavigate, useParams} from "react-router-dom";
@@ -15,16 +21,22 @@ const ArticleComments = () => {
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
     const {boardName, id} = useParams()
-    const [thumb, setThumb] = useState(false)
+
     const [replyText, setReplyText] = useState('')
     const [open, setOpen] = useState(false)
     const [confirm, setConfirm] = useState(false)
+
     const articleState = useSelector(selectArticle)
     const userState = useSelector(selectUser)
 
     const handleThumb = () => {
-        window.alert('준비중입니다.')
-        // setThumb(!thumb)
+        if(userState.isLogin){
+            dispatch(articleLikePut({boardType : boardName, id : id, token : userState.accessToken}))
+            return
+        }
+        else{
+            dispatch(userActions.openModal())
+        }
     }
     const handleFocus = () => {
         if(userState.isLogin){
@@ -42,7 +54,6 @@ const ArticleComments = () => {
             navigate(`/community/${boardName}`)
         }
         else {
-            console.log(result.payload)
             window.alert("오류 발생. 다시 시도해주세요")
         }
     }
@@ -78,7 +89,7 @@ const ArticleComments = () => {
 
     useEffect(() => {
         if(confirm){
-            handleDeleteArticle().then(() => window.alert("처리 완료"))
+            handleDeleteArticle().then(() => {})
         }
     },[confirm])
 
@@ -96,7 +107,7 @@ const ArticleComments = () => {
                         null
                 }
                 <IconButton onClick={handleThumb}>
-                    <ThumbUpOffAltIcon  sx={{color: thumb ? 'red' : ''}}  />
+                    <ThumbUpOffAltIcon  sx={{color: articleState.isLiked ? 'red' : ''}}  />
                 </IconButton>
             </Stack>
             <Divider orientation={"horizontal"} sx={{width: '80%', mt:1, mb:1}}/>

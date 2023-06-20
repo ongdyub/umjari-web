@@ -11,7 +11,8 @@ export interface BoardListItem {
     title: string,
     board: string,
     author: boolean,
-    replyCount: number
+    replyCount: number,
+    likeCount: number
 }
 
 export interface BoardList {
@@ -99,7 +100,6 @@ export const boardListGet = createAsyncThunk(
         try {
             const board = matchBoardName(boardType)
             const response = await axios.get(`/api/v1/board/${board?.enum}/post/`,{params : param})
-            console.log(response.data)
             return response.data
         }
         catch (err : any) {

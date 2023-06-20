@@ -41,7 +41,6 @@ const Comment = (props : any) => {
             dispatch(articleGet({boardType : boardName, id: id, token : userState.accessToken}))
         }
         else {
-            console.log(result.payload)
             window.alert("오류 발생. 다시 시도해주세요")
         }
     }
@@ -80,7 +79,7 @@ const Comment = (props : any) => {
 
     useEffect(() => {
         if(confirm){
-            handleDeleteArticleReply().then(() => window.alert("처리 완료"))
+            handleDeleteArticleReply().then(() => {})
         }
     },[confirm])
 

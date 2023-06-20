@@ -1,97 +1,277 @@
 import {Button, Chip, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import ReactQuill from "react-quill";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {dummyActions, selectDummy} from "../../../store/slices/dummy/dummy";
-import {useState} from "react";
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {selectUser} from "../../../store/slices/user/user";
+import {
+    groupIsRecruit,
+    groupRecruitGet,
+    groupRecruitPut,
+    groupStateActions,
+    selectGroup
+} from "../../../store/slices/group/group";
+import {AppDispatch} from "../../../store";
+import ConcertInfoEdit from "../../../Concert/ConcertInfo/ConcertInfoEdit";
 
-const instrument = ['바이올린', '베이스', '호른', '튜바', '타악기']
+export const instList = [
+    {
+        name : '바이올린',
+        enum : 'VIOLIN'
+    },
+    {
+        name : '퍼스트 바이올린',
+        enum : 'FIRST_VIOLIN'
+    },
+    {
+        name : '세컨드 바이올린',
+        enum : 'SECOND_VIOLIN'
+    },
+    {
+        name : '비올라',
+        enum : 'VIOLA'
+    },
+    {
+        name : '첼로',
+        enum : 'CELLO'
+    },
+    {
+        name : '베이스',
+        enum : 'BASS'
+    },
+    {
+        name : '플루트',
+        enum : 'FLUTE'
+    },
+    {
+        name : '피콜로',
+        enum : 'PICCOLO'
+    },
+    {
+        name : '클라리넷',
+        enum : 'CLARINET'
+    },
+    {
+        name : 'E클라리넷',
+        enum : 'E_CLARINET'
+    },
+    {
+        name : '베이스클라리넷',
+        enum : 'BASS_CLARINET'
+    },
+    {
+        name : '오보에',
+        enum : 'OBOE'
+    },
+    {
+        name : '잉글리시호른',
+        enum : 'ENGLISH_HORN'
+    },
+    {
+        name : '바순',
+        enum : 'BASSOON'
+    },
+    {
+        name : '콘트라바순',
+        enum : 'CONTRABASSOON'
+    },
+    {
+        name : '호른',
+        enum : 'HORN'
+    },
+    {
+        name : '트럼펫',
+        enum : 'TRUMPET'
+    },
+    {
+        name : '코넷',
+        enum : 'CORNET'
+    },
+    {
+        name : '트롬본',
+        enum : 'TROMBONE'
+    },
+    {
+        name : '베이스트롬본',
+        enum : 'BASS_TROMBONE'
+    },
+    {
+        name : '튜바',
+        enum : 'TUBA'
+    },
+    {
+        name : '타악기',
+        enum : 'PERCUSSION_INSTRUMENT'
+    },
+    {
+        name : '기타 악기',
+        enum : 'OTHERS'
+    },
+]
+
+export const getInstrumentNames = (enums : any) => {
+    if(enums === null || enums === undefined){
+        return []
+    }
+    const instrumentNames = [];
+
+    for (let i = 0; i < instList.length; i++) {
+        const instrument = instList[i];
+        if (enums.includes(instrument.enum)) {
+            instrumentNames.push(instrument.name);
+        }
+    }
+
+    return instrumentNames;
+}
 
 const GroupRecruit = () => {
 
-    const modules = {
-        toolbar: {
-            container: [
-                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                [{ 'font': [] }],
-                [{ 'align': [] }],
-                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }, 'link'],
-                [{ 'color': ['#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', '#ffffff', '#facccc', '#ffebcc', '#ffffcc', '#cce8cc', '#cce0f5', '#ebd6ff', '#bbbbbb', '#f06666', '#ffc266', '#ffff66', '#66b966', '#66a3e0', '#c285ff', '#888888', '#a10000', '#b26b00', '#b2b200', '#006100', '#0047b2', '#6b24b2', '#444444', '#5c0000', '#663d00', '#666600', '#003700', '#002966', '#3d1466', 'custom-color'] }, { 'background': [] }],
-                ['image', 'video'],
-                ['clean']
-            ],
-        },
-    }
-    const formats = [
-        'font',
-        'header',
-        'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block', 'formula',
-        'list', 'bullet', 'indent',
-        'link', 'image', 'video',
-        'align', 'color', 'background',
-    ]
     const theme = useTheme()
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const dummySelector = useSelector(selectDummy)
+    const {id} = useParams()
+    const dispatch = useDispatch<AppDispatch>()
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
-    const res1100 = useMediaQuery('(max-width:1099px)')
-    const res800 = useMediaQuery('(max-width:800px)')
-    const res600 = useMediaQuery('(max-width:600px)')
-    const resMd = useMediaQuery(theme.breakpoints.down("md"))
 
-    const [mode, setMode] = useState(true)
-    const [contents, setContents] = useState('');
+    const userState = useSelector(selectUser)
+    const groupState = useSelector(selectGroup)
 
-    const handleEdit = () => {
-        dispatch(dummyActions.setWrite(contents))
-        navigate('/group/3/recruit')
+    const [isAdminGroup, setIsAdminGroup] = useState<boolean>(false)
+    const [edit, setEdit] = useState<boolean>(false)
+
+    const [contents, setContents] = useState(groupState.groupRecruit === null ? '' : groupState.groupRecruit.recruitDetail === null ? '마감되었습니다.' : groupState.groupRecruit.recruit ? groupState.groupRecruit.recruitDetail : '마감되었습니다.');
+    const [recruitEnumList, setRecruitEnumList] = useState<Array<any>>(groupState.groupRecruit === null ? [] : groupState.groupRecruit.recruitInstruments === null ? [] : groupState.groupRecruit.recruitInstruments)
+    const [recruitList, setRecruitList] = useState<Array<any>>(groupState.groupRecruit === null ? [] : groupState.groupRecruit.recruitInstruments === null ? [] : getInstrumentNames(groupState.groupRecruit.recruitInstruments))
+
+    const handleInstList = (item : any) => {
+        if(recruitList.includes(item.name)){
+            setRecruitList(recruitList.filter((cur) => (cur !== item.name)))
+            setRecruitEnumList(recruitEnumList.filter((cur) => (cur !== item.enum)))
+        }
+        else{
+            setRecruitList(recruitList.concat(item.name))
+            setRecruitEnumList(recruitEnumList.concat(item.enum))
+        }
     }
 
-    return(
-        <Stack justifyContent={"flex-start"}>
-            <Divider sx={{width: res700 ? '100%' : '90%', mt: -1}}/>
+    const handleIsRecruit = async () => {
+        const result = await dispatch(groupIsRecruit({id : id, token : userState.accessToken}))
+        if(result.type === `${groupIsRecruit.typePrefix}/fulfilled`){
+            dispatch(groupRecruitGet({id : id, token : userState.accessToken}))
+            setEdit(false)
+        }
+    }
 
-            <Stack alignItems={res700 ? "center" : ''}>
-                <Stack justifyContent={"flex-start"} sx={{mt: res700 ? 2 : 4}} direction={"row"} alignItems={"center"} alignContent={"center"}>
-                    <Typography sx={{fontSize: res700 ? 20 : 45, fontWeight: 100, fontFamily: "Open Sans", mr:5}}>모집 악기</Typography>
-                    <Button variant={"contained"} sx={{maxWidth: res700 ? 60 : 80, minWidth: res700 ? 60 : 80,maxHeight: res700 ? 30 : 50,minHeight: res700 ? 30 : 50, fontSize : res700 ? 12 : 17}} size={res700 ? "small" : 'medium'} disabled={false}>모집중</Button>
-                </Stack>
-                <Stack direction={"row"} sx={{mt: res700 ? 1 : 2, pl: res700 ? 3: 0}} flexWrap={"wrap"}>
-                    {
-                        instrument.map((item) => (
-                            <Chip label={`${item}`} sx={{mr: 2, mb: 1}}/>
-                        ))
-                    }
-                </Stack>
+    const handleEdit = async () => {
+        const data = {
+            recruitInstruments : recruitEnumList,
+            recruitDetail : contents
+        }
+        const result = await dispatch(groupRecruitPut({id : id, token : userState.accessToken, data : data}))
+        if(result.type === `${groupRecruitPut.typePrefix}/fulfilled`){
+            dispatch(groupRecruitGet({id : id, token : userState.accessToken}))
+            setEdit(false)
+        }
+    }
+
+    useEffect(() => {
+        dispatch(groupRecruitGet({id : id, token : userState.accessToken}))
+        return () => {
+            dispatch(groupStateActions.resetGroupRecruit())
+        }
+    },[dispatch, id])
+
+    useEffect(() => {
+        if(userState.isLogin){
+            const userGroup = userState.career.find((userGroup) => userGroup.groupId.toString() === id)
+            if(userGroup !== null && userGroup !== undefined && userGroup.memberType === 'ADMIN'){
+                setIsAdminGroup(true)
+            }
+        }
+    },[userState.career, userState.isLogin])
+
+    useEffect(() => {
+        setRecruitList(groupState.groupRecruit === null ? [] : groupState.groupRecruit.recruitInstruments === null ? [] : getInstrumentNames(groupState.groupRecruit.recruitInstruments))
+        setRecruitEnumList(groupState.groupRecruit === null ? [] : groupState.groupRecruit.recruitInstruments === null ? [] : groupState.groupRecruit.recruitInstruments)
+        setContents(groupState.groupRecruit === null ? '' : groupState.groupRecruit.recruitDetail === null ? '마감되었습니다.' : groupState.groupRecruit.recruit ? groupState.groupRecruit.recruitDetail : '마감되었습니다.')
+    },[groupState.groupRecruit])
+
+    if(groupState.groupRecruit === null){
+        return(
+            <Stack>
+                로딩중...
             </Stack>
-
-            <Divider sx={{width: res700 ? '100%' : '90%', mt: res700 ? 1 : 2}}/>
-
-            {/*<Stack sx={{width: 'calc(100% - 24px)', mt:1}}>*/}
-            {/*    <ReactQuill*/}
-            {/*        value={dummySelector.write}*/}
-            {/*        readOnly={true}*/}
-            {/*        theme={"bubble"}*/}
-            {/*    />*/}
-            {/*    <ReactQuill*/}
-            {/*        className={"quill"}*/}
-            {/*        style={{width: '95%', marginBottom: '60px', height: '500px' }}*/}
-            {/*        theme="snow"*/}
-            {/*        modules={modules}*/}
-            {/*        formats={formats}*/}
-            {/*        value={contents}*/}
-            {/*        onChange={(e) => setContents(e)}*/}
-            {/*    />*/}
-            {/*</Stack>*/}
-            {/*<Divider sx={{width: '90%'}} />*/}
-            {/*<Stack direction={"row"} sx={{mt:1, mb:10}}>*/}
-            {/*    <Button variant={"outlined"} onClick={handleEdit}>수정하기</Button>*/}
-            {/*</Stack>*/}
-
-        </Stack>
-    )
+        )
+    }
+    else{
+        return(
+            <Stack justifyContent={res700 ? 'center' : 'flex-start'} alignItems={'center'} sx={{mb: 10}}>
+                <Divider sx={{width: res700 ? '90%' : '100%', mt:-1}}/>
+                <Stack sx={{width : res700 ? '90%' : '100%'}}>
+                    <Stack sx={{width: '100%'}} direction={'row'} justifyContent={'flex-start'} alignItems={'center'}>
+                        <Typography sx={{fontSize: 30, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>모집 악기</Typography>
+                        {
+                            groupState.groupRecruit.recruit ?
+                                <Typography color={'info'} sx={{fontSize: 15, fontWeight: 700, fontFamily: "Open Sans", mt: 1, mb: 1, ml:3}}>모집중</Typography>
+                                :
+                                <Typography color={'error'} sx={{fontSize: 15, fontWeight: 700, fontFamily: "Open Sans", mt: 1, mb: 1, ml:3}}>마감</Typography>
+                        }
+                        {
+                            isAdminGroup && edit ?
+                                <Button onClick={handleIsRecruit} variant={"contained"} sx={{bgcolor : groupState.groupRecruit.recruit ? 'black' : 'grey' ,ml:3,maxWidth: 50, minWidth: 50,maxHeight: 30,minHeight: 30, fontSize : 9}} size={"small"} >{groupState.groupRecruit.recruit ? '모집중' : '마감'}</Button>
+                                :
+                                null
+                        }
+                        <Stack direction={'row'} alignItems={'center'} sx={{ml : 1,height: '100%'}}>
+                            {
+                                isAdminGroup ?
+                                    edit ?
+                                        <>
+                                            <Button color={"info"} size={"small"} onClick={handleEdit}>변경</Button>
+                                            <Button color={"success"} size={"small"} onClick={() => setEdit(false)}>취소</Button>
+                                        </>
+                                        :
+                                        <Button color={"warning"} size={"small"} onClick={() => setEdit(true)}>수정</Button>
+                                    :
+                                    null
+                            }
+                        </Stack>
+                    </Stack>
+                    <Stack direction={"row"} sx={{mt: res700 ? 1 : 2, pl: res700 ? 3: 0}} flexWrap={"wrap"}>
+                        {
+                            isAdminGroup && edit ?
+                                instList.map((item, idx) => (
+                                    <Chip key={idx} label={`${item.name}`} sx={{mr: 2, mb: 1, cursor:'pointer', border : recruitList.includes(item.name) ? '1px solid black' : ''}} onClick={() => handleInstList(item)}/>
+                                ))
+                                :
+                                recruitList.map((item, idx) => (
+                                    <Chip key={idx} label={`${item}`} sx={{mr: 2, mb: 1}}/>
+                                ))
+                        }
+                    </Stack>
+                </Stack>
+                <Divider sx={{width: res700 ? '100%' : '90%', mt: res700 ? 1 : 2, mb: res700 ? 1: 2}}/>
+                <Stack direction={'row'} justifyContent={'flex-start'} sx={{width : res700 ? '90%' : '100%'}}>
+                    <Typography sx={{fontSize: 30, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>상세정보</Typography>
+                </Stack>
+                {
+                    isAdminGroup ?
+                        edit ?
+                            <ConcertInfoEdit contents={contents} setContents={setContents} />
+                            :
+                            <Stack sx={{width : res700 ? '90%' : '100%', mt : 2}}>
+                                <ReactQuill
+                                    value={groupState.groupRecruit.recruitDetail === null ? '마감되었습니다.' : groupState.groupRecruit.recruit ? groupState.groupRecruit.recruitDetail : '마감되었습니다.'}
+                                    style={{paddingRight: res700 ? 0 : 20, height: 'auto'}}
+                                    readOnly={true}
+                                    theme={"bubble"}
+                                />
+                            </Stack>
+                        :
+                        null
+                }
+            </Stack>
+        )
+    }
 }
 
 export default GroupRecruit
