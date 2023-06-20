@@ -94,6 +94,7 @@ const GroupQnAItem = () => {
         if(confirm){
             dispatch(groupQnADelete({id : id, qid : qid, token : userState.accessToken}))
             setDeleteOpen(false)
+            navigate(-1)
         }
     },[confirm])
 

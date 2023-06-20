@@ -2,7 +2,7 @@ import {Button, FormControl, MenuItem, Select, Stack, TextField, useMediaQuery, 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import {useRef, useMemo, useState, useEffect} from "react";
 import './WriteEditor.scss'
-import ReactQuill from 'react-quill';
+import ReactQuill, {Quill} from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
@@ -12,6 +12,8 @@ import {AppDispatch} from "../../store";
 import axios from "axios";
 import {articleGet, selectArticle} from "../../store/slices/article/article";
 import {matchBoardName} from "../../store/slices/board/board";
+import { ImageResize } from "quill-image-resize-module-ts";
+Quill.register("modules/ImageResize", ImageResize);
 
 const boardList = [
     {
@@ -151,7 +153,11 @@ const WriteEditor = (props : any) => {
                 ],
                 handlers: {
                     image: imageHandler,
-                }
+                },
+                ImageResize: {
+                    parchment: Quill.import("parchment"),
+                    modules: ["Resize", "DisplaySize"],
+                },
             },
         }
     },[])
@@ -277,6 +283,7 @@ const WriteEditor = (props : any) => {
                 modules={modules}
                 formats={formats}
                 value={contents}
+                placeholder={"작성 완료후 수정할 때에는 게시판 이동이 불가하므로 게시판을 다시한번 확인해주세요"}
                 onChange={(e) => setContents(e)}
             />
         </Stack>
