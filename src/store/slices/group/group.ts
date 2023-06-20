@@ -247,6 +247,57 @@ export const groupInfoPut = createAsyncThunk(
     }
 )
 
+export const groupRecruitGet = createAsyncThunk(
+    "group/groupRecruitGet",
+    async ({id, token}: {id : string | number | undefined, token : string | null | undefined },  {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/group/${id}/recruit/`,{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const groupRecruitPut = createAsyncThunk(
+    "group/groupRecruitPut",
+    async ({id, token, data}: {id : string | number | undefined, token : string | null | undefined, data : any},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/group/${id}/recruit-detail/`, data,{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const groupIsRecruit = createAsyncThunk(
+    "group/groupIsRecruit",
+    async ({id, token}: {id : string | number | undefined, token : string | null | undefined},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/group/${id}/is-recruit/`, {},{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 
 // export const concert = createAsyncThunk(
 //     "concert/concert",
@@ -272,6 +323,9 @@ export const groupStateSlice = createSlice({
         },
         resetGroupConcertList : (state) => {
             state.groupConcertList = null
+        },
+        resetGroupRecruit : (state) => {
+            state.groupRecruit = null
         },
         sortGroupList : (state, action: PayloadAction<any>) => {
             if (action.payload.rule === '시간') {
@@ -300,6 +354,13 @@ export const groupStateSlice = createSlice({
         });
         builder.addCase(groupInfo.rejected, (state) => {
             state.groupExist = false
+        });
+        builder.addCase(groupRecruitGet.fulfilled, (state, action) => {
+            state.groupRecruit = action.payload
+        });
+        builder.addCase(groupRecruitGet.rejected, (state) => {
+            state.groupRecruit = null
+            window.alert("네트워크 오류발생")
         });
         builder.addCase(groupQnAListGet.fulfilled, (state, action) => {
             state.groupQnAList = action.payload
@@ -352,6 +413,31 @@ export const groupStateSlice = createSlice({
         builder.addCase(groupQnAReplyDelete.rejected, (state, action) => {
             if(action.payload === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
+            }
+        });
+        builder.addCase(groupRecruitPut.fulfilled, () => {
+            window.alert("변경 완료")
+        });
+        builder.addCase(groupRecruitPut.rejected, (state, action) => {
+            if(action.payload === 3001) {
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("오류발생. 새로고침 후 다시 시도해주세요.")
+            }
+        });
+        builder.addCase(groupIsRecruit.fulfilled, (state) => {
+            window.alert("변경 완료")
+            if(state.groupRecruit !== null){
+                state.groupRecruit.recruit = !state.groupRecruit.recruit
+            }
+        });
+        builder.addCase(groupIsRecruit.rejected, (state, action) => {
+            if(action.payload === 3001) {
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("오류발생. 새로고침 후 다시 시도해주세요.")
             }
         });
     },

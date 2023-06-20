@@ -28,7 +28,7 @@ const Concert = () => {
             }
         }
 
-        fetchConcert()
+        fetchConcert().then(() => {})
 
         return () => {
             dispatch(concertStateActions.resetConcert());

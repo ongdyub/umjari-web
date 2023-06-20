@@ -28,8 +28,8 @@ const GroupConcertList = (props : any) => {
                     onClick={() => setExpanded(!expanded)}
                 />
                 <Collapse sx={{mt:1}} in={expanded} orientation={"vertical"} timeout="auto" unmountOnExit>
-                    {item.setList.map((item : any) => (
-                        <Stack sx={{width: '100%', cursor: 'pointer', mb: 0.5}} alignItems={'center'} onClick={() => setExpanded(!expanded)}>
+                    {item.setList.map((item:any, idx:any) => (
+                        <Stack key={idx} sx={{width: '100%', cursor: 'pointer', mb: 0.5}} alignItems={'center'} onClick={() => setExpanded(!expanded)}>
 
                             <Stack sx={{width: '80%', mt:1.5, mb:0.5}} direction={'row'} alignItems={'center'} justifyContent={'flex-end'}>
                                 <Typography variant="caption" sx={{fontWeight: 600, fontSize: 12, mr: 'auto'}}>

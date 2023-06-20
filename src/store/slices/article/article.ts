@@ -70,7 +70,6 @@ export const articleGet = createAsyncThunk(
             const board = matchBoardName(boardType)
             if(token === null){
                 const response = await axios.get(`/api/v1/board/${board?.enum}/post/${id}/`,)
-                console.log(response.data)
                 return response.data
             }
             else{

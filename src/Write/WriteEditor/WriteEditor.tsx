@@ -218,7 +218,6 @@ const WriteEditor = (props : any) => {
                 navigate(`/community/전체게시판`)
             }
             else {
-                console.log(result.payload)
                 window.alert("오류 발생. 다시 시도해주세요")
             }
         }

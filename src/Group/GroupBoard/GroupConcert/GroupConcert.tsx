@@ -101,8 +101,8 @@ const GroupConcert = () => {
                         variant="standard"
                         sx={{fontSize: 13}}
                     >
-                        {sort.map((option) => (
-                            <MenuItem sx={{fontSize: 13, maxHeight: 30,minHeight: 30}} key={option} value={option}>
+                        {sort.map((option, idx) => (
+                            <MenuItem sx={{fontSize: 13, maxHeight: 30,minHeight: 30}} key={idx} value={option}>
                                 {option}
                             </MenuItem>
                         ))}
@@ -115,8 +115,8 @@ const GroupConcert = () => {
                         variant="standard"
                         sx={{fontSize: 13}}
                     >
-                        {direction.map((option) => (
-                            <MenuItem sx={{fontSize: 13, maxHeight: 30,minHeight: 30}} key={option} value={option}>
+                        {direction.map((option, idx) => (
+                            <MenuItem key={idx} sx={{fontSize: 13, maxHeight: 30,minHeight: 30}} value={option}>
                                 {option}
                             </MenuItem>
                         ))}
