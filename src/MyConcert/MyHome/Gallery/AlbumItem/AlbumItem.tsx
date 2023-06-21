@@ -26,7 +26,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 
-const GalleryAlbum = (props : any) => {
+const AlbumItem = (props : any) => {
 
     const {img} = props;
     const [expanded, setExpanded] = React.useState(false);
@@ -45,12 +45,9 @@ const GalleryAlbum = (props : any) => {
             <Divider sx={{width: '100%', mb:0.3}} />
             <CardMedia
                 component="img"
-                height="294"
+                sx={{height: 'auto', width: '100%'}}
                 image={`/img/${img}.jpg`}
             />
-            {/*<CardContent>*/}
-
-            {/*</CardContent>*/}
             <Stack sx={{width: '100%'}} direction={"row"} justifyContent={"flex-start"} alignItems={"center"} alignContent={"center"}>
                 <IconButton>
                     <PhotoLibraryIcon />
@@ -66,4 +63,4 @@ const GalleryAlbum = (props : any) => {
     )
 }
 
-export default GalleryAlbum
+export default AlbumItem
