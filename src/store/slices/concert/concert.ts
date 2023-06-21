@@ -52,6 +52,7 @@ export interface Concert {
     fee: number,
     region: string,
     regionDetail: string,
+    solist: string,
     setList : [GroupSetList]
 }
 

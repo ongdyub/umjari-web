@@ -76,6 +76,7 @@ const ConcertInfo = (props : any) => {
     const [host, setHost] = useState<string>('')
     const [support, setSupport] = useState<string>('')
     const [qna, setQna] = useState<string>('')
+    const [solist, setSolist] = useState<string>('')
 
     const datePattern = /^\d{4}-\d{2}-\d{2}$/;
     const checkDate = (dateString : string) => {
@@ -182,7 +183,8 @@ const ConcertInfo = (props : any) => {
             fee : fee,
             regionParent : region_parents[parent],
             regionChild : region_child[parent][child],
-            regionDetail : regionDetail
+            regionDetail : regionDetail,
+            solist : solist
         }
 
         const result = await dispatch(concertDetailPut({data, token : userState.accessToken, id : id}))
@@ -367,13 +369,12 @@ const ConcertInfo = (props : any) => {
                                     />
                                 </FormControl>
                                 <FormControl variant="standard" sx={{ml: '10%', width: '40%'}}>
-                                    <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">가격을 입력하세요</InputLabel>
+                                    <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">협연자를 입력하세요</InputLabel>
                                     <Input
                                         id="standard-adornment-amount"
                                         sx={{fontSize: 12, pt: 0.5}}
-                                        type={"number"}
-                                        value={fee}
-                                        onChange={(e) => setFee(e.target.value)}
+                                        value={solist}
+                                        onChange={(e) => setSolist(e.target.value)}
                                     />
                                 </FormControl>
                             </Stack>
@@ -389,12 +390,13 @@ const ConcertInfo = (props : any) => {
                                     />
                                 </FormControl>
                                 <FormControl variant="standard" sx={{ml: '10%', width: '40%'}}>
-                                    <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">주최자를 입력하세요</InputLabel>
+                                    <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">가격을 입력하세요</InputLabel>
                                     <Input
                                         id="standard-adornment-amount"
                                         sx={{fontSize: 12, pt: 0.5}}
-                                        value={host}
-                                        onChange={(e) => setHost(e.target.value)}
+                                        type={"number"}
+                                        value={fee}
+                                        onChange={(e) => setFee(e.target.value)}
                                     />
                                 </FormControl>
                             </Stack>
@@ -409,6 +411,17 @@ const ConcertInfo = (props : any) => {
                                     />
                                 </FormControl>
                                 <FormControl variant="standard" sx={{ml: '10%', width: '40%'}}>
+                                    <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">주최자를 입력하세요</InputLabel>
+                                    <Input
+                                        id="standard-adornment-amount"
+                                        sx={{fontSize: 12, pt: 0.5}}
+                                        value={host}
+                                        onChange={(e) => setHost(e.target.value)}
+                                    />
+                                </FormControl>
+                            </Stack>
+                            <Stack direction={"row"} sx={{mt:1.5, mb: 1}}>
+                                <FormControl variant="standard" sx={{width: '40%'}}>
                                     <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">문의를 입력하세요</InputLabel>
                                     <Input
                                         id="standard-adornment-amount"
@@ -436,6 +449,10 @@ const ConcertInfo = (props : any) => {
                             <Stack direction={"row"} sx={{mt:1.5}} alignItems={"center"} alignContent={"center"}>
                                 <Typography sx={fontTitle}>지휘자</Typography>
                                 <Typography>{concertData.conductor}</Typography>
+                            </Stack>
+                            <Stack direction={"row"} sx={{mt:1.5}} alignItems={"center"} alignContent={"center"}>
+                                <Typography sx={fontTitle}>협연자</Typography>
+                                <Typography>{concertData.solist}</Typography>
                             </Stack>
                             <Stack direction={"row"} sx={{mt:1.5}} alignItems={"center"} alignContent={"center"}>
                                 <Typography sx={fontTitle}>가격</Typography>
