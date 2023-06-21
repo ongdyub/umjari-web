@@ -1,5 +1,5 @@
 import {
-    Button,
+    Button, CircularProgress,
     Fade, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel,
     Modal,
     Stack, TextField,
@@ -10,6 +10,8 @@ import {useDispatch} from "react-redux";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {login, signUp, userActions, valCode, valEmailPost, valNamePost} from "../store/slices/user/user";
 import {AppDispatch} from "../store";
+import Backdrop from "@mui/material/Backdrop";
+import * as React from "react";
 
 const styleReg = (theme: any) => ({
     position: 'absolute',
@@ -341,6 +343,12 @@ const LoginModal = (props : any) => {
         >
             <Fade in={open}>
                 <Stack spacing={2} sx={ isLoginMode ? styleLog : styleReg}>
+                    <Backdrop
+                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                        open={pending}
+                    >
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
                     <TextField
                         label="아이디"
                         variant="standard"
