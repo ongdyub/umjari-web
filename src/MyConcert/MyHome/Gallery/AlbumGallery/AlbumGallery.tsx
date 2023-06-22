@@ -10,11 +10,28 @@ import {
     useTheme
 } from "@mui/material";
 import AlbumItem from "../AlbumItem/AlbumItem";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import Card from "@mui/material/Card";
+import * as React from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {albumListGet, galleryStateActions, selectGallery} from "../../../../store/slices/gallery/gallery";
+import {useParams} from "react-router-dom";
+import {AppDispatch} from "../../../../store";
+import {selectUser} from "../../../../store/slices/user/user";
+import AddAlbumModal from "../../../../Modal/AddAlbumModal";
 
 const AlbumGallery = () => {
 
+    const galleryState = useSelector(selectGallery)
+    const userState = useSelector(selectUser)
+
     const theme = useTheme();
+    const {profileName,albumId} = useParams()
+    const dispatch = useDispatch<AppDispatch>()
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
     const sort = ['시간','좋아요']
@@ -22,6 +39,7 @@ const AlbumGallery = () => {
 
     const [sortRule, setSortRule] = useState('시간')
     const [sortDirection, setSortDirection] = useState('오름차순')
+    const [open, setOpen] = useState(false);
 
     const handleRuleChange = (event: SelectChangeEvent) => {
         setSortRule(event.target.value);
@@ -35,6 +53,25 @@ const AlbumGallery = () => {
         setPage(value);
     };
 
+    useEffect(() => {
+        const param = {
+            page : 1,
+            size : 10,
+            sort : "createdAt,ASC",
+        }
+        dispatch(albumListGet({profileName : profileName, token : userState.accessToken, param : param}))
+        return () => {
+            dispatch(galleryStateActions.resetGallery())
+        }
+    },[dispatch, profileName])
+
+    if(galleryState.album === null || galleryState.album === undefined){
+        return(
+            <Stack>
+                로딩중...
+            </Stack>
+        )
+    }
     return(
         <Stack sx={{mt: 2, width: '100%'}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
             <Divider sx={{width: res750 ? '100%' : '90%', color: '#292929'}} />
@@ -73,9 +110,43 @@ const AlbumGallery = () => {
             <Stack sx={{mt: 2, width: '100%', mb: 5}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
                 <Grid justifyContent={"space-between"} flexWrap={"wrap"} container spacing={1} columns={22} sx={{pr: res750 ? 2 : 5, pl: res750 ? 2: 0}}>
                     {
-                        itemData.map((item) => (
+                        galleryState.album.isAuthor ?
                             <Grid item res300={10.5} res750={10.5} md={7} lg={7} sx={{mb: 3}} direction={'row'} alignItems={'center'}>
-                                <AlbumItem img={item} />
+                                <Card onClick={() => setOpen(true)} sx={{cursor:'pointer', maxWidth: 345, boxShadow: 8 }}>
+                                    <Stack sx={{width: '100%', mt: 1, mb: 0.3}} justifyContent={"center"} alignContent={"center"} alignItems={"center"}>
+                                        <Typography sx={{fontSize: 13, fontWeight: 300}}>
+                                            앨범 추가
+                                        </Typography>
+                                    </Stack>
+                                    <Divider sx={{width: '100%', mb:0.3}} />
+                                    <Stack sx={{height: '80px', width: '100%'}} justifyContent={'center'} alignContent={'center'} alignItems={'center'} direction={'row'}>
+                                        <AddAPhotoIcon sx={{width: 'auto', height:'50px'}} />
+                                    </Stack>
+                                    <Stack sx={{width: '100%'}} direction={"row"} justifyContent={"flex-start"} alignItems={"center"} alignContent={"center"}>
+                                        <IconButton>
+                                            <PhotoLibraryIcon />
+                                            <Typography sx={{pl: 1.5}}>
+                                            </Typography>
+                                        </IconButton>
+                                        <Typography sx={{color: 'grey', fontSize: 8, fontWeight: 500, marginLeft: 'auto', pr:1}}>
+                                            created At YYYY.MM.DD
+                                        </Typography>
+                                    </Stack>
+                                </Card>
+                            </Grid>
+                            :
+                            null
+                    }
+                    {
+                        galleryState.album.isAuthor && open  ?
+                            <AddAlbumModal open={open} setOpen={setOpen} />
+                            :
+                            null
+                    }
+                    {
+                        galleryState.album.albumPage.contents.map((item, idx) => (
+                            <Grid key={idx} item res300={10.5} res750={10.5} md={7} lg={7} sx={{mb: 3}} direction={'row'} alignItems={'center'}>
+                                <AlbumItem item={item} />
                             </Grid>
                         ))
                     }
@@ -89,5 +160,3 @@ const AlbumGallery = () => {
 }
 
 export default AlbumGallery
-
-const itemData = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];

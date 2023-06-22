@@ -19,7 +19,7 @@ export interface Photo {
         totalPages: number,
         totalElements: number,
         currentPage: number
-    }
+    },
 }
 
 export interface AlbumItem {
@@ -37,7 +37,7 @@ export interface Album {
         totalPages: number,
         totalElements: number,
         currentPage: number
-    }
+    },
 }
 
 export interface Gallery {
@@ -53,14 +53,66 @@ const initialState: Gallery = {
     photo : null
 };
 
+export const albumListGet = createAsyncThunk(
+    "gallery/albumListGet",
+    async ({profileName, token, param} : {profileName : string | undefined | null, token : string | undefined | null, param : any},  {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/album/profile-name/${profileName}/`, {
+                params : param,
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const postAlbum = createAsyncThunk(
+    "gallery/postAlbum",
+    async ({data, token} : {data : any, token : string | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.post(`/api/v1/album/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const galleryStateSlice = createSlice({
     name: "galleryState",
     initialState,
     reducers: {
-
+        resetGallery: (state) => {
+            state.album = null
+            state.albumItem = null
+            state.photo = null
+            state.photoItem = null
+        },
     },
 
     extraReducers: (builder) => {
+        builder.addCase(albumListGet.fulfilled, (state, action) => {
+            state.album = action.payload
+        });
+        builder.addCase(albumListGet.rejected, () => {
+            window.alert("네트워크 오류")
+        });
+        builder.addCase(postAlbum.fulfilled, () => {
+            window.alert("생성 완료")
+        });
+        builder.addCase(postAlbum.rejected, () => {
+            window.alert("네트워크 오류")
+        });
     },
 });
 
