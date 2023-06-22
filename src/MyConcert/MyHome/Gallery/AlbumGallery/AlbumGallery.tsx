@@ -19,7 +19,7 @@ import Card from "@mui/material/Card";
 import * as React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {albumListGet, galleryStateActions, selectGallery} from "../../../../store/slices/gallery/gallery";
-import {useParams} from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import {AppDispatch} from "../../../../store";
 import {selectUser} from "../../../../store/slices/user/user";
 import AddAlbumModal from "../../../../Modal/AddAlbumModal";
@@ -29,17 +29,22 @@ const AlbumGallery = () => {
     const galleryState = useSelector(selectGallery)
     const userState = useSelector(selectUser)
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const theme = useTheme();
-    const {profileName,albumId} = useParams()
+    const {profileName} = useParams()
     const dispatch = useDispatch<AppDispatch>()
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
-    const sort = ['시간','좋아요']
+    const sort = ['시간']
     const direction = ['오름차순', '내림차순']
 
     const [sortRule, setSortRule] = useState('시간')
-    const [sortDirection, setSortDirection] = useState('오름차순')
+    const [sortDirection, setSortDirection] = useState('내림차순')
     const [open, setOpen] = useState(false);
+
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(1)
 
     const handleRuleChange = (event: SelectChangeEvent) => {
         setSortRule(event.target.value);
@@ -48,8 +53,9 @@ const AlbumGallery = () => {
         setSortDirection(event.target.value);
     };
 
-    const [page, setPage] = useState(1);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        searchParams.set('page',value.toString())
+        setSearchParams(searchParams)
         setPage(value);
     };
 
@@ -57,13 +63,39 @@ const AlbumGallery = () => {
         const param = {
             page : 1,
             size : 10,
-            sort : "createdAt,ASC",
+            sort : "createdAt,DESC",
         }
         dispatch(albumListGet({profileName : profileName, token : userState.accessToken, param : param}))
         return () => {
             dispatch(galleryStateActions.resetGallery())
         }
     },[dispatch, profileName])
+
+    useEffect(() => {
+        if(galleryState.album !== null){
+            setPage(galleryState.album.albumPage.currentPage)
+            setTotalPage(galleryState.album.albumPage.totalPages)
+        }
+    },[galleryState.album])
+
+    useEffect(() => {
+        const param = {
+            page : searchParams.get('page'),
+            size : 10,
+            sort : "createdAt,DESC",
+        }
+        dispatch(albumListGet({profileName : profileName, token : userState.accessToken, param : param}))
+    },[searchParams])
+
+    useEffect(() => {
+        if(sortDirection === '내림차순'){
+            dispatch(galleryStateActions.descGallery())
+        }
+        if(sortDirection === '오름차순'){
+            dispatch(galleryStateActions.ascGallery())
+        }
+    },[sortDirection])
+
 
     if(galleryState.album === null || galleryState.album === undefined){
         return(
@@ -110,10 +142,10 @@ const AlbumGallery = () => {
             <Stack sx={{mt: 2, width: '100%', mb: 5}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
                 <Grid justifyContent={"space-between"} flexWrap={"wrap"} container spacing={1} columns={22} sx={{pr: res750 ? 2 : 5, pl: res750 ? 2: 0}}>
                     {
-                        galleryState.album.isAuthor ?
-                            <Grid item res300={10.5} res750={10.5} md={7} lg={7} sx={{mb: 3}} direction={'row'} alignItems={'center'}>
+                        galleryState.album.isAuthor && page === 1 ?
+                            <Grid item xs={10.5} res550={7} res750={10.5} md={7} lg={7} sx={{mb: 3}} alignItems={'center'}>
                                 <Card onClick={() => setOpen(true)} sx={{cursor:'pointer', maxWidth: 345, boxShadow: 8 }}>
-                                    <Stack sx={{width: '100%', mt: 1, mb: 0.3}} justifyContent={"center"} alignContent={"center"} alignItems={"center"}>
+                                    <Stack sx={{width: '100%', mt: 2, mb: 1.3}} justifyContent={"center"} alignContent={"center"} alignItems={"center"}>
                                         <Typography sx={{fontSize: 13, fontWeight: 300}}>
                                             앨범 추가
                                         </Typography>
@@ -125,10 +157,8 @@ const AlbumGallery = () => {
                                     <Stack sx={{width: '100%'}} direction={"row"} justifyContent={"flex-start"} alignItems={"center"} alignContent={"center"}>
                                         <IconButton>
                                             <PhotoLibraryIcon />
-                                            <Typography sx={{pl: 1.5}}>
-                                            </Typography>
                                         </IconButton>
-                                        <Typography sx={{color: 'grey', fontSize: 8, fontWeight: 500, marginLeft: 'auto', pr:1}}>
+                                        <Typography sx={{color: 'grey', fontSize: 8, fontWeight: 500, marginLeft: 'auto', width:'auto', pr:1}}>
                                             created At YYYY.MM.DD
                                         </Typography>
                                     </Stack>
@@ -145,14 +175,14 @@ const AlbumGallery = () => {
                     }
                     {
                         galleryState.album.albumPage.contents.map((item, idx) => (
-                            <Grid key={idx} item res300={10.5} res750={10.5} md={7} lg={7} sx={{mb: 3}} direction={'row'} alignItems={'center'}>
+                            <Grid key={idx} item xs={10.5} res550={7} res750={10.5} md={7} lg={7} sx={{mb: 3}} direction={'row'} alignItems={'center'}>
                                 <AlbumItem item={item} />
                             </Grid>
                         ))
                     }
                 </Grid>
                 <Stack alignItems="center" sx={{width:'100%', height: '80px'}} flexDirection={'row'} justifyContent="center" alignContent="center">
-                    <Pagination sx={{display: 'flex', width: '100%',justifyContent: "center", alignItems:"center",}} size={res750 ? "small" : "large"} count={15} page={page} onChange={handleChange} defaultPage={1} siblingCount={1} boundaryCount={1}/>
+                    <Pagination sx={{display: 'flex', width: '100%',justifyContent: "center", alignItems:"center",}} size={res750 ? "small" : "large"} count={totalPage} page={page} onChange={handleChange} defaultPage={1} siblingCount={1} boundaryCount={1}/>
                 </Stack>
             </Stack>
         </Stack>

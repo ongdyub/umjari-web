@@ -98,6 +98,24 @@ export const galleryStateSlice = createSlice({
             state.photo = null
             state.photoItem = null
         },
+        descGallery: (state) => {
+            if(state.album !== null){
+                state.album.albumPage.contents = state.album.albumPage.contents.sort((a: any, b: any) => {
+                    const dateA = a.createAt;
+                    const dateB = b.createAt;
+                    return dateB.localeCompare(dateA);
+                })
+            }
+        },
+        ascGallery: (state) => {
+            if(state.album !== null){
+                state.album.albumPage.contents = state.album.albumPage.contents.sort((a: any, b: any) => {
+                    const dateA = a.createAt;
+                    const dateB = b.createAt;
+                    return dateA.localeCompare(dateB);
+                })
+            }
+        },
     },
 
     extraReducers: (builder) => {
