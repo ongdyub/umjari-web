@@ -115,7 +115,7 @@ const MyProfile = () => {
                     myConcertState.myDefaultInfo?.isSelfProfile ?
                         <Button component="label" sx={{mt: 1, pb: -1, maxWidth : 80, minWidth: 80, maxHeight : 30, minHeight: 30}}>
                             <Typography sx={{fontSize: 10, borderBottom: '1px solid black'}} >사진 올리기</Typography>
-                            <input hidden accept="image/*" multiple type="file" onChange={handleFile} />
+                            <input hidden accept="image/*" type="file" onChange={handleFile} />
                         </Button>
                         :
                         null

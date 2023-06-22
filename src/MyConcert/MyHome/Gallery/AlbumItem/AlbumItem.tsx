@@ -1,20 +1,22 @@
 import {Divider, Stack} from "@mui/material";
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+import {useNavigate} from "react-router-dom";
 
 
 const AlbumItem = (props : any) => {
 
     const {item} = props;
 
+    const navigate = useNavigate()
+
     return(
-        <Card sx={{ maxWidth: 345, boxShadow: 8 }}>
-            <Stack sx={{width: '100%', mt: 0.5, mb: 0.3}} justifyContent={"center"} alignContent={"center"} alignItems={"center"}>
+        <Card sx={{cursor:'pointer', maxWidth: 345, boxShadow: 8 }} onClick={() => navigate(`${item.id}`)}>
+            <Stack sx={{width: '100%', mt: 1.5, mb: 1.3}} justifyContent={"center"} alignContent={"center"} alignItems={"center"}>
                 <Typography sx={{fontSize: 13, fontWeight: 300}}>
                     {item.title}
                 </Typography>

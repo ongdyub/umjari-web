@@ -54,7 +54,7 @@ const AddAlbumModal = (props : any) => {
             const param = {
                 page : 1,
                 size : 10,
-                sort : "createdAt,ASC",
+                sort : "createdAt,DESC",
             }
             dispatch(albumListGet({profileName : profileName, token : userState.accessToken, param : param}))
             setOpen(false)
