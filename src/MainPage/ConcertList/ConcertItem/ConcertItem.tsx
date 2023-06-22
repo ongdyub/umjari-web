@@ -33,7 +33,7 @@ const ConcertItem = (props: any) => {
     }
 
     return(
-        <Card className="concert-item" sx={{bgcolor: 'rgba(236,236,236,0.5)',height: '347.72px' }}>
+        <Card className="concert-item" sx={{height: '347.72px',boxShadow: 5 }}>
             <CardActionArea disableRipple onClick={onClickDetail} sx={{width: '247px'}}>
                 <CardMedia
                     component="img"

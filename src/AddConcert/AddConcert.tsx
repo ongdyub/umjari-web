@@ -51,6 +51,7 @@ const AddConcert = () => {
     const [host, setHost] = useState<string>('')
     const [support, setSupport] = useState<string>('')
     const [qna, setQna] = useState<string>('')
+    const [solist, setSolist] = useState<string>('')
 
     const datePattern = /^\d{4}-\d{2}-\d{2}$/;
     const checkDate = (dateString : string) => {
@@ -154,7 +155,8 @@ const AddConcert = () => {
             regionParent : region_parents[parent],
             regionChild : region_child[parent][child],
             regionDetail : regionDetail,
-            musicIds : []
+            musicIds : [],
+            solist : solist
         }
 
         const result = await dispatch(concertPost({data, token : userState.accessToken, id : id}))
@@ -302,13 +304,12 @@ const AddConcert = () => {
                                 />
                             </FormControl>
                             <FormControl variant="standard" sx={{ml: '10%', width: '40%'}}>
-                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">가격을 입력하세요</InputLabel>
+                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">협연자를 입력하세요</InputLabel>
                                 <Input
                                     id="standard-adornment-amount"
                                     sx={{fontSize: 12, pt: 0.5}}
-                                    type={"number"}
-                                    value={fee}
-                                    onChange={(e) => setFee(e.target.value)}
+                                    value={solist}
+                                    onChange={(e) => setSolist(e.target.value)}
                                 />
                             </FormControl>
                         </Stack>
@@ -324,12 +325,13 @@ const AddConcert = () => {
                                 />
                             </FormControl>
                             <FormControl variant="standard" sx={{ml: '10%', width: '40%'}}>
-                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">주최자를 입력하세요</InputLabel>
+                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">가격을 입력하세요</InputLabel>
                                 <Input
                                     id="standard-adornment-amount"
                                     sx={{fontSize: 12, pt: 0.5}}
-                                    value={host}
-                                    onChange={(e) => setHost(e.target.value)}
+                                    type={"number"}
+                                    value={fee}
+                                    onChange={(e) => setFee(e.target.value)}
                                 />
                             </FormControl>
                         </Stack>
@@ -344,6 +346,17 @@ const AddConcert = () => {
                                 />
                             </FormControl>
                             <FormControl variant="standard" sx={{ml: '10%', width: '40%'}}>
+                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">주최자를 입력하세요</InputLabel>
+                                <Input
+                                    id="standard-adornment-amount"
+                                    sx={{fontSize: 12, pt: 0.5}}
+                                    value={host}
+                                    onChange={(e) => setHost(e.target.value)}
+                                />
+                            </FormControl>
+                        </Stack>
+                        <Stack direction={"row"} sx={{mt:1.5, mb: 1}}>
+                            <FormControl variant="standard" sx={{width: '40%'}}>
                                 <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">문의를 입력하세요</InputLabel>
                                 <Input
                                     id="standard-adornment-amount"

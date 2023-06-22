@@ -207,7 +207,7 @@ const WriteEditor = (props : any) => {
         const data = {
             title : title,
             content : contents,
-            isAnonymous : false
+            isAnonymous : true
         }
         if(mode === 'edit'){
             const result = await dispatch(editCommunity({data , token : userState.accessToken, inst_name : board, id : id}))

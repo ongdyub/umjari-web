@@ -2,7 +2,6 @@ import {Button, ButtonGroup, Divider, Input, Stack, Typography, useMediaQuery, u
 import {Routes, Route, useParams} from "react-router-dom";
 import SelfIntro from "./SelfIntro/SelfIntro";
 import MyList from "./MyList/MyList";
-import Gallery from "./Gallery/Gallery";
 import Visit from "./Visit/Visit";
 import Diary from "./Diary/Diary";
 import {useNavigate} from "react-router";
@@ -11,6 +10,8 @@ import {myConcertStateActions, myIntroPut, selectMyConcert} from "../../store/sl
 import {selectUser} from "../../store/slices/user/user";
 import {useState} from "react";
 import {AppDispatch} from "../../store";
+import AlbumGallery from "./Gallery/AlbumGallery/AlbumGallery";
+import PhotoGallery from "./Gallery/PhotoGallery/PhotoGallery";
 
 
 
@@ -119,7 +120,8 @@ const MyHome = () => {
                 <Routes>
                     <Route path="selfintro" element={<SelfIntro />}/>
                     <Route path="list" element={<MyList />}/>
-                    <Route path="gallery" element={<Gallery />}/>
+                    <Route path="gallery/*" element={<AlbumGallery />} />
+                    <Route path="gallery/:albumId" element={<PhotoGallery />} />
                     <Route path="visit" element={<Visit />}/>
                     <Route path="diary" element={<Diary />}/>
                 </Routes>
