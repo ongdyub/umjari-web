@@ -1,4 +1,5 @@
 import {
+    CircularProgress,
     Divider,
     IconButton,
     ImageList,
@@ -9,21 +10,43 @@ import {
     useMediaQuery,
     useTheme
 } from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import GalleryModal from "../../../../Modal/GalleryModal";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "../../../../store";
+import {selectUser} from "../../../../store/slices/user/user";
+import {galleryStateActions, photoListGet, postPhoto, selectGallery} from "../../../../store/slices/gallery/gallery";
+import {useParams, useSearchParams} from "react-router-dom";
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import * as React from "react";
+import {
+    myConcertProfileImageUpload,
+} from "../../../../store/slices/myconcert/myconcert";
+import Backdrop from "@mui/material/Backdrop";
 
 const PhotoGallery = () => {
 
+    const {albumId} = useParams()
     const theme = useTheme();
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
-    const sort = ['시간','좋아요']
+    const dispatch = useDispatch<AppDispatch>()
+    const userState = useSelector(selectUser)
+    const galleryState = useSelector(selectGallery)
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const sort = ['시간']
     const direction = ['오름차순', '내림차순']
 
     const [sortRule, setSortRule] = useState('시간')
-    const [sortDirection, setSortDirection] = useState('오름차순')
+    const [sortDirection, setSortDirection] = useState('내림차순')
+
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(1)
+
+    const [imgLoadingOpen,  setImgLadingOpen] = useState(false)
 
     const handleRuleChange = (event: SelectChangeEvent) => {
         setSortRule(event.target.value);
@@ -32,10 +55,14 @@ const PhotoGallery = () => {
         setSortDirection(event.target.value);
     };
 
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        searchParams.set('page',value.toString())
+        setSearchParams(searchParams)
+        setPage(value);
+    };
+
     const [open, setOpen] = useState(false)
     const [imgId, setImgId] = useState(0)
-
-    const [page, setPage] = useState(1);
 
     const handleImgOpen = (id: any) => {
         setOpen(true)
@@ -45,12 +72,77 @@ const PhotoGallery = () => {
         setOpen(false)
         setImgId(0)
     }
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value);
-    };
 
+    const handleUploadPhoto = async (e: any) => {
+
+        const imageToken = []
+        let failedCount = 0
+
+        if(e.target.files.length < 1){
+            window.alert("선택된 사진이 없습니다.")
+            return
+        }
+        if(e.target.files.length > 10){
+            window.alert("10장 이하의 사진만 선택 가능합니다.")
+            return
+        }
+
+        setImgLadingOpen(true)
+
+        for(let i = 0; i < e.target.files.length; i++){
+            const formData = new FormData()
+            formData.append('image', e.target.files[i])
+            const result = await dispatch(myConcertProfileImageUpload({token: userState.accessToken, formData: formData}))
+
+            if (result.type === `${myConcertProfileImageUpload.typePrefix}/fulfilled`) {
+                imageToken.push(result.payload.token)
+            } else {
+                failedCount += 1
+            }
+        }
+
+        const data = {
+            tokenList : imageToken
+        }
+
+        const result = await dispatch(postPhoto({albumId, token : userState.accessToken, data}))
+        if(result.type === `${postPhoto.typePrefix}/fulfilled`){
+            setImgLadingOpen(false)
+            window.alert(failedCount + " 개의 이미지가 업로드에 실패했습니다.")
+        }
+        else{
+            window.alert("새로고침 후 다시 시도해주세요.")
+        }
+
+    }
+
+    useEffect(() => {
+        const param = {
+            page : 1,
+            size : 10,
+            sort : "createdAt,DESC",
+        }
+        dispatch(photoListGet({albumId, token: userState.accessToken, param}))
+        return () => {
+            dispatch(galleryStateActions.resetGallery())
+        }
+    },[dispatch, albumId])
+
+    if(galleryState.photo === null){
+        return(
+            <Stack>
+                로딩중...
+            </Stack>
+        )
+    }
     return(
         <Stack sx={{mt: 2, width: '100%'}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={imgLoadingOpen}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Divider sx={{width: res750 ? '100%' : '90%', color: '#292929'}} />
             <Stack sx={{mt: 2}} direction={"row"} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
                 <Stack direction={"row"}>
@@ -82,21 +174,33 @@ const PhotoGallery = () => {
                             ))}
                         </Select>
                     </Stack>
+                    {
+                        galleryState.photo.isAuthor ?
+                            <Stack sx={{ml:1}}>
+                                <IconButton component="label" size={'small'}>
+                                    <input hidden accept="image/*" multiple type="file" onChange={handleUploadPhoto} />
+                                    <AddAPhotoIcon />
+                                </IconButton>
+                            </Stack>
+                            :
+                            null
+                    }
                 </Stack>
             </Stack>
             <Stack sx={{width: '95%'}}>
                 <ImageList variant="masonry" cols={3} gap={res750 ? 4 : 8}>
-                    {itemData.map((item) => (
-                        <ImageListItem key={item} sx={{cursor: 'pointer'}} onClick={() => handleImgOpen(item)}>
+                    {galleryState.photo.photoPage.contents.map((item, idx) => (
+                        <ImageListItem key={idx} sx={{cursor: 'pointer'}} onClick={() => handleImgOpen(item)}>
                             <img
-                                src={`/img/${item}.jpg`}
+                                src={item.url}
+                                alt="갤러리 사진입니다."
                                 loading="lazy"
                             />
                             <ImageListItemBar
                                 sx={{height: res750 ? '30%' : 'auto'}}
-                                title={item}
+                                title={'title'}
                                 //시리즈 모음집 이름
-                                subtitle={item}
+                                subtitle={'subtitle'}
                                 //개별 사진 title
                                 actionIcon={
                                     <IconButton
@@ -105,11 +209,11 @@ const PhotoGallery = () => {
                                     >
                                         <FavoriteIcon sx={{width: 15, height: 15}} />
                                         <Typography sx={{fontSize: 13, ml:0.5, mr:1}}>
-                                            123
+                                            0
                                         </Typography>
                                         <CommentIcon sx={{width: 15, height: 15}} />
                                         <Typography sx={{fontSize: 13, ml:0.5}}>
-                                            51
+                                            0
                                         </Typography>
                                     </IconButton>
                                 }
@@ -120,12 +224,10 @@ const PhotoGallery = () => {
                 <GalleryModal open={open} handleClose={handleImgClose} imgId={imgId}/>
             </Stack>
             <Stack alignItems="center" sx={{width:'100%', height: '80px'}} flexDirection={'row'} justifyContent="center" alignContent="center">
-                <Pagination sx={{display: 'flex', width: '100%',justifyContent: "center", alignItems:"center",}} size={res750 ? "small" : "large"} count={15} page={page} onChange={handleChange} defaultPage={1} siblingCount={1} boundaryCount={1}/>
+                <Pagination sx={{display: 'flex', width: '100%',justifyContent: "center", alignItems:"center",}} size={res750 ? "small" : "large"} count={totalPage} page={page} onChange={handleChange} defaultPage={1} siblingCount={1} boundaryCount={1}/>
             </Stack>
         </Stack>
     )
 }
 
 export default PhotoGallery
-
-const itemData = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];

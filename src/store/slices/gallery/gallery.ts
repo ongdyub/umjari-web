@@ -41,15 +41,11 @@ export interface Album {
 }
 
 export interface Gallery {
-    albumItem : AlbumItem | null,
     album : Album | null,
-    photoItem : PhotoItem | null,
     photo : Photo | null
 }
 const initialState: Gallery = {
-    albumItem : null,
     album : null,
-    photoItem : null,
     photo : null
 };
 
@@ -88,15 +84,48 @@ export const postAlbum = createAsyncThunk(
     }
 )
 
+export const photoListGet = createAsyncThunk(
+    "gallery/photoListGet",
+    async ({albumId, token, param} : {albumId : string | undefined | null, token : string | undefined | null, param : any},  {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/album/${albumId}/photo/`, {
+                params : param,
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const postPhoto = createAsyncThunk(
+    "gallery/postPhoto",
+    async ({albumId, token, data} : {albumId : string | undefined | null, token : string | undefined | null, data:any},  {rejectWithValue}) => {
+        try {
+            const response = await axios.post(`/api/v1/album/${albumId}/photo/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const galleryStateSlice = createSlice({
     name: "galleryState",
     initialState,
     reducers: {
         resetGallery: (state) => {
             state.album = null
-            state.albumItem = null
             state.photo = null
-            state.photoItem = null
         },
         descGallery: (state) => {
             if(state.album !== null){
@@ -130,6 +159,18 @@ export const galleryStateSlice = createSlice({
         });
         builder.addCase(postAlbum.rejected, () => {
             window.alert("네트워크 오류")
+        });
+        builder.addCase(photoListGet.fulfilled, (state, action) => {
+            state.photo = action.payload
+        });
+        builder.addCase(photoListGet.rejected, () => {
+            window.alert("네트워크 오류")
+        });
+        builder.addCase(postPhoto.fulfilled, () => {
+            window.alert("업로드 완료")
+        });
+        builder.addCase(postPhoto.rejected, (state, action) => {
+            window.alert(action.payload)
         });
     },
 });
