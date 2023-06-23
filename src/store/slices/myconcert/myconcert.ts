@@ -20,8 +20,9 @@ export interface MyDefaultInfo {
     profileImage: string,
     email: string,
     intro: string,
-    isSelfProfile: boolean
-    career : [myGroup] | []
+    isSelfProfile: boolean,
+    career : [myGroup] | [],
+    isFriend : boolean
 }
 
 export interface MySelfIntro {
