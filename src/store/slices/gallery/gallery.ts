@@ -84,6 +84,40 @@ export const postAlbum = createAsyncThunk(
     }
 )
 
+export const deleteAlbum = createAsyncThunk(
+    "gallery/deleteAlbum",
+    async ({albumId, token} : {albumId : string | undefined | null, token : string | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.delete(`/api/v1/album/${albumId}/`, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const putAlbum = createAsyncThunk(
+    "gallery/putAlbum",
+    async ({albumId, token, data} : {albumId : string | undefined | null, token : string | undefined | null, data : any},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/album/${albumId}/`, data,{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const photoListGet = createAsyncThunk(
     "gallery/photoListGet",
     async ({albumId, token, param} : {albumId : string | undefined | null, token : string | undefined | null, param : any},  {rejectWithValue}) => {
@@ -157,8 +191,30 @@ export const galleryStateSlice = createSlice({
         builder.addCase(postAlbum.fulfilled, () => {
             window.alert("생성 완료")
         });
-        builder.addCase(postAlbum.rejected, () => {
-            window.alert("네트워크 오류")
+        builder.addCase(postAlbum.rejected, (state, action) => {
+            if(action.payload === 15){
+                window.alert("이미 존재하는 이름입니다.")
+            }
+            else{
+                window.alert("네트워크 오류")
+            }
+        });
+        builder.addCase(deleteAlbum.fulfilled, () => {
+            window.alert("삭제 완료")
+        });
+        builder.addCase(deleteAlbum.rejected, () => {
+            window.alert("삭제 실패. 네트워크 오류")
+        });
+        builder.addCase(putAlbum.fulfilled, () => {
+            window.alert("변경 완료")
+        });
+        builder.addCase(putAlbum.rejected, (state, action) => {
+            if(action.payload === 15){
+                window.alert("이미 존재하는 이름입니다.")
+            }
+            else{
+                window.alert("변경 실패. 네트워크 오류")
+            }
         });
         builder.addCase(photoListGet.fulfilled, (state, action) => {
             state.photo = action.payload
@@ -172,6 +228,7 @@ export const galleryStateSlice = createSlice({
         builder.addCase(postPhoto.rejected, (state, action) => {
             window.alert(action.payload)
         });
+
     },
 });
 

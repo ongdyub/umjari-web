@@ -4,8 +4,8 @@ import * as React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../store";
 import {selectUser} from "../store/slices/user/user";
-import {albumListGet, postAlbum} from "../store/slices/gallery/gallery";
-import {useParams} from "react-router-dom";
+import {albumListGet, photoListGet, postAlbum, putAlbum} from "../store/slices/gallery/gallery";
+import {useNavigate, useParams} from "react-router-dom";
 
 const style = (theme: any) => ({
     position: 'absolute',
@@ -25,10 +25,11 @@ const style = (theme: any) => ({
 
 const AddAlbumModal = (props : any) => {
 
-    const {open, setOpen} = props
+    const {open, setOpen, mode} = props
 
     const dispatch = useDispatch<AppDispatch>()
-    const {profileName} = useParams()
+    const {profileName, albumId} = useParams()
+    const navigate = useNavigate()
     const userState = useSelector(selectUser)
 
     const [title, setTitle] = useState('')
@@ -61,6 +62,33 @@ const AddAlbumModal = (props : any) => {
         }
     }
 
+    const handleEditAlbum = async () => {
+        if(title === '' || title === null || title === undefined || title.length === 0){
+            window.alert("제목을 입력해주세요")
+            return
+        }
+        if(title.length > 20){
+            window.alert("제목 길이 제한")
+            return
+        }
+
+        const data = {
+            title : title
+        }
+        const result = await dispatch(putAlbum({albumId, token : userState.accessToken, data : data}))
+
+        if(result.type === `${putAlbum.typePrefix}/fulfilled`){
+            const param = {
+                page : 1,
+                size : 10,
+                sort : "createdAt,DESC",
+            }
+            dispatch(photoListGet({albumId, token: userState.accessToken, param}))
+            navigate(`/myconcert/${profileName}/gallery`)
+            setOpen(false)
+        }
+    }
+
     return (
         <Modal
             open={open}
@@ -83,7 +111,12 @@ const AddAlbumModal = (props : any) => {
                         />
                     </FormControl>
                     <FormControl sx={{bottom: 0, pt: 2, ml: 'auto'}}>
-                        <Button onClick={handleAddAlbum} sx={{bottom: 0,minWidth: 45, maxWidth: 45,maxHeight: 30, minHeight: 30, fontSize: 11}} variant={'contained'} size={'small'}>생성</Button>
+                        {
+                            mode === 'edit' ?
+                                <Button onClick={handleEditAlbum} sx={{bottom: 0,minWidth: 45, maxWidth: 45,maxHeight: 30, minHeight: 30, fontSize: 11}} variant={'contained'} size={'small'}>변경</Button>
+                                :
+                                <Button onClick={handleAddAlbum} sx={{bottom: 0,minWidth: 45, maxWidth: 45,maxHeight: 30, minHeight: 30, fontSize: 11}} variant={'contained'} size={'small'}>생성</Button>
+                        }
                     </FormControl>
                 </Stack>
             </Box>

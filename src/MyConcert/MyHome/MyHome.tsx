@@ -121,7 +121,7 @@ const MyHome = () => {
                     <Route path="selfintro" element={<SelfIntro />}/>
                     <Route path="list" element={<MyList />}/>
                     <Route path="gallery/*" element={<AlbumGallery />} />
-                    <Route path="gallery/:albumId" element={<PhotoGallery />} />
+                    <Route path="gallery/:albumId/:title" element={<PhotoGallery />} />
                     <Route path="visit" element={<Visit />}/>
                     <Route path="diary" element={<Diary />}/>
                 </Routes>

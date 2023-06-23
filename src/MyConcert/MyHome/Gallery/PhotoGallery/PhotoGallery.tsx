@@ -1,4 +1,5 @@
 import {
+    Button,
     CircularProgress,
     Divider,
     IconButton,
@@ -17,26 +18,34 @@ import GalleryModal from "../../../../Modal/GalleryModal";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../../../store";
 import {selectUser} from "../../../../store/slices/user/user";
-import {galleryStateActions, photoListGet, postPhoto, selectGallery} from "../../../../store/slices/gallery/gallery";
-import {useParams, useSearchParams} from "react-router-dom";
+import {
+    deleteAlbum,
+    galleryStateActions,
+    photoListGet,
+    postPhoto,
+    selectGallery
+} from "../../../../store/slices/gallery/gallery";
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import * as React from "react";
 import {
     myConcertProfileImageUpload,
 } from "../../../../store/slices/myconcert/myconcert";
 import Backdrop from "@mui/material/Backdrop";
+import DeleteConfirmModal from "../../../../Modal/DeleteConfirmModal";
+import AddAlbumModal from "../../../../Modal/AddAlbumModal";
 
 const PhotoGallery = () => {
 
-    const {albumId} = useParams()
+    const {profileName,albumId} = useParams()
     const theme = useTheme();
+    const navigate = useNavigate()
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
     const dispatch = useDispatch<AppDispatch>()
     const userState = useSelector(selectUser)
     const galleryState = useSelector(selectGallery)
     const [searchParams, setSearchParams] = useSearchParams();
-
     const sort = ['시간']
     const direction = ['오름차순', '내림차순']
 
@@ -45,6 +54,10 @@ const PhotoGallery = () => {
 
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1)
+
+    const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
+    const [edit, setEdit] = useState<boolean>(false)
 
     const [imgLoadingOpen,  setImgLadingOpen] = useState(false)
 
@@ -108,6 +121,12 @@ const PhotoGallery = () => {
         const result = await dispatch(postPhoto({albumId, token : userState.accessToken, data}))
         if(result.type === `${postPhoto.typePrefix}/fulfilled`){
             setImgLadingOpen(false)
+            const param = {
+                page : 1,
+                size : 10,
+                sort : "createdAt,DESC",
+            }
+            dispatch(photoListGet({albumId, token: userState.accessToken, param}))
             window.alert(failedCount + " 개의 이미지가 업로드에 실패했습니다.")
         }
         else{
@@ -128,6 +147,13 @@ const PhotoGallery = () => {
         }
     },[dispatch, albumId])
 
+    useEffect(() => {
+        if(confirm){
+            dispatch(deleteAlbum({albumId, token : userState.accessToken}))
+            navigate(`/myconcert/${profileName}/gallery`)
+        }
+    },[confirm])
+
     if(galleryState.photo === null){
         return(
             <Stack>
@@ -146,29 +172,29 @@ const PhotoGallery = () => {
             <Divider sx={{width: res750 ? '100%' : '90%', color: '#292929'}} />
             <Stack sx={{mt: 2}} direction={"row"} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
                 <Stack direction={"row"}>
-                    <Stack sx={{width: 80, mr: 3}} >
+                    <Stack sx={{width: 50, mr: 1}} >
                         <Select
                             value={sortRule}
                             onChange={handleRuleChange}
                             variant="standard"
-                            sx={{fontSize: 13}}
+                            sx={{fontSize: 11}}
                         >
                             {sort.map((option) => (
-                                <MenuItem sx={{fontSize: 13, maxHeight: 30,minHeight: 30}} key={option} value={option}>
+                                <MenuItem sx={{fontSize: 11, maxHeight: 30,minHeight: 30}} key={option} value={option}>
                                     {option}
                                 </MenuItem>
                             ))}
                         </Select>
                     </Stack>
-                    <Stack sx={{width: 80}}>
+                    <Stack sx={{width: 70}}>
                         <Select
                             value={sortDirection}
                             onChange={handleDirectionChange}
                             variant="standard"
-                            sx={{fontSize: 13}}
+                            sx={{fontSize: 11}}
                         >
                             {direction.map((option) => (
-                                <MenuItem sx={{fontSize: 13, maxHeight: 30,minHeight: 30}} key={option} value={option}>
+                                <MenuItem sx={{fontSize: 11, maxHeight: 30,minHeight: 30}} key={option} value={option}>
                                     {option}
                                 </MenuItem>
                             ))}
@@ -181,6 +207,15 @@ const PhotoGallery = () => {
                                     <input hidden accept="image/*" multiple type="file" onChange={handleUploadPhoto} />
                                     <AddAPhotoIcon />
                                 </IconButton>
+                            </Stack>
+                            :
+                            null
+                    }
+                    {
+                        galleryState.photo.isAuthor ?
+                            <Stack sx={{ml:1}} direction={'row'}>
+                                <Button sx={{fontSize:7}} color={'error'} onClick={() => setDeleteOpen(true)}>앨범삭제</Button>
+                                <Button sx={{fontSize:7}} color={'info'} onClick={() => setEdit(true)}>제목변경</Button>
                             </Stack>
                             :
                             null
@@ -226,6 +261,18 @@ const PhotoGallery = () => {
             <Stack alignItems="center" sx={{width:'100%', height: '80px'}} flexDirection={'row'} justifyContent="center" alignContent="center">
                 <Pagination sx={{display: 'flex', width: '100%',justifyContent: "center", alignItems:"center",}} size={res750 ? "small" : "large"} count={totalPage} page={page} onChange={handleChange} defaultPage={1} siblingCount={1} boundaryCount={1}/>
             </Stack>
+            {
+                deleteOpen ?
+                    <DeleteConfirmModal open={deleteOpen} setOpen={setDeleteOpen} setConfirm={setConfirm} />
+                    :
+                    null
+            }
+            {
+                edit ?
+                    <AddAlbumModal open={edit} setOpen={setEdit} mode={'edit'} />
+                    :
+                    null
+            }
         </Stack>
     )
 }

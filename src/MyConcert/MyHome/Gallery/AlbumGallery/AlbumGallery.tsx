@@ -140,7 +140,7 @@ const AlbumGallery = () => {
                 </Stack>
             </Stack>
             <Stack sx={{mt: 2, width: '100%', mb: 5}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
-                <Grid justifyContent={"space-between"} flexWrap={"wrap"} container spacing={1} columns={22} sx={{pr: res750 ? 2 : 5, pl: res750 ? 2: 0}}>
+                <Grid justifyContent={"flex-start"} flexWrap={"wrap"} container spacing={1} columns={21} sx={{pr: res750 ? 2 : 5, pl: res750 ? 2: 0}}>
                     {
                         galleryState.album.isAuthor && page === 1 ?
                             <Grid item xs={10.5} res550={7} res750={10.5} md={7} lg={7} sx={{mb: 3}} alignItems={'center'}>
