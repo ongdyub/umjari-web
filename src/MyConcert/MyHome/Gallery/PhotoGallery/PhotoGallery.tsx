@@ -187,24 +187,24 @@ const PhotoGallery = () => {
                             value={sortRule}
                             onChange={handleRuleChange}
                             variant="standard"
-                            sx={{fontSize: 13}}
+                            sx={{fontSize: 11}}
                         >
                             {sort.map((option) => (
-                                <MenuItem sx={{fontSize: 13, maxHeight: 30,minHeight: 30}} key={option} value={option}>
+                                <MenuItem sx={{fontSize: 11, maxHeight: 30,minHeight: 30}} key={option} value={option}>
                                     {option}
                                 </MenuItem>
                             ))}
                         </Select>
                     </Stack>
-                    <Stack sx={{width: 70}}>
+                    <Stack sx={{width: 80}}>
                         <Select
                             value={sortDirection}
                             onChange={handleDirectionChange}
                             variant="standard"
-                            sx={{fontSize: 13}}
+                            sx={{fontSize: 11}}
                         >
                             {direction.map((option) => (
-                                <MenuItem sx={{fontSize: 13, maxHeight: 30,minHeight: 30}} key={option} value={option}>
+                                <MenuItem sx={{fontSize: 11, maxHeight: 30,minHeight: 30}} key={option} value={option}>
                                     {option}
                                 </MenuItem>
                             ))}
@@ -223,9 +223,9 @@ const PhotoGallery = () => {
                     }
                     {
                         galleryState.photo.isAuthor ?
-                            <Stack sx={{ml:1}} direction={'row'}>
-                                <Button sx={{fontSize:7}} color={'error'} onClick={() => setDeleteOpen(true)}>앨범삭제</Button>
-                                <Button sx={{fontSize:7}} color={'info'} onClick={() => setEdit(true)}>제목변경</Button>
+                            <Stack sx={{ml:0.5}} direction={'row'}>
+                                <Button sx={{fontSize:10}} color={'error'} onClick={() => setDeleteOpen(true)}>앨범삭제</Button>
+                                <Button sx={{fontSize:10}} color={'info'} onClick={() => setEdit(true)}>제목변경</Button>
                             </Stack>
                             :
                             null
