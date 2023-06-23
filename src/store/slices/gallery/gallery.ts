@@ -179,6 +179,24 @@ export const galleryStateSlice = createSlice({
                 })
             }
         },
+        descPhoto: (state) => {
+            if(state.photo !== null){
+                state.photo.photoPage.contents = state.photo.photoPage.contents.sort((a: any, b: any) => {
+                    const dateA = a.createdAt;
+                    const dateB = b.createdAt;
+                    return dateB.localeCompare(dateA);
+                })
+            }
+        },
+        ascPhoto: (state) => {
+            if(state.photo !== null){
+                state.photo.photoPage.contents = state.photo.photoPage.contents.sort((a: any, b: any) => {
+                    const dateA = a.createdAt;
+                    const dateB = b.createdAt;
+                    return dateA.localeCompare(dateB);
+                })
+            }
+        },
     },
 
     extraReducers: (builder) => {

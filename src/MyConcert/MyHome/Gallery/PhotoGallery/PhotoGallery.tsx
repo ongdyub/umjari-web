@@ -32,6 +32,7 @@ import {
     myConcertProfileImageUpload,
 } from "../../../../store/slices/myconcert/myconcert";
 import Backdrop from "@mui/material/Backdrop";
+import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 import DeleteConfirmModal from "../../../../Modal/DeleteConfirmModal";
 import AddAlbumModal from "../../../../Modal/AddAlbumModal";
 
@@ -154,6 +155,31 @@ const PhotoGallery = () => {
         }
     },[confirm])
 
+    useEffect(() => {
+        if(galleryState.photo !== null){
+            setPage(galleryState.photo.photoPage.currentPage)
+            setTotalPage(galleryState.photo.photoPage.totalPages)
+        }
+    },[galleryState.photo])
+
+    useEffect(() => {
+        const param = {
+            page : searchParams.get('page'),
+            size : 10,
+            sort : "createdAt,DESC",
+        }
+        dispatch(photoListGet({albumId, token: userState.accessToken, param}))
+    },[searchParams])
+
+    useEffect(() => {
+        if(sortDirection === '내림차순'){
+            dispatch(galleryStateActions.descGallery())
+        }
+        if(sortDirection === '오름차순'){
+            dispatch(galleryStateActions.ascGallery())
+        }
+    },[sortDirection])
+
     if(galleryState.photo === null){
         return(
             <Stack>
@@ -228,26 +254,27 @@ const PhotoGallery = () => {
                         <ImageListItem key={idx} sx={{cursor: 'pointer'}} onClick={() => handleImgOpen(item)}>
                             <img
                                 src={item.url}
+                                onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/img/fail-loading.png`}
                                 alt="갤러리 사진입니다."
                                 loading="lazy"
                             />
                             <ImageListItemBar
-                                sx={{height: res750 ? '30%' : 'auto'}}
-                                title={'title'}
+                                sx={{height: res750 ? '25px' : 'auto', pt: -1, pb: -1}}
+                                // title={'title'}
                                 //시리즈 모음집 이름
-                                subtitle={'subtitle'}
+                                // subtitle={<Typography sx={{fontSize: 8}}>photo</Typography>}
                                 //개별 사진 title
                                 actionIcon={
                                     <IconButton
                                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                                         aria-label={`info about ${item}`}
                                     >
-                                        <FavoriteIcon sx={{width: 15, height: 15}} />
-                                        <Typography sx={{fontSize: 13, ml:0.5, mr:1}}>
+                                        <FavoriteIcon sx={{width: 10, height: 10}} />
+                                        <Typography sx={{fontSize: 8, ml:0.5, mr:1}}>
                                             0
                                         </Typography>
-                                        <CommentIcon sx={{width: 15, height: 15}} />
-                                        <Typography sx={{fontSize: 13, ml:0.5}}>
+                                        <CommentIcon sx={{width: 10, height: 10}} />
+                                        <Typography sx={{fontSize: 8, ml:0.5}}>
                                             0
                                         </Typography>
                                     </IconButton>
