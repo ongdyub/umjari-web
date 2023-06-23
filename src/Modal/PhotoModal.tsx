@@ -1,9 +1,8 @@
 import {
-    Backdrop,
     Box, Button,
     CardMedia,
     Divider,
-    Fade, IconButton,
+    IconButton,
     Modal,
     Stack, TextField,
     Typography,
@@ -12,12 +11,15 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentIcon from '@mui/icons-material/Comment';
-import {useState} from "react";
-import Comment from "../Common/Comment/Comment";
-import {useSelector} from "react-redux";
-import {selectDummy} from "../store/slices/dummy/dummy";
+import {useEffect, useState} from "react";
 import GalleryComment from "../Common/GalleryComment/GalleryComment";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import * as React from "react";
+import DeleteConfirmModal from "./DeleteConfirmModal";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "../store";
+import {deletePhoto, photoListGet} from "../store/slices/gallery/gallery";
+import {selectUser} from "../store/slices/user/user";
 
 const style = (theme: any) => ({
     position: 'absolute' as 'absolute',
@@ -40,20 +42,50 @@ const style = (theme: any) => ({
 
 const PhotoModal = (props : any) => {
 
-    const {open, setOpen, item} = props;
+    const {open, setOpen, item, isAuthor} = props;
 
-    const handleClose = () => {
-        console.log("click")
-    }
+    const {profileName,albumId,title} = useParams()
+    const navigate = useNavigate()
 
-    const {title} = useParams()
-
-    const dummySelector = useSelector(selectDummy);
+    const userState = useSelector(selectUser)
 
     const theme = useTheme();
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
+    const dispatch = useDispatch<AppDispatch>()
+
     const [like, setLike] = useState(false)
+    const [deleteOpen, setDeleteOpen] = useState(false)
+    const [confirm, setConfirm] = useState(false)
+
+    useEffect(() => {
+        if(confirm){
+            const data = {
+                idList : [item.id]
+            }
+            const deleteAsyncPhoto = async () => {
+                const result = await dispatch(deletePhoto({albumId, token:userState.accessToken, data}))
+
+                if (result.type === `${deletePhoto.typePrefix}/fulfilled`) {
+                    const param = {
+                        page : 1,
+                        size : 10,
+                        sort : "createdAt,DESC",
+                    }
+                    dispatch(photoListGet({albumId, token: userState.accessToken, param}))
+
+                    navigate(`/myconcert/${profileName}/gallery/${albumId}/${title}`)
+
+                    setOpen(false)
+                }
+                else{
+                    window.alert("새로고침 후 시도해주세요.")
+                }
+            }
+
+            deleteAsyncPhoto().then(() => {})
+        }
+    },[confirm])
 
     return(
         <Modal
@@ -111,6 +143,12 @@ const PhotoModal = (props : any) => {
                                     0
                                 </Typography>
                             </Stack>
+                            {
+                                isAuthor ?
+                                    <Button sx={{ml:1,fontSize:7}} color={'error'} onClick={() => setDeleteOpen(true)}>사진삭제</Button>
+                                    :
+                                    null
+                            }
                             <Stack alignItems={"center"} direction={"row"} sx={{marginLeft: 'auto'}}>
                                 <Typography sx={{ml: 5, fontWeight: 300, fontSize : 12}}>
                                     {item.createdAt.slice(2,10)}
@@ -179,6 +217,12 @@ const PhotoModal = (props : any) => {
                             </Stack>
                     }
                 </Stack>
+                {
+                    deleteOpen ?
+                        <DeleteConfirmModal open={deleteOpen} setOpen={setDeleteOpen} setConfirm={setConfirm} />
+                        :
+                        null
+                }
             </Box>
         </Modal>
     )

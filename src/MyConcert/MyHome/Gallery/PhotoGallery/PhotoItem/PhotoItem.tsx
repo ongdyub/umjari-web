@@ -11,7 +11,7 @@ import PhotoModal from "../../../../../Modal/PhotoModal";
 
 const PhotoItem = (props : any) => {
 
-    const {item} = props
+    const {item, isAuthor} = props
 
     //나중에 comment 및 본인 연동
     // const {profileName,albumId} = useParams()
@@ -59,7 +59,7 @@ const PhotoItem = (props : any) => {
             </ImageListItem>
             {
                 openPhoto ?
-                    <PhotoModal open={openPhoto} setOpen={setOpenPhoto} item={item} />
+                    <PhotoModal open={openPhoto} setOpen={setOpenPhoto} item={item} isAuthor={isAuthor} />
                     :
                     null
             }

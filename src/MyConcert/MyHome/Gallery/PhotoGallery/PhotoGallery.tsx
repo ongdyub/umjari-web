@@ -157,10 +157,10 @@ const PhotoGallery = () => {
 
     useEffect(() => {
         if(sortDirection === '내림차순'){
-            dispatch(galleryStateActions.descGallery())
+            dispatch(galleryStateActions.descPhoto())
         }
         if(sortDirection === '오름차순'){
-            dispatch(galleryStateActions.ascGallery())
+            dispatch(galleryStateActions.ascPhoto())
         }
     },[sortDirection])
 
@@ -187,10 +187,10 @@ const PhotoGallery = () => {
                             value={sortRule}
                             onChange={handleRuleChange}
                             variant="standard"
-                            sx={{fontSize: 11}}
+                            sx={{fontSize: 13}}
                         >
                             {sort.map((option) => (
-                                <MenuItem sx={{fontSize: 11, maxHeight: 30,minHeight: 30}} key={option} value={option}>
+                                <MenuItem sx={{fontSize: 13, maxHeight: 30,minHeight: 30}} key={option} value={option}>
                                     {option}
                                 </MenuItem>
                             ))}
@@ -201,10 +201,10 @@ const PhotoGallery = () => {
                             value={sortDirection}
                             onChange={handleDirectionChange}
                             variant="standard"
-                            sx={{fontSize: 11}}
+                            sx={{fontSize: 13}}
                         >
                             {direction.map((option) => (
-                                <MenuItem sx={{fontSize: 11, maxHeight: 30,minHeight: 30}} key={option} value={option}>
+                                <MenuItem sx={{fontSize: 13, maxHeight: 30,minHeight: 30}} key={option} value={option}>
                                     {option}
                                 </MenuItem>
                             ))}
@@ -235,7 +235,7 @@ const PhotoGallery = () => {
             <Stack sx={{width: '95%'}}>
                 <ImageList variant="masonry" cols={3} gap={res750 ? 4 : 8}>
                     {galleryState.photo.photoPage.contents.map((item, idx) => (
-                        <PhotoItem item={item} key={idx} />
+                        <PhotoItem item={item} key={idx} isAuthor={galleryState.photo?.isAuthor} />
                     ))}
                 </ImageList>
             </Stack>

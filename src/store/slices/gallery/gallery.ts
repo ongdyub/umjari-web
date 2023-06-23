@@ -153,6 +153,24 @@ export const postPhoto = createAsyncThunk(
     }
 )
 
+export const deletePhoto = createAsyncThunk(
+    "gallery/deletePhoto",
+    async ({albumId, token, data} : {albumId : string | undefined | null, token : string | undefined | null, data:any},  {rejectWithValue}) => {
+        try {
+            const response = await axios.delete(`/api/v1/album/${albumId}/photo/`, {
+                data : data,
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
 export const galleryStateSlice = createSlice({
     name: "galleryState",
     initialState,
@@ -246,7 +264,12 @@ export const galleryStateSlice = createSlice({
         builder.addCase(postPhoto.rejected, (state, action) => {
             window.alert(action.payload)
         });
-
+        builder.addCase(deletePhoto.fulfilled, () => {
+            window.alert("삭제 완료")
+        });
+        builder.addCase(deletePhoto.rejected, () => {
+            window.alert("삭제 실패. 네트워크 오류")
+        });
     },
 });
 
