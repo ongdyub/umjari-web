@@ -167,7 +167,7 @@ const GroupRecruit = () => {
 
     const handleEdit = async () => {
         if(contents.length > 5000){
-            window.alert("최대 길이를 초과하였습니다. 현재 길이는 " + contents.length + " 입니다.")
+            window.alert("최대 길이 5000을 초과하였습니다. 현재 길이는 " + contents.length + " 입니다.")
             return
         }
         const data = {
