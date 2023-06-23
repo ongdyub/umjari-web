@@ -3,18 +3,12 @@ import {
     CircularProgress,
     Divider,
     IconButton,
-    ImageList,
-    ImageListItem,
-    ImageListItemBar, MenuItem, Pagination, Select, SelectChangeEvent,
+    ImageList, MenuItem, Pagination, Select, SelectChangeEvent,
     Stack,
-    Typography,
     useMediaQuery,
     useTheme
 } from "@mui/material";
 import {useEffect, useState} from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import CommentIcon from "@mui/icons-material/Comment";
-import GalleryModal from "../../../../Modal/GalleryModal";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../../../store";
 import {selectUser} from "../../../../store/slices/user/user";
@@ -32,9 +26,9 @@ import {
     myConcertProfileImageUpload,
 } from "../../../../store/slices/myconcert/myconcert";
 import Backdrop from "@mui/material/Backdrop";
-import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 import DeleteConfirmModal from "../../../../Modal/DeleteConfirmModal";
 import AddAlbumModal from "../../../../Modal/AddAlbumModal";
+import PhotoItem from "./PhotoItem/PhotoItem";
 
 const PhotoGallery = () => {
 
@@ -74,18 +68,6 @@ const PhotoGallery = () => {
         setSearchParams(searchParams)
         setPage(value);
     };
-
-    const [open, setOpen] = useState(false)
-    const [imgId, setImgId] = useState(0)
-
-    const handleImgOpen = (id: any) => {
-        setOpen(true)
-        setImgId(id)
-    }
-    const handleImgClose = () => {
-        setOpen(false)
-        setImgId(0)
-    }
 
     const handleUploadPhoto = async (e: any) => {
 
@@ -146,7 +128,7 @@ const PhotoGallery = () => {
         return () => {
             dispatch(galleryStateActions.resetGallery())
         }
-    },[dispatch, albumId])
+    },[albumId])
 
     useEffect(() => {
         if(confirm){
@@ -163,12 +145,14 @@ const PhotoGallery = () => {
     },[galleryState.photo])
 
     useEffect(() => {
+        setImgLadingOpen(true)
         const param = {
             page : searchParams.get('page'),
             size : 10,
             sort : "createdAt,DESC",
         }
         dispatch(photoListGet({albumId, token: userState.accessToken, param}))
+        setImgLadingOpen(false)
     },[searchParams])
 
     useEffect(() => {
@@ -251,39 +235,9 @@ const PhotoGallery = () => {
             <Stack sx={{width: '95%'}}>
                 <ImageList variant="masonry" cols={3} gap={res750 ? 4 : 8}>
                     {galleryState.photo.photoPage.contents.map((item, idx) => (
-                        <ImageListItem key={idx} sx={{cursor: 'pointer'}} onClick={() => handleImgOpen(item)}>
-                            <img
-                                src={item.url}
-                                onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/img/fail-loading.png`}
-                                alt="갤러리 사진입니다."
-                                loading="lazy"
-                            />
-                            <ImageListItemBar
-                                sx={{height: res750 ? '25px' : 'auto', pt: -1, pb: -1}}
-                                // title={'title'}
-                                //시리즈 모음집 이름
-                                // subtitle={<Typography sx={{fontSize: 8}}>photo</Typography>}
-                                //개별 사진 title
-                                actionIcon={
-                                    <IconButton
-                                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                        aria-label={`info about ${item}`}
-                                    >
-                                        <FavoriteIcon sx={{width: 10, height: 10}} />
-                                        <Typography sx={{fontSize: 8, ml:0.5, mr:1}}>
-                                            0
-                                        </Typography>
-                                        <CommentIcon sx={{width: 10, height: 10}} />
-                                        <Typography sx={{fontSize: 8, ml:0.5}}>
-                                            0
-                                        </Typography>
-                                    </IconButton>
-                                }
-                            />
-                        </ImageListItem>
+                        <PhotoItem item={item} key={idx} />
                     ))}
                 </ImageList>
-                <GalleryModal open={open} handleClose={handleImgClose} imgId={imgId}/>
             </Stack>
             <Stack alignItems="center" sx={{width:'100%', height: '80px'}} flexDirection={'row'} justifyContent="center" alignContent="center">
                 <Pagination sx={{display: 'flex', width: '100%',justifyContent: "center", alignItems:"center",}} size={res750 ? "small" : "large"} count={totalPage} page={page} onChange={handleChange} defaultPage={1} siblingCount={1} boundaryCount={1}/>
