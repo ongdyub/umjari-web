@@ -12,7 +12,6 @@ import {
 import AlbumItem from "../AlbumItem/AlbumItem";
 import {useEffect, useState} from "react";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Card from "@mui/material/Card";
@@ -140,13 +139,13 @@ const AlbumGallery = () => {
                 </Stack>
             </Stack>
             <Stack sx={{mt: 2, width: '100%', mb: 5}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
-                <Grid justifyContent={"space-between"} flexWrap={"wrap"} container spacing={1} columns={22} sx={{pr: res750 ? 2 : 5, pl: res750 ? 2: 0}}>
+                <Grid justifyContent={"flex-start"} flexWrap={"wrap"} container spacing={1} columns={21} sx={{pr: res750 ? 2 : 5, pl: res750 ? 2: 0}}>
                     {
                         galleryState.album.isAuthor && page === 1 ?
                             <Grid item xs={10.5} res550={7} res750={10.5} md={7} lg={7} sx={{mb: 3}} alignItems={'center'}>
                                 <Card onClick={() => setOpen(true)} sx={{cursor:'pointer', maxWidth: 345, boxShadow: 8 }}>
-                                    <Stack sx={{width: '100%', mt: 2, mb: 1.3}} justifyContent={"center"} alignContent={"center"} alignItems={"center"}>
-                                        <Typography sx={{fontSize: 13, fontWeight: 300}}>
+                                    <Stack sx={{width: '100%', mt: 0.7, mb: 0.5}} justifyContent={"center"} alignContent={"center"} alignItems={"center"}>
+                                        <Typography sx={{fontSize: 12, fontWeight: 400}}>
                                             앨범 추가
                                         </Typography>
                                     </Stack>
@@ -154,12 +153,13 @@ const AlbumGallery = () => {
                                     <Stack sx={{height: '80px', width: '100%'}} justifyContent={'center'} alignContent={'center'} alignItems={'center'} direction={'row'}>
                                         <AddAPhotoIcon sx={{width: 'auto', height:'50px'}} />
                                     </Stack>
-                                    <Stack sx={{width: '100%'}} direction={"row"} justifyContent={"flex-start"} alignItems={"center"} alignContent={"center"}>
-                                        <IconButton>
-                                            <PhotoLibraryIcon />
-                                        </IconButton>
-                                        <Typography sx={{color: 'grey', fontSize: 8, fontWeight: 500, marginLeft: 'auto', width:'auto', pr:1}}>
-                                            created At YYYY.MM.DD
+                                    <Stack sx={{width: '100%', mb:1}} direction={"row"} justifyContent={"flex-start"} alignItems={"center"} alignContent={"center"}>
+                                        <PhotoLibraryIcon sx={{ml: 1, width: 15, height: 15}} />
+                                        <Typography sx={{fontSize : 12, ml: 1, mr: 0.5}}>
+                                            0
+                                        </Typography>
+                                        <Typography sx={{color: 'grey', fontSize: 8, fontWeight: 500, marginLeft: 'auto', pr:1}}>
+                                            created At ...
                                         </Typography>
                                     </Stack>
                                 </Card>
@@ -175,7 +175,7 @@ const AlbumGallery = () => {
                     }
                     {
                         galleryState.album.albumPage.contents.map((item, idx) => (
-                            <Grid key={idx} item xs={10.5} res550={7} res750={10.5} md={7} lg={7} sx={{mb: 3}} direction={'row'} alignItems={'center'}>
+                            <Grid key={idx} item xs={10.5} res550={7} res750={10.5} md={7} lg={7} sx={{mb: 3}} alignItems={'center'}>
                                 <AlbumItem item={item} />
                             </Grid>
                         ))

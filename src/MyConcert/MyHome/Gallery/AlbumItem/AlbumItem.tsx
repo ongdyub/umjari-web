@@ -2,7 +2,6 @@ import {Divider, Stack} from "@mui/material";
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import {useNavigate} from "react-router-dom";
@@ -15,9 +14,9 @@ const AlbumItem = (props : any) => {
     const navigate = useNavigate()
 
     return(
-        <Card sx={{cursor:'pointer', maxWidth: 345, boxShadow: 8 }} onClick={() => navigate(`${item.id}`)}>
-            <Stack sx={{width: '100%', mt: 1.5, mb: 1.3}} justifyContent={"center"} alignContent={"center"} alignItems={"center"}>
-                <Typography sx={{fontSize: 13, fontWeight: 300}}>
+        <Card sx={{cursor:'pointer', maxWidth: 345, boxShadow: 8 }} onClick={() => navigate(`${item.id}/${item.title}`)}>
+            <Stack sx={{width: '100%', mt: 0.7, mb: 0.5}} justifyContent={"center"} alignContent={"center"} alignItems={"center"}>
+                <Typography sx={{fontSize: 12, fontWeight: 400}}>
                     {item.title}
                 </Typography>
             </Stack>
@@ -29,13 +28,11 @@ const AlbumItem = (props : any) => {
                 image={item.headPhoto}
                 onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
             />
-            <Stack sx={{width: '100%'}} direction={"row"} justifyContent={"flex-start"} alignItems={"center"} alignContent={"center"}>
-                <IconButton>
-                    <PhotoLibraryIcon />
-                    <Typography sx={{pl: 1.5}}>
-                        {item.photoCount}
-                    </Typography>
-                </IconButton>
+            <Stack sx={{width: '100%',mt:1, mb:1}} direction={"row"} justifyContent={"flex-start"} alignItems={"center"} alignContent={"center"}>
+                <PhotoLibraryIcon sx={{ml: 1, width: 15, height: 15}} />
+                <Typography sx={{fontSize : 12, ml: 1, mr: 0.5}}>
+                    {item.photoCount}
+                </Typography>
                 <Typography sx={{color: 'grey', fontSize: 8, fontWeight: 500, marginLeft: 'auto', pr:1}}>
                     created At {item.createAt.slice(2,10)}
                 </Typography>
