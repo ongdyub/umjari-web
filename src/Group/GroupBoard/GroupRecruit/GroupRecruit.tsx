@@ -262,20 +262,17 @@ const GroupRecruit = () => {
                     <Typography sx={{fontSize: res700 ? 20:30, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>상세정보</Typography>
                 </Stack>
                 {
-                    isAdminGroup ?
-                        edit ?
-                            <ConcertInfoEdit contents={contents} setContents={setContents} />
-                            :
-                            <Stack sx={{width : res700 ? '90%' : '100%', mt : 2}}>
-                                <ReactQuill
-                                    value={groupState.groupRecruit.recruitDetail === null ? '마감되었습니다.' : groupState.groupRecruit.recruit ? groupState.groupRecruit.recruitDetail : '마감되었습니다.'}
-                                    style={{paddingRight: res700 ? 0 : 20, height: 'auto'}}
-                                    readOnly={true}
-                                    theme={"bubble"}
-                                />
-                            </Stack>
+                    isAdminGroup && edit ?
+                        <ConcertInfoEdit contents={contents} setContents={setContents} />
                         :
-                        null
+                        <Stack sx={{width : res700 ? '90%' : '100%', mt : 2}}>
+                            <ReactQuill
+                                value={groupState.groupRecruit.recruitDetail === null ? '마감되었습니다.' : groupState.groupRecruit.recruitDetail}
+                                style={{paddingRight: res700 ? 0 : 20, height: 'auto'}}
+                                readOnly={true}
+                                theme={"bubble"}
+                            />
+                        </Stack>
                 }
             </Stack>
         )
