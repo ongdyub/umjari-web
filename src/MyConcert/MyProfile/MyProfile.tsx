@@ -1,6 +1,6 @@
 import {Box, Button, CircularProgress, Divider, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import Backdrop from '@mui/material/Backdrop';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../store";
 import {
@@ -18,6 +18,7 @@ import {requestFriendPost} from "../../store/slices/manage/friend/friend";
 const MyProfile = () => {
 
     const myRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate()
     const [height, setHeight] = useState<number | null | undefined>(null);
     const [imgLoadingOpen,  setImgLadingOpen] = useState(false)
     const [openGroupEdit, setOpenGroupEdit] = useState(false)
@@ -138,7 +139,7 @@ const MyProfile = () => {
                         </Button>
                         :
                         myConcertState.myDefaultInfo?.isFriend ?
-                            <Button sx={{mt: 1, pb: -1, maxWidth : 80, minWidth: 80, maxHeight : 30, minHeight: 30}}>
+                            <Button onClick={() => navigate(`/manage/${userState.profileName}/friend`)} sx={{mt: 1, pb: -1, maxWidth : 80, minWidth: 80, maxHeight : 30, minHeight: 30}}>
                                 <Typography color={'red'} sx={{fontSize: 10, borderBottom: '1px solid black'}} >친구 삭제</Typography>
                             </Button>
                             :
