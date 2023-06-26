@@ -22,7 +22,7 @@ import React from 'react'
 import NameChangeModal from "../../Modal/NameChangeModal";
 
 const pages = ['홈', '커뮤니티', '단체검색', '장터', '객원모집'];
-const settings = ['마이페이지', '닉네임 변경' ,'작성기록', '설정', '로그아웃', 'Size'];
+const settings = ['마이페이지', '닉네임 변경' , '내정보 관리', '로그아웃', 'Size'];
 
 const Header = () => {
 
@@ -70,11 +70,8 @@ const Header = () => {
         if(setting === '마이페이지'){
             navigate(`/myconcert/${userState.profileName}/selfintro`)
         }
-        else if(setting === '작성기록'){
-            window.alert('준비중입니다.')
-        }
-        else if(setting === '설정'){
-            window.alert('준비중입니다.')
+        else if(setting === '내정보 관리'){
+            navigate(`/manage/${userState.profileName}/friend`)
         }
         else if(setting === '로그아웃'){
             dispatch(userActions.logoutUser())
@@ -112,7 +109,7 @@ const Header = () => {
                     }
                 }
             }
-            fetchToken()
+            fetchToken().then(() => {})
             dispatch(myInfoGet({token : userState.accessToken, profileName : userState.profileName}))
         }
 

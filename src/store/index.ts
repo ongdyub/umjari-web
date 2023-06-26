@@ -9,6 +9,8 @@ import boardStateReducer from "./slices/board/board"
 import articleStateReducer from "./slices/article/article"
 import musicStateReducer from "./slices/music/music"
 import galleryStateReducer from "./slices/gallery/gallery"
+import friendStateReducer from "./slices/manage/friend/friend"
+import visitStateReducer from "./slices/visit/visit"
 
 export const store = configureStore({
     reducer : {
@@ -21,6 +23,8 @@ export const store = configureStore({
         articleState : articleStateReducer,
         musicState : musicStateReducer,
         galleryState : galleryStateReducer,
+        friendState : friendStateReducer,
+        visitState : visitStateReducer,
         dummy : dummyReducer
     },
 });

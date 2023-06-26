@@ -1,34 +1,85 @@
 import {Box, Button, ButtonGroup, Divider, Stack, TextField, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "../../../../store";
+import {getVisitList, postVisit, selectVisit} from "../../../../store/slices/visit/visit";
+import {selectUser} from "../../../../store/slices/user/user";
+import {selectMyConcert} from "../../../../store/slices/myconcert/myconcert";
+import {useParams} from "react-router-dom";
 
 const VisitList = (props : any) => {
 
     const {item, write} = props
 
+    const {profileName} = useParams()
+
+    const userState = useSelector(selectUser)
+    const visitState = useSelector(selectVisit)
+    const myConcertState = useSelector(selectMyConcert)
+
     const theme = useTheme();
-    const res400 = useMediaQuery(theme.breakpoints.down("res400"))
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
+    const dispatch = useDispatch<AppDispatch>()
+
+    const [text, setText] = useState('')
+    const [hide, setHide] = useState(false)
+
+    const handlePostVisit = async () => {
+        if(write){
+            if(text === '' || text.length < 1){
+                window.alert("본문을 입력해주세요.")
+                return
+            }
+            if(text.length > 500){
+                window.alert("500자 초과")
+                return
+            }
+            const data = {
+                content : text,
+                private : hide
+            }
+            const result = await dispatch(postVisit({id : myConcertState.myDefaultInfo?.id, token : userState.accessToken, data}))
+            if(result.type === `${postVisit.typePrefix}/fulfilled`){
+                const param = {
+                    page: 1,
+                    size: 20,
+                    sort: "createdAt,DESC"
+                }
+                dispatch(getVisitList({profileName, token : userState.accessToken, param}))
+            }
+        }
+        else{
+            return
+        }
+    }
+
     return(
-        <Stack  sx={{width: '100%', mt:3}} justifyContent={res550 ? "center" : ''} alignItems={res550 ? "center" : ''} alignContent={res550 ? "center" : ''}>
+        <Stack  sx={{width: '95%', mt:1}} justifyContent={res550 ? "center" : 'center'} alignItems={res550 ? "center" : 'center'} alignContent={res550 ? "center" : 'center'}>
             <Divider sx={{width: '90%'}} />
-            <Stack direction={res400 ? "column" : "row"} sx={{width: '90%'}}>
+            <Stack direction={"row"} sx={{width: '90%'}}>
                 <Stack direction={"row"} alignContent={"center"} alignItems={"center"}>
                     <Typography sx={{ml: 2, fontWeight:800, fontSize: 13}}>
-                        No. {item}
+                        No. {item.userId}
                     </Typography>
-                    <Typography sx={{ml: 2}}>
-                        이름자리
+                    <Typography sx={{fontSize:12,ml: 2}}>
+                        {item.authorId.profileName}
                     </Typography>
-                    <Typography sx={{ml: 2, color:'grey', fontWeight:300}}>
-                        2010.10.10
+                    <Typography sx={{ml: 2, color:'grey',fontSize:10, fontWeight:300}}>
+                        {write ? '' : item.createdAt.slice(2,10) + " " + item.createdAt.slice(11,16)}
                     </Typography>
                 </Stack>
                 <Stack sx={{marginLeft: 'auto'}} direction={"row"}>
                     <ButtonGroup>
-                        <Button variant={"text"}>수정</Button>
-                        <Button variant={"text"}>삭제</Button>
-                        <Button variant={"text"}>잠금</Button>
+                        <Button sx={{fontSize:10}} variant={"text"}>수정</Button>
+                        <Button sx={{fontSize:10}} variant={"text"}>삭제</Button>
+                        {
+                            hide ?
+                                <Button onClick={() => setHide(false)} sx={{fontSize:10, color: 'red'}} variant={"text"}>비공개</Button>
+                                :
+                                <Button onClick={() => setHide(true)} sx={{fontSize:10, color: 'blue'}} variant={"text"}>공개</Button>
+                        }
                     </ButtonGroup>
                 </Stack>
             </Stack>
@@ -40,32 +91,37 @@ const VisitList = (props : any) => {
                         component="img"
                         sx={{
                             display: 'block',
-                            width: res750 ? 133 : 133,
-                            height: res750 ? 133 : 133,
+                            width: res750 ? 103 : 133,
+                            height: res750 ? 103 : 133,
                             borderRadius: '20%',
-                            objectFit: 'contain',
+                            objectFit: 'cover',
                             boxShadow: 'rgb(0 0 0 / 6%) 0px 0px 4px 0px'
                         }}
-                        alt="대충 본인 프사"
-                        src={`${process.env.PUBLIC_URL}/Thumbnail_trans_white.png`}
+                        onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
+                        alt="Profile Img"
+                        src={write ? item.profileImg : item.authorId.profileImage}
+
                     />
                 </Stack>
                 {
                     write ?
                         <Stack sx={{pl:3, width: '100%'}}>
                             <TextField
-                                placeholder="댓글을 입력해 주세요"
+                                placeholder="최대 500자의 방명록을 입려해 주세요. 비공개 설정은 서로 친구 상태만 가능합니다,"
                                 multiline
-                                rows={6}
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                                rows={5}
+                                sx={{fontSize : 11}}
                                 variant={"standard"}
                             />
                             <Stack sx={{width: '100%'}} flexDirection={'row-reverse'}>
-                                <Button size={"large"}>작성하기</Button>
+                                <Button onClick={handlePostVisit} sx={{fontSize: 12}} size={"small"}>작성하기</Button>
                             </Stack>
                         </Stack>
                         :
                         <Stack sx={{pl:2}}>
-                            {'ㅁㄴㅇㄹㅁㄴㅇㄹㄴㅁㅇㄹㄴㅇㄹ'.repeat(item*2)}
+                            {item.content.slice(0,500)}
                         </Stack>
                 }
             </Stack>
