@@ -70,6 +70,41 @@ export const getRequestFriend = createAsyncThunk(
     }
 )
 
+export const getCurFriend = createAsyncThunk(
+    "friend/getCurFriend",
+    async ({profileName,token, param} : {profileName : string | undefined | null, token : string | undefined | null, param : any},  {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/user/profile-name/${profileName}/friends/`, {
+                params : param,
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"])
+        }
+    }
+)
+
+export const requestFriendPost = createAsyncThunk(
+    "friend/requestFriendPost",
+    async ({token, data} : {token : string | undefined | null, data : any},  {rejectWithValue}) => {
+        try {
+            const response = await axios.post(`/api/v1/friend/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
 
 export const friendStateSlice = createSlice({
     name: "friendState",
@@ -106,6 +141,28 @@ export const friendStateSlice = createSlice({
             }
             else{
                 window.alert("네트워크 오류." + action.payload)
+            }
+        });
+        builder.addCase(getCurFriend.fulfilled, (state, action) => {
+            state.currentFriend = action.payload
+        });
+        builder.addCase(getCurFriend.rejected, (state, action) => {
+            if(action.payload === 4005){
+                window.alert("존재하지 않는 이름입니다.")
+            }
+            else{
+                window.alert("네트워크 오류." + action.payload)
+            }
+        });
+        builder.addCase(requestFriendPost.fulfilled, () => {
+            window.alert("요청 완료.")
+        });
+        builder.addCase(requestFriendPost.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 41){
+                window.alert("이미 요청을 보낸 대상입니다.")
+            }
+            else{
+                window.alert("네트워크 오류." + action.payload.data["detail"])
             }
         });
     },

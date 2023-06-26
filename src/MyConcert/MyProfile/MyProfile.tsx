@@ -13,6 +13,7 @@ import {useEffect, useRef, useState} from "react";
 import {selectUser, userActions} from "../../store/slices/user/user";
 import MyCareer from "./MyCareer/MyCareer";
 import GroupDateEditModal from "../../Modal/GroupDateEditModal";
+import {requestFriendPost} from "../../store/slices/manage/friend/friend";
 
 const MyProfile = () => {
 
@@ -45,6 +46,8 @@ const MyProfile = () => {
     const res500 = useMediaQuery(theme.breakpoints.down("res500"))
     const res700 = useMediaQuery(theme.breakpoints.down("res700"))
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
+
+    const [send, setSend] = useState<boolean>(false)
 
     const handleFile = async (e : any) => {
 
@@ -81,6 +84,22 @@ const MyProfile = () => {
             setImgLadingOpen(false)
 
             window.alert("이미지 업로드 실패. 용량(50MB)과 네트워크를 확인해 주세요")
+        }
+    }
+
+    const handleRequestFriend = async () => {
+
+        if(!userState.isLogin){
+            dispatch(userActions.openModal())
+            return
+        }
+
+        const data = {
+            receiverId : myConcertState.myDefaultInfo?.id
+        }
+        const result = await dispatch(requestFriendPost({token : userState.accessToken, data}))
+        if(result.type === `${requestFriendPost.typePrefix}/fulfilled`){
+            setSend(true)
         }
     }
 
@@ -123,7 +142,7 @@ const MyProfile = () => {
                                 <Typography sx={{fontSize: 10, borderBottom: '1px solid black'}} >친구 삭제</Typography>
                             </Button>
                             :
-                            <Button sx={{mt: 1, pb: -1, maxWidth : 80, minWidth: 80, maxHeight : 30, minHeight: 30}}>
+                            <Button disabled={send} onClick={handleRequestFriend} sx={{mt: 1, pb: -1, maxWidth : 80, minWidth: 80, maxHeight : 30, minHeight: 30}}>
                                 <Typography sx={{fontSize: 10, borderBottom: '1px solid black'}} >친구 추가</Typography>
                             </Button>
                 }
