@@ -105,6 +105,57 @@ export const requestFriendPost = createAsyncThunk(
     }
 )
 
+export const receiveFriendPost = createAsyncThunk(
+    "friend/receiveFriendPost",
+    async ({token, id} : {token : string | undefined | null, id : string | undefined | null | number},  {rejectWithValue}) => {
+        try {
+            const response = await axios.post(`/api/v1/friend/approval/${id}/`, {},{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
+export const rejectFriendPost = createAsyncThunk(
+    "friend/rejectFriendPost",
+    async ({token, id} : {token : string | undefined | null, id : string | undefined | null | number},  {rejectWithValue}) => {
+        try {
+            const response = await axios.delete(`/api/v1/friend/rejection/${id}/`,{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
+export const rejectCurFriend = createAsyncThunk(
+    "friend/rejectCurFriend",
+    async ({token, id} : {token : string | undefined | null, id : string | undefined | null | number},  {rejectWithValue}) => {
+        try {
+            const response = await axios.delete(`/api/v1/friend/${id}/`,{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
 
 export const friendStateSlice = createSlice({
     name: "friendState",
@@ -140,7 +191,7 @@ export const friendStateSlice = createSlice({
                 window.alert("존재하지 않는 이름입니다.")
             }
             else{
-                window.alert("네트워크 오류." + action.payload)
+                window.alert("네트워크 오류. " + action.payload)
             }
         });
         builder.addCase(getCurFriend.fulfilled, (state, action) => {
@@ -151,7 +202,7 @@ export const friendStateSlice = createSlice({
                 window.alert("존재하지 않는 이름입니다.")
             }
             else{
-                window.alert("네트워크 오류." + action.payload)
+                window.alert("네트워크 오류. " + action.payload)
             }
         });
         builder.addCase(requestFriendPost.fulfilled, () => {
@@ -159,11 +210,29 @@ export const friendStateSlice = createSlice({
         });
         builder.addCase(requestFriendPost.rejected, (state, action : any) => {
             if(action.payload.data["errorCode"] === 41){
-                window.alert("이미 요청을 보낸 대상입니다.")
+                window.alert("이미 요청을 보냈거나, 요청이 온 대상입니다.")
             }
             else{
-                window.alert("네트워크 오류." + action.payload.data["detail"])
+                window.alert("네트워크 오류. " + action.payload.data["detail"])
             }
+        });
+        builder.addCase(receiveFriendPost.fulfilled, () => {
+            window.alert("수락 완료.")
+        });
+        builder.addCase(receiveFriendPost.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["detail"])
+        });
+        builder.addCase(rejectFriendPost.fulfilled, () => {
+            window.alert("거절 완료.")
+        });
+        builder.addCase(rejectFriendPost.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["detail"])
+        });
+        builder.addCase(rejectCurFriend.fulfilled, () => {
+            window.alert("삭제 완료.")
+        });
+        builder.addCase(rejectCurFriend.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["detail"])
         });
     },
 });

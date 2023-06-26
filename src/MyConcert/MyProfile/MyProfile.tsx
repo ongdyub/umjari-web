@@ -139,7 +139,7 @@ const MyProfile = () => {
                         :
                         myConcertState.myDefaultInfo?.isFriend ?
                             <Button sx={{mt: 1, pb: -1, maxWidth : 80, minWidth: 80, maxHeight : 30, minHeight: 30}}>
-                                <Typography sx={{fontSize: 10, borderBottom: '1px solid black'}} >친구 삭제</Typography>
+                                <Typography color={'red'} sx={{fontSize: 10, borderBottom: '1px solid black'}} >친구 삭제</Typography>
                             </Button>
                             :
                             <Button disabled={send} onClick={handleRequestFriend} sx={{mt: 1, pb: -1, maxWidth : 80, minWidth: 80, maxHeight : 30, minHeight: 30}}>
