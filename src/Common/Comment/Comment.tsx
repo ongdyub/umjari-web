@@ -143,7 +143,7 @@ const Comment = (props : any) => {
                                 </Stack>
                             </Stack>
                             :
-                            <Typography>
+                            <Typography sx={{whiteSpace: 'pre-line',wordBreak: 'break-word'}}>
                                 {item.content}
                             </Typography>
                     }
