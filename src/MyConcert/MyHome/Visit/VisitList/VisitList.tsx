@@ -2,10 +2,10 @@ import {Box, Button, ButtonGroup, Divider, Stack, TextField, Typography, useMedi
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../../../store";
-import {getVisitList, postVisit, selectVisit} from "../../../../store/slices/visit/visit";
+import {deleteVisit, editVisit, getVisitList, postVisit} from "../../../../store/slices/visit/visit";
 import {selectUser} from "../../../../store/slices/user/user";
 import {selectMyConcert} from "../../../../store/slices/myconcert/myconcert";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import DeleteConfirmModal from "../../../../Modal/DeleteConfirmModal";
 
 const VisitList = (props : any) => {
@@ -13,9 +13,9 @@ const VisitList = (props : any) => {
     const {item, write} = props
 
     const {profileName} = useParams()
+    const navigate = useNavigate()
 
     const userState = useSelector(selectUser)
-    const visitState = useSelector(selectVisit)
     const myConcertState = useSelector(selectMyConcert)
 
     const theme = useTheme();
@@ -26,6 +26,9 @@ const VisitList = (props : any) => {
 
     const [text, setText] = useState('')
     const [hide, setHide] = useState(false)
+
+    const [edit, setEdit] = useState(false)
+    const [editText, setEditText] = useState('')
 
     const [open, setOpen] = useState(false)
     const [confirm, setConfirm] = useState(false)
@@ -52,7 +55,39 @@ const VisitList = (props : any) => {
                     sort: "createdAt,DESC"
                 }
                 dispatch(getVisitList({profileName, token : userState.accessToken, param}))
+                setText('')
             }
+        }
+        else{
+            return
+        }
+    }
+
+    const handleEditVisit = async () => {
+        if(edit){
+            if(editText === '' || editText.length < 1){
+                window.alert("본문을 입력해주세요.")
+                return
+            }
+            if(editText.length > 500){
+                window.alert("500자 초과")
+                return
+            }
+            const data = {
+                content : editText,
+                private : hide
+            }
+            const result = await dispatch(editVisit({id : item.id, token : userState.accessToken, data}))
+            if(result.type === `${editVisit.typePrefix}/fulfilled`){
+                const param = {
+                    page: 1,
+                    size: 20,
+                    sort: "createdAt,DESC"
+                }
+                dispatch(getVisitList({profileName, token : userState.accessToken, param}))
+                setText('')
+            }
+            setEdit(false)
         }
         else{
             return
@@ -61,8 +96,8 @@ const VisitList = (props : any) => {
 
     useEffect(() => {
         if(confirm && !write && item.isAuthor){
-            //TODO
-            //delete Visit
+            dispatch(deleteVisit({id:item.id, token: userState.accessToken}))
+            window.location.reload()
             setOpen(false)
         }
     },[confirm])
@@ -73,9 +108,9 @@ const VisitList = (props : any) => {
             <Stack direction={"row"} sx={{width: '90%'}}>
                 <Stack direction={"row"} alignContent={"center"} alignItems={"center"}>
                     <Typography sx={{ml: 2, fontWeight:800, fontSize: res550 ? 10 : 13}}>
-                        No. {write ? '#' : item.userId}
+                        No. {write ? '#' : item.id}
                     </Typography>
-                    <Typography sx={{fontSize:res550 ? 10 : 12,ml: 2}}>
+                    <Typography onClick={() => navigate(`/myconcert/${item.authorId.profileName}/visit`)} sx={{cursor : 'pointer',fontSize:res550 ? 10 : 12,ml: 2}}>
                         {item.authorId.profileName}
                     </Typography>
                     <Typography sx={{ml: 2, color:'grey',fontSize: res550 ? 7 : 10, fontWeight:300}}>
@@ -87,14 +122,19 @@ const VisitList = (props : any) => {
                         {
                             !write && item.isAuthor ?
                                 <>
-                                    <Button onClick={() => window.alert("준비중입니다.")} sx={{fontSize:10, color: 'green'}} variant={"text"} >수정</Button>
+                                    {
+                                        edit ?
+                                            <Button onClick={() => setEdit(false)} sx={{fontSize:10, color: 'grey'}} variant={"text"} >취소</Button>
+                                            :
+                                            <Button onClick={() => setEdit(true)} sx={{fontSize:10, color: 'green'}} variant={"text"} >수정</Button>
+                                    }
                                     <Button onClick={() => setOpen(true)} sx={{fontSize:10, color: 'red'}} variant={"text"} >삭제</Button>
                                 </>
                                 :
                                 null
                         }
                         {
-                            write ?
+                            write || edit ?
                                 hide ?
                                     <Button onClick={() => setHide(false)} sx={{fontSize:10, color: 'red'}} variant={"text"}>비공개</Button>
                                     :
@@ -130,10 +170,9 @@ const VisitList = (props : any) => {
                         <Stack sx={{pl:3, width: '100%'}}>
                             <TextField
                                 sx={{
-                                    "& input::placeholder": {fontSize: 10},
                                     fontSize : 11
                                 }}
-                                placeholder="최대 500자의 방명록을 입력해 주세요. 비공개 설정은 서로 친구 상태만 가능합니다,"
+                                placeholder="최대 500자의 방명록을 입력해 주세요.&#13;&#10;비공개 상태는 서로 친구 상태만 가능하며 익명이 아닌, 방명록 주인만 볼 수 있는 상태입니다."
                                 multiline
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
@@ -145,9 +184,27 @@ const VisitList = (props : any) => {
                             </Stack>
                         </Stack>
                         :
-                        <Stack sx={{pl:2}}>
-                            {item.content.slice(0,500)}
-                        </Stack>
+                        edit ?
+                            <Stack sx={{pl:3, width: '100%'}}>
+                                <TextField
+                                    sx={{
+                                        fontSize : 11
+                                    }}
+                                    placeholder="공개 / 비공개 상태를 작성 전 한번 더 확인해주세요.&#13;&#10;최대 500자의 방명록을 입력해 주세요.&#13;&#10;비공개 설정은 서로 친구 상태만 가능합니다,"
+                                    multiline
+                                    value={editText}
+                                    onChange={(e) => setEditText(e.target.value)}
+                                    rows={5}
+                                    variant={"standard"}
+                                />
+                                <Stack sx={{width: '100%'}} flexDirection={'row-reverse'}>
+                                    <Button onClick={handleEditVisit} sx={{fontSize: 12}} size={"small"}>수정하기</Button>
+                                </Stack>
+                            </Stack>
+                            :
+                            <Stack sx={{whiteSpace: 'pre-line',wordBreak: 'break-word', pl:2}}>
+                                {item.content.slice(0,500)}
+                            </Stack>
                 }
             </Stack>
             {

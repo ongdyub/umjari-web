@@ -85,6 +85,23 @@ export const deleteVisit = createAsyncThunk(
     }
 )
 
+export const editVisit = createAsyncThunk(
+    "visit/editVisit",
+    async ({id,token,data} : {id : number | string | undefined | null, token : string | undefined | null, data : any},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/guestbook/${id}/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
 
 export const visitStateSlice = createSlice({
     name: "visitState",
@@ -116,9 +133,42 @@ export const visitStateSlice = createSlice({
         builder.addCase(postVisit.rejected, (state, action : any) => {
             if(action.payload.data["errorCode"] === 3031){
                 window.alert("친구상태만 비공개로 작성 가능합니다.")
+                return
+            }
+            else if(action.payload.data["errorCode"] === 51){
+                window.alert("오늘 이미 작성한 방명록이 있습니다.")
+                return
             }
             else{
                 window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+            }
+        });
+        builder.addCase(deleteVisit.fulfilled, () => {
+            window.alert("삭제 완료.")
+        });
+        builder.addCase(deleteVisit.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3031){
+                window.alert("친구상태만 비공개로 작성 가능합니다.")
+            }
+            else{
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+            }
+        });
+        builder.addCase(editVisit.fulfilled, () => {
+            window.alert("수정 완료.")
+        });
+        builder.addCase(editVisit.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3031){
+                window.alert("친구상태만 비공개로 작성 가능합니다.")
+                return
+            }
+            else if(action.payload.data["errorCode"] === 51){
+                window.alert("오늘 이미 작성한 방명록이 있습니다.")
+                return
+            }
+            else{
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+                return
             }
         });
     },
