@@ -68,6 +68,23 @@ export const postVisit = createAsyncThunk(
     }
 )
 
+export const deleteVisit = createAsyncThunk(
+    "visit/deleteVisit",
+    async ({id,token} : {id : number | string | undefined | null, token : string | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.delete(`/api/v1/guestbook/${id}/`, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
 
 export const visitStateSlice = createSlice({
     name: "visitState",
