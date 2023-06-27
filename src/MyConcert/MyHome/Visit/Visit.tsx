@@ -1,4 +1,4 @@
-import {Divider, Pagination, Stack, useMediaQuery, useTheme} from "@mui/material";
+import {Divider, Pagination, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import {useEffect, useState} from "react";
 import VisitList from "./VisitList/VisitList";
 import {useParams, useSearchParams} from "react-router-dom";
@@ -31,7 +31,7 @@ const Visit = () => {
             profileImage: "string"
         },
         content: "string",
-        createdAt: "string",
+        createdAt: "",
         isAuthor: true
     }
 
@@ -74,7 +74,12 @@ const Visit = () => {
     return(
         <Stack sx={{mt: 2, width: '100%'}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
             <Divider sx={{width: res750 ? '100%' : '90%', color: '#292929'}} />
-            <VisitList item={writeData} write={true} />
+            {
+                userState.isLogin ?
+                    <VisitList item={writeData} write={true} />
+                    :
+                    <Typography sx={{mt:1, fontSize:25, fontWeight:300}}>먼저 로그인해주세요</Typography>
+            }
             {
                 visitState.contents.map((item,idx) => (
                     <VisitList key={idx} item={item} write={false} />

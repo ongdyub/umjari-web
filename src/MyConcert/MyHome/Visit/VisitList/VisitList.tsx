@@ -1,11 +1,12 @@
 import {Box, Button, ButtonGroup, Divider, Stack, TextField, Typography, useMediaQuery, useTheme} from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../../../store";
 import {getVisitList, postVisit, selectVisit} from "../../../../store/slices/visit/visit";
 import {selectUser} from "../../../../store/slices/user/user";
 import {selectMyConcert} from "../../../../store/slices/myconcert/myconcert";
 import {useParams} from "react-router-dom";
+import DeleteConfirmModal from "../../../../Modal/DeleteConfirmModal";
 
 const VisitList = (props : any) => {
 
@@ -25,6 +26,9 @@ const VisitList = (props : any) => {
 
     const [text, setText] = useState('')
     const [hide, setHide] = useState(false)
+
+    const [open, setOpen] = useState(false)
+    const [confirm, setConfirm] = useState(false)
 
     const handlePostVisit = async () => {
         if(write){
@@ -55,44 +59,62 @@ const VisitList = (props : any) => {
         }
     }
 
+    useEffect(() => {
+        if(confirm && !write && item.isAuthor){
+            //TODO
+            //delete Visit
+            setOpen(false)
+        }
+    },[confirm])
+
     return(
-        <Stack  sx={{width: '95%', mt:1}} justifyContent={res550 ? "center" : 'center'} alignItems={res550 ? "center" : 'center'} alignContent={res550 ? "center" : 'center'}>
-            <Divider sx={{width: '90%'}} />
+        <Stack  sx={{width: '100%', mt:1,ml:res550 ? 0 : -3}} justifyContent={res550 ? "center" : 'center'} alignItems={res550 ? "center" : 'center'} alignContent={res550 ? "center" : 'center'}>
+            <Divider sx={{width: '90%', mb: res550 ? 0.5 : 0}} />
             <Stack direction={"row"} sx={{width: '90%'}}>
                 <Stack direction={"row"} alignContent={"center"} alignItems={"center"}>
-                    <Typography sx={{ml: 2, fontWeight:800, fontSize: 13}}>
-                        No. {item.userId}
+                    <Typography sx={{ml: 2, fontWeight:800, fontSize: res550 ? 10 : 13}}>
+                        No. {write ? '#' : item.userId}
                     </Typography>
-                    <Typography sx={{fontSize:12,ml: 2}}>
+                    <Typography sx={{fontSize:res550 ? 10 : 12,ml: 2}}>
                         {item.authorId.profileName}
                     </Typography>
-                    <Typography sx={{ml: 2, color:'grey',fontSize:10, fontWeight:300}}>
+                    <Typography sx={{ml: 2, color:'grey',fontSize: res550 ? 7 : 10, fontWeight:300}}>
                         {write ? '' : item.createdAt.slice(2,10) + " " + item.createdAt.slice(11,16)}
                     </Typography>
                 </Stack>
                 <Stack sx={{marginLeft: 'auto'}} direction={"row"}>
                     <ButtonGroup>
-                        <Button sx={{fontSize:10}} variant={"text"}>수정</Button>
-                        <Button sx={{fontSize:10}} variant={"text"}>삭제</Button>
                         {
-                            hide ?
-                                <Button onClick={() => setHide(false)} sx={{fontSize:10, color: 'red'}} variant={"text"}>비공개</Button>
+                            !write && item.isAuthor ?
+                                <>
+                                    <Button onClick={() => window.alert("준비중입니다.")} sx={{fontSize:10, color: 'green'}} variant={"text"} >수정</Button>
+                                    <Button onClick={() => setOpen(true)} sx={{fontSize:10, color: 'red'}} variant={"text"} >삭제</Button>
+                                </>
                                 :
-                                <Button onClick={() => setHide(true)} sx={{fontSize:10, color: 'blue'}} variant={"text"}>공개</Button>
+                                null
+                        }
+                        {
+                            write ?
+                                hide ?
+                                    <Button onClick={() => setHide(false)} sx={{fontSize:10, color: 'red'}} variant={"text"}>비공개</Button>
+                                    :
+                                    <Button onClick={() => setHide(true)} sx={{fontSize:10, color: 'blue'}} variant={"text"}>공개</Button>
+                                :
+                                null
                         }
                     </ButtonGroup>
                 </Stack>
             </Stack>
-            <Divider sx={{width: '90%'}} />
+            <Divider sx={{width: '90%',mt: res550 ? 0.5 : 0}} />
 
-            <Stack direction={"row"} sx={{width: '90%', mt:2}}>
+            <Stack direction={"row"} sx={{width: '90%', mt:1}}>
                 <Stack sx={{width: res750 ? 'auto' : 'auto'}}>
                     <Box
                         component="img"
                         sx={{
                             display: 'block',
-                            width: res750 ? 103 : 133,
-                            height: res750 ? 103 : 133,
+                            width: res750 ? 83 : 133,
+                            height: res750 ? 83 : 133,
                             borderRadius: '20%',
                             objectFit: 'cover',
                             boxShadow: 'rgb(0 0 0 / 6%) 0px 0px 4px 0px'
@@ -107,12 +129,15 @@ const VisitList = (props : any) => {
                     write ?
                         <Stack sx={{pl:3, width: '100%'}}>
                             <TextField
-                                placeholder="최대 500자의 방명록을 입려해 주세요. 비공개 설정은 서로 친구 상태만 가능합니다,"
+                                sx={{
+                                    "& input::placeholder": {fontSize: 10},
+                                    fontSize : 11
+                                }}
+                                placeholder="최대 500자의 방명록을 입력해 주세요. 비공개 설정은 서로 친구 상태만 가능합니다,"
                                 multiline
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
                                 rows={5}
-                                sx={{fontSize : 11}}
                                 variant={"standard"}
                             />
                             <Stack sx={{width: '100%'}} flexDirection={'row-reverse'}>
@@ -125,6 +150,12 @@ const VisitList = (props : any) => {
                         </Stack>
                 }
             </Stack>
+            {
+                open ?
+                    <DeleteConfirmModal open={open} setOpen={setOpen} setConfirm={setConfirm} />
+                    :
+                    null
+            }
         </Stack>
     )
 }
