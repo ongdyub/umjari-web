@@ -95,7 +95,7 @@ const VisitList = (props : any) => {
     }
 
     useEffect(() => {
-        if(confirm && !write && item.isAuthor){
+        if(confirm){
             dispatch(deleteVisit({id:item.id, token: userState.accessToken}))
             window.location.reload()
             setOpen(false)
@@ -120,7 +120,7 @@ const VisitList = (props : any) => {
                 <Stack sx={{marginLeft: 'auto'}} direction={"row"}>
                     <ButtonGroup>
                         {
-                            !write && item.isAuthor ?
+                            (!write && item.isAuthor) ?
                                 <>
                                     {
                                         edit ?
@@ -128,8 +128,13 @@ const VisitList = (props : any) => {
                                             :
                                             <Button onClick={() => setEdit(true)} sx={{fontSize:10, color: 'green'}} variant={"text"} >수정</Button>
                                     }
-                                    <Button onClick={() => setOpen(true)} sx={{fontSize:10, color: 'red'}} variant={"text"} >삭제</Button>
                                 </>
+                                :
+                                null
+                        }
+                        {
+                            myConcertState.myDefaultInfo?.isSelfProfile ?
+                                <Button onClick={() => setOpen(true)} sx={{fontSize:10, color: 'red'}} variant={"text"} >삭제</Button>
                                 :
                                 null
                         }
@@ -198,11 +203,11 @@ const VisitList = (props : any) => {
                                     variant={"standard"}
                                 />
                                 <Stack sx={{width: '100%'}} flexDirection={'row-reverse'}>
-                                    <Button onClick={handleEditVisit} sx={{fontSize: 12}} size={"small"}>수정하기</Button>
+                                    <Button onClick={handleEditVisit} sx={{fontSize: 11}} size={"small"}>수정하기</Button>
                                 </Stack>
                             </Stack>
                             :
-                            <Stack sx={{whiteSpace: 'pre-line',wordBreak: 'break-word', pl:2}}>
+                            <Stack sx={{fontSize : res550 ? 11 : 15,whiteSpace: 'pre-line',wordBreak: 'break-word', pl:2}}>
                                 {item.content.slice(0,500)}
                             </Stack>
                 }
