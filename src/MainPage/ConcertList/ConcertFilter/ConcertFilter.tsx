@@ -89,177 +89,172 @@ const ConcertFilter = () => {
         <Stack direction={'row'}
                justifyContent={res800 ? "flex-start" : "space-around"}
                alignItems="center"
-               sx={{height: res800 ? 'auto' : '85px', width: '100%', pl: res800 ? 0 : 5, pr: res800 ? 0 : 5}}
+               sx={{height: res800 ? 'auto' : '95px', width: '100%', pl: res800 ? 0 : 5, pr: res800 ? 0 : 5}}
         >
             {
                 res800 ?
                     <List component="nav" sx={{width: '100%', justifyContent:"flex-start", alignItems:"center"}}>
-                        <Stack onClick={menuOpen} justifyContent="flex-start" alignItems="center" sx={{width: '100%', mt: -1}}>
+                        <Stack onClick={menuOpen} justifyContent="flex-start" alignItems="center" sx={{width: '100%', mt: -1,}}>
                             <Divider sx={{width: '40%', border: 'solid 0.4px white'}} />
                             <ListItemButton sx={{width: '100%', display: 'flex', justifyContent:"center", alignItems:"center"}}>
-                                <Typography sx={{width: 'auto'}}>
+                                <Typography sx={{width: 'auto', fontSize : 13}}>
                                     {open ? '필터 접기' : '필터 펼치기'}
                                 </Typography>
                                 {open ? <ExpandLess sx={{pl: '2'}} /> : <ExpandMore sx={{pl: '2'}} />}
                             </ListItemButton>
                         </Stack>
-                        <Divider orientation={"horizontal"}/>
+                        <Divider orientation={"horizontal"} sx={{mt: -0.5}}/>
                         <Collapse in={open} timeout="auto" unmountOnExit>
-                            <Stack justifyContent="flex-start" alignItems="center" sx={{width: '100%', mt:1, mb: 1}} direction={res550 ? "column" : "row"}>
-                                {
-                                    res550 ?
-                                        <Typography sx={{width: 'auto', mt: 1, fontWeight: 300, fontSize: 20}}>
-                                            지역
-                                        </Typography>
-                                        :
-                                        null
-                                }
-                                <Stack justifyContent="space-around" alignItems="center" sx={{width: res550 ? "100%" : '50%'}} direction={"row"}>
-                                    <FormControl sx={{width: '35%'}}>
-                                        <Select
-                                            value={parent}
-                                            onChange={handleParentChange}
-                                            displayEmpty
-                                            sx={{height: '35px'}}
-                                            variant={"standard"}
-                                        >
-                                            {region_parents.map((item, idx) => (
-                                                <MenuItem value={idx}>{item}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
+                            <Stack justifyContent="flex-start" alignItems="center" sx={{width: '100%', mt:1, mb: 1}} direction={"column"}>
 
-                                    <FormControl sx={{width: '35%'}}>
-                                        <Select
-                                            value={child}
-                                            onChange={handleChildChange}
-                                            displayEmpty
-                                            sx={{height: '35px'}}
-                                            variant={"standard"}
-                                        >
-                                            {region_child[parent].map((item, idx) => (
-                                                <MenuItem value={idx}>{item}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Stack>
-                                {
-                                    res550 ?
-                                        <>
-                                            <Divider sx={{width: '90%', mt:3}}/>
-                                            <Typography sx={{width: 'auto', mt: 1, fontWeight: 300, fontSize: 20}}>
-                                                날짜
-                                            </Typography>
-                                        </>
-                                        :
-                                        null
-                                }
-                                <Stack justifyContent="space-around" alignContent="center" alignItems="center" sx={{width: res550 ? "100%" : '50%'}} direction={"row"}>
-                                    <FormControl sx={{width: '35%'}}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
-                                            <DatePicker
-                                                value={startDate}
-                                                onChange={(newValue) => setStartDate(newValue)}
-                                                onAccept={(newValue) => {
-                                                        setStartDate(newValue)
-                                                }}
-                                                InputProps={{
-                                                    style: {
-                                                        marginTop: res550 ? 0 : 5,
-                                                        height: "30px",
-                                                        width: "100%",
-                                                        fontSize: "small",
-                                                    },
-
-                                                }}
-                                                renderInput={(params: any) => (
-                                                    <TextField {...params } />
-                                                )}
-                                            />
-                                        </LocalizationProvider>
-                                    </FormControl>
-
-                                    <FormControl sx={{width: '35%'}}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
-                                            <DatePicker
-                                                value={endDate}
-                                                onChange={(newValue) => setEndDate(newValue)}
-                                                onAccept={(newValue) => {
-                                                    if (newValue === endDate) {
-                                                        setEndDate(null)
-                                                    }
-                                                }}
-                                                InputProps={{
-                                                    style: {
-                                                        marginTop: res550 ? 0 : 5,
-                                                        height: "30px",
-                                                        width: "100%",
-                                                        fontSize: "small",
-                                                    },
-
-                                                }}
-                                                renderInput={(params: any) => (
-                                                    <TextField {...params } />
-                                                )}
-                                            />
-                                        </LocalizationProvider>
-                                    </FormControl>
-                                </Stack>
-
-                            </Stack>
-
-                            <Stack justifyContent="flex-start" alignItems="center" sx={{width: '100%', mt:1, mb: 1}} direction={res550 ? "column" : "row"}>
-                                {
-                                    res550 ?
-                                        <>
-                                            <Divider sx={{width: '90%', mt:3}}/>
-                                            <Typography sx={{width: 'auto', mt: 1, fontWeight: 300, fontSize: 20}}>
-                                                텍스트
-                                            </Typography>
-                                        </>
-                                        :
-                                        null
-                                }
-                                <Stack justifyContent="space-around" alignItems="center" sx={{width: res550 ? "100%" : '50%'}} direction={"row"}>
-                                    <TextField
-                                        id="standard-search"
-                                        label="텍스트로 검색하기"
-                                        type="search"
-                                        variant="standard"
-                                        placeholder={"검색어를 입력하세요"}
-                                        value={searchText}
-                                        onChange={(e) => setSearchText(e.target.value)}
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Enter') {
-                                                handleSearchButton();
-                                            }
-                                        }}
-                                        sx={{width: '90%'}}
-                                    />
-                                </Stack>
-                                {
-                                    res550 ?
-                                        null
-                                        :
-                                        <Stack sx={{width: '50%', mt: 2}} alignItems={"center"}>
-                                            <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', width: '90%'}} onClick={handleSearchButton}>검색하기</Button>
-                                        </Stack>
-                                }
-                            </Stack>
-
-                            {
-                                res550 ?
-                                    <Stack sx={{width: '100%'}} alignItems={"center"}>
-                                        <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', width: '40%'}} onClick={handleSearchButton}>검색하기</Button>
+                                <Stack direction={'row'} sx={{width: '100%'}} alignItems={'center'}>
+                                    <Stack direction={'row'} sx={{width: '33%', textAlign: 'center'}} justifyContent={'center'} alignItems={'center'}>
+                                        <Typography sx={{width: '100%', fontWeight: 400, fontSize: 11}}>지역</Typography>
                                     </Stack>
-                                    :
-                                    null
-                            }
+                                    <Stack direction={'row'} sx={{width: '33%', textAlign: 'center'}} justifyContent={'center'} alignItems={'center'}>
+                                        <Typography sx={{width: '100%', fontWeight: 400, fontSize: 11}}>날짜</Typography>
+                                    </Stack>
+                                    <Stack direction={'row'} sx={{width: '33%', textAlign: 'center'}} justifyContent={'center'} alignItems={'center'}>
+                                        <Typography sx={{width: '100%', fontWeight: 400, fontSize: 11}}>텍스트</Typography>
+                                    </Stack>
+                                </Stack>
+
+                                <Stack direction={'row'} sx={{width: '100%'}} alignItems={'center'}>
+                                    <Stack direction={'row'} sx={{width: '33%'}} justifyContent={'center'} alignItems={'center'}>
+                                        <FormControl sx={{width: '80%'}}>
+                                            <Select
+                                                value={parent}
+                                                onChange={handleParentChange}
+                                                displayEmpty
+                                                sx={{height: '30px', fontSize:11}}
+                                                variant={"standard"}
+                                            >
+                                                {region_parents.map((item, idx) => (
+                                                    <MenuItem value={idx} sx={{fontSize:11}}>{item}</MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Stack>
+                                    <Stack direction={'row'} sx={{width: '33%'}} justifyContent={'center'} alignItems={'center'}>
+                                        <FormControl sx={{width: '70%'}}>
+                                            <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}} adapterLocale={ko} localeText={koKR.components.MuiLocalizationProvider.defaultProps.localeText}>
+                                                <DatePicker
+                                                    inputFormat={'YYYY-MM-DD'}
+                                                    views={['year', 'month', 'day']}
+                                                    value={startDate}
+                                                    onChange={(newValue) => setStartDate(newValue)}
+                                                    InputProps={{
+                                                        style: {
+                                                            marginTop: 4,
+                                                            height: "22px",
+                                                            width: "100%",
+                                                            fontSize: 10,
+                                                        },
+                                                    }}
+                                                    renderInput={(params: any) => (
+                                                        <TextField {...params } />
+                                                    )}
+                                                />
+                                            </LocalizationProvider>
+                                        </FormControl>
+                                    </Stack>
+                                    <Stack direction={'row'} sx={{width: '33%'}} justifyContent={'center'} alignItems={'center'}>
+                                        <TextField
+                                            inputProps={{
+                                                style: {
+                                                    fontSize: 10, // adjust the font size here
+                                                },
+                                            }}
+                                            type="search"
+                                            variant="standard"
+                                            placeholder={"작곡가명을 입력하세요."}
+                                            value={searchText}
+                                            onChange={(e) => setSearchText(e.target.value)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    handleSearchButton();
+                                                }
+                                            }}
+                                            sx={{width: '90%', fontSize:10}}
+                                        />
+                                    </Stack>
+                                </Stack>
+
+                                <Stack direction={'row'} sx={{width: '100%'}} alignItems={'center'}>
+                                    <Stack direction={'row'} sx={{width: '33%'}} justifyContent={'center'} alignItems={'center'}>
+                                        <FormControl sx={{width: '80%'}}>
+                                            <Select
+                                                value={child}
+                                                onChange={handleChildChange}
+                                                displayEmpty
+                                                sx={{height: '30px', fontSize: 11}}
+                                                variant={"standard"}
+                                            >
+                                                {region_child[parent].map((item, idx) => (
+                                                    <MenuItem value={idx} sx={{fontSize:11}}>{item}</MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Stack>
+                                    <Stack direction={'row'} sx={{width: '33%'}} justifyContent={'center'} alignItems={'center'}>
+                                        <FormControl sx={{width: '70%'}}>
+                                            <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}} adapterLocale={ko} localeText={koKR.components.MuiLocalizationProvider.defaultProps.localeText}>
+                                                <DatePicker
+                                                    inputFormat={'YYYY-MM-DD'}
+                                                    views={['year', 'month', 'day']}
+                                                    value={endDate}
+                                                    onChange={(newValue) => setEndDate(newValue)}
+                                                    InputProps={{
+                                                        style: {
+                                                            marginTop: 4,
+                                                            height: "22px",
+                                                            width: "100%",
+                                                            fontSize: 10,
+                                                        },
+
+                                                    }}
+                                                    renderInput={(params: any) => (
+                                                        <TextField {...params } />
+                                                    )}
+                                                />
+                                            </LocalizationProvider>
+                                        </FormControl>
+                                    </Stack>
+                                    <Stack direction={'row'} sx={{width: '33%'}} justifyContent={'center'} alignItems={'center'}>
+                                        <TextField
+                                            inputProps={{
+                                                style: {
+                                                    fontSize: 10, // adjust the font size here
+                                                },
+                                            }}
+                                            id="standard-search"
+                                            type="search"
+                                            variant="standard"
+                                            placeholder={"곡명을 입력하세요."}
+                                            value={searchText}
+                                            onChange={(e) => setSearchText(e.target.value)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    handleSearchButton();
+                                                }
+                                            }}
+                                            sx={{width: '90%', fontSize:10}}
+                                        />
+                                    </Stack>
+                                </Stack>
+
+                                <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-end'} sx={{width: '100%', mt:1.5}}>
+                                    <Stack direction={'row'} alignItems={'center'} sx={{width: '33%'}} justifyContent={'flex-end'}>
+                                        <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', fontSize : 10, maxHeight: 25, minHeight: 25, maxWidth: 70, minWidth: 70, mr:'10%'}} onClick={handleSearchButton}>날짜 초기화</Button>
+                                        <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', fontSize : 10, maxHeight: 25, minHeight: 25, maxWidth: 70, minWidth: 70, mr:'5%'}} onClick={handleSearchButton}>검색하기</Button>
+                                    </Stack>
+                                </Stack>
+                            </Stack>
                         </Collapse>
                     </List>
                     :
-                    <Stack direction={'column'} justifyContent={'center'} alignItems="center" sx={{height:'80px', width: '100%', pl: 1, pr: 1}}>
-                        <Stack direction={'row'} alignItems={'center'} sx={{width: '100%', mb:1}} justifyContent={"flex-start"} >
+                    <Stack direction={'column'} justifyContent={'center'} alignItems="center" sx={{height:'85px', width: '100%', pl: 1, pr: 1}}>
+                        <Stack direction={'row'} alignItems={'center'} sx={{width: '100%', mt:0.5, mb:1}} justifyContent={"flex-start"} >
                             <Typography sx={{fontSize: 10, mr : 2}}>지역 1</Typography>
                             <FormControl sx={{width: '15%', mr : 5}}>
                                 <Select
@@ -285,7 +280,7 @@ const ConcertFilter = () => {
                                         onChange={(newValue) => setStartDate(newValue)}
                                         InputProps={{
                                             style: {
-                                                marginTop: res550 ? 0 : 5,
+                                                marginTop: 4,
                                                 height: "30px",
                                                 width: "100%",
                                                 fontSize: "small",
@@ -320,9 +315,10 @@ const ConcertFilter = () => {
                                 }}
                                 sx={{width: '20%',mr:5, fontSize: 10}}
                             />
+                            <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', fontSize : 10, maxHeight: 25, minHeight: 25, maxWidth: 70, minWidth: 70}} >날짜 초기화</Button>
                         </Stack>
 
-                        <Stack direction={'row'} alignItems={'center'} sx={{width: '100%'}} justifyContent={"flex-start"} >
+                        <Stack direction={'row'} alignItems={'center'} sx={{width: '100%', mb:1}} justifyContent={"flex-start"} >
                             <Typography sx={{fontSize: 10, mr:2}}>지역 2</Typography>
                             <FormControl sx={{width: '15%', mr:5}}>
                                 <Select
@@ -347,10 +343,12 @@ const ConcertFilter = () => {
                                         onChange={(newValue) => setEndDate(newValue)}
                                         InputProps={{
                                             style: {
-                                                marginTop: res550 ? 0 : 5,
+                                                marginTop: 4,
                                                 height: "30px",
                                                 width: "100%",
                                                 fontSize: "small",
+                                                border: 'none',
+                                                outline: 'none'
                                             },
 
                                         }}
@@ -382,7 +380,7 @@ const ConcertFilter = () => {
                                 sx={{width: '20%', mr:5, fontSize: 10}}
                             />
 
-                            <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', fontSize : 10, maxHeight: 25, minHeight: 25, maxWidth: 65, minWidth: 65}} onClick={handleSearchButton}>검색하기</Button>
+                            <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', fontSize : 10, maxHeight: 25, minHeight: 25, maxWidth: 70, minWidth: 70}} onClick={handleSearchButton}>검색하기</Button>
 
                         </Stack>
                     </Stack>
