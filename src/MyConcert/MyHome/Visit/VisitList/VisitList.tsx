@@ -1,4 +1,14 @@
-import {Box, Button, ButtonGroup, Divider, Stack, TextField, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    Divider,
+    Stack, styled,
+    TextField,
+    Typography,
+    useMediaQuery,
+    useTheme
+} from "@mui/material";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../../../store";
@@ -110,7 +120,7 @@ const VisitList = (props : any) => {
                     <Typography sx={{ml: 2, fontWeight:800, fontSize: res550 ? 10 : 13}}>
                         No. {write ? '#' : item.id}
                     </Typography>
-                    <Typography onClick={() => navigate(`/myconcert/${item.authorId.profileName}/visit`)} sx={{cursor : 'pointer',fontSize:res550 ? 10 : 12,ml: 2}}>
+                    <Typography onClick={() => navigate(`/myconcert/${item.authorId.profileName}/visit`)} sx={{cursor : 'pointer',fontSize:res550 ? 12 : 14,ml: 2}}>
                         {item.authorId.profileName}
                     </Typography>
                     <Typography sx={{ml: 2, color:'grey',fontSize: res550 ? 7 : 10, fontWeight:300}}>
@@ -158,8 +168,8 @@ const VisitList = (props : any) => {
                         component="img"
                         sx={{
                             display: 'block',
-                            width: res750 ? 83 : 133,
-                            height: res750 ? 83 : 133,
+                            width: res750 ? 73 : 133,
+                            height: res750 ? 73 : 133,
                             borderRadius: '20%',
                             objectFit: 'cover',
                             boxShadow: 'rgb(0 0 0 / 6%) 0px 0px 4px 0px'
@@ -174,15 +184,17 @@ const VisitList = (props : any) => {
                     write ?
                         <Stack sx={{pl:3, width: '100%'}}>
                             <TextField
-                                sx={{
-                                    fontSize : 11
-                                }}
-                                placeholder="최대 500자의 방명록을 입력해 주세요.&#13;&#10;비공개 상태는 서로 친구 상태만 가능하며 익명이 아닌, 방명록 주인만 볼 수 있는 상태입니다."
+                                rows={5}
                                 multiline
+                                placeholder="최대 500자의 방명록을 입력해 주세요.&#13;&#10;비공개 상태는 서로 친구 상태만 가능하며 익명이 아닌, 방명록 주인만 볼 수 있는 상태입니다."
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
-                                rows={5}
-                                variant={"standard"}
+                                variant="standard"
+                                inputProps={{
+                                    style: {
+                                        fontSize: 12, // adjust the font size here
+                                    },
+                                }}
                             />
                             <Stack sx={{width: '100%'}} flexDirection={'row-reverse'}>
                                 <Button onClick={handlePostVisit} sx={{fontSize: 12}} size={"small"}>작성하기</Button>
@@ -192,8 +204,10 @@ const VisitList = (props : any) => {
                         edit ?
                             <Stack sx={{pl:3, width: '100%'}}>
                                 <TextField
-                                    sx={{
-                                        fontSize : 11
+                                    inputProps={{
+                                        style: {
+                                            fontSize: 12, // adjust the font size here
+                                        },
                                     }}
                                     placeholder="공개 / 비공개 상태를 작성 전 한번 더 확인해주세요.&#13;&#10;최대 500자의 방명록을 입력해 주세요.&#13;&#10;비공개 설정은 서로 친구 상태만 가능합니다,"
                                     multiline
@@ -207,7 +221,7 @@ const VisitList = (props : any) => {
                                 </Stack>
                             </Stack>
                             :
-                            <Stack sx={{fontSize : res550 ? 11 : 15,whiteSpace: 'pre-line',wordBreak: 'break-word', pl:2}}>
+                            <Stack sx={{mt:0.5,fontSize : res550 ? 12 : 15,whiteSpace: 'pre-line',wordBreak: 'break-word', pl:2}}>
                                 {item.content.slice(0,500)}
                             </Stack>
                 }
