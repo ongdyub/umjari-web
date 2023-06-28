@@ -16,10 +16,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
-import {signUp} from "../../../store/slices/user/user";
 import {dashboardList} from "../../../store/slices/concert/concert";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../../store";
+import {koKR} from "@mui/x-date-pickers/locales";
+import ko from 'dayjs/locale/ko';
 
 const region_parents = ["전체","서울시","경기도", "수원시", "부산시",]
 const region_child = [
@@ -88,7 +89,7 @@ const ConcertFilter = () => {
         <Stack direction={'row'}
                justifyContent={res800 ? "flex-start" : "space-around"}
                alignItems="center"
-               sx={{height: res800 ? 'auto' : '80px', width: '100%', pl: res800 ? 0 : 5, pr: res800 ? 0 : 5}}
+               sx={{height: res800 ? 'auto' : '85px', width: '100%', pl: res800 ? 0 : 5, pr: res800 ? 0 : 5}}
         >
             {
                 res800 ?
@@ -257,100 +258,134 @@ const ConcertFilter = () => {
                         </Collapse>
                     </List>
                     :
-                    <>
-                        <FormControl sx={{width: '15%'}}>
-                            <Select
-                                value={parent}
-                                onChange={handleParentChange}
-                                displayEmpty
-                                sx={{height: '35px'}}
-                                variant={"standard"}
-                            >
-                                {region_parents.map((item, idx) => (
-                                    <MenuItem value={idx}>{item}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl sx={{width: '15%'}}>
-                            <Select
-                                value={child}
-                                onChange={handleChildChange}
-                                displayEmpty
-                                sx={{height: '35px'}}
-                                variant={"standard"}
-                            >
-                                {region_child[parent].map((item, idx) => (
-                                    <MenuItem value={idx}>{item}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl sx={{width: '15%'}}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
-                                <DatePicker
-                                    value={startDate}
-                                    onChange={(newValue) => setStartDate(newValue)}
-                                    onAccept={(newValue) => {
-                                        if (newValue === startDate) {
-                                            setStartDate(null)
-                                        }
-                                    }}
-                                    InputProps={{
-                                        style: {
-                                            marginTop: res550 ? 0 : 5,
-                                            height: "30px",
-                                            width: "100%",
-                                            fontSize: "small",
-                                        },
+                    <Stack direction={'column'} justifyContent={'center'} alignItems="center" sx={{height:'80px', width: '100%', pl: 1, pr: 1}}>
+                        <Stack direction={'row'} alignItems={'center'} sx={{width: '100%', mb:1}} justifyContent={"flex-start"} >
+                            <Typography sx={{fontSize: 10, mr : 2}}>지역 1</Typography>
+                            <FormControl sx={{width: '15%', mr : 5}}>
+                                <Select
+                                    value={parent}
+                                    onChange={handleParentChange}
+                                    displayEmpty
+                                    sx={{height: '35px', fontSize : 12}}
+                                    variant={"standard"}
+                                >
+                                    {region_parents.map((item, idx) => (
+                                        <MenuItem value={idx} sx={{fontSize:12}}>{item}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
 
-                                    }}
-                                    renderInput={(params: any) => (
-                                        <TextField {...params } />
-                                    )}
-                                />
-                            </LocalizationProvider>
-                        </FormControl>
-                        <FormControl sx={{width: '15%'}}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}}>
-                                <DatePicker
-                                    value={endDate}
-                                    onChange={(newValue) => setEndDate(newValue)}
-                                    onAccept={(newValue) => {
-                                        if (newValue === endDate) {
-                                            setEndDate(null)
-                                        }
-                                    }}
-                                    InputProps={{
-                                        style: {
-                                            marginTop: res550 ? 0 : 5,
-                                            height: "30px",
-                                            width: "100%",
-                                            fontSize: "small",
-                                        },
+                            <Typography sx={{fontSize: 10, mr:2}}>시작</Typography>
+                            <FormControl sx={{width: '20%', mr:5}}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs} sx={{width: '100%'}} adapterLocale={ko} localeText={koKR.components.MuiLocalizationProvider.defaultProps.localeText}>
+                                    <DatePicker
+                                        inputFormat={'YYYY-MM-DD'}
+                                        views={['year', 'month', 'day']}
+                                        value={startDate}
+                                        onChange={(newValue) => setStartDate(newValue)}
+                                        InputProps={{
+                                            style: {
+                                                marginTop: res550 ? 0 : 5,
+                                                height: "30px",
+                                                width: "100%",
+                                                fontSize: "small",
+                                                border: 'none',
+                                                outline: 'none'
+                                            },
+                                        }}
+                                        renderInput={(params: any) => (
+                                            <TextField {...params } />
+                                        )}
+                                    />
+                                </LocalizationProvider>
+                            </FormControl>
 
-                                    }}
-                                    renderInput={(params: any) => (
-                                        <TextField {...params } />
-                                    )}
-                                />
-                            </LocalizationProvider>
-                        </FormControl>
-                        <TextField
-                            id="standard-search"
-                            type="search"
-                            variant="standard"
-                            placeholder={"검색어를 입력하세요"}
-                            value={searchText}
-                            onChange={(e) => setSearchText(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleSearchButton();
-                                }
-                            }}
-                            sx={{width: '20%'}}
-                        />
-                        <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', mt:0.5}} onClick={handleSearchButton}>검색하기</Button>
+                            <Typography sx={{fontSize: 10, mr:2}}>작곡가</Typography>
+                            <TextField
+                                id="standard-search"
+                                type="search"
+                                variant="standard"
+                                placeholder={"검색어를 입력하세요"}
+                                inputProps={{
+                                    style: {
+                                        fontSize: 10, // adjust the font size here
+                                    },
+                                }}
+                                value={searchText}
+                                onChange={(e) => setSearchText(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        handleSearchButton();
+                                    }
+                                }}
+                                sx={{width: '20%',mr:5, fontSize: 10}}
+                            />
+                        </Stack>
 
-                    </>
+                        <Stack direction={'row'} alignItems={'center'} sx={{width: '100%'}} justifyContent={"flex-start"} >
+                            <Typography sx={{fontSize: 10, mr:2}}>지역 2</Typography>
+                            <FormControl sx={{width: '15%', mr:5}}>
+                                <Select
+                                    value={child}
+                                    onChange={handleChildChange}
+                                    displayEmpty
+                                    sx={{height: '35px', fontSize : 12}}
+                                    variant={"standard"}
+                                >
+                                    {region_child[parent].map((item, idx) => (
+                                        <MenuItem value={idx} sx={{fontSize: 12}}>{item}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+
+                            <Typography sx={{fontSize: 10, mr:2}}>종료</Typography>
+                            <FormControl sx={{width: '20%', mr:5}}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={ko} localeText={koKR.components.MuiLocalizationProvider.defaultProps.localeText} sx={{width: '100%'}}>
+                                    <DatePicker
+                                        inputFormat={'YYYY-MM-DD'}
+                                        value={endDate}
+                                        onChange={(newValue) => setEndDate(newValue)}
+                                        InputProps={{
+                                            style: {
+                                                marginTop: res550 ? 0 : 5,
+                                                height: "30px",
+                                                width: "100%",
+                                                fontSize: "small",
+                                            },
+
+                                        }}
+                                        renderInput={(params: any) => (
+                                            <TextField {...params } />
+                                        )}
+                                    />
+                                </LocalizationProvider>
+                            </FormControl>
+
+                            <Typography sx={{fontSize: 10, mr:2}}>곡이름</Typography>
+                            <TextField
+                                id="standard-search"
+                                type="search"
+                                variant="standard"
+                                placeholder={"검색어를 입력하세요"}
+                                inputProps={{
+                                    style: {
+                                        fontSize: 10, // adjust the font size here
+                                    },
+                                }}
+                                value={searchText}
+                                onChange={(e) => setSearchText(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        handleSearchButton();
+                                    }
+                                }}
+                                sx={{width: '20%', mr:5, fontSize: 10}}
+                            />
+
+                            <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', fontSize : 10, maxHeight: 25, minHeight: 25, maxWidth: 65, minWidth: 65}} onClick={handleSearchButton}>검색하기</Button>
+
+                        </Stack>
+                    </Stack>
             }
 
         </Stack>

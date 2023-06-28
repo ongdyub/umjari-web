@@ -2,10 +2,10 @@ import {Modal, Box} from "@mui/material";
 
 const style = (theme: any) => ({
     position: 'absolute' as 'absolute',
-    top: '35%',
+    top: '50vh',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '80vw',
+    width: '75vw',
     height: 'auto',
     border: 'none',
     boxShadow: 24,

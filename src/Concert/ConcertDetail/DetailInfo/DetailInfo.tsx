@@ -116,7 +116,12 @@ const DetailInfo = () => {
                         />
                     </Stack>
             }
-            <AddMusicModal open={addMode} setOpen={setAddMode} />
+            {
+                addMode ?
+                    <AddMusicModal open={addMode} setOpen={setAddMode} />
+                    :
+                    null
+            }
         </Stack>
     )
 }
