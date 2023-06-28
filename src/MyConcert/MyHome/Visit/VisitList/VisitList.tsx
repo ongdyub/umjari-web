@@ -99,8 +99,8 @@ const VisitList = (props : any) => {
                 }
                 dispatch(getVisitList({profileName, token : userState.accessToken, param}))
                 setText('')
+                setEdit(false)
             }
-            setEdit(false)
         }
         else{
             return
@@ -120,7 +120,7 @@ const VisitList = (props : any) => {
             <Divider sx={{width: '90%', mb: res550 ? 0.5 : 0}} />
             <Stack direction={"row"} sx={{width: '90%'}}>
                 <Stack direction={"row"} alignContent={"center"} alignItems={"center"}>
-                    <Typography sx={{ml: 2, fontWeight:800, fontSize: res550 ? 10 : 13}}>
+                    <Typography sx={{ml: res550 ? 0 : 2, fontWeight:800, fontSize: res550 ? 10 : 13}}>
                         No. {write ? '#' : item.id}
                     </Typography>
                     <Typography onClick={() => navigate(`/myconcert/${item.authorId.profileName}/visit`)} sx={{cursor : 'pointer',fontSize:res550 ? 12 : 14,ml: 2}}>
@@ -146,7 +146,7 @@ const VisitList = (props : any) => {
                                 null
                         }
                         {
-                            myConcertState.myDefaultInfo?.isSelfProfile ?
+                            myConcertState.myDefaultInfo?.isSelfProfile || item.isAuthor ?
                                 <Button onClick={() => setOpen(true)} sx={{fontSize:10, color: 'red'}} variant={"text"} >삭제</Button>
                                 :
                                 null
