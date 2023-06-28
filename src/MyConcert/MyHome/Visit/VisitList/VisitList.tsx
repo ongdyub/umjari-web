@@ -17,6 +17,7 @@ import {selectUser} from "../../../../store/slices/user/user";
 import {selectMyConcert} from "../../../../store/slices/myconcert/myconcert";
 import {useNavigate, useParams} from "react-router-dom";
 import DeleteConfirmModal from "../../../../Modal/DeleteConfirmModal";
+import ProfileImageModal from "../../../../Modal/ProfileImageModal";
 
 const VisitList = (props : any) => {
 
@@ -33,6 +34,8 @@ const VisitList = (props : any) => {
     const res750 = useMediaQuery(theme.breakpoints.down("res750"))
 
     const dispatch = useDispatch<AppDispatch>()
+
+    const [openProfile, setOpenProfile] = useState(false)
 
     const [text, setText] = useState('')
     const [hide, setHide] = useState(false)
@@ -167,6 +170,7 @@ const VisitList = (props : any) => {
                     <Box
                         component="img"
                         sx={{
+                            cursor: 'pointer',
                             display: 'block',
                             width: res750 ? 73 : 133,
                             height: res750 ? 73 : 133,
@@ -174,10 +178,10 @@ const VisitList = (props : any) => {
                             objectFit: 'cover',
                             boxShadow: 'rgb(0 0 0 / 6%) 0px 0px 4px 0px'
                         }}
+                        onClick={() => setOpenProfile(true)}
                         onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
                         alt="Profile Img"
                         src={write ? item.profileImg : item.authorId.profileImage}
-
                     />
                 </Stack>
                 {
@@ -229,6 +233,12 @@ const VisitList = (props : any) => {
             {
                 open ?
                     <DeleteConfirmModal open={open} setOpen={setOpen} setConfirm={setConfirm} />
+                    :
+                    null
+            }
+            {
+                openProfile ?
+                    <ProfileImageModal open={openProfile} setOpen={setOpenProfile} src={item.authorId.profileImage} />
                     :
                     null
             }
