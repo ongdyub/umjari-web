@@ -20,6 +20,7 @@ import LoginModal from "../../Modal/LoginModal";
 import {AppDispatch} from "../../store";
 import React from 'react'
 import NameChangeModal from "../../Modal/NameChangeModal";
+import {useSearchParams} from "react-router-dom";
 
 const pages = ['홈', '커뮤니티', '단체검색', '장터', '객원모집'];
 const settings = ['마이페이지', '닉네임 변경' , '내정보 관리', '로그아웃', 'Size'];
@@ -38,6 +39,8 @@ const Header = () => {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const [nameModalOpen, setNameModalOpen] = useState(false)
+
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -87,9 +90,11 @@ const Header = () => {
 
     const onClickLogo = () => {
         if(window.location.pathname === '/'){
+            setSearchParams('')
             window.location.reload()
         }
         else{
+            setSearchParams('')
             navigate('/')
         }
     }
