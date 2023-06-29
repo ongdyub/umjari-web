@@ -1,10 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
-import {Concert, GroupSetList} from "../concert/concert";
+import {Concert} from "../concert/concert";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+export interface GroupProgram {
+    id: number,
+    composerEng: string,
+    shortComposerEng: string,
+    composerKor: string,
+    shortComposerKor: string,
+    nameEng: string,
+    shortNameEng: string,
+    nameKor: string,
+    shortNameKor: string
+}
 export interface GroupInfo {
     id: number,
     name: string,
@@ -18,7 +29,7 @@ export interface GroupInfo {
     homepage: string,
     detailIntro: string,
     recruit: boolean,
-    setList : [GroupSetList] | []
+    setList : [GroupProgram] | []
 }
 
 export interface GroupRecruit {
@@ -299,6 +310,23 @@ export const groupIsRecruit = createAsyncThunk(
     }
 )
 
+export const groupSetListAdd = createAsyncThunk(
+    "group/groupSetListAdd",
+    async ({data, token, id} : {data : any, token : string | number | undefined | null, id : string | number | undefined | null},  {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/group/${id}/set-list/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
 
 // export const concert = createAsyncThunk(
 //     "concert/concert",
@@ -439,6 +467,17 @@ export const groupStateSlice = createSlice({
             }
             else{
                 window.alert("오류발생. 새로고침 후 다시 시도해주세요.")
+            }
+        });
+        builder.addCase(groupSetListAdd.fulfilled, () => {
+            window.alert("변경 완료")
+        });
+        builder.addCase(groupSetListAdd.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
     },

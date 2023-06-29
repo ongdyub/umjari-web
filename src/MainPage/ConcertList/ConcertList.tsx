@@ -55,9 +55,9 @@ const ConcertList = () => {
             region_child : regionChild,
             startDate : startDate,
             endDate : endDate,
-            composer: composer,
-            musicName: musicName,
-            text : text,
+            composer: composer === '' ? null : composer,
+            musicName: musicName === '' ? null : musicName,
+            text : text === '' ? null : text,
             page : page,
             size: 10,
             sort : "concertDate,ASC",
@@ -96,8 +96,8 @@ const ConcertList = () => {
 
         const regionParent = searchParams.get('regionParent')
         const regionChild = searchParams.get('regionChild')
-        const startDate = (searchParams.get('startDate') === null) ? today : searchParams.get('startDate') === '' ? null : searchParams.get('startDate')
-        const endDate = (searchParams.get('endDate') === null) ? null : searchParams.get('endDate') === '' ? null : searchParams.get('endDate')
+        const startDate = (searchParams.get('startDate') === null) ? today : (searchParams.get('startDate') === '' || searchParams.get('startDate') === undefined) ? null : searchParams.get('startDate')
+        const endDate = (searchParams.get('endDate') === null) ? null : (searchParams.get('endDate') === '' || searchParams.get('endDate') === undefined) ? null : searchParams.get('endDate')
         const composer = searchParams.get('composer')
         const musicName = searchParams.get('musicName')
         const text = searchParams.get('text')
@@ -108,9 +108,9 @@ const ConcertList = () => {
             region_child : regionChild,
             startDate : startDate,
             endDate : endDate,
-            composer: composer,
-            musicName: musicName,
-            text : text,
+            composer: composer === '' ? null : composer,
+            musicName: musicName === '' ? null : musicName,
+            text : text === '' ? null : text,
             page : page,
             size: 10,
             sort : "concertDate,ASC",
