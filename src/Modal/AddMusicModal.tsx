@@ -23,6 +23,7 @@ import IconButton from '@mui/material/IconButton';
 import {concert, concertSetListAdd, selectConcert} from "../store/slices/concert/concert";
 import {selectUser} from "../store/slices/user/user";
 import {useParams} from "react-router-dom";
+import {groupInfo, groupSetListAdd, selectGroup} from "../store/slices/group/group";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -229,6 +230,7 @@ const AddMusicModal = (props : any) => {
     const userState = useSelector(selectUser)
     const musicState = useSelector(selectMusic)
     const concertState = useSelector(selectConcert)
+    const groupState = useSelector(selectGroup)
 
     const [searchComposer, setSearchComposer] = useState<string>('')
     const [searchName, setSearchName] = useState<string>('')
@@ -240,7 +242,24 @@ const AddMusicModal = (props : any) => {
     const onClickAddMusic = async (musicId : number) => {
 
         if(scope === 'group'){
-            window.alert("준비중")
+            const groupMusicIdList = groupState.groupInfo?.setList.map((item) => (item.id))
+            groupMusicIdList?.push(musicId)
+
+            const data = {
+                musicIds : groupMusicIdList
+            }
+
+            if(groupMusicIdList === null || groupMusicIdList === undefined){
+                window.alert("잘못된 요청입니다.")
+                return
+            }
+            else{
+                const result = await dispatch(groupSetListAdd({data, token : userState.accessToken, id : id}))
+                if(result.type === `${groupSetListAdd.typePrefix}/fulfilled`){
+                    dispatch(groupInfo(id))
+                }
+                setOpen(false)
+            }
             return
         }
 

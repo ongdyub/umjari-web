@@ -15,6 +15,7 @@ import {AppDispatch} from "../../../store";
 import ConcertInfoEdit from "../../../Concert/ConcertInfo/ConcertInfoEdit";
 import ProgramInfo from "../../../Concert/ConcertDetail/DetailInfo/ProgramInfo";
 import AddMusicModal from "../../../Modal/AddMusicModal";
+import GroupProgram from "./GroupProgram";
 
 export const instList = [
     {
@@ -240,13 +241,11 @@ const GroupRecruit = () => {
                         </Stack>
                     </Stack>
                     {
-                        // groupState.groupInfo?.setList
-                        [].map((item, idx) => (
-                            <ProgramInfo key={idx} item={item} edit={setList} />
+                        groupState.groupInfo?.setList.map((item, idx) => (
+                            <GroupProgram key={idx} item={item} edit={setList} />
                         ))
                     }
                 </Stack>
-
 
                 {/* About Recruit Inst */}
                 <Divider sx={{width: res700 ? '90%' : '100%', mt:0.5}}/>

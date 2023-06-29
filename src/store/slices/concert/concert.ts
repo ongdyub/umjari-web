@@ -165,7 +165,7 @@ export const concertSetListAdd = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -309,12 +309,12 @@ export const concertStateSlice = createSlice({
         builder.addCase(concertSetListAdd.fulfilled, () => {
             window.alert("추가 성공")
         });
-        builder.addCase(concertSetListAdd.rejected, (state, action) => {
-            if(action.payload === 3001){
+        builder.addCase(concertSetListAdd.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(concertMemberAdd.fulfilled, () => {
