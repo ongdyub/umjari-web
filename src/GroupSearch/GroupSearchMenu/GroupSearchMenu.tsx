@@ -2,10 +2,10 @@ import {
     Box, Button, Chip,
     Collapse,
     Divider,
-    FormControl, InputLabel,
+    FormControl,
     List,
-    ListItemButton, MenuItem, OutlinedInput,
-    Select,
+    ListItemButton, MenuItem,
+    Select, SelectChangeEvent,
     Stack, TextField, Theme,
     Typography,
     useMediaQuery, useTheme
@@ -13,11 +13,8 @@ import {
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import {region_child, region_parents} from "../../MainPage/ConcertList/ConcertFilter/ConcertFilter";
 
-const region1 = ['서울시', '경기북부', '경기남부', '인천']
-const region2 = ['관악구', '서초구', '강동구', '노원구']
-const composer = ['차이코프스키', '드보르작', '브람스', '시벨리우스', '말러', 'H. Berlioz']
-const song = ['No. 1', 'No. 2','No. 3','No. 4','No. 5','No. 6', 'Fantastique Fantastique Fantastique Fantastique Fantastique Fantastique Fantastique Fantastique Fantastique Fantastique Fantastique Fantastique']
 const inst = [
     {
         name: '바이올린',
@@ -86,24 +83,14 @@ const MenuProps = {
 };
 
 const GroupSearchMenu = () => {
-    const navigate = useNavigate()
+
     const theme = useTheme()
     const res800 = useMediaQuery('(max-width:800px)')
-    const [selectedIndex, setSelectedIndex] = useState(0)
+
     const [open, setOpen] = useState(false)
     const menuOpen = () => {
         setOpen((!open))
     }
-    const handleMiniMenu = (item : any) => {
-        setSelectedIndex(item.ID)
-        setOpen(!open)
-        navigate(`/community/${item.name.replace(/(\s*)/g,'')}`)
-    }
-    const [age, setAge] = useState('');
-
-    const handleChange = (e : any) => {
-        setAge(e.target.value as string);
-    };
 
     const [instList, setInstList] = useState<string[]>([]);
 
@@ -115,23 +102,40 @@ const GroupSearchMenu = () => {
             typeof value === 'string' ? value.split(',') : value,
         );
     };
+
     function getStyles(name: string, personName: readonly string[], theme: Theme) {
         return {
             fontWeight:
                 personName.indexOf(name) === -1
                     ? theme.typography.fontWeightRegular
                     : theme.typography.fontWeightMedium,
+            fontSize : 12
         };
     }
 
+
+    const [parent, setParent] = useState<any>(0);
+    const [child, setChild] = useState<any>(0);
+    const [composer, setComposer] = useState('')
+    const [musicName, setMusicName] = useState('')
+    const [name, setName] = useState('')
+
+    const handleParentChange = (event: SelectChangeEvent) => {
+        setParent(event.target.value);
+        setChild(0)
+    };
+    const handleChildChange = (event: SelectChangeEvent) => {
+        setChild(event.target.value);
+    };
+
     return(
-        <Stack justifyContent="flex-start" alignItems="center" sx={{height: res800 ? 'auto' : '1000px', width: res800 ? '100%' : '300px', minWidth: '300px' }}>
+        <Stack justifyContent="flex-start" alignItems="center" sx={{width: res800 ? '100%' : '250px', minWidth: '250px' }}>
             {res800 ?
                 <List component="nav" sx={{width: '100%', justifyContent:"flex-start", alignItems:"center"}}>
                     <Stack onClick={menuOpen} justifyContent="flex-start" alignItems="center" sx={{width: '100%', mt: -1}}>
                         <Divider sx={{width: '40%', border: 'solid 0.4px white'}} />
                         <ListItemButton sx={{width: '100%', display: 'flex', justifyContent:"center", alignItems:"center"}}>
-                            <Typography sx={{width: 'auto'}}>
+                            <Typography sx={{width: 'auto', fontSize: 13}}>
                                 {open ? '필터 접기' : '필터 펼치기'}
                             </Typography>
                             {open ? <ExpandLess sx={{pl: '2'}} /> : <ExpandMore sx={{pl: '2'}} />}
@@ -139,103 +143,96 @@ const GroupSearchMenu = () => {
                     </Stack>
                     <Divider orientation={"horizontal"}/>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Stack justifyContent="flex-start" alignItems="center" sx={{width: '100%'}}>
-                            <Divider sx={{width: '90%', mt:1}} />
-                            <Typography sx={{width: 'auto', mt: 1, mb:-2, fontWeight: 300, fontSize: 25}}>
-                                단체명
-                            </Typography>
-                            <Stack sx={{width: '100%'}} justifyContent={"center"} alignItems={"center"}>
+                        <Stack justifyContent="flex-start" alignItems="center" sx={{width: '100%', mt:1}}>
+                            <Stack direction={'row'} sx={{width:'100%'}} alignItems={'center'} justifyContent={'center'}>
+                                <Typography sx={{width: '50%', fontWeight: 300, fontSize: 15, textAlign: 'center'}}>
+                                    지역
+                                </Typography>
+                                <Typography sx={{width: '50%', fontWeight: 300, fontSize: 15, textAlign: 'center'}}>
+                                    곡검색
+                                </Typography>
+                            </Stack>
+
+                            <Stack direction={'row'} sx={{width:'100%'}} alignItems={'flex-end'} justifyContent={'space-around'}>
+                                <FormControl sx={{width: '40%'}}>
+                                    <Select
+                                        value={parent}
+                                        onChange={handleParentChange}
+                                        displayEmpty
+                                        sx={{height: '30px', fontSize : 11}}
+                                        variant={"standard"}
+                                    >
+                                        {region_parents.map((item, idx) => (
+                                            <MenuItem value={idx} sx={{fontSize:11}}>{item}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
                                 <TextField
                                     id="standard-search"
-                                    label="텍스트로 검색하기"
                                     type="search"
                                     variant="standard"
-                                    sx={{width: '90%', mt:2}}
+                                    placeholder={"작곡가를 입력하세요"}
+                                    inputProps={{
+                                        style: {
+                                            fontSize: 10, // adjust the font size here
+                                        },
+                                    }}
+                                    value={composer}
+                                    onChange={(e) => setComposer(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            // handleSearchButton().then(() => {});
+                                        }
+                                    }}
+                                    sx={{width: '40%', fontSize: 10}}
                                 />
                             </Stack>
-                            <Divider sx={{width: '90%', mt:3}}/>
-                            <Typography sx={{width: 'auto', mt: 1, mb: 2, fontWeight: 300, fontSize: 25}}>
-                                지역
-                            </Typography>
-                            <Stack flexDirection={"row"} sx={{width: '100%'}} justifyContent={"space-around"}>
-                                <TextField
-                                    id="standard-select-currency"
-                                    select
-                                    label="지역 1"
-                                    defaultValue="서울시"
-                                    variant="standard"
-                                    sx={{width: '40%'}}
-                                >
-                                    {region1.map((option) => (
-                                        <MenuItem key={option} value={option} >
-                                            {option}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                                <TextField
-                                    id="standard-select-currency"
-                                    select
-                                    label="지역 2"
-                                    defaultValue="서울시"
-                                    variant="standard"
-                                    sx={{width: '40%'}}
-                                >
-                                    {region2.map((option) => (
-                                        <MenuItem key={option} value={option} >
-                                            {option}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Stack>
-                            <Divider sx={{width: '90%', mt: 3}} />
-                            <Typography sx={{width: 'auto', mt: 1, mb: 2, fontWeight: 300, fontSize: 25}}>
-                                연주곡
-                            </Typography>
-                            <Stack sx={{width: '100%'}} justifyContent={"center"} alignItems={"center"}>
-                                <Stack flexDirection={"row"} sx={{width: '100%'}} justifyContent={"space-around"}>
-                                    <TextField
-                                        id="standard-select-currency"
-                                        select
-                                        label="작곡가"
-                                        defaultValue="말러"
-                                        variant="standard"
-                                        sx={{width: '40%'}}
+
+                            <Stack direction={'row'} sx={{width:'100%'}} alignItems={'flex-end'} justifyContent={'space-around'}>
+                                <FormControl sx={{width: '40%'}}>
+                                    <Select
+                                        value={child}
+                                        onChange={handleChildChange}
+                                        displayEmpty
+                                        sx={{height: '30px', fontSize : 11}}
+                                        variant={"standard"}
                                     >
-                                        {composer.map((option) => (
-                                            <MenuItem key={option} value={option} >
-                                                {option}
-                                            </MenuItem>
+                                        {region_child[parent].map((item, idx) => (
+                                            <MenuItem value={idx} sx={{fontSize: 11}}>{item}</MenuItem>
                                         ))}
-                                    </TextField>
-                                    <TextField
-                                        id="standard-select-currency"
-                                        select
-                                        label="곡명"
-                                        defaultValue="No. 1"
-                                        variant="standard"
-                                        sx={{width: '40%'}}
-                                    >
-                                        {song.map((option) => (
-                                            <MenuItem key={option} value={option} >
-                                                {option}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                </Stack>
+                                    </Select>
+                                </FormControl>
                                 <TextField
                                     id="standard-search"
-                                    label="텍스트로 검색하기"
                                     type="search"
                                     variant="standard"
-                                    sx={{width: '90%', mt:2}}
+                                    placeholder={"곡이름을 입력하세요"}
+                                    inputProps={{
+                                        style: {
+                                            fontSize: 10, // adjust the font size here
+                                        },
+                                    }}
+                                    value={musicName}
+                                    onChange={(e) => setMusicName(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            // handleSearchButton().then(() => {});
+                                        }
+                                    }}
+                                    sx={{width: '40%', ontSize: 10}}
                                 />
                             </Stack>
-                            <Divider sx={{width: '90%', mt: 3}} />
-                            <Typography sx={{width: 'auto', mt: 1, mb: 2, fontWeight: 300, fontSize: 25}}>
-                                모집 악기
-                            </Typography>
+
+                            <Divider sx={{width: '90%', mt:1.5}} />
+
+                            <Stack direction={'row'} sx={{width:'100%'}} alignItems={'center'} justifyContent={'center'}>
+                                <Typography sx={{width: '100%', mt: 1.5, fontWeight: 300, fontSize: 15, textAlign:' center'}}>
+                                    모집 악기
+                                </Typography>
+                            </Stack>
+
                             <Stack sx={{width: '100%'}} justifyContent={"center"} alignItems={"center"}>
-                                <FormControl sx={{width: '90%', mt: 1}}>
+                                <FormControl sx={{width: '80%'}}>
                                     <Select
                                         labelId="demo-multiple-chip-label"
                                         id="demo-multiple-chip"
@@ -244,9 +241,9 @@ const GroupSearchMenu = () => {
                                         value={instList}
                                         onChange={handleInst}
                                         renderValue={(selected) => (
-                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                                {selected.map((value) => (
-                                                    <Chip key={value} label={value} />
+                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, fontSize:12 }}>
+                                                {selected.map((value, idx) => (
+                                                    <Chip sx={{fontSize: 11}} key={idx} label={value} />
                                                 ))}
                                             </Box>
                                         )}
@@ -264,112 +261,139 @@ const GroupSearchMenu = () => {
                                     </Select>
                                 </FormControl>
                             </Stack>
-                            <Divider sx={{width: '90%', mt: 3, mb:3}} />
-                            <Stack sx={{width: '100%'}} alignItems={"center"}>
-                                <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', width: '50%'}}>검색하기</Button>
+
+                            <Divider sx={{width: '90%', mt:1.5}} />
+
+                            <Stack direction={'row'} sx={{width:'100%'}} alignItems={'center'} justifyContent={'center'}>
+                                <Typography sx={{width: '100%', mt: 1.5, fontWeight: 300, fontSize: 15, textAlign:' center'}}>
+                                    단체명
+                                </Typography>
                             </Stack>
+
+                            <Stack direction={'row'} sx={{width:'100%'}} alignItems={'flex-end'} justifyContent={'space-around'}>
+                                <TextField
+                                    id="standard-search"
+                                    type="search"
+                                    variant="standard"
+                                    placeholder={"작곡가를 입력하세요"}
+                                    inputProps={{
+                                        style: {
+                                            fontSize: 10, // adjust the font size here
+                                        },
+                                    }}
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            // handleSearchButton().then(() => {});
+                                        }
+                                    }}
+                                    sx={{width: '80%', fontSize: 10}}
+                                />
+                            </Stack>
+
+                            <Divider sx={{width: '90%', mt:1.5, mb: 1.5}} />
+
+                            <Stack sx={{width: '100%'}} alignItems={"center"}>
+                                <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', maxWidth: 75, minWidth: 75, maxHeight: 32, minHeight: 32, fontSize: 11}}>검색하기</Button>
+                            </Stack>
+
+                            <Divider sx={{width: '100%', mt:1.5, mb: 1.5}} />
                         </Stack>
                     </Collapse>
                 </List>
                 :
                 <List component="nav" sx={{width: '100%', justifyContent:"flex-start", alignItems:"center"}}>
-                    <Stack justifyContent="flex-start" alignItems="center" sx={{width: '100%'}}>
-                        <Divider sx={{width: '90%', mt:1}} />
-                        <Typography sx={{width: 'auto', mt: 1, mb:-2, fontWeight: 300, fontSize: 25}}>
-                            단체명
-                        </Typography>
-                        <Stack sx={{width: '100%'}} justifyContent={"center"} alignItems={"center"}>
+                    <Stack justifyContent="flex-start" alignItems="center" sx={{width: '100%', mt:1}}>
+                        <Stack direction={'row'} sx={{width:'100%'}} alignItems={'center'} justifyContent={'center'}>
+                            <Typography sx={{width: '50%', fontWeight: 300, fontSize: 15, textAlign: 'center'}}>
+                                지역
+                            </Typography>
+                            <Typography sx={{width: '50%', fontWeight: 300, fontSize: 15, textAlign: 'center'}}>
+                                곡검색
+                            </Typography>
+                        </Stack>
+
+                        <Stack direction={'row'} sx={{width:'100%'}} alignItems={'flex-end'} justifyContent={'space-around'}>
+                            <FormControl sx={{width: '40%'}}>
+                                <Select
+                                    value={parent}
+                                    onChange={handleParentChange}
+                                    displayEmpty
+                                    sx={{height: '30px', fontSize : 11}}
+                                    variant={"standard"}
+                                >
+                                    {region_parents.map((item, idx) => (
+                                        <MenuItem value={idx} sx={{fontSize:11}}>{item}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                             <TextField
                                 id="standard-search"
-                                label="텍스트로 검색하기"
                                 type="search"
                                 variant="standard"
-                                sx={{width: '90%', mt:2}}
+                                placeholder={"작곡가를 입력하세요"}
+                                inputProps={{
+                                    style: {
+                                        fontSize: 10, // adjust the font size here
+                                    },
+                                }}
+                                value={composer}
+                                onChange={(e) => setComposer(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        // handleSearchButton().then(() => {});
+                                    }
+                                }}
+                                sx={{width: '40%', fontSize: 10}}
                             />
                         </Stack>
-                        <Divider sx={{width: '90%', mt:3}}/>
-                        <Typography sx={{width: 'auto', mt: 1, mb: 2, fontWeight: 300, fontSize: 25}}>
-                            지역
-                        </Typography>
-                        <Stack flexDirection={"row"} sx={{width: '100%'}} justifyContent={"space-around"}>
-                            <TextField
-                                id="standard-select-currency"
-                                select
-                                label="지역 1"
-                                defaultValue="서울시"
-                                variant="standard"
-                                sx={{width: '40%'}}
-                            >
-                                {region1.map((option) => (
-                                    <MenuItem key={option} value={option} >
-                                        {option}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            <TextField
-                                id="standard-select-currency"
-                                select
-                                label="지역 2"
-                                defaultValue="서울시"
-                                variant="standard"
-                                sx={{width: '40%'}}
-                            >
-                                {region2.map((option) => (
-                                    <MenuItem key={option} value={option} >
-                                        {option}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Stack>
-                        <Divider sx={{width: '90%', mt: 3}} />
-                        <Typography sx={{width: 'auto', mt: 1, mb: 2, fontWeight: 300, fontSize: 25}}>
-                            연주곡
-                        </Typography>
-                        <Stack sx={{width: '100%'}} justifyContent={"center"} alignItems={"center"}>
-                            <Stack flexDirection={"row"} sx={{width: '100%'}} justifyContent={"space-around"}>
-                                <TextField
-                                    id="standard-select-currency"
-                                    select
-                                    label="작곡가"
-                                    defaultValue="말러"
-                                    variant="standard"
-                                    sx={{width: '40%'}}
+
+                        <Stack direction={'row'} sx={{width:'100%'}} alignItems={'flex-end'} justifyContent={'space-around'}>
+                            <FormControl sx={{width: '40%'}}>
+                                <Select
+                                    value={child}
+                                    onChange={handleChildChange}
+                                    displayEmpty
+                                    sx={{height: '30px', fontSize : 11}}
+                                    variant={"standard"}
                                 >
-                                    {composer.map((option) => (
-                                        <MenuItem key={option} value={option} >
-                                            {option}
-                                        </MenuItem>
+                                    {region_child[parent].map((item, idx) => (
+                                        <MenuItem value={idx} sx={{fontSize: 11}}>{item}</MenuItem>
                                     ))}
-                                </TextField>
-                                <TextField
-                                    id="standard-select-currency"
-                                    select
-                                    label="곡명"
-                                    defaultValue="No. 1"
-                                    variant="standard"
-                                    sx={{width: '40%'}}
-                                >
-                                    {song.map((option) => (
-                                        <MenuItem key={option} value={option} >
-                                            {option}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Stack>
+                                </Select>
+                            </FormControl>
                             <TextField
                                 id="standard-search"
-                                label="텍스트로 검색하기"
                                 type="search"
                                 variant="standard"
-                                sx={{width: '90%', mt:2}}
+                                placeholder={"곡이름을 입력하세요"}
+                                inputProps={{
+                                    style: {
+                                        fontSize: 10, // adjust the font size here
+                                    },
+                                }}
+                                value={musicName}
+                                onChange={(e) => setMusicName(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        // handleSearchButton().then(() => {});
+                                    }
+                                }}
+                                sx={{width: '40%', ontSize: 10}}
                             />
                         </Stack>
-                        <Divider sx={{width: '90%', mt: 3}} />
-                        <Typography sx={{width: 'auto', mt: 1, mb: 2, fontWeight: 300, fontSize: 25}}>
-                            모집 악기
-                        </Typography>
+
+                        <Divider sx={{width: '90%', mt:1.5}} />
+
+                        <Stack direction={'row'} sx={{width:'100%'}} alignItems={'center'} justifyContent={'center'}>
+                            <Typography sx={{width: '100%', mt: 1.5, fontWeight: 300, fontSize: 15, textAlign:' center'}}>
+                                모집 악기
+                            </Typography>
+                        </Stack>
+
                         <Stack sx={{width: '100%'}} justifyContent={"center"} alignItems={"center"}>
-                            <FormControl sx={{width: '90%', mt: 1}}>
+                            <FormControl sx={{width: '80%'}}>
                                 <Select
                                     labelId="demo-multiple-chip-label"
                                     id="demo-multiple-chip"
@@ -378,9 +402,9 @@ const GroupSearchMenu = () => {
                                     value={instList}
                                     onChange={handleInst}
                                     renderValue={(selected) => (
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                            {selected.map((value) => (
-                                                <Chip key={value} label={value} />
+                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, fontSize:12 }}>
+                                            {selected.map((value, idx) => (
+                                                <Chip sx={{fontSize: 11}} key={idx} label={value} />
                                             ))}
                                         </Box>
                                     )}
@@ -398,9 +422,41 @@ const GroupSearchMenu = () => {
                                 </Select>
                             </FormControl>
                         </Stack>
-                        <Divider sx={{width: '90%', mt: 3, mb:3}} />
+
+                        <Divider sx={{width: '90%', mt:1.5}} />
+
+                        <Stack direction={'row'} sx={{width:'100%'}} alignItems={'center'} justifyContent={'center'}>
+                            <Typography sx={{width: '100%', mt: 1.5, fontWeight: 300, fontSize: 15, textAlign:' center'}}>
+                                단체명
+                            </Typography>
+                        </Stack>
+
+                        <Stack direction={'row'} sx={{width:'100%'}} alignItems={'flex-end'} justifyContent={'space-around'}>
+                            <TextField
+                                id="standard-search"
+                                type="search"
+                                variant="standard"
+                                placeholder={"작곡가를 입력하세요"}
+                                inputProps={{
+                                    style: {
+                                        fontSize: 10, // adjust the font size here
+                                    },
+                                }}
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        // handleSearchButton().then(() => {});
+                                    }
+                                }}
+                                sx={{width: '80%', fontSize: 10}}
+                            />
+                        </Stack>
+
+                        <Divider sx={{width: '90%', mt:1.5, mb: 1.5}} />
+
                         <Stack sx={{width: '100%'}} alignItems={"center"}>
-                            <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', width: '50%'}}>검색하기</Button>
+                            <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', maxWidth: 75, minWidth: 75, maxHeight: 32, minHeight: 32, fontSize: 11}}>검색하기</Button>
                         </Stack>
                     </Stack>
                 </List>

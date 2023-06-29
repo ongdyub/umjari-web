@@ -18,7 +18,7 @@ const GroupSearchContents = () => {
     };
 
     return(
-        <Stack justifyContent="flex-start" alignItems="center" sx={{height: res800 ? 'auto' : 'auto', width: res800 ? '100%' : res950 ? 'calc(100% - 305px)' : 'calc(100% - 465px)'}}>
+        <Stack justifyContent="flex-start" alignItems="center" sx={{height: res800 ? 'auto' : 'auto', width: res800 ? '100%' : res950 ? 'calc(100% - 255px)' : 'calc(100% - 415px)'}}>
             <Stack sx={{width: '100%', mb:4}}>
                 <Stack sx={{mt: 3}} justifyContent={"flex-start"} direction={"row"}>
                     <Typography sx={{ml: 5}} variant={"body1"}>총</Typography>

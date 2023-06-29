@@ -19,8 +19,8 @@ import {koKR} from "@mui/x-date-pickers/locales";
 import ko from 'dayjs/locale/ko';
 import {useSearchParams} from "react-router-dom";
 
-const region_parents = ["전체","서울시","경기도", "수원시", "부산시",]
-const region_child = [
+export const region_parents = ["전체","서울시","경기도", "수원시", "부산시",]
+export const region_child = [
     ["전체"],
     ["전체", "강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"],
     ["전체", '가평시', '고양시', '과천시', '광명시', '광주시', '구리시', '군포시', '김포시', '남양주시', '동두천시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시', '양주시', '양평시', '여주시', '연천시', '오산시', '용인시', '의왕시', '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시'],
@@ -174,7 +174,7 @@ const ConcertFilter = () => {
                                             }}
                                             type="search"
                                             variant="standard"
-                                            placeholder={"작곡가명을 입력하세요."}
+                                            placeholder={"작곡가를 입력하세요."}
                                             value={composer}
                                             onChange={(e) => setComposer(e.target.value)}
                                             onKeyDown={(e) => {
@@ -237,7 +237,7 @@ const ConcertFilter = () => {
                                             id="standard-search"
                                             type="search"
                                             variant="standard"
-                                            placeholder={"곡명을 입력하세요."}
+                                            placeholder={"곡이름을 입력하세요."}
                                             value={musicName}
                                             onChange={(e) => setMusicName(e.target.value)}
                                             onKeyDown={(e) => {
@@ -307,7 +307,7 @@ const ConcertFilter = () => {
                                 id="standard-search"
                                 type="search"
                                 variant="standard"
-                                placeholder={"검색어를 입력하세요"}
+                                placeholder={"작곡가를 입력하세요"}
                                 inputProps={{
                                     style: {
                                         fontSize: 10, // adjust the font size here
@@ -371,7 +371,7 @@ const ConcertFilter = () => {
                                 id="standard-search"
                                 type="search"
                                 variant="standard"
-                                placeholder={"검색어를 입력하세요"}
+                                placeholder={"곡이름을 입력하세요"}
                                 inputProps={{
                                     style: {
                                         fontSize: 10, // adjust the font size here
