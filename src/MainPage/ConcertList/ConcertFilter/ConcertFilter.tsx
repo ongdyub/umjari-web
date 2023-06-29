@@ -71,8 +71,18 @@ const ConcertFilter = () => {
 
         searchParams.set('regionParent',region_parents[parent].toString())
         searchParams.set('regionChild',region_child[parent][child].toString())
-        searchParams.set('startDate', startDate === null ? '' : startDate.format('YYYY-MM-DD'))
-        searchParams.set('endDate', endDate === null ? '' : endDate.format('YYYY-MM-DD'))
+        if(startDate !== null){
+            searchParams.set('startDate', startDate.format('YYYY-MM-DD'))
+        }
+        else{
+            searchParams.set('startDate', '')
+        }
+        if(endDate !== null){
+            searchParams.set('endDate', endDate.format('YYYY-MM-DD'))
+        }
+        else{
+            searchParams.set('endDate', '')
+        }
         searchParams.set('composer',composer)
         searchParams.set('musicName',musicName)
         searchParams.set('text',searchText)
