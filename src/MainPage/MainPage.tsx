@@ -1,4 +1,4 @@
-import {Box, Container, Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
+import {Divider, Stack, useMediaQuery, useTheme} from "@mui/material";
 import ConcertList from "./ConcertList/ConcertList";
 import RecommendGroup from "./RecommendGroup/RecommendGroup";
 import MiniBoard from "./MiniBoard/MiniBoard";

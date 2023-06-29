@@ -1,8 +1,7 @@
 import {
-    Box,
-    Button, Chip, Collapse, Divider,
-    FormControl, FormHelperText,
-    InputLabel, List, ListItemButton,
+    Button, Collapse, Divider,
+    FormControl,
+    List, ListItemButton,
     MenuItem,
     Select,
     SelectChangeEvent,
@@ -10,17 +9,15 @@ import {
     Typography, useMediaQuery, useTheme
 } from "@mui/material";
 import {useState} from "react";
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
-import {dashboardList} from "../../../store/slices/concert/concert";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../../store";
 import {koKR} from "@mui/x-date-pickers/locales";
 import ko from 'dayjs/locale/ko';
+import {useSearchParams} from "react-router-dom";
 
 const region_parents = ["전체","서울시","경기도", "수원시", "부산시",]
 const region_child = [
@@ -31,33 +28,31 @@ const region_child = [
     ["전체", "강서구", "금정구", "기장군", "남구", "동구", "동래구", "부산진구", "북구", "사상구", "사하구", "서구", "수영구", "연제구", "영도구", "중구", "해운대구"]
 ]
 
-const result = region_parents.flatMap((parent, index) =>
-    region_child[index].map((child) => ({
-        id: index * region_child[0].length + region_child[index].indexOf(child),
-        region_parent: parent,
-        region_child: child,
-    }))
-);
-
 const ConcertFilter = () => {
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const theme = useTheme();
-    const dispatch = useDispatch<AppDispatch>();
-    const res550 = useMediaQuery(theme.breakpoints.down("res550"))
     const res800 = useMediaQuery(theme.breakpoints.down("res800"))
 
     const [parent, setParent] = useState<any>(0);
     const [child, setChild] = useState<any>(0);
 
-    const [startDate, setStartDate] = useState<Dayjs | null>(null)
+    const [startDate, setStartDate] = useState<Dayjs | null>(dayjs())
     const [endDate, setEndDate] = useState<Dayjs | null>( null)
 
-    const [searchText, setSearchText] = useState<string | null>("")
+    const [searchText, setSearchText] = useState<string>("")
+    const [composer, setComposer] = useState('')
+    const [musicName, setMusicName] = useState('')
 
     const [open, setOpen] = useState(false)
 
     const menuOpen = () => {
         setOpen((!open))
+    }
+    const resetDate = () => {
+        setStartDate(null)
+        setEndDate(null)
     }
 
     const handleParentChange = (event: SelectChangeEvent) => {
@@ -70,19 +65,21 @@ const ConcertFilter = () => {
 
     const handleSearchButton = async () => {
         if(startDate?.isAfter(endDate)){
-            window.alert("날짜를 다시 설정해주세요")
+            window.alert("날짜 순서를 다시 설정해주세요")
             return
         }
-        const params = {
-            regionParent : region_parents[parent],
-            regionChild : region_child[parent][child],
-            startDate : startDate?.format('YYYY-MM-DD'),
-            endDate : endDate?.format('YYYY-MM-DD'),
-            sort : "concertDate,ASC",
-            text : searchText,
-        }
-        const result = await dispatch(dashboardList(params))
-        setOpen(false)
+
+        searchParams.set('regionParent',region_parents[parent].toString())
+        searchParams.set('regionChild',region_child[parent][child].toString())
+        searchParams.set('startDate', startDate === null ? '' : startDate.format('YYYY-MM-DD'))
+        searchParams.set('endDate', endDate === null ? '' : endDate.format('YYYY-MM-DD'))
+        searchParams.set('composer',composer)
+        searchParams.set('musicName',musicName)
+        searchParams.set('text',searchText)
+        searchParams.set('page','1')
+
+        setSearchParams(searchParams)
+
     }
 
     return (
@@ -168,11 +165,11 @@ const ConcertFilter = () => {
                                             type="search"
                                             variant="standard"
                                             placeholder={"작곡가명을 입력하세요."}
-                                            value={searchText}
-                                            onChange={(e) => setSearchText(e.target.value)}
+                                            value={composer}
+                                            onChange={(e) => setComposer(e.target.value)}
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Enter') {
-                                                    handleSearchButton();
+                                                    handleSearchButton().then(() => {});
                                                 }
                                             }}
                                             sx={{width: '90%', fontSize:10}}
@@ -231,11 +228,11 @@ const ConcertFilter = () => {
                                             type="search"
                                             variant="standard"
                                             placeholder={"곡명을 입력하세요."}
-                                            value={searchText}
-                                            onChange={(e) => setSearchText(e.target.value)}
+                                            value={musicName}
+                                            onChange={(e) => setMusicName(e.target.value)}
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Enter') {
-                                                    handleSearchButton();
+                                                    handleSearchButton().then(() => {});
                                                 }
                                             }}
                                             sx={{width: '90%', fontSize:10}}
@@ -245,7 +242,7 @@ const ConcertFilter = () => {
 
                                 <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-end'} sx={{width: '100%', mt:1.5}}>
                                     <Stack direction={'row'} alignItems={'center'} sx={{width: '33%'}} justifyContent={'flex-end'}>
-                                        <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', fontSize : 10, maxHeight: 25, minHeight: 25, maxWidth: 70, minWidth: 70, mr:'10%'}} onClick={handleSearchButton}>날짜 초기화</Button>
+                                        <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', fontSize : 10, maxHeight: 25, minHeight: 25, maxWidth: 70, minWidth: 70, mr:'10%'}} onClick={resetDate}>날짜 초기화</Button>
                                         <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', fontSize : 10, maxHeight: 25, minHeight: 25, maxWidth: 70, minWidth: 70, mr:'5%'}} onClick={handleSearchButton}>검색하기</Button>
                                     </Stack>
                                 </Stack>
@@ -306,16 +303,16 @@ const ConcertFilter = () => {
                                         fontSize: 10, // adjust the font size here
                                     },
                                 }}
-                                value={searchText}
-                                onChange={(e) => setSearchText(e.target.value)}
+                                value={composer}
+                                onChange={(e) => setComposer(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') {
-                                        handleSearchButton();
+                                        handleSearchButton().then(() => {});
                                     }
                                 }}
                                 sx={{width: '20%',mr:5, fontSize: 10}}
                             />
-                            <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', fontSize : 10, maxHeight: 25, minHeight: 25, maxWidth: 70, minWidth: 70}} >날짜 초기화</Button>
+                            <Button variant="contained" size={"small"} sx={{bgcolor: '#292929', color: 'white', width: '10%', fontSize : 10, maxHeight: 25, minHeight: 25, maxWidth: 70, minWidth: 70}} onClick={resetDate}>날짜 초기화</Button>
                         </Stack>
 
                         <Stack direction={'row'} alignItems={'center'} sx={{width: '100%', mb:1}} justifyContent={"flex-start"} >
@@ -370,11 +367,11 @@ const ConcertFilter = () => {
                                         fontSize: 10, // adjust the font size here
                                     },
                                 }}
-                                value={searchText}
-                                onChange={(e) => setSearchText(e.target.value)}
+                                value={musicName}
+                                onChange={(e) => setMusicName(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') {
-                                        handleSearchButton();
+                                        handleSearchButton().then(() => {});
                                     }
                                 }}
                                 sx={{width: '20%', mr:5, fontSize: 10}}
