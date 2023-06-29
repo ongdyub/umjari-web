@@ -7,6 +7,7 @@ import {AppDispatch} from "../../../store";
 import {getVisitList, selectVisit, visitStateActions} from "../../../store/slices/visit/visit";
 import {selectUser} from "../../../store/slices/user/user";
 import * as React from "react";
+import {selectMyConcert} from "../../../store/slices/myconcert/myconcert";
 
 const Visit = () => {
 
@@ -20,6 +21,7 @@ const Visit = () => {
 
     const userState = useSelector(selectUser)
     const visitState = useSelector(selectVisit)
+    const myConcertState = useSelector(selectMyConcert)
 
     const writeData = {
         id : 1,
@@ -76,7 +78,10 @@ const Visit = () => {
             <Divider sx={{width: res750 ? '100%' : '90%', color: '#292929'}} />
             {
                 userState.isLogin ?
-                    <VisitList item={writeData} write={true} />
+                    myConcertState.myDefaultInfo?.isSelfProfile ?
+                        null
+                        :
+                        <VisitList item={writeData} write={true} />
                     :
                     <Typography sx={{mt:1, fontSize:25, fontWeight:300}}>먼저 로그인해주세요</Typography>
             }

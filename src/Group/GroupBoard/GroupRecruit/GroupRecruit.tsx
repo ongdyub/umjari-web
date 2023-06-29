@@ -13,6 +13,8 @@ import {
 } from "../../../store/slices/group/group";
 import {AppDispatch} from "../../../store";
 import ConcertInfoEdit from "../../../Concert/ConcertInfo/ConcertInfoEdit";
+import ProgramInfo from "../../../Concert/ConcertDetail/DetailInfo/ProgramInfo";
+import AddMusicModal from "../../../Modal/AddMusicModal";
 
 export const instList = [
     {
@@ -181,6 +183,10 @@ const GroupRecruit = () => {
         }
     }
 
+    // About Group SetList
+    const [addMode, setAddMode] = useState<boolean>(false)
+    const [setList, setSetList] = useState(false)
+
     useEffect(() => {
         dispatch(groupRecruitGet({id : id, token : userState.accessToken}))
         return () => {
@@ -213,7 +219,37 @@ const GroupRecruit = () => {
     else{
         return(
             <Stack justifyContent={res700 ? 'center' : 'flex-start'} alignItems={'center'} sx={{mb: 10}}>
+                {/* About Group SetList */}
                 <Divider sx={{width: res700 ? '90%' : '100%', mt:-1}}/>
+                <Stack sx={{width : res700 ? '90%' : '100%'}}>
+                    <Stack sx={{width: '100%'}} direction={'row'} justifyContent={'flex-start'}>
+                        <Typography sx={{fontSize: res700 ? 25:35, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>Program</Typography>
+                        <Stack direction={'row'} alignItems={'center'} sx={{ml : 1,height: '100%'}}>
+                            {
+                                isAdminGroup ?
+                                    setList ?
+                                        <>
+                                            <Button color={"success"} size={"small"} onClick={() => setSetList(false)}>취소</Button>
+                                            <Button color={"info"} size={"small"} onClick={() => setAddMode(true)}>추가</Button>
+                                        </>
+                                        :
+                                        <Button color={"warning"} size={"small"} onClick={() => setSetList(true)}>수정</Button>
+                                    :
+                                    null
+                            }
+                        </Stack>
+                    </Stack>
+                    {
+                        // groupState.groupInfo?.setList
+                        [].map((item, idx) => (
+                            <ProgramInfo key={idx} item={item} edit={setList} />
+                        ))
+                    }
+                </Stack>
+
+
+                {/* About Recruit Inst */}
+                <Divider sx={{width: res700 ? '90%' : '100%', mt:0.5}}/>
                 <Stack sx={{width : res700 ? '90%' : '100%'}}>
                     <Stack sx={{width: '100%'}} direction={'row'} justifyContent={'flex-start'} alignItems={'center'}>
                         <Typography sx={{fontSize: res700 ? 20:30, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>모집 악기</Typography>
@@ -257,6 +293,7 @@ const GroupRecruit = () => {
                         }
                     </Stack>
                 </Stack>
+
                 <Divider sx={{width: res700 ? '100%' : '90%', mt: res700 ? 1 : 2, mb: res700 ? 1: 2}}/>
                 <Stack direction={'row'} justifyContent={'flex-start'} sx={{width : res700 ? '90%' : '100%'}}>
                     <Typography sx={{fontSize: res700 ? 20:30, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>상세정보</Typography>
@@ -273,6 +310,12 @@ const GroupRecruit = () => {
                                 theme={"bubble"}
                             />
                         </Stack>
+                }
+                {
+                    addMode ?
+                        <AddMusicModal open={addMode} setOpen={setAddMode} scope={'group'} />
+                        :
+                        null
                 }
             </Stack>
         )

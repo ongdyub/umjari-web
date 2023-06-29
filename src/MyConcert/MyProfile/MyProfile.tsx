@@ -14,6 +14,7 @@ import {selectUser, userActions} from "../../store/slices/user/user";
 import MyCareer from "./MyCareer/MyCareer";
 import GroupDateEditModal from "../../Modal/GroupDateEditModal";
 import {requestFriendPost} from "../../store/slices/manage/friend/friend";
+import ProfileImageModal from "../../Modal/ProfileImageModal";
 
 const MyProfile = () => {
 
@@ -22,6 +23,7 @@ const MyProfile = () => {
     const [height, setHeight] = useState<number | null | undefined>(null);
     const [imgLoadingOpen,  setImgLadingOpen] = useState(false)
     const [openGroupEdit, setOpenGroupEdit] = useState(false)
+    const [openProfile, setOpenProfile] = useState(false)
 
     useEffect(() => {
         const handleResize = () => {
@@ -117,6 +119,7 @@ const MyProfile = () => {
                     component="img"
                     ref={myRef}
                     sx={{
+                        cursor: 'pointer',
                         display: 'block',
                         width: res750 ? '80%' : 133,
                         height: res750 ? `${height}px` : 133,
@@ -127,6 +130,7 @@ const MyProfile = () => {
                         mt: res500 ? 2 : 2
                     }}
                     alt="Profile Img"
+                    onClick={() => setOpenProfile(true)}
                     onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
                     src={`${myConcertState.myDefaultInfo?.profileImage}`}
                 />
@@ -178,6 +182,12 @@ const MyProfile = () => {
                     null
                     :
                     <Divider sx={{width: '80%', mb:2}}/>
+            }
+            {
+                openProfile ?
+                    <ProfileImageModal open={openProfile} setOpen={setOpenProfile} src={myConcertState.myDefaultInfo?.profileImage} />
+                    :
+                    null
             }
             <GroupDateEditModal open={openGroupEdit} close={setOpenGroupEdit} />
         </Stack>

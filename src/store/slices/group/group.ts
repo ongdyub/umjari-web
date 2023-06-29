@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
-import {Concert} from "../concert/concert";
+import {Concert, GroupSetList} from "../concert/concert";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -17,7 +17,8 @@ export interface GroupInfo {
     regionDetail: string,
     homepage: string,
     detailIntro: string,
-    recruit: boolean
+    recruit: boolean,
+    setList : [GroupSetList] | []
 }
 
 export interface GroupRecruit {

@@ -66,7 +66,7 @@ export interface ConcertList {
 export interface ConcertState {
     concert : Concert | null,
     participants : [ConcertParticipate] | [],
-    concertList: ConcertList
+    concertList: ConcertList | null
 }
 
 const initialState: ConcertState = {
@@ -82,9 +82,14 @@ const initialState: ConcertState = {
 
 export const dashboardList = createAsyncThunk(
     "concert/dashboardList",
-    async (params : any) => {
-        const response = await axios.get('/api/v1/concert/dashboard/',{params : params})
-        return response.data
+    async ({params} : {params : any}, {rejectWithValue}) => {
+        try {
+            const response = await axios.get('/api/v1/concert/dashboard/',{params : params})
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
     }
 )
 
@@ -241,6 +246,9 @@ export const concertStateSlice = createSlice({
         resetConcert: (state) => {
             state.concert = null
         },
+        resetConcertList: (state) => {
+            state.concertList = null
+        },
         resetParticipants: (state) => {
             state.participants = []
         },
@@ -249,7 +257,9 @@ export const concertStateSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(dashboardList.fulfilled, (state, action) => {
             state.concertList = action.payload
-            state.concertList.contents.reverse()
+        });
+        builder.addCase(dashboardList.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(concert.fulfilled, (state, action) => {
             state.concert = action.payload

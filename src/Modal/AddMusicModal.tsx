@@ -222,7 +222,7 @@ const ChildModal = () => {
 
 const AddMusicModal = (props : any) => {
 
-    const {open, setOpen} = props
+    const {open, setOpen, scope} = props
     const { id } = useParams();
 
     const dispatch = useDispatch<AppDispatch>()
@@ -238,6 +238,12 @@ const AddMusicModal = (props : any) => {
     };
 
     const onClickAddMusic = async (musicId : number) => {
+
+        if(scope === 'group'){
+            window.alert("준비중")
+            return
+        }
+
         const musicIdList = concertState.concert?.setList.map((item) => (item.musicInfo.id))
         musicIdList?.push(musicId)
 
