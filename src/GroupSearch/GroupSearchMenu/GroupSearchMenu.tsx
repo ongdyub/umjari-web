@@ -144,7 +144,7 @@ const GroupSearchMenu = () => {
                     <Divider orientation={"horizontal"}/>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Stack justifyContent="flex-start" alignItems="center" sx={{width: '100%', mt:1}}>
-                            <Stack direction={'row'} sx={{width:'100%'}} alignItems={'center'} justifyContent={'center'}>
+                            <Stack direction={'row'} sx={{width:'100%', mb:1}} alignItems={'center'} justifyContent={'center'}>
                                 <Typography sx={{width: '50%', fontWeight: 300, fontSize: 15, textAlign: 'center'}}>
                                     지역
                                 </Typography>
@@ -153,17 +153,17 @@ const GroupSearchMenu = () => {
                                 </Typography>
                             </Stack>
 
-                            <Stack direction={'row'} sx={{width:'100%'}} alignItems={'flex-end'} justifyContent={'space-around'}>
-                                <FormControl sx={{width: '40%'}}>
+                            <Stack direction={'row'} sx={{width:'100%', mb:1}} alignItems={'flex-end'} justifyContent={'space-around'}>
+                                <FormControl sx={{width: '35%'}}>
                                     <Select
                                         value={parent}
                                         onChange={handleParentChange}
                                         displayEmpty
-                                        sx={{height: '30px', fontSize : 11}}
+                                        sx={{height: '26px', fontSize : 13}}
                                         variant={"standard"}
                                     >
                                         {region_parents.map((item, idx) => (
-                                            <MenuItem value={idx} sx={{fontSize:11}}>{item}</MenuItem>
+                                            <MenuItem value={idx} sx={{fontSize:13}}>{item}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -174,7 +174,7 @@ const GroupSearchMenu = () => {
                                     placeholder={"작곡가를 입력하세요"}
                                     inputProps={{
                                         style: {
-                                            fontSize: 10, // adjust the font size here
+                                            fontSize: 12, // adjust the font size here
                                         },
                                     }}
                                     value={composer}
@@ -184,21 +184,21 @@ const GroupSearchMenu = () => {
                                             // handleSearchButton().then(() => {});
                                         }
                                     }}
-                                    sx={{width: '40%', fontSize: 10}}
+                                    sx={{width: '35%', fontSize: 12}}
                                 />
                             </Stack>
 
                             <Stack direction={'row'} sx={{width:'100%'}} alignItems={'flex-end'} justifyContent={'space-around'}>
-                                <FormControl sx={{width: '40%'}}>
+                                <FormControl sx={{width: '35%'}}>
                                     <Select
                                         value={child}
                                         onChange={handleChildChange}
                                         displayEmpty
-                                        sx={{height: '30px', fontSize : 11}}
+                                        sx={{height: '26px', fontSize : 13}}
                                         variant={"standard"}
                                     >
                                         {region_child[parent].map((item, idx) => (
-                                            <MenuItem value={idx} sx={{fontSize: 11}}>{item}</MenuItem>
+                                            <MenuItem value={idx} sx={{fontSize: 13}}>{item}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -209,7 +209,7 @@ const GroupSearchMenu = () => {
                                     placeholder={"곡이름을 입력하세요"}
                                     inputProps={{
                                         style: {
-                                            fontSize: 10, // adjust the font size here
+                                            fontSize: 12, // adjust the font size here
                                         },
                                     }}
                                     value={musicName}
@@ -219,7 +219,7 @@ const GroupSearchMenu = () => {
                                             // handleSearchButton().then(() => {});
                                         }
                                     }}
-                                    sx={{width: '40%', ontSize: 10}}
+                                    sx={{width: '35%', ontSize: 12}}
                                 />
                             </Stack>
 
@@ -232,7 +232,7 @@ const GroupSearchMenu = () => {
                             </Stack>
 
                             <Stack sx={{width: '100%'}} justifyContent={"center"} alignItems={"center"}>
-                                <FormControl sx={{width: '80%'}}>
+                                <FormControl sx={{width: '70%'}}>
                                     <Select
                                         labelId="demo-multiple-chip-label"
                                         id="demo-multiple-chip"
@@ -243,7 +243,7 @@ const GroupSearchMenu = () => {
                                         renderValue={(selected) => (
                                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, fontSize:12 }}>
                                                 {selected.map((value, idx) => (
-                                                    <Chip sx={{fontSize: 11}} key={idx} label={value} />
+                                                    <Chip sx={{fontSize: 12}} key={idx} label={value} />
                                                 ))}
                                             </Box>
                                         )}
@@ -278,7 +278,7 @@ const GroupSearchMenu = () => {
                                     placeholder={"작곡가를 입력하세요"}
                                     inputProps={{
                                         style: {
-                                            fontSize: 10, // adjust the font size here
+                                            fontSize: 12, // adjust the font size here
                                         },
                                     }}
                                     value={name}
@@ -288,7 +288,7 @@ const GroupSearchMenu = () => {
                                             // handleSearchButton().then(() => {});
                                         }
                                     }}
-                                    sx={{width: '80%', fontSize: 10}}
+                                    sx={{width: '70%', fontSize: 12}}
                                 />
                             </Stack>
 
