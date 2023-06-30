@@ -1,7 +1,6 @@
 import {Card, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import CommentIcon from '@mui/icons-material/Comment';
 import {useSelector} from "react-redux";
-import {selectDummy} from "../../../store/slices/dummy/dummy";
 import {useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 

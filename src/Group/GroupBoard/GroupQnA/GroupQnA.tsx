@@ -13,7 +13,6 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {selectDummy} from "../../../store/slices/dummy/dummy";
 import QnAItem from "./QnAItem";
 import LoginModal from "../../../Modal/LoginModal";
 import GroupQnAWriteModal from "../../../Modal/GroupQnAWriteModal";
