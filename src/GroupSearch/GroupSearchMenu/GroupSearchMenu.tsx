@@ -59,9 +59,6 @@ const GroupSearchMenu = () => {
         );
     };
 
-
-
-
     const [parent, setParent] = useState<any>(0);
     const [child, setChild] = useState<any>(0);
     const [composer, setComposer] = useState('')
@@ -88,6 +85,15 @@ const GroupSearchMenu = () => {
         searchParams.set('inst',instEnums.join(','))
 
         setSearchParams(searchParams)
+    }
+
+    const handleResetFilter = () => {
+        setParent(0)
+        setChild(0)
+        setComposer('')
+        setMusicName('')
+        setName('')
+        setInstruments([])
     }
 
     useEffect(() => {
@@ -197,7 +203,7 @@ const GroupSearchMenu = () => {
                                     onChange={(e) => setComposer(e.target.value)}
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter') {
-                                            // handleSearchButton().then(() => {});
+                                            handleSearchBtn();
                                         }
                                     }}
                                     sx={{width: '35%', fontSize: 12}}
@@ -232,7 +238,7 @@ const GroupSearchMenu = () => {
                                     onChange={(e) => setMusicName(e.target.value)}
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter') {
-                                            // handleSearchButton().then(() => {});
+                                            handleSearchBtn();
                                         }
                                     }}
                                     sx={{width: '35%', ontSize: 12}}
@@ -301,7 +307,7 @@ const GroupSearchMenu = () => {
                                     onChange={(e) => setName(e.target.value)}
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter') {
-                                            // handleSearchButton().then(() => {});
+                                            handleSearchBtn();
                                         }
                                     }}
                                     sx={{width: '70%', fontSize: 12}}
@@ -310,7 +316,8 @@ const GroupSearchMenu = () => {
 
                             <Divider sx={{width: '90%', mt:1.5, mb: 1.5}} />
 
-                            <Stack sx={{width: '100%'}} alignItems={"center"}>
+                            <Stack sx={{width: '100%'}} direction={'row'} justifyContent={'space-around'} alignItems={"center"}>
+                                <Button variant="outlined" sx={{bgcolor: 'white', color: '#292929', maxWidth: 75, minWidth: 75, maxHeight: 32, minHeight: 32, fontSize: 11}} onClick={handleResetFilter}>초기화</Button>
                                 <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', maxWidth: 75, minWidth: 75, maxHeight: 32, minHeight: 32, fontSize: 11}} onClick={handleSearchBtn}>검색하기</Button>
                             </Stack>
 
@@ -358,7 +365,7 @@ const GroupSearchMenu = () => {
                                 onChange={(e) => setComposer(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') {
-                                        // handleSearchButton().then(() => {});
+                                        handleSearchBtn();
                                     }
                                 }}
                                 sx={{width: '40%', fontSize: 10}}
@@ -393,7 +400,7 @@ const GroupSearchMenu = () => {
                                 onChange={(e) => setMusicName(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') {
-                                        // handleSearchButton().then(() => {});
+                                        handleSearchBtn();
                                     }
                                 }}
                                 sx={{width: '40%', ontSize: 10}}
@@ -462,7 +469,7 @@ const GroupSearchMenu = () => {
                                 onChange={(e) => setName(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') {
-                                        // handleSearchButton().then(() => {});
+                                        handleSearchBtn();
                                     }
                                 }}
                                 sx={{width: '80%', fontSize: 10}}
@@ -471,7 +478,8 @@ const GroupSearchMenu = () => {
 
                         <Divider sx={{width: '90%', mt:1.5, mb: 1.5}} />
 
-                        <Stack sx={{width: '100%'}} alignItems={"center"}>
+                        <Stack sx={{width: '100%'}} direction={'row'} justifyContent={'space-around'} alignItems={"center"}>
+                            <Button variant="outlined" sx={{bgcolor: 'white', color: '#292929', maxWidth: 75, minWidth: 75, maxHeight: 32, minHeight: 32, fontSize: 11}} onClick={handleResetFilter}>초기화</Button>
                             <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', maxWidth: 75, minWidth: 75, maxHeight: 32, minHeight: 32, fontSize: 11}} onClick={handleSearchBtn}>검색하기</Button>
                         </Stack>
                     </Stack>

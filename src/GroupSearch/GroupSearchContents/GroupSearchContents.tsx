@@ -1,10 +1,7 @@
 import {Grid, Pagination, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
-import {groupFrom, selectDummy} from "../../store/slices/dummy/dummy";
 import {useSelector} from "react-redux";
 import GroupSearchItem from "./GroupSearchItem/GroupSearchItem";
-import {useState} from "react";
 import * as React from "react";
-import {useSearchParams} from "react-router-dom";
 import {selectGroup} from "../../store/slices/group/group";
 
 const GroupSearchContents = (props : any) => {
@@ -16,7 +13,6 @@ const GroupSearchContents = (props : any) => {
     const res800 = useMediaQuery('(max-width:800px)')
     const res950 = useMediaQuery(theme.breakpoints.down("res950"))
 
-    const dummySelector = useSelector(selectDummy)
     const groupSelector = useSelector(selectGroup)
 
 
@@ -29,32 +25,20 @@ const GroupSearchContents = (props : any) => {
                     <Typography sx={{ml:1}} variant={"body1"}>의 단체를 찾았습니다.</Typography>
                 </Stack>
             </Stack>
-            <Grid justifyContent={"space-evenly"} container spacing={3} columns={14}>
-                {
-                    dummySelector.group.map((item: groupFrom) => (
-                        <Grid item res300={12} res500={6} res800={6} lg={4}>
-                            <GroupSearchItem img={item.img} name={item.name} song={item.song} recruit={item.recruit} region={item.region} friend={item.friend} re_inst={item.re_inst} />
-                        </Grid>
 
-                    ))
-                }
-                {
-                    dummySelector.group.map((item: groupFrom) => (
-                        <Grid item res300={12} res500={6} res800={6} lg={4}>
-                            <GroupSearchItem img={item.img} name={item.name} song={item.song} recruit={item.recruit} region={item.region} friend={item.friend} re_inst={item.re_inst} />
-                        </Grid>
+            <Stack sx={{ width: '100%', mb: 1}} justifyContent={res800 ? "center" : ''} alignItems={res800 ? "center" : ''} alignContent={res800 ? "center" : ''}>
+                <Grid direction={'row'} justifyContent={"flex-start"} flexWrap={"wrap"} container spacing={1} columns={15} sx={{pr:2, pl:2}}>
+                    {
+                        groupSelector.groupSearchList?.contents.map((item, idx) => (
+                            <Grid key={idx} item xs={15} res500={7.5} res1050={5} sx={{mb:1}}>
+                                <GroupSearchItem item={item} />
+                            </Grid>
 
-                    ))
-                }
-                {
-                    dummySelector.group.map((item: groupFrom) => (
-                        <Grid item res300={12} res500={6} res800={6} lg={4}>
-                            <GroupSearchItem img={item.img} name={item.name} song={item.song} recruit={item.recruit} region={item.region} friend={item.friend} re_inst={item.re_inst} />
-                        </Grid>
+                        ))
+                    }
+                </Grid>
+            </Stack>
 
-                    ))
-                }
-            </Grid>
             <Stack alignItems="center" sx={{width:'100%', height: '50px'}} flexDirection={'row'} justifyContent="center" alignContent="center">
                 <Pagination sx={{display: 'flex', width: '100%',justifyContent: "center", alignItems:"center",}} size={res750 ? "small" : "large"} count={totalPage} page={page} onChange={handleChange} defaultPage={1} siblingCount={1} boundaryCount={1}/>
             </Stack>

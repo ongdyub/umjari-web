@@ -101,9 +101,9 @@ export interface GroupSearchList {
             "name": string,
             "logo": string,
             "region": string,
-            "regionDetail": string,
+            "regionDetail": string | null,
             "recruit": boolean,
-            "recruitInstruments": [string] | [],
+            "recruitInstruments": [string] | [] | null,
             "recruitDetail": string,
             "setList": [GroupProgram] | []
         }

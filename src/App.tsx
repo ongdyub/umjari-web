@@ -27,6 +27,7 @@ declare module '@mui/material/styles' {
         res800: true;
         res950: true;
         res1000: true;
+        res1050: true;
         res1100: true;
     }
 }
@@ -62,6 +63,7 @@ const blueTheme = createTheme({
             md: 900,
             res950: 950,
             res1000: 1000,
+            res1050: 1050,
             res1100: 1100,
             lg: 1200,
             xl: 1536,
