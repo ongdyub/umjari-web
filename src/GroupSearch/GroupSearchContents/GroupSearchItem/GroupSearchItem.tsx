@@ -15,7 +15,7 @@ const GroupSearchItem = (props : any) => {
                 <CardMedia
                     component="img"
                     sx={{ height:50, width: 50, padding: '7px 7px 7px 7px', objectFit: 'fill'}}
-                    alt="Profile Img"
+                    alt="Group Logo"
                     onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
                     src={item.logo}
                 />

@@ -1,52 +1,54 @@
 import {Box, Card, CardContent, CardMedia, IconButton, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
-import {groupFrom, songForm} from "../../../store/slices/dummy/dummy";
-import './GroupItem.scss'
+import {useNavigate} from "react-router-dom";
+import {GroupProgram} from "../../../store/slices/group/group";
 
-const GroupItem = (props : Omit<groupFrom, 're_inst'>) => {
+const GroupItem = (props : any) => {
 
-    const {name, img, song, friend, region, recruit} = props
-    const theme = useTheme();
+    const {item} = props
+
+    const navigate = useNavigate()
 
     return(
-        <Card sx={{justifyContent:"flex-start", alignItems:"center" ,display: 'flex', width: '90%', marginBottom: '30px', height: 'auto', ml: '5%' }}>
+        <Card onClick={() => navigate(`/group/${item.id}/list`)} sx={{height: 100,cursor: 'pointer', justifyContent:"flex-start", alignItems:"center" ,display: 'flex', width: '100%', flexDirection: 'row', pl:'2%', pr:'2%'}}>
             <CardMedia
                 component="img"
-                sx={{ width: 60, height: 60, objectFit: 'fill', marginLeft: 2, marginRight: 3 }}
-                image={img}
-                alt="Live from space album cover"
+                sx={{ width: 50, height: 50, objectFit: 'fill'}}
+                alt="Group Logo"
+                onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
+                src={item.logo}
             />
-            <Box sx={{width: 160,display: 'flex', flexDirection: 'column', justifyContent: "flex-start", alignItems: "center"}}>
-                <CardContent sx={{ display: 'flex', flexDirection: 'column', pt:3}}>
-                    <Typography component="div" variant="h6" sx={{textOverflow: 'ellipsis'}}>
-                        {name}
-                    </Typography>
-                    <Typography variant="subtitle1" color="text.secondary" component="div">
-                        {region}
-                    </Typography>
-                    <Typography variant="subtitle2" color="text.secondary" sx={{textOverflow: 'ellipsis',whiteSpace: 'nowrap'}} component="div">
-                        {friend}명이 참여중입니다.
-                    </Typography>
-                </CardContent>
-            </Box>
-            <Box className={"groupitem-box-song"} sx={{justifyContent:"flex-start", flexDirection: 'column', alignItems: 'center'}}>
-                {
-                    song.map((item : songForm) => (
-                        <Stack direction="row" justifyContent="flex-start" alignItems="center">
-                            <Box sx={{width: 120}}>
-                                <Typography variant="caption"  display="block" gutterBottom sx={{fontWeight: 600, fontSize: 12, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>
-                                    {item.composer}
-                                </Typography>
-                            </Box>
-                            <Box className={"groupitem-box-name"} sx={{width: 180,textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}} >
-                                <Typography variant="overline"  display="block" gutterBottom sx={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>
-                                    {item.name}
-                                </Typography>
-                            </Box>
-                        </Stack>
-                    ))
-                }
-            </Box>
-
+            <Stack sx={{justifyContent: "flex-start", alignItems: "center", ml: 0.5, mr:0.5, width: 85}}>
+                <Typography sx={{fontSize:12, mb:0.5}}>
+                    {item.name}
+                </Typography>
+                <Typography sx={{fontSize: 10}} color="text.secondary">
+                    {item.region}
+                </Typography>
+                {/*<Typography variant="subtitle2" color="text.secondary" sx={{textOverflow: 'ellipsis',whiteSpace: 'nowrap'}} component="div">*/}
+                {/*    {friend}명이 참여중입니다.*/}
+                {/*</Typography>*/}
+            </Stack>
+            {
+                item.setList.length < 1 ?
+                    <Stack direction={'row'} sx={{alignItems:'center', maxHeight: 100, minHeight:100, overflow: 'hidden'}}>
+                        <Typography color={'blue'} sx={{fontSize: 10, fontWeight: 400}}>연주곡 미정</Typography>
+                    </Stack>
+                    :
+                    <Stack justifyContent={'center'} sx={{width: 'calc(100% - 80px)', minHeight: 100, overflow: 'hidden'}}>
+                        {
+                            item.setList.map((item : GroupProgram, idx : number) => (
+                                <Stack sx={{mb:0.5}} key={idx} direction={"row"} justifyContent="flex-start" alignItems={'center'}>
+                                    <Typography variant="caption" sx={{width: 75,fontWeight: 600, fontSize: 8, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>
+                                        {item.shortComposerEng}
+                                    </Typography>
+                                    <Typography gutterBottom sx={{fontSize: 12, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>
+                                        {item.shortNameEng}
+                                    </Typography>
+                                </Stack>
+                            ))
+                        }
+                    </Stack>
+            }
         </Card>
     )
 }
