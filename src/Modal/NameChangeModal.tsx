@@ -188,7 +188,7 @@ const NameChangeModal = (props : any) => {
                                     <TextField
                                         label={`현재 닉네임 : ${userState.nickname}`}
                                         variant="standard"
-                                        helperText={"닉네임을 입력해주세요. 글 및 질문 작성 시에 보여지는 닉네임 입니다. 2-15자리의 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
+                                        helperText={"닉네임을 입력해주세요. 1달의 변경 제한 기간이 존재하니 신중히 변경해 주세요. 글 및 질문 작성 시에 보여지는 닉네임 입니다. 2-15자리의 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
                                         value={nickname}
                                         disabled={valName}
                                         onChange={(e) => { onChangeNickname(e.target.value) }}
