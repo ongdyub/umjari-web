@@ -94,6 +94,25 @@ export interface GroupConcertList {
     currentPage: number
 }
 
+export interface GroupSearchList {
+    contents: [
+        {
+            "id": number,
+            "name": string,
+            "logo": string,
+            "region": string,
+            "regionDetail": string,
+            "recruit": boolean,
+            "recruitInstruments": [string] | [],
+            "recruitDetail": string,
+            "setList": [GroupProgram] | []
+        }
+    ],
+    totalPages: number,
+    totalElements: number,
+    currentPage: number
+}
+
 export interface GroupState {
     groupInfo: GroupInfo | null,
     groupRecruit: GroupRecruit | null,
@@ -102,7 +121,9 @@ export interface GroupState {
     groupQnAList : GroupQnAList | null,
     groupQnAItem : GroupQnAItem | null,
     groupQnAExist : boolean,
-    groupConcertList : GroupConcertList | null
+    groupConcertList : GroupConcertList | null,
+
+    groupSearchList : GroupSearchList | null
 }
 
 const initialState: GroupState = {
@@ -113,7 +134,9 @@ const initialState: GroupState = {
     groupQnAList : null,
     groupQnAItem : null,
     groupQnAExist : true,
-    groupConcertList : null
+    groupConcertList : null,
+
+    groupSearchList : null
 };
 
 export const groupInfo = createAsyncThunk(
@@ -327,6 +350,19 @@ export const groupSetListAdd = createAsyncThunk(
     }
 )
 
+export const groupSearchGet = createAsyncThunk(
+    "group/groupSearchGet",
+    async ({params} : {params : any}, {rejectWithValue}) => {
+        try {
+            const response = await axios.get('/api/v1/group/',{params : params})
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
 
 // export const concert = createAsyncThunk(
 //     "concert/concert",
@@ -355,6 +391,9 @@ export const groupStateSlice = createSlice({
         },
         resetGroupRecruit : (state) => {
             state.groupRecruit = null
+        },
+        resetGroupSearchList : (state) => {
+            state.groupSearchList = null
         },
         sortGroupList : (state, action: PayloadAction<any>) => {
             if (action.payload.rule === '시간') {
@@ -473,6 +512,17 @@ export const groupStateSlice = createSlice({
             window.alert("변경 완료")
         });
         builder.addCase(groupSetListAdd.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+            }
+        });
+        builder.addCase(groupSearchGet.fulfilled, (state, action) => {
+            state.groupSearchList = action.payload
+        });
+        builder.addCase(groupSearchGet.rejected, (state, action : any) => {
             if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }

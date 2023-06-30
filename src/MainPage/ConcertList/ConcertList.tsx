@@ -39,8 +39,6 @@ const ConcertList = () => {
         const date = now.getDate()
         const today = year + '-' + month + '-' + date
 
-        console.log(searchParams.get('startDate'))
-
         const regionParent = searchParams.get('regionParent')
         const regionChild = searchParams.get('regionChild')
         const startDate = (searchParams.get('startDate') === null) ? today : searchParams.get('startDate') === '' ? null : searchParams.get('startDate')
@@ -52,7 +50,7 @@ const ConcertList = () => {
 
         const params = {
             regionParent : regionParent,
-            region_child : regionChild,
+            regionChild : regionChild,
             startDate : startDate,
             endDate : endDate,
             composer: composer === '' ? null : composer,
@@ -105,7 +103,7 @@ const ConcertList = () => {
 
         const params = {
             regionParent : regionParent,
-            region_child : regionChild,
+            regionChild : regionChild,
             startDate : startDate,
             endDate : endDate,
             composer: composer === '' ? null : composer,

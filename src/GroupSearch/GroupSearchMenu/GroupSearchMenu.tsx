@@ -10,66 +10,11 @@ import {
     Typography,
     useMediaQuery, useTheme
 } from "@mui/material";
-import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useSearchParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import {region_child, region_parents} from "../../MainPage/ConcertList/ConcertFilter/ConcertFilter";
-
-const inst = [
-    {
-        name: '바이올린',
-        ID: 0
-    },
-    {
-        name: '비올라',
-        ID: 1
-    },
-    {
-        name: '첼로',
-        ID: 2
-    },
-    {
-        name: '베이스',
-        ID: 3
-    },
-    {
-        name: '플루트',
-        ID: 4
-    },
-    {
-        name: '클라리넷',
-        ID: 5
-    },
-    {
-        name: '오보에',
-        ID: 6
-    },
-    {
-        name: '바순',
-        ID: 7
-    },
-    {
-        name: '호른',
-        ID: 8
-    },
-    {
-        name: '트럼펫',
-        ID: 9
-    },
-    {
-        name: '트롬본',
-        ID: 10
-    },
-    {
-        name: '튜바',
-        ID: 11
-    },
-    {
-        name: '타악기',
-        ID: 13
-    },
-
-]
+import {getInstrumentEnums, getInstrumentNames, instList} from "../../Group/GroupBoard/GroupRecruit/GroupRecruit";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -82,7 +27,19 @@ const MenuProps = {
     },
 };
 
+function getStyles(name: string, personName: readonly string[], theme: Theme) {
+    return {
+        fontWeight:
+            personName.indexOf(name) === -1
+                ? theme.typography.fontWeightRegular
+                : theme.typography.fontWeightMedium,
+        fontSize : 12
+    };
+}
+
 const GroupSearchMenu = () => {
+
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const theme = useTheme()
     const res800 = useMediaQuery('(max-width:800px)')
@@ -92,26 +49,17 @@ const GroupSearchMenu = () => {
         setOpen((!open))
     }
 
-    const [instList, setInstList] = useState<string[]>([]);
-
+    const [instruments, setInstruments] = useState<string[]>([]);
     const handleInst = (event: any) => {
         const {
             target: { value },
         } = event;
-        setInstList(
+        setInstruments(
             typeof value === 'string' ? value.split(',') : value,
         );
     };
 
-    function getStyles(name: string, personName: readonly string[], theme: Theme) {
-        return {
-            fontWeight:
-                personName.indexOf(name) === -1
-                    ? theme.typography.fontWeightRegular
-                    : theme.typography.fontWeightMedium,
-            fontSize : 12
-        };
-    }
+
 
 
     const [parent, setParent] = useState<any>(0);
@@ -127,6 +75,74 @@ const GroupSearchMenu = () => {
     const handleChildChange = (event: SelectChangeEvent) => {
         setChild(event.target.value);
     };
+
+    const handleSearchBtn = () => {
+
+        const instEnums = getInstrumentEnums(instruments)
+        searchParams.set('regionParent',region_parents[parent].toString())
+        searchParams.set('regionChild',region_child[parent][child].toString())
+        searchParams.set('composer',composer)
+        searchParams.set('musicName',musicName)
+        searchParams.set('name',name)
+        searchParams.set('page','1')
+        searchParams.set('inst',instEnums.join(','))
+
+        setSearchParams(searchParams)
+    }
+
+    useEffect(() => {
+        const list = searchParams.get('inst')?.split(',')
+        if(list !== null && list !== undefined){
+            if(list[0] === ''){
+                setInstruments([])
+            }
+            else{
+                setInstruments(getInstrumentNames(list))
+            }
+        }
+        else{
+            setInstruments([])
+        }
+
+        const parent = searchParams.get('regionParent')
+        if(parent !== null && parent !== undefined){
+            setParent(region_parents.findIndex((item) => item === parent))
+        }
+        else{
+            setParent(0)
+        }
+
+        const parentIdx = region_parents.findIndex((item) => item === parent)
+        const child = searchParams.get('regionChild')
+        if(child !== null && child !== undefined){
+            setChild(region_child[parentIdx].findIndex((item) => item === child))
+        }
+        else{
+            setChild(0)
+        }
+
+        const composer = searchParams.get('composer')
+        if(composer !== null && composer !== undefined){
+            setComposer(composer)
+        }
+        else{
+            setComposer('')
+        }
+        const musicName = searchParams.get('musicName')
+        if(musicName !== null && musicName !== undefined){
+            setMusicName(musicName)
+        }
+        else{
+            setMusicName('')
+        }
+        const name = searchParams.get('name')
+        if(name !== null && name !== undefined){
+            setName(name)
+        }
+        else{
+            setName('')
+        }
+    },[])
 
     return(
         <Stack justifyContent="flex-start" alignItems="center" sx={{width: res800 ? '100%' : '250px', minWidth: '250px' }}>
@@ -238,7 +254,7 @@ const GroupSearchMenu = () => {
                                         id="demo-multiple-chip"
                                         variant={"standard"}
                                         multiple
-                                        value={instList}
+                                        value={instruments}
                                         onChange={handleInst}
                                         renderValue={(selected) => (
                                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, fontSize:12 }}>
@@ -249,13 +265,13 @@ const GroupSearchMenu = () => {
                                         )}
                                         MenuProps={MenuProps}
                                     >
-                                        {inst.map((name) => (
+                                        {instList.map((item, idx) => (
                                             <MenuItem
-                                                key={name.ID}
-                                                value={name.name}
-                                                style={getStyles(name.name, instList, theme)}
+                                                key={idx}
+                                                value={item.name}
+                                                style={getStyles(item.name, instruments, theme)}
                                             >
-                                                {name.name}
+                                                {item.name}
                                             </MenuItem>
                                         ))}
                                     </Select>
@@ -295,10 +311,10 @@ const GroupSearchMenu = () => {
                             <Divider sx={{width: '90%', mt:1.5, mb: 1.5}} />
 
                             <Stack sx={{width: '100%'}} alignItems={"center"}>
-                                <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', maxWidth: 75, minWidth: 75, maxHeight: 32, minHeight: 32, fontSize: 11}}>검색하기</Button>
+                                <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', maxWidth: 75, minWidth: 75, maxHeight: 32, minHeight: 32, fontSize: 11}} onClick={handleSearchBtn}>검색하기</Button>
                             </Stack>
 
-                            <Divider sx={{width: '100%', mt:1.5, mb: 1.5}} />
+                            <Divider sx={{width: '100%', mt:1.5}} />
                         </Stack>
                     </Collapse>
                 </List>
@@ -399,7 +415,7 @@ const GroupSearchMenu = () => {
                                     id="demo-multiple-chip"
                                     variant={"standard"}
                                     multiple
-                                    value={instList}
+                                    value={instruments}
                                     onChange={handleInst}
                                     renderValue={(selected) => (
                                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, fontSize:12 }}>
@@ -410,13 +426,13 @@ const GroupSearchMenu = () => {
                                     )}
                                     MenuProps={MenuProps}
                                 >
-                                    {inst.map((name) => (
+                                    {instList.map((item, idx) => (
                                         <MenuItem
-                                            key={name.ID}
-                                            value={name.name}
-                                            style={getStyles(name.name, instList, theme)}
+                                            key={idx}
+                                            value={item.name}
+                                            style={getStyles(item.name, instruments, theme)}
                                         >
-                                            {name.name}
+                                            {item.name}
                                         </MenuItem>
                                     ))}
                                 </Select>
@@ -456,7 +472,7 @@ const GroupSearchMenu = () => {
                         <Divider sx={{width: '90%', mt:1.5, mb: 1.5}} />
 
                         <Stack sx={{width: '100%'}} alignItems={"center"}>
-                            <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', maxWidth: 75, minWidth: 75, maxHeight: 32, minHeight: 32, fontSize: 11}}>검색하기</Button>
+                            <Button variant="contained" sx={{bgcolor: '#292929', color: 'white', maxWidth: 75, minWidth: 75, maxHeight: 32, minHeight: 32, fontSize: 11}} onClick={handleSearchBtn}>검색하기</Button>
                         </Stack>
                     </Stack>
                 </List>

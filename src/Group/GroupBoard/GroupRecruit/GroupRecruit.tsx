@@ -13,7 +13,6 @@ import {
 } from "../../../store/slices/group/group";
 import {AppDispatch} from "../../../store";
 import ConcertInfoEdit from "../../../Concert/ConcertInfo/ConcertInfoEdit";
-import ProgramInfo from "../../../Concert/ConcertDetail/DetailInfo/ProgramInfo";
 import AddMusicModal from "../../../Modal/AddMusicModal";
 import GroupProgram from "./GroupProgram";
 
@@ -126,6 +125,21 @@ export const getInstrumentNames = (enums : any) => {
     }
 
     return instrumentNames;
+}
+
+export const getInstrumentEnums = (names : any) => {
+    if(names === null || names === undefined){
+        return []
+    }
+    const instrumentEnums = []
+
+    for (let i = 0; i < instList.length; i++) {
+        const instrument = instList[i];
+        if (names.includes(instrument.name)) {
+            instrumentEnums.push(instrument.enum);
+        }
+    }
+    return instrumentEnums;
 }
 
 const GroupRecruit = () => {
