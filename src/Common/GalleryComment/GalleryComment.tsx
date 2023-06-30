@@ -1,8 +1,7 @@
 import {Avatar, Divider, Stack, Typography} from "@mui/material";
-import {commentForm} from "../../store/slices/dummy/dummy";
 
 
-const GarlleyComment = (props : commentForm) => {
+const GarlleyComment = (props : any) => {
 
     const {author, author_img, comment} = props
 

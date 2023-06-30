@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import dummyReducer from './slices/dummy/dummy';
 import userReducer from "./slices/user/user";
 import concertStateReducer from "./slices/concert/concert"
 import groupStateReducer from "./slices/group/group"
@@ -24,8 +23,7 @@ export const store = configureStore({
         musicState : musicStateReducer,
         galleryState : galleryStateReducer,
         friendState : friendStateReducer,
-        visitState : visitStateReducer,
-        dummy : dummyReducer
+        visitState : visitStateReducer
     },
 });
 

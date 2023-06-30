@@ -7,9 +7,9 @@ const MainPage = () => {
     const theme = useTheme();
 
     return(
-        <Stack sx={{height: '1000px'}}>
+        <Stack sx={{mb:3}}>
             <ConcertList />
-            <Stack justifyContent="flex-start" direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, sm: 2}} divider={(<Divider orientation={useMediaQuery(theme.breakpoints.down("md")) ? "horizontal" : "vertical"} flexItem={true}/>)}>
+            <Stack sx={{width: '100%'}} justifyContent="flex-start" direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, sm: 2}} divider={(<Divider orientation={useMediaQuery(theme.breakpoints.down("md")) ? "horizontal" : "vertical"} flexItem={true}/>)}>
                 <MiniBoard />
                 <RecommendGroup />
             </Stack>

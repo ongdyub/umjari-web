@@ -26,7 +26,7 @@ const MiniBoard = () => {
     },[dispatch])
 
     return(
-        <Stack direction="column" justifyContent="flex-start" alignItems="center" sx={{ width: useMediaQuery(theme.breakpoints.down("md")) ? "96%" : "54%"}} divider={<Divider orientation="horizontal"/>}>
+        <Stack direction="column" justifyContent="flex-start" alignItems="center" sx={{ width: useMediaQuery(theme.breakpoints.down("md")) ? "100%" : "54%"}} divider={<Divider orientation="horizontal"/>}>
             <Typography sx={{fontWeight: 300, fontSize: 22}} mt={2} >전체 게시글</Typography>
             <Divider orientation={"horizontal"} />
             <List sx={{width: '100%'}}>
