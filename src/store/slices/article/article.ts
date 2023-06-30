@@ -78,12 +78,11 @@ export const articleGet = createAsyncThunk(
                         Authorization: `Bearer  ${token}`,
                     },
                 })
-                console.log(response.data)
                 return response.data
             }
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -101,7 +100,7 @@ export const articleDelete = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -181,7 +180,7 @@ export const articleReplyPost = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -200,7 +199,7 @@ export const articleReplyDelete = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -218,7 +217,7 @@ export const articleReplyEdit = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -236,7 +235,7 @@ export const articleLikePut = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -290,11 +289,20 @@ export const articleStateSlice = createSlice({
             }
             scrollToTop()
         });
-        builder.addCase(articleReplyDelete.rejected, () => {
-            window.alert("오류 발생. 다시 시도해주세요")
+        builder.addCase(articleGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
-        builder.addCase(articleReplyEdit.rejected, () => {
-            window.alert("오류 발생. 다시 시도해주세요")
+        builder.addCase(articleDelete.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(articleReplyPost.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(articleReplyDelete.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(articleReplyEdit.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(articleLikePut.fulfilled, (state) => {
             if(state.isLiked){
@@ -305,8 +313,8 @@ export const articleStateSlice = createSlice({
             }
             state.isLiked = !state.isLiked
         });
-        builder.addCase(articleLikePut.rejected, () => {
-            window.alert("오류 발생. 다시 시도해주세요")
+        builder.addCase(articleLikePut.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
     },
 });

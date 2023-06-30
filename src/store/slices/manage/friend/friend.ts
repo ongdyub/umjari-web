@@ -47,7 +47,7 @@ export const isSelfGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -65,7 +65,7 @@ export const getRequestFriend = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -83,7 +83,7 @@ export const getCurFriend = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -177,32 +177,35 @@ export const friendStateSlice = createSlice({
             state.isSelfProfile = action.payload.isSelfProfile
             state.loadingState = 'ok'
         });
-        builder.addCase(isSelfGet.rejected, (state, action) => {
+        builder.addCase(isSelfGet.rejected, (state, action : any) => {
             state.loadingState = 'fail'
-            if(action.payload === 4005){
+            if(action.payload.data["errorCode"] === 4005){
                 window.alert("존재하지 않는 이름입니다.")
+            }
+            else{
+                window.alert("오류발생. 새로고침 후 다시 시도해주세요. " + "네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(getRequestFriend.fulfilled, (state, action) => {
             state.requestFriend = action.payload
         });
-        builder.addCase(getRequestFriend.rejected, (state, action) => {
-            if(action.payload === 4005){
+        builder.addCase(getRequestFriend.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 4005){
                 window.alert("존재하지 않는 이름입니다.")
             }
             else{
-                window.alert("네트워크 오류. " + action.payload)
+                window.alert("오류발생. 새로고침 후 다시 시도해주세요. " + "네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(getCurFriend.fulfilled, (state, action) => {
             state.currentFriend = action.payload
         });
-        builder.addCase(getCurFriend.rejected, (state, action) => {
-            if(action.payload === 4005){
+        builder.addCase(getCurFriend.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 4005){
                 window.alert("존재하지 않는 이름입니다.")
             }
             else{
-                window.alert("네트워크 오류. " + action.payload)
+                window.alert("오류발생. 새로고침 후 다시 시도해주세요. " + "네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(requestFriendPost.fulfilled, () => {
@@ -213,26 +216,26 @@ export const friendStateSlice = createSlice({
                 window.alert("이미 요청을 보냈거나, 요청이 온 대상입니다.")
             }
             else{
-                window.alert("네트워크 오류. " + action.payload.data["detail"])
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(receiveFriendPost.fulfilled, () => {
             window.alert("수락 완료.")
         });
         builder.addCase(receiveFriendPost.rejected, (state, action : any) => {
-            window.alert("네트워크 오류. " + action.payload.data["detail"])
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(rejectFriendPost.fulfilled, () => {
             window.alert("거절 완료.")
         });
         builder.addCase(rejectFriendPost.rejected, (state, action : any) => {
-            window.alert("네트워크 오류. " + action.payload.data["detail"])
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(rejectCurFriend.fulfilled, () => {
             window.alert("삭제 완료.")
         });
         builder.addCase(rejectCurFriend.rejected, (state, action : any) => {
-            window.alert("네트워크 오류. " + action.payload.data["detail"])
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
     },
 });

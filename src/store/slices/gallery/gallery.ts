@@ -62,7 +62,7 @@ export const albumListGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -79,7 +79,7 @@ export const postAlbum = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -96,7 +96,7 @@ export const deleteAlbum = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -113,7 +113,7 @@ export const putAlbum = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -131,7 +131,7 @@ export const photoListGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -148,7 +148,7 @@ export const postPhoto = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -166,7 +166,7 @@ export const deletePhoto = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -221,54 +221,54 @@ export const galleryStateSlice = createSlice({
         builder.addCase(albumListGet.fulfilled, (state, action) => {
             state.album = action.payload
         });
-        builder.addCase(albumListGet.rejected, () => {
-            window.alert("네트워크 오류")
+        builder.addCase(albumListGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(postAlbum.fulfilled, () => {
             window.alert("생성 완료")
         });
-        builder.addCase(postAlbum.rejected, (state, action) => {
-            if(action.payload === 15){
+        builder.addCase(postAlbum.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 15){
                 window.alert("이미 존재하는 이름입니다.")
             }
             else{
-                window.alert("네트워크 오류")
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(deleteAlbum.fulfilled, () => {
             window.alert("삭제 완료")
         });
-        builder.addCase(deleteAlbum.rejected, () => {
-            window.alert("삭제 실패. 네트워크 오류")
+        builder.addCase(deleteAlbum.rejected, (state, action : any) => {
+            window.alert("삭제 실패. 네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(putAlbum.fulfilled, () => {
             window.alert("변경 완료")
         });
-        builder.addCase(putAlbum.rejected, (state, action) => {
-            if(action.payload === 15){
+        builder.addCase(putAlbum.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 15){
                 window.alert("이미 존재하는 이름입니다.")
             }
             else{
-                window.alert("변경 실패. 네트워크 오류")
+                window.alert("변경 실패. 네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(photoListGet.fulfilled, (state, action) => {
             state.photo = action.payload
         });
-        builder.addCase(photoListGet.rejected, () => {
-            window.alert("네트워크 오류")
+        builder.addCase(photoListGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(postPhoto.fulfilled, () => {
             window.alert("업로드 완료")
         });
-        builder.addCase(postPhoto.rejected, (state, action) => {
-            window.alert(action.payload)
+        builder.addCase(postPhoto.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(deletePhoto.fulfilled, () => {
             window.alert("삭제 완료")
         });
-        builder.addCase(deletePhoto.rejected, () => {
-            window.alert("삭제 실패. 네트워크 오류")
+        builder.addCase(deletePhoto.rejected, (state, action : any) => {
+            window.alert("삭제 실패. 네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
     },
 });

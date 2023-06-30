@@ -128,6 +128,9 @@ const NameChangeModal = (props : any) => {
             else if(result.payload === 14){
                 window.alert("이미 존재하는 프로필 이름 입니다.")
             }
+            else if(result.payload === 3041){
+                window.alert("닉네임 변경 후 1달 이상 지나지 않아서 변경이 불가능 합니다.")
+            }
             else{
                 window.alert("네트워크 오류 발생. 다시 시도해 주세요.")
             }

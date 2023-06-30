@@ -81,7 +81,7 @@ export const myConcertDefaultInfoGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -98,7 +98,7 @@ export const myConcertProfileImageUpload = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -115,7 +115,7 @@ export const myConcertUserImagePut = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -132,7 +132,7 @@ export const myIntroPut = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -149,7 +149,7 @@ export const myconcertGroupGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -162,7 +162,7 @@ export const mySelfIntroGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -175,7 +175,7 @@ export const myListGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -331,20 +331,36 @@ export const myConcertStateSlice = createSlice({
         builder.addCase(myConcertDefaultInfoGet.fulfilled, (state, action) => {
             state.myDefaultInfo = action.payload
         });
-        builder.addCase(myConcertDefaultInfoGet.rejected, (state, action) => {
-            if(action.payload === 4005){
+        builder.addCase(myConcertDefaultInfoGet.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 4005){
                 state.isExist = false
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
+            else{
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+            }
+        });
+        builder.addCase(myConcertProfileImageUpload.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(myConcertUserImagePut.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(myIntroPut.fulfilled, (state, action) => {
             if(action.payload.intro !== null && state.myDefaultInfo){
                 state.myDefaultInfo.intro  = action.payload.intro
             }
         });
+        builder.addCase(myIntroPut.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
         builder.addCase(myconcertGroupGet.fulfilled, (state, action) => {
             if(state.myDefaultInfo !== null){
                 state.myDefaultInfo.career = action.payload.career
             }
+        });
+        builder.addCase(myconcertGroupGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(mySelfIntroGet.fulfilled, (state, action) => {
             state.mySelfIntro = action.payload.participatedConcerts
@@ -361,6 +377,9 @@ export const myConcertStateSlice = createSlice({
                 return partA.localeCompare(partB);
             })
         });
+        builder.addCase(mySelfIntroGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
         builder.addCase(myListGet.fulfilled, (state, action) => {
             state.myList = action.payload.participatedConcerts.sort((a: any, b: any) => {
                 const partA = a.concertDate;
@@ -371,6 +390,9 @@ export const myConcertStateSlice = createSlice({
                 }
                 return partA.localeCompare(partB);
             })
+        });
+        builder.addCase(myListGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
     },
 });

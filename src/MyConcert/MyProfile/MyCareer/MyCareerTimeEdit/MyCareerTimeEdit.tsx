@@ -43,8 +43,6 @@ const MyCareerTimeEdit = (props : any) => {
         if (result.type === `${userGroupTimePut.typePrefix}/fulfilled`) {
             dispatch(myconcertGroupGet(userState.accessToken))
             window.alert("변경 완료")
-        } else {
-            window.alert("네트워크 오류")
         }
     }
 

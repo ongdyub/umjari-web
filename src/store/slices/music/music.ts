@@ -30,9 +30,14 @@ const initialState: MusicState = {
 
 export const musicListGet = createAsyncThunk(
     "music/musicListGet",
-    async (params : any) => {
-        const response = await axios.get('/api/v1/music/',{params : params})
-        return response.data
+    async (params : any, {rejectWithValue}) => {
+        try {
+            const response = await axios.get('/api/v1/music/',{params : params})
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
     }
 )
 
@@ -48,7 +53,7 @@ export const musicItemAdd = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -77,15 +82,18 @@ export const musicStateSlice = createSlice({
             })
             state.counts = action.payload.counts
         });
+        builder.addCase(musicListGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
         builder.addCase(musicItemAdd.fulfilled, (state, action) => {
             window.alert("추가 성공")
         });
-        builder.addCase(musicItemAdd.rejected, (state, action) => {
-            if(action.payload === 3001){
+        builder.addCase(musicItemAdd.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
                 window.alert("추가 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("추가 실패. 다시 로그인 해서 시도해주세요.")
+                window.alert("추가 실패. 다시 로그인 해서 시도해주세요." + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
     },
