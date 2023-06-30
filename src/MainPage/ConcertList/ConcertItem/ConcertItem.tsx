@@ -2,14 +2,15 @@ import {
     Button,
     Card,
     CardActionArea,
-    CardActions,
     CardContent,
     CardMedia,
-    Collapse, Divider,
-    Grid, IconButton, Stack,
-    Typography, useMediaQuery, useTheme
+    Collapse,
+    IconButton,
+    Stack,
+    Typography,
+    useMediaQuery,
+    useTheme
 } from "@mui/material";
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import './ConcertItem.scss'
 import {useState} from "react";
@@ -30,6 +31,17 @@ const ConcertItem = (props: any) => {
 
     const onClickGoConcert = () => {
         navigate(`/concert/${item.id}/info`)
+    }
+
+    const copyConcertLink = () => {
+        const textarea = document.createElement("textarea")
+
+        document.body.appendChild(textarea)
+        textarea.value = window.document.location.href + `concert/${item.id}/info`
+        textarea.select()
+        document.execCommand("copy")
+        document.body.removeChild(textarea)
+        window.alert("링크가 복사되었습니다.")
     }
 
     return(
@@ -56,7 +68,7 @@ const ConcertItem = (props: any) => {
                                 시간
                             </Typography>
                             <Typography sx={{fontWeight: 'bold', fontSize: '15px'}} variant="h6" gutterBottom>
-                                {item.concertTime}
+                                {item.concertTime.slice(0,5)}
                             </Typography>
                             <Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>
                                 러닝타임
@@ -64,18 +76,18 @@ const ConcertItem = (props: any) => {
                             <Typography sx={{fontWeight: 'bold', fontSize: '15px'}} variant="h6" gutterBottom>
                                 {item.concertRunningTime}
                             </Typography>
-                            <Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>
-                                참여중인 친구
-                            </Typography>
-                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                0명
-                            </Typography>
+                            {/*<Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>*/}
+                            {/*    참여중인 친구*/}
+                            {/*</Typography>*/}
+                            {/*<Typography sx={{ mb: 1.5 }} color="text.secondary">*/}
+                            {/*    0명*/}
+                            {/*</Typography>*/}
                         </CardContent>
                         <Stack direction="row" justifyContent="flex-start" alignItems="center" sx={{pl: '10px',width: '100%'}}>
-                            <IconButton aria-label="add to favorites">
-                                <FavoriteIcon sx={{width: '20px', height: '20px'}} />
-                            </IconButton>
-                            <IconButton aria-label="share">
+                            {/*<IconButton aria-label="add to favorites">*/}
+                            {/*    <FavoriteIcon sx={{width: '20px', height: '20px'}} />*/}
+                            {/*</IconButton>*/}
+                            <IconButton onClick={copyConcertLink} aria-label="share">
                                 <ShareIcon sx={{width: '20px', height: '20px'}} />
                             </IconButton>
                             <Button onClick={onClickGoConcert} size="medium" sx={{ml: '5px'}}>
@@ -96,7 +108,7 @@ const ConcertItem = (props: any) => {
                                 시간
                             </Typography>
                             <Typography sx={{fontWeight: 'bold', fontSize: '15px'}} variant="h6" gutterBottom>
-                                {item.concertTime}
+                                {item.concertTime.slice(0,5)}
                             </Typography>
                             <Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>
                                 러닝타임
@@ -104,18 +116,18 @@ const ConcertItem = (props: any) => {
                             <Typography sx={{fontWeight: 'bold', fontSize: '15px'}} variant="h6" gutterBottom>
                                 {item.concertRunningTime}
                             </Typography>
-                            <Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>
-                                참여중인 친구
-                            </Typography>
-                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                0명
-                            </Typography>
+                            {/*<Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>*/}
+                            {/*    참여중인 친구*/}
+                            {/*</Typography>*/}
+                            {/*<Typography sx={{ mb: 1.5 }} color="text.secondary">*/}
+                            {/*    0명*/}
+                            {/*</Typography>*/}
                         </CardContent>
                         <Stack direction="row" justifyContent="flex-start" alignItems="center" sx={{pl: '10px',width: '100%'}}>
-                            <IconButton aria-label="add to favorites">
-                                <FavoriteIcon sx={{width: '20px', height: '20px'}} />
-                            </IconButton>
-                            <IconButton aria-label="share">
+                            {/*<IconButton aria-label="add to favorites">*/}
+                            {/*    <FavoriteIcon sx={{width: '20px', height: '20px'}} />*/}
+                            {/*</IconButton>*/}
+                            <IconButton onClick={copyConcertLink} aria-label="share">
                                 <ShareIcon sx={{width: '20px', height: '20px'}} />
                             </IconButton>
                             <Button onClick={onClickGoConcert} size="medium" sx={{ml: '5px'}}>

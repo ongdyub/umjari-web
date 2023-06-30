@@ -31,7 +31,7 @@ const GroupSearchContents = (props : any) => {
                     {
                         groupSelector.groupSearchList?.contents.map((item, idx) => (
                             <Grid key={idx} item xs={15} res500={7.5} res1050={5} sx={{mb:1}}>
-                                <GroupSearchItem item={item} />
+                                <GroupSearchItem key={idx} item={item} />
                             </Grid>
 
                         ))

@@ -185,7 +185,7 @@ const GroupSearchMenu = () => {
                                         variant={"standard"}
                                     >
                                         {region_parents.map((item, idx) => (
-                                            <MenuItem value={idx} sx={{fontSize:13}}>{item}</MenuItem>
+                                            <MenuItem key={idx} value={idx} sx={{fontSize:13}}>{item}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -220,7 +220,7 @@ const GroupSearchMenu = () => {
                                         variant={"standard"}
                                     >
                                         {region_child[parent].map((item, idx) => (
-                                            <MenuItem value={idx} sx={{fontSize: 13}}>{item}</MenuItem>
+                                            <MenuItem key={idx} value={idx} sx={{fontSize: 13}}>{item}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -347,7 +347,7 @@ const GroupSearchMenu = () => {
                                     variant={"standard"}
                                 >
                                     {region_parents.map((item, idx) => (
-                                        <MenuItem value={idx} sx={{fontSize:11}}>{item}</MenuItem>
+                                        <MenuItem key={idx} value={idx} sx={{fontSize:11}}>{item}</MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
@@ -382,7 +382,7 @@ const GroupSearchMenu = () => {
                                     variant={"standard"}
                                 >
                                     {region_child[parent].map((item, idx) => (
-                                        <MenuItem value={idx} sx={{fontSize: 11}}>{item}</MenuItem>
+                                        <MenuItem key={idx} value={idx} sx={{fontSize: 11}}>{item}</MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>

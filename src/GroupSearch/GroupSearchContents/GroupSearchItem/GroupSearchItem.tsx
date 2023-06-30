@@ -1,14 +1,16 @@
-import {Box, Card, CardMedia, Chip, Divider, Stack, Typography, useTheme} from "@mui/material";
-import {groupFrom, songForm} from "../../../store/slices/dummy/dummy";
+import {Card, CardMedia, Chip, Divider, Stack, Typography} from "@mui/material";
 import {GroupProgram} from "../../../store/slices/group/group";
 import {getInstrumentNames} from "../../../Group/GroupBoard/GroupRecruit/GroupRecruit";
+import {useNavigate} from "react-router-dom";
 
 const GroupSearchItem = (props : any) => {
 
     const {item} = props
 
+    const navigate = useNavigate()
+
     return(
-        <Card sx={{ display: 'flex', height: 400, width: '100%', flexDirection: 'column' }}>
+        <Card onClick={() => navigate(`/group/${item.id}/recruit`)} sx={{cursor:'pointer', display: 'flex', height: 400, width: '100%', flexDirection: 'column' }}>
             <Stack sx={{minHeight: 70}} direction={"row"} alignItems={'center'}>
                 <CardMedia
                     component="img"
@@ -58,8 +60,8 @@ const GroupSearchItem = (props : any) => {
                         <Typography color={'red'} sx={{fontSize:11, fontWeight:400}}>모집 마감</Typography>
                 }
                 {
-                    getInstrumentNames(item.recruitInstruments).map((item: string) => (
-                        <Chip label={`${item}`} />
+                    getInstrumentNames(item.recruitInstruments).map((item: string, idx : number) => (
+                        <Chip key={idx} label={`${item}`} />
                     ))
                 }
             </Stack>
