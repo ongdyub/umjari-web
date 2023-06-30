@@ -49,8 +49,9 @@ const ConcertItem = (props: any) => {
             <CardActionArea disableRipple onClick={onClickDetail} sx={{width: '247px'}}>
                 <CardMedia
                     component="img"
-                    alt="green iguana"
+                    alt="Concert Poster"
                     image={item.posterImg}
+                    onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
                     sx={{objectFit: 'contain', height: 'auto', width: '100%'}}
                 />
             </CardActionArea>

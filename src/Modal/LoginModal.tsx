@@ -525,7 +525,7 @@ const LoginModal = (props : any) => {
                                     <TextField
                                         label="닉네임"
                                         variant="standard"
-                                        helperText={!isLoginMode && "닉네임을 입력해주세요. 글 및 질문 작성 시에 보여지는 닉네임 입니다. 2-15자리의 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
+                                        helperText={!isLoginMode && "닉네임을 입력해주세요. 최초 설정 후 1달 후에 변경 가능하니 신중히 선택해 주세요.\n 글 및 질문 비공개 작성 시에 보여지는 닉네임 입니다. 2-15자리의 한글, 영문 대소문자, 숫자, 언더스코어(_)만 사용 가능"}
                                         value={nickname}
                                         disabled={valName}
                                         onChange={(e) => { onChangeNickname(e.target.value) }}

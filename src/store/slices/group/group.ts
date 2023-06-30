@@ -141,9 +141,14 @@ const initialState: GroupState = {
 
 export const groupInfo = createAsyncThunk(
     "group/groupInfo",
-    async (id : number | string | undefined) => {
-        const response = await axios.get(`/api/v1/group/${id}/`)
-        return response.data
+    async (id : number | string | undefined, {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/group/${id}/`)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
     }
 )
 
@@ -159,7 +164,7 @@ export const groupQnAPost = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -176,7 +181,7 @@ export const groupQnADelete = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -193,7 +198,7 @@ export const groupQnAPut = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -210,7 +215,7 @@ export const groupQnAReplyPost = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -227,28 +232,38 @@ export const groupQnAReplyDelete = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
 
 export const groupQnAListGet = createAsyncThunk(
     "group/groupQnAListGet",
-    async ({ id, param }: { id: string | null | undefined, param: any }) => {
-        const response = await axios.get(`/api/v1/group/${id}/qna/`, {params : param})
-        return response.data
+    async ({ id, param }: { id: string | null | undefined, param: any }, {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/group/${id}/qna/`, {params : param})
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
     }
 )
 
 export const groupQnAItemGet = createAsyncThunk(
     "group/groupQnAItemGet",
-    async ({ id, qid, token }: { id: string | null | undefined, qid: string | null | undefined, token : string | null | undefined }) => {
-        const response = await axios.get(`/api/v1/group/${id}/qna/${qid}/`,{
-            headers: {
-                Authorization: `Bearer  ${token}`,
-            },
-        })
-        return response.data
+    async ({ id, qid, token }: { id: string | null | undefined, qid: string | null | undefined, token : string | null | undefined }, {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/group/${id}/qna/${qid}/`,{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
     }
 )
 
@@ -260,7 +275,7 @@ export const groupConcertListGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -277,7 +292,7 @@ export const groupInfoPut = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -294,7 +309,7 @@ export const groupRecruitGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -311,7 +326,7 @@ export const groupRecruitPut = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -328,7 +343,7 @@ export const groupIsRecruit = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -362,15 +377,6 @@ export const groupSearchGet = createAsyncThunk(
         }
     }
 )
-
-
-// export const concert = createAsyncThunk(
-//     "concert/concert",
-//     async (id: string | number | undefined) => {
-//         const response = await axios.get(`/api/v1/concert/${id}/`)
-//         return response.data
-//     }
-// )
 
 export const groupStateSlice = createSlice({
     name: "groupState",
@@ -420,78 +426,91 @@ export const groupStateSlice = createSlice({
             state.groupExist = true
             state.groupInfo = action.payload
         });
-        builder.addCase(groupInfo.rejected, (state) => {
+        builder.addCase(groupInfo.rejected, (state, action : any) => {
             state.groupExist = false
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(groupQnAPost.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(groupQnAPut.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(groupQnAReplyPost.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(groupRecruitGet.fulfilled, (state, action) => {
             state.groupRecruit = action.payload
         });
-        builder.addCase(groupRecruitGet.rejected, (state) => {
+        builder.addCase(groupRecruitGet.rejected, (state, action : any) => {
             state.groupRecruit = null
-            window.alert("네트워크 오류발생")
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(groupQnAListGet.fulfilled, (state, action) => {
             state.groupQnAList = action.payload
+        });
+        builder.addCase(groupQnAListGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(groupQnAItemGet.fulfilled, (state, action) => {
             state.groupQnAItem = action.payload
             state.groupQnAExist = true
         });
-        builder.addCase(groupQnAItemGet.rejected, (state) => {
+        builder.addCase(groupQnAItemGet.rejected, (state, action : any) => {
             state.groupQnAExist = false
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(groupConcertListGet.fulfilled, (state, action) => {
             state.groupConcertList = action.payload
-
-            // if(state.groupConcertList !== null && state.groupConcertList.contents !== null){
-            //     state.groupConcertList.contents = state.groupConcertList?.contents.sort((a: any, b: any) => {
-            //         const partA = a.concertDate;
-            //         const partB = b.concertDate;
-            //
-            //         return partA.localeCompare(partB);
-            //     })
-            // }
+        });
+        builder.addCase(groupConcertListGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(groupInfoPut.fulfilled, () => {
             window.alert("변경 완료")
         });
-        builder.addCase(groupInfoPut.rejected, (state, action) => {
-            if(action.payload === 3001){
+        builder.addCase(groupInfoPut.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("변경 실패. 다시 시도하거나 다시 로그인해주세요")
+                window.alert("변경 실패. 다시 시도하거나 다시 로그인해주세요. " + "네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(groupQnADelete.fulfilled, () => {
             window.alert("삭제 완료")
         });
-        builder.addCase(groupQnADelete.rejected, (state, action) => {
-            console.log(action)
-            if(action.payload === 2){
+        builder.addCase(groupQnADelete.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 2){
                 window.alert("댓글이 존재해 삭제가 불가능합니다.")
             }
-            if(action.payload === 3001){
+            if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(groupQnAReplyDelete.fulfilled, () => {
             window.alert("삭제 완료")
         });
-        builder.addCase(groupQnAReplyDelete.rejected, (state, action) => {
-            if(action.payload === 3001){
+        builder.addCase(groupQnAReplyDelete.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(groupRecruitPut.fulfilled, () => {
             window.alert("변경 완료")
         });
-        builder.addCase(groupRecruitPut.rejected, (state, action) => {
-            if(action.payload === 3001) {
+        builder.addCase(groupRecruitPut.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001) {
                 window.alert("변경 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("오류발생. 새로고침 후 다시 시도해주세요.")
+                window.alert("오류발생. 새로고침 후 다시 시도해주세요. " + "네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(groupIsRecruit.fulfilled, (state) => {
@@ -500,12 +519,12 @@ export const groupStateSlice = createSlice({
                 state.groupRecruit.recruit = !state.groupRecruit.recruit
             }
         });
-        builder.addCase(groupIsRecruit.rejected, (state, action) => {
-            if(action.payload === 3001) {
+        builder.addCase(groupIsRecruit.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001) {
                 window.alert("변경 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("오류발생. 새로고침 후 다시 시도해주세요.")
+                window.alert("오류발생. 새로고침 후 다시 시도해주세요. " + "네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(groupSetListAdd.fulfilled, () => {

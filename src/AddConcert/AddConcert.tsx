@@ -19,6 +19,7 @@ import {myConcertProfileImageUpload} from "../store/slices/myconcert/myconcert";
 import {region_child, region_parents} from "../Concert/ConcertInfo/ConcertInfo";
 import Backdrop from "@mui/material/Backdrop";
 import * as React from "react";
+import {groupInfo, groupStateActions, selectGroup} from "../store/slices/group/group";
 
 const AddConcert = () => {
 
@@ -29,6 +30,7 @@ const AddConcert = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const concertState = useSelector(selectConcert)
+    const groupSelector = useSelector(selectGroup)
     const userState = useSelector(selectUser)
 
     const res600 = useMediaQuery(theme.breakpoints.down("sm"))
@@ -39,7 +41,7 @@ const AddConcert = () => {
 
     const [title, setTitle] = useState<string>('')
     const [subTitle, setSubTitle] = useState<string>('')
-    const [posterImg, setPosterImg] = useState<string>('https://umjari-image-bucket.s3.ap-northeast-2.amazonaws.com/images/N_ongdyub/d85f613d-f56b-4e1c-9191-cf65eda10913.png')
+    const [posterImg, setPosterImg] = useState<string>('https://umjari-image-bucket.s3.ap-northeast-2.amazonaws.com/images/32/25c55d6f-aee6-484f-903a-9f633af3559d.png')
     const [parent, setParent] = useState<any>(0);
     const [child, setChild] = useState<any>(0);
     const [regionDetail, setRegionDetail] = useState<string>('')
@@ -175,8 +177,18 @@ const AddConcert = () => {
             if(userGroup !== null && userGroup !== undefined && userGroup.memberType === 'ADMIN'){
                 setIsAdminGroup(true)
             }
+            dispatch(groupInfo(id))
         }
+        return () => {
+            dispatch(groupStateActions.resetGroupInfo());
+        };
     },[userState.career, concertState.concert, userState.isLogin])
+
+    useEffect(() => {
+        if(groupSelector.groupInfo !== null){
+            setPosterImg(groupSelector.groupInfo.logo)
+        }
+    },[groupSelector.groupInfo])
 
     if(isAdminGroup){
         return(
@@ -198,7 +210,8 @@ const AddConcert = () => {
                                 objectFit: 'contain',
                                 pl: res600 ? 0 : 2,
                             }}
-                            alt="The house from the offer."
+                            onError={({currentTarget}) => currentTarget.src = `https://umjari-image-bucket.s3.ap-northeast-2.amazonaws.com/images/32/25c55d6f-aee6-484f-903a-9f633af3559d.png`}
+                            alt="Concert Image"
                             src={posterImg}
                         />
                         <Button component="label" sx={{mt: 1, pb: -1, maxWidth : 120, minWidth: 120, maxHeight : 40, minHeight: 40}}>

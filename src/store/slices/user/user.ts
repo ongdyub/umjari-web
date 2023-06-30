@@ -1,9 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
-import {groupInfo, groupQnAItemGet, groupQnAListGet} from "../group/group";
-import {MyDefaultInfo} from "../myconcert/myconcert";
-import {useSelector} from "react-redux";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -78,9 +75,13 @@ export const valEmailPost = createAsyncThunk(
 
 export const valCode = createAsyncThunk(
     "user/valCode",
-    async (data: any) => {
-        const response = await axios.post('/api/v1/mail-verification/validate/',data)
-        return response.data
+    async (data: any, {rejectWithValue}) => {
+        try {
+            const response = await axios.post('/api/v1/mail-verification/validate/',data)
+            return response.data;
+        } catch (err : any) {
+            return rejectWithValue(err.response);
+        }
     }
 )
 
@@ -94,11 +95,16 @@ export const valNamePost = createAsyncThunk(
 
 export const login = createAsyncThunk(
     "user/login",
-    async (data: Partial<SignUser>, { dispatch }) => {
-        await axios.post('/api/v1/auth/login/',data).then(function (response) {
-            dispatch(userActions.loginUser(response.data));
+    async (data: Partial<SignUser>, { dispatch, rejectWithValue },) => {
+        try {
+            const response = await axios.post('/api/v1/auth/login/',data).then(function (response) {
+                dispatch(userActions.loginUser(response.data));
+                return response.data
+            })
             return response.data
-        })
+        } catch (err : any) {
+            return rejectWithValue(err.response);
+        }
     }
 )
 
@@ -149,7 +155,7 @@ export const userGroupGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -166,7 +172,7 @@ export const userGroupTimePut = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -247,6 +253,18 @@ export const userSlice = createSlice({
         });
         builder.addCase(userGroupGet.fulfilled, (state, action) => {
             state.career = action.payload.career
+        });
+        builder.addCase(userGroupGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(valCode.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(userGroupTimePut.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(login.rejected, () => {
+            window.alert("아이디와 비밀번호가 일치하지 않습니다.")
         });
     },
 });

@@ -103,7 +103,7 @@ export const boardListGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -133,6 +133,9 @@ export const boardStateSlice = createSlice({
                 });
             }
             scrollToTop()
+        });
+        builder.addCase(boardListGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
     },
 });

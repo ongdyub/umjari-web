@@ -101,7 +101,7 @@ export const concert = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -114,7 +114,7 @@ export const concertMemberGet = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -131,7 +131,7 @@ export const concertInfoPut = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -148,7 +148,7 @@ export const concertSetListDelete = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -182,7 +182,7 @@ export const concertMemberAdd = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -200,7 +200,7 @@ export const concertMemberDelete = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -217,7 +217,7 @@ export const concertDetailPut = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -234,7 +234,7 @@ export const concertPost = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -264,6 +264,9 @@ export const concertStateSlice = createSlice({
         builder.addCase(concert.fulfilled, (state, action) => {
             state.concert = action.payload
         });
+        builder.addCase(concert.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
         builder.addCase(concertMemberGet.fulfilled, (state, action) => {
             const participants = action.payload.participants
 
@@ -275,18 +278,21 @@ export const concertStateSlice = createSlice({
                 return partA - partB;
             })
         });
+        builder.addCase(concertMemberGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
         builder.addCase(concertInfoPut.fulfilled, (state, action) => {
             if(state.concert !== null){
                 state.concert.concertInfo = action.meta.arg.data.concertInfo
             }
             window.alert("변경 성공")
         });
-        builder.addCase(concertInfoPut.rejected, (state, action) => {
-            if(action.payload === 3001){
+        builder.addCase(concertInfoPut.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(concertSetListDelete.fulfilled, (state, action) => {
@@ -298,12 +304,12 @@ export const concertStateSlice = createSlice({
             }
             window.alert("변경 성공")
         });
-        builder.addCase(concertSetListDelete.rejected, (state, action) => {
-            if(action.payload === 3001){
+        builder.addCase(concertSetListDelete.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(concertSetListAdd.fulfilled, () => {
@@ -320,45 +326,45 @@ export const concertStateSlice = createSlice({
         builder.addCase(concertMemberAdd.fulfilled, () => {
 
         });
-        builder.addCase(concertMemberAdd.rejected, (state, action) => {
-            if(action.payload === 3001){
+        builder.addCase(concertMemberAdd.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(concertMemberDelete.fulfilled, () => {
             window.alert("반영 완료.")
         });
-        builder.addCase(concertMemberDelete.rejected, (state, action) => {
-            if(action.payload === 3001){
+        builder.addCase(concertMemberDelete.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(concertDetailPut.fulfilled, () => {
             window.alert("반영 완료.")
         });
-        builder.addCase(concertDetailPut.rejected, (state, action) => {
-            if(action.payload === 3001){
+        builder.addCase(concertDetailPut.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
         builder.addCase(concertPost.fulfilled, () => {
             window.alert("등록 완료.")
         });
-        builder.addCase(concertPost.rejected, (state, action) => {
-            if(action.payload === 3001){
+        builder.addCase(concertPost.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("변경 실패. 다시 로그인 해서 시도해주세요.")
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
         });
     },

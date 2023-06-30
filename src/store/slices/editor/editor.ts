@@ -29,7 +29,7 @@ export const postCommunity = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -46,7 +46,7 @@ export const editCommunity = createAsyncThunk(
             return response.data
         }
         catch (err : any) {
-            return rejectWithValue(err.response.data["errorCode"])
+            return rejectWithValue(err.response)
         }
     }
 )
@@ -64,14 +64,14 @@ export const editorStateSlice = createSlice({
         builder.addCase(postCommunity.fulfilled, () => {
             window.alert('작성 완료')
         });
-        builder.addCase(postCommunity.rejected, () => {
-            window.alert('작성 실패')
+        builder.addCase(postCommunity.rejected, (state, action : any) => {
+            window.alert("작성 실패. 네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(editCommunity.fulfilled, () => {
             window.alert('작성 완료')
         });
-        builder.addCase(editCommunity.rejected, () => {
-            window.alert('작성 실패')
+        builder.addCase(editCommunity.rejected, (state, action : any) => {
+            window.alert("작성 실패. 네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
     },
 });

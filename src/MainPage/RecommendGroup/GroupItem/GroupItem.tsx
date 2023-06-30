@@ -1,4 +1,4 @@
-import {Box, Card, CardContent, CardMedia, IconButton, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {Card, CardMedia, Stack, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {GroupProgram} from "../../../store/slices/group/group";
 
@@ -17,7 +17,7 @@ const GroupItem = (props : any) => {
                 onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
                 src={item.logo}
             />
-            <Stack sx={{justifyContent: "flex-start", alignItems: "center", ml: 0.5, mr:0.5, width: 85}}>
+            <Stack sx={{justifyContent: "flex-start", alignItems: "center", ml: 0.5, mr:1, width: 85}}>
                 <Typography sx={{fontSize:12, mb:0.5}}>
                     {item.name}
                 </Typography>
@@ -38,10 +38,10 @@ const GroupItem = (props : any) => {
                         {
                             item.setList.map((item : GroupProgram, idx : number) => (
                                 <Stack sx={{mb:0.5}} key={idx} direction={"row"} justifyContent="flex-start" alignItems={'center'}>
-                                    <Typography variant="caption" sx={{width: 75,fontWeight: 600, fontSize: 8, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>
+                                    <Typography sx={{width: 80,mr: 1, fontWeight: 600, fontSize: 10, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>
                                         {item.shortComposerEng}
                                     </Typography>
-                                    <Typography gutterBottom sx={{fontSize: 12, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>
+                                    <Typography sx={{ width: 'calc(100% - 90px)',fontSize: 12, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>
                                         {item.shortNameEng}
                                     </Typography>
                                 </Stack>
