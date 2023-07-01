@@ -22,7 +22,7 @@ import React from 'react'
 import NameChangeModal from "../../Modal/NameChangeModal";
 import {useSearchParams} from "react-router-dom";
 
-const pages = ['홈', '커뮤니티', '단체검색', '장터', '객원모집'];
+const pages = ['홈', '커뮤니티', '단체검색', '장터', '객원모집', '사이트 소개'];
 const settings = ['마이페이지', '닉네임 변경' , '내정보 관리', '로그아웃', 'Size'];
 
 const Header = () => {
@@ -63,6 +63,9 @@ const Header = () => {
         }
         else if(page === '객원모집'){
             window.alert("준비 중 입니다.")
+        }
+        else if(page === '사이트 소개'){
+            navigate('/about')
         }
     };
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {

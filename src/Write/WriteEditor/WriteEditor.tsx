@@ -85,7 +85,6 @@ const formats = [
 
 const WriteEditor = (props : any) => {
     const {mode} = props
-    const QuillRef = useRef<ReactQuill>();
     const userState = useSelector(selectUser)
 
     const imageHandler = () => {
@@ -154,14 +153,15 @@ const WriteEditor = (props : any) => {
                 handlers: {
                     image: imageHandler,
                 },
-                ImageResize: {
-                    parchment: Quill.import("parchment"),
-                    modules: ["Resize", "DisplaySize"],
-                },
+            },
+            ImageResize: {
+                parchment: Quill.import("parchment"),
+                modules: ["Resize", "DisplaySize"],
             },
         }
     },[])
 
+    const QuillRef = useRef<ReactQuill>();
     const theme = useTheme()
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
@@ -262,12 +262,12 @@ const WriteEditor = (props : any) => {
                             ))}
                         </Select>
                     </FormControl>
-                    {/*{*/}
-                    {/*    hide ?*/}
-                    {/*        <Button variant={"contained"} sx={{bgcolor: 'red', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(false)}>비공개</Button>*/}
-                    {/*        :*/}
-                    {/*        <Button variant={"contained"} sx={{bgcolor: 'green', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(true)}>공개</Button>*/}
-                    {/*}*/}
+                    {
+                        hide ?
+                            <Button variant={"contained"} sx={{bgcolor: 'red', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(false)}>비공개</Button>
+                            :
+                            <Button variant={"contained"} sx={{bgcolor: 'green', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(true)}>공개</Button>
+                    }
                     <Button variant="outlined" onClick={handleSubmit} sx={{ml: 1, maxWidth: 60, minWidth: 60, maxHeight: 30, minHeight: 30}}>작성</Button>
                 </Stack>
             </Stack>
