@@ -145,7 +145,7 @@ const Header = () => {
                             // border: '0.5px solid black'
                         }}
                         alt="Image description"
-                        src={`${process.env.PUBLIC_URL}/Thumbnail_trans_white.png`}
+                        src={`${process.env.PUBLIC_URL}/img/logo_KOR/Logo_KOR_trans_white.png`}
                         onClick={onClickLogo}
                     />
 
@@ -197,7 +197,7 @@ const Header = () => {
                             // border: '0.5px solid black'
                         }}
                         alt="Image description"
-                        src={`${process.env.PUBLIC_URL}/Thumbnail_trans_white.png`}
+                        src={`${process.env.PUBLIC_URL}/img/logo_KOR/Logo_KOR_trans_white.png`}
                         onClick={onClickLogo}
                     />
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
