@@ -13,6 +13,7 @@ import Concert from "./Concert/Concert";
 import Group from "./Group/Group";
 import AddConcert from "./AddConcert/AddConcert";
 import Manage from "./Manage/Manage";
+import About from "./About/About";
 
 declare module '@mui/material/styles' {
     interface BreakpointOverrides {
@@ -94,6 +95,7 @@ function App() {
                 <Header />
                 <Routes>
                     <Route path="/" element={<MainPage />} />
+                    <Route path="/about" element={<About />} />
                     <Route path="/write" element={<Write />} />
                     <Route path="/community/:boardName" element={<Board />} />
                     <Route path="/community/:boardName/:id/*" element={<Article />} />
