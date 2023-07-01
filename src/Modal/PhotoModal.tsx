@@ -107,7 +107,7 @@ const PhotoModal = (props : any) => {
                             res750 ?
                                 <CardMedia
                                     component="img"
-                                    sx={{maxHeight: '70%',width: '95%', objectFit: 'contain', loading: 'lazy'}}
+                                    sx={{maxHeight: '70%',width: '100%', objectFit: 'contain', loading: 'lazy'}}
                                     image={item.url}
                                     onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/img/fail-loading.png`}
                                     alt="사진입니다."
@@ -145,7 +145,7 @@ const PhotoModal = (props : any) => {
                             </Stack>
                             {
                                 isAuthor ?
-                                    <Button sx={{ml:1,fontSize:7}} color={'error'} onClick={() => setDeleteOpen(true)}>사진삭제</Button>
+                                    <Button sx={{ml:1,fontSize:9}} color={'error'} onClick={() => setDeleteOpen(true)}>사진삭제</Button>
                                     :
                                     null
                             }

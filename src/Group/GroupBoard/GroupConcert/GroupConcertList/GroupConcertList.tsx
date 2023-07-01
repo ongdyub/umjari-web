@@ -31,16 +31,16 @@ const GroupConcertList = (props : any) => {
                     {item.setList.map((item:any, idx:any) => (
                         <Stack key={idx} sx={{width: '100%', cursor: 'pointer', mb: 0.5}} alignItems={'center'} onClick={() => setExpanded(!expanded)}>
 
-                            <Stack sx={{width: '80%', mt:1.5, mb:0.5}} direction={'row'} alignItems={'center'} justifyContent={'flex-end'}>
-                                <Typography variant="caption" sx={{fontWeight: 600, fontSize: 12, mr: 'auto'}}>
+                            <Stack sx={{width: '90%', mt:1.5, mb:0.5}} direction={'row'} alignItems={'center'} justifyContent={'flex-end'}>
+                                <Typography variant="caption" sx={{fontWeight: 300, fontSize: 12, mr: 'auto'}}>
                                     {item.musicInfo.shortComposerEng}
                                 </Typography>
                             </Stack>
 
-                            <Divider orientation={"horizontal"} sx={{width: '80%'}}/>
+                            <Divider orientation={"horizontal"} sx={{width: '90%'}}/>
 
-                            <Stack direction={"column"} justifyContent={"flex-start"} alignContent={"center"} alignItems={"center"} sx={{width: '80%', mt:0.5}}>
-                                <Typography  variant="overline"  sx={{fontSize: 14, color: 'grey'}}>{item.musicInfo.shortNameEng}</Typography>
+                            <Stack direction={"column"} justifyContent={"flex-start"} alignContent={"center"} alignItems={"center"} sx={{width: '90%', mt:0.5}}>
+                                <Typography  variant="body2"  sx={{fontSize: 12, color: 'grey', fontWeight: 800}}>{item.musicInfo.shortNameEng}</Typography>
                             </Stack>
                             <Divider orientation={"horizontal"} sx={{width: '90%', mt: 0.5}}/>
                         </Stack>

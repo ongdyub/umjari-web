@@ -15,8 +15,8 @@ const AlbumItem = (props : any) => {
 
     return(
         <Card sx={{cursor:'pointer', maxWidth: 345, boxShadow: 8 }} onClick={() => navigate(`${item.id}/${item.title}`)}>
-            <Stack sx={{width: '100%', mt: 0.7, mb: 0.5}} justifyContent={"center"} alignContent={"center"} alignItems={"center"}>
-                <Typography sx={{fontSize: 12, fontWeight: 400}}>
+            <Stack sx={{width: '100%', mt: 1.2, mb: 1}} justifyContent={"center"} alignContent={"center"} alignItems={"center"}>
+                <Typography sx={{fontSize: 14, fontWeight: 400}}>
                     {item.title}
                 </Typography>
             </Stack>
