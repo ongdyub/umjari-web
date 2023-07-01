@@ -129,7 +129,7 @@ const WriteEditor = (props : any) => {
 
                     return { ...res, success: true };
                 } catch (error) {
-                    window.alert("이미지 삽입 실패")
+                    window.alert("이미지 삽입 실패. 이미지 크기를(30MB) 확인해주세요")
                     const err : any = error
                     return { ...err.response, success: false };
                 }
