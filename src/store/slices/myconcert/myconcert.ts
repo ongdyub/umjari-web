@@ -341,7 +341,7 @@ export const myConcertStateSlice = createSlice({
             }
         });
         builder.addCase(myConcertProfileImageUpload.rejected, (state, action : any) => {
-            window.alert("이미지 삽입 실패. 이미지 크기를(10MB) 확인해주세요")
+            window.alert("이미지 삽입 실패. 이미지 크기를(30MB) 확인해주세요")
         });
         builder.addCase(myConcertUserImagePut.rejected, (state, action : any) => {
             window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
