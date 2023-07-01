@@ -68,7 +68,7 @@ const MyHome = () => {
 
         if (result.type === `${myIntroPut.typePrefix}/fulfilled`) {
             dispatch(myConcertStateActions.setMyIntro({intro : introText}))
-            window.alert("변경 성공 성공")
+            window.alert("변경 성공")
             setIntroText(introText)
         } else {
             window.alert("변경 실패")
@@ -96,14 +96,17 @@ const MyHome = () => {
             <Stack sx={{width: '100%', mt: 3, mb: 2, position: 'relative'}} justifyContent={res750 ? "center" : "flex-start"} alignContent={"center"} alignItems={"center"}>
                 {
                     isEdit ?
-                        <Input sx={{pl: 2, fontWeight: 300, fontSize: res750 ? 14 : 23, pr: 2, width: '70%'}} placeholder="30자 이하의 소개를 입력해주세요." value={introText} onChange={(e) => setIntroText(e.target.value)} />
+                        <Input sx={{pl: 2, fontWeight: 300, fontSize: res750 ? 14 : 23, pr: 2, width: '70%', mb:1}} placeholder="30자 이하의 소개를 입력해주세요." value={introText} onChange={(e) => setIntroText(e.target.value)} />
                         :
                         <Typography sx={{pl: 2, fontWeight: 300, fontSize: res750 ? 17 : 23, pr: 2}}>{myConcertState.myDefaultInfo?.intro === '' ? '한줄 소개가 없습니다.' : `${myConcertState.myDefaultInfo?.intro}`}</Typography>
                 }
                 {
                     myConcertState.myDefaultInfo?.isSelfProfile ?
                         isEdit ?
-                            <Button onClick={handleEditIntro} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 5, bottom: -15}} disableRipple>작성</Button>
+                            <>
+                                <Button onClick={handleEditIntro} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 5, bottom: -15}} disableRipple>작성</Button>
+                                <Button onClick={() => setIsEdit(false)} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 45, bottom: -15}} disableRipple>취소</Button>
+                            </>
                             :
                             <Button onClick={() => setIsEdit(true)} sx={{maxWidth: 45, minWidth: 45, maxHeight: 22, minHeight: 22, fontSize : 10, position: 'absolute', right: 5, bottom: -15}} disableRipple>수정</Button>
                         :

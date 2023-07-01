@@ -54,6 +54,14 @@ const GroupSearch = () => {
 
         dispatch(groupSearchGet({params}))
 
+        const scrollToTop = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        scrollToTop()
+
         return () => {
             dispatch(groupStateActions.resetGroupSearchList())
         }

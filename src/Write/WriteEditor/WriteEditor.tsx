@@ -15,6 +15,72 @@ import {matchBoardName} from "../../store/slices/board/board";
 import { ImageResize } from "quill-image-resize-module-ts";
 Quill.register("modules/ImageResize", ImageResize);
 
+export const matchBoardEnum = (name : string | undefined | number ) => {
+    const boardList = [
+        {
+            name: '전체게시판',
+            enum : 'ALL'
+        },
+        {
+            name: '자유게시판',
+            enum : 'FREE'
+        },
+        {
+            name: '바이올린',
+            enum : 'VIOLIN'
+        },
+        {
+            name: '비올라',
+            enum : 'VIOLA'
+        },
+        {
+            name: '첼로',
+            enum : 'CELLO'
+        },
+        {
+            name: '베이스',
+            enum : 'BASS'
+        },
+        {
+            name: '플루트',
+            enum : 'FLUTE'
+        },
+        {
+            name: '클라리넷',
+            enum : 'CLARINET'
+        },
+        {
+            name: '오보에',
+            enum : 'OBOE'
+        },
+        {
+            name: '바순',
+            enum : 'BASSOON'
+        },
+        {
+            name: '호른',
+            enum : 'HORN'
+        },
+        {
+            name: '트럼펫',
+            enum : 'TRUMPET'
+        },
+        {
+            name: '트롬본',
+            enum : 'TROMBONE'
+        },
+        {
+            name: '튜바',
+            enum : 'TUBA'
+        },
+        {
+            name: '타악기',
+            enum : 'PERCUSSION_INSTRUMENT'
+        },
+    ]
+    return boardList.find(board => board.enum === name)
+}
+
 const boardList = [
     {
         name: '자유게시판',
@@ -207,12 +273,12 @@ const WriteEditor = (props : any) => {
         const data = {
             title : title,
             content : contents,
-            isAnonymous : true
+            isAnonymous : hide
         }
         if(mode === 'edit'){
             const result = await dispatch(editCommunity({data , token : userState.accessToken, inst_name : board, id : id}))
             if (result.type === `${editCommunity.typePrefix}/fulfilled`) {
-                navigate(`/community/${matchBoardName(board)?.name}/${id}`)
+                navigate(`/community/${matchBoardEnum(board)?.name}/${id}`)
             }
             else {
                 window.alert("오류 발생. 다시 시도해주세요")
@@ -264,9 +330,9 @@ const WriteEditor = (props : any) => {
                     </FormControl>
                     {
                         hide ?
-                            <Button variant={"contained"} sx={{bgcolor: 'red', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(false)}>비공개</Button>
+                            <Button variant={"contained"} sx={{fontSize: 12,bgcolor: 'red', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(false)}>비공개</Button>
                             :
-                            <Button variant={"contained"} sx={{bgcolor: 'green', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(true)}>공개</Button>
+                            <Button variant={"contained"} sx={{fontSize:12,bgcolor: 'green', color: 'white', maxWidth: 70, minWidth: 70, maxHeight: 30, minHeight: 30}} onClick={() => setHide(true)}>공개</Button>
                     }
                     <Button variant="outlined" onClick={handleSubmit} sx={{ml: 1, maxWidth: 60, minWidth: 60, maxHeight: 30, minHeight: 30}}>작성</Button>
                 </Stack>

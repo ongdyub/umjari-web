@@ -21,6 +21,7 @@ const Comment = (props : any) => {
 
     const [editMode, setEditMode] = useState(false)
     const [text, setText] = useState(item.content)
+    const [hide, setHide] = useState(false)
     const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
     const [confirm, setConfirm] = useState(false)
 
@@ -49,7 +50,7 @@ const Comment = (props : any) => {
         if(userState.isLogin){
             const data = {
                 content : text,
-                isAnonymous : false
+                isAnonymous : hide
             }
             if(text === '' || text.length < 1){
                 window.alert("댓글 내용을 적어주세요.")
@@ -139,6 +140,12 @@ const Comment = (props : any) => {
                                 />
                                 <Stack sx={{width: '100%'}} flexDirection={'row-reverse'}>
                                     <Button size={"medium"} onClick={handleEditArticleReply}>작성</Button>
+                                    {
+                                        hide ?
+                                            <Button size={"small"} sx={{bgcolor: 'red', color: 'black'}} onClick={() => setHide(false)}>비공개</Button>
+                                            :
+                                            <Button size={"small"} sx={{bgcolor: 'green', color: 'black'}} onClick={() => setHide(true)}>공개</Button>
+                                    }
                                     <Button size={'small'} onClick={() => setEditMode(false)}>취소</Button>
                                 </Stack>
                             </Stack>

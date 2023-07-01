@@ -23,6 +23,7 @@ const ArticleComments = () => {
     const {boardName, id} = useParams()
 
     const [replyText, setReplyText] = useState('')
+    const [hide, setHide] = useState(false)
     const [open, setOpen] = useState(false)
     const [confirm, setConfirm] = useState(false)
 
@@ -62,7 +63,7 @@ const ArticleComments = () => {
         if(userState.isLogin){
             const data = {
                 content : replyText,
-                isAnonymous : false
+                isAnonymous : hide
             }
             if(replyText === '' || replyText.length < 1){
                 window.alert("댓글 내용을 적어주세요.")
@@ -126,8 +127,14 @@ const ArticleComments = () => {
                     onChange={(e) => setReplyText(e.target.value)}
                     onClick={handleFocus}
                 />
-                <Stack sx={{width: '100%'}} flexDirection={'row-reverse'}>
-                    <Button size={"medium"} onClick={handleSubmitReply}>작성하기</Button>
+                <Stack sx={{width: '100%', mt:1}} flexDirection={'row-reverse'}>
+                    <Button size={"medium"} sx={{ml :2}} onClick={handleSubmitReply}>작성하기</Button>
+                    {
+                        hide ?
+                            <Button size={"small"} sx={{bgcolor: 'red', color: 'black'}} onClick={() => setHide(false)}>비공개</Button>
+                            :
+                            <Button size={"small"} sx={{bgcolor: 'green', color: 'black'}} onClick={() => setHide(true)}>공개</Button>
+                    }
                 </Stack>
             </Stack>
             {

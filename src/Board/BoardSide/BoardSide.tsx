@@ -7,7 +7,7 @@ const BoardSide = () => {
 
     return(
         <Stack sx={{ flex: 1, display : resSize ? 'none' : '', minWidth: 155}}>
-            Side
+            광고용 공간
         </Stack>
     )
 }

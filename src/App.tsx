@@ -87,30 +87,30 @@ const blueTheme = createTheme({
 
 
 function App() {
-  return (
-      <ThemeProvider theme={blueTheme}>
-        <CssBaseline />
-        <div>
-            <BrowserRouter>
-                <Header />
-                <Routes>
-                    <Route path="/" element={<MainPage />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/write" element={<Write />} />
-                    <Route path="/community/:boardName" element={<Board />} />
-                    <Route path="/community/:boardName/:id/*" element={<Article />} />
-                    <Route path="/community/:boardName/:id/edit" element={<Write mode={'edit'} />} />
-                    <Route path="/groupsearch" element={<GroupSearch />} />
-                    <Route path="/myconcert/:profileName/*" element={<MyConcert />} />
-                    <Route path="/manage/:profileName/*" element={<Manage />} />
-                    <Route path="/concert/:id/*" element={<Concert />} />
-                    <Route path="/group/:id/*" element={<Group />}/>
-                    <Route path="/add/:id" element={<AddConcert />} />
-                </Routes>
-            </BrowserRouter >
-        </div>
-      </ThemeProvider>
-  );
+    return (
+        <ThemeProvider theme={blueTheme}>
+            <CssBaseline/>
+            <div>
+                <BrowserRouter>
+                    <Header/>
+                    <Routes>
+                        <Route path="/" element={<MainPage/>}/>
+                        <Route path="/about" element={<About/>}/>
+                        <Route path="/write" element={<Write/>}/>
+                        <Route path="/community/:boardName" element={<Board/>}/>
+                        <Route path="/community/:boardName/:id/*" element={<Article/>}/>
+                        <Route path="/community/:boardName/:id/edit" element={<Write mode={'edit'}/>}/>
+                        <Route path="/groupsearch" element={<GroupSearch/>}/>
+                        <Route path="/myconcert/:profileName/*" element={<MyConcert/>}/>
+                        <Route path="/manage/:profileName/*" element={<Manage/>}/>
+                        <Route path="/concert/:id/*" element={<Concert/>}/>
+                        <Route path="/group/:id/*" element={<Group/>}/>
+                        <Route path="/add/:id" element={<AddConcert/>}/>
+                    </Routes>
+                </BrowserRouter>
+            </div>
+        </ThemeProvider>
+    );
 }
 
 export default App;
