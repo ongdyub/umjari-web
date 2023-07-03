@@ -2,6 +2,7 @@ import BoardMenu from "../Board/BoardMenu/BoardMenu";
 import BoardSide from "../Board/BoardSide/BoardSide";
 import {Divider, Stack, useMediaQuery} from "@mui/material";
 import ArticleContents from "./ArticleContents/ArticleContents";
+import Banner from "../Banner/Banner";
 
 const Article = () => {
 
@@ -14,6 +15,12 @@ const Article = () => {
                 <ArticleContents />
                 <Divider orientation={"vertical"}/>
                 <BoardSide />
+                {
+                    res800 ?
+                        <Banner />
+                        :
+                        null
+                }
             </Stack>
         </Stack>
     )
