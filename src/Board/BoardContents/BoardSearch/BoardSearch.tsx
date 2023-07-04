@@ -109,7 +109,6 @@ const BoardSearch = () => {
         searchParams.set('board',boardName)
         searchParams.set('range',searchRange)
         const boardKor = matchBoardEnum(boardName)
-        console.log(boardKor)
         navigate(`/community/${boardKor?.name}`)
         setSearchParams(searchParams)
     }
