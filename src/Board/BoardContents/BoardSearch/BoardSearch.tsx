@@ -12,10 +12,11 @@ import {
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUser, userActions} from "../../../store/slices/user/user";
 import {AppDispatch} from "../../../store";
+import {matchBoardEnum} from "../../../store/slices/board/board";
 
 const boardList = [
     {
@@ -82,6 +83,8 @@ const boardList = [
 
 const BoardSearch = () => {
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const theme = useTheme();
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
@@ -99,6 +102,16 @@ const BoardSearch = () => {
             return
         }
         navigate('/write')
+    }
+
+    const handleSearch = () => {
+        searchParams.set('text',searchWord)
+        searchParams.set('board',boardName)
+        searchParams.set('range',searchRange)
+        const boardKor = matchBoardEnum(boardName)
+        console.log(boardKor)
+        navigate(`/community/${boardKor?.name}`)
+        setSearchParams(searchParams)
     }
 
     if (res800){
@@ -155,18 +168,18 @@ const BoardSearch = () => {
                         </FormControl>
                     </Stack>
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '17%'}}>
-                        <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={() => window.alert("준비중입니다.")}>검색</Button>
+                        <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={handleSearch}>검색</Button>
                     </Stack>
                 </Stack>
                 <Stack sx={{width: '95%'}} alignItems="center" direction={'row'}>
-                    <Stack justifyContent="flex-end" sx={{height: 50, width: '70%'}}>
-                        <ButtonGroup onClick={() => window.alert("준비중입니다.")} variant="text" aria-label="text button group">
-                            <Button sx={{fontSize: 12}}>인기글</Button>
-                            <Button sx={{fontSize: 12}}>댓글</Button>
-                            <Button sx={{fontSize: 12}}>조회</Button>
-                            <Button sx={{fontSize: 12}}>추천</Button>
-                        </ButtonGroup>
-                    </Stack>
+                    {/*<Stack justifyContent="flex-end" sx={{height: 50, width: '70%'}}>*/}
+                    {/*    <ButtonGroup onClick={() => window.alert("준비중입니다.")} variant="text" aria-label="text button group">*/}
+                    {/*        <Button sx={{fontSize: 12}}>인기글</Button>*/}
+                    {/*        <Button sx={{fontSize: 12}}>댓글</Button>*/}
+                    {/*        <Button sx={{fontSize: 12}}>조회</Button>*/}
+                    {/*        <Button sx={{fontSize: 12}}>추천</Button>*/}
+                    {/*    </ButtonGroup>*/}
+                    {/*</Stack>*/}
 
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '17%', ml: 'auto'}}>
                         <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={handleWrite}>작성</Button>
@@ -229,18 +242,18 @@ const BoardSearch = () => {
                         </FormControl>
                     </Stack>
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '10%'}}>
-                        <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={() => window.alert("준비중입니다.")}>검색</Button>
+                        <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={handleSearch}>검색</Button>
                     </Stack>
                 </Stack>
                 <Stack sx={{width: '95%'}} alignItems="center" direction={'row'}>
-                    <Stack justifyContent="flex-end" sx={{height: 50, width: '35%', ml: '4%'}}>
-                        <ButtonGroup onClick={() => window.alert("준비중입니다.")} variant="text" aria-label="text button group">
-                            <Button sx={{fontSize: 12}}>인기글</Button>
-                            <Button sx={{fontSize: 12}}>댓글</Button>
-                            <Button sx={{fontSize: 12}}>조회</Button>
-                            <Button sx={{fontSize: 12}}>추천</Button>
-                        </ButtonGroup>
-                    </Stack>
+                    {/*<Stack justifyContent="flex-end" sx={{height: 50, width: '35%', ml: '4%'}}>*/}
+                    {/*    <ButtonGroup onClick={() => window.alert("준비중입니다.")} variant="text" aria-label="text button group">*/}
+                    {/*        <Button sx={{fontSize: 12}}>인기글</Button>*/}
+                    {/*        <Button sx={{fontSize: 12}}>댓글</Button>*/}
+                    {/*        <Button sx={{fontSize: 12}}>조회</Button>*/}
+                    {/*        <Button sx={{fontSize: 12}}>추천</Button>*/}
+                    {/*    </ButtonGroup>*/}
+                    {/*</Stack>*/}
 
                     <Stack justifyContent="flex-end" sx={{height: 50, width: '10%', ml: 'auto', mr: '2.5%'}}>
                         <Button sx={{fontSize: 11, maxWidth:'100%', minWidth:'100%', maxHeight: 28, minHeight:28}} variant={"outlined"} onClick={handleWrite}>작성</Button>
