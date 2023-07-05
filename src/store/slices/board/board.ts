@@ -23,9 +23,9 @@ export interface BoardList {
 }
 const initialState: BoardList = {
     contents : [],
-    totalPages: 0,
+    totalPages: 1,
     totalElements: 0,
-    currentPage: 0
+    currentPage: 1
 };
 
 export const matchBoardName = (name : string | undefined | number ) => {

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {useState} from "react";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUser, userActions} from "../../../store/slices/user/user";
 import {AppDispatch} from "../../../store";
@@ -83,8 +83,6 @@ const boardList = [
 
 const BoardSearch = () => {
 
-    const [searchParams, setSearchParams] = useSearchParams();
-
     const theme = useTheme();
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
@@ -105,12 +103,7 @@ const BoardSearch = () => {
     }
 
     const handleSearch = () => {
-        searchParams.set('text',searchWord)
-        searchParams.set('board',boardName)
-        searchParams.set('range',searchRange)
-        const boardKor = matchBoardEnum(boardName)
-        navigate(`/community/${boardKor?.name}`)
-        setSearchParams(searchParams)
+        navigate(`/community/${matchBoardEnum(boardName)?.name}?text=${searchWord}&board=${boardName}&range=${searchRange}&page=1`)
     }
 
     if (res800){

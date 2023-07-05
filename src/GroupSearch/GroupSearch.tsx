@@ -8,6 +8,7 @@ import {AppDispatch} from "../store";
 import {useSearchParams} from "react-router-dom";
 import {groupSearchGet, groupStateActions, selectGroup} from "../store/slices/group/group";
 import * as React from "react";
+import {scrollToTop} from "../App";
 
 const GroupSearch = () => {
 
@@ -54,12 +55,6 @@ const GroupSearch = () => {
 
         dispatch(groupSearchGet({params}))
 
-        const scrollToTop = () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
         scrollToTop()
 
         return () => {
