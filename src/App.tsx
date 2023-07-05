@@ -86,6 +86,13 @@ const blueTheme = createTheme({
 });
 
 
+export const scrollToTop = () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
 function App() {
     return (
         <ThemeProvider theme={blueTheme}>
