@@ -6,6 +6,7 @@ import {selectUser} from "../store/slices/user/user";
 import {useEffect} from "react";
 import {friendStateActions, isSelfGet, selectFriend} from "../store/slices/manage/friend/friend";
 import Friend from "./Friend/Friend";
+import Community from "./Community/Community";
 
 const Manage = () => {
 
@@ -24,15 +25,14 @@ const Manage = () => {
         navigate(`/manage/${profileName}/friend`)
     }
 
-    const onClickGoSelf = () => {
-        window.alert("준비중입니다.")
+    const onClickGoCommunity = () => {
+        navigate(`/manage/${profileName}/community`)
     }
 
 
     const myButtons = [
-        <Button onClick={onClickGoFriend} sx={{fontSize: res750 ? 12 : 14}} key="friend">친구관계</Button>,
-        <Button onClick={onClickGoSelf} sx={{fontSize: res750 ? 12 : 14}} key="article">작성글</Button>,
-        <Button onClick={onClickGoSelf} sx={{fontSize: res750 ? 12 : 14}} key="comment">작성댓글</Button>,
+        <Button onClick={onClickGoFriend} sx={{fontSize: res750 ? 10 : 12}} key="friend">친구관계</Button>,
+        <Button onClick={onClickGoCommunity} sx={{fontSize: res750 ? 10 : 12}} key="community">커뮤니티</Button>,
     ]
 
 
@@ -64,6 +64,7 @@ const Manage = () => {
                     <Divider sx={{mt:2,mb:1, width: '95%'}}/>
                     <Routes>
                         <Route path="friend" element={<Friend />}/>
+                        <Route path="community" element={<Community />}/>
                     </Routes>
                 </Stack>
             </Stack>
