@@ -10,6 +10,7 @@ import musicStateReducer from "./slices/music/music"
 import galleryStateReducer from "./slices/gallery/gallery"
 import friendStateReducer from "./slices/manage/friend/friend"
 import visitStateReducer from "./slices/visit/visit"
+import communityStateReducer from "./slices/manage/community/community"
 
 export const store = configureStore({
     reducer : {
@@ -23,7 +24,8 @@ export const store = configureStore({
         musicState : musicStateReducer,
         galleryState : galleryStateReducer,
         friendState : friendStateReducer,
-        visitState : visitStateReducer
+        visitState : visitStateReducer,
+        communityState : communityStateReducer
     },
 });
 
