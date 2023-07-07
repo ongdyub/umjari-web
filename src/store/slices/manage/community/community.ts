@@ -98,9 +98,92 @@ const initialState: Community = {
 
 export const getMyPost = createAsyncThunk(
     "community/getMyPost",
-    async ({token} : {token : string | undefined | null},  {rejectWithValue}) => {
+    async ({token, page} : {token : string | undefined | null, page : number},  {rejectWithValue}) => {
         try {
             const response = await axios.get(`/api/v1/me/posts/`, {
+                params : {
+                    page : page
+                },
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
+export const getMyReply = createAsyncThunk(
+    "community/getMyReply",
+    async ({token, page} : {token : string | undefined | null, page : number},  {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/me/replies/`, {
+                params : {
+                    page : page
+                },
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
+export const getMyRepliedPost = createAsyncThunk(
+    "community/getMyRepliedPost",
+    async ({token, page} : {token : string | undefined | null, page : number},  {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/me/replied-posts/`, {
+                params : {
+                    page : page
+                },
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
+export const getMyLikedPost = createAsyncThunk(
+    "community/getMyLikedPost",
+    async ({token, page} : {token : string | undefined | null, page : number},  {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/me/liked-posts/`, {
+                params : {
+                    page : page
+                },
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
+export const getMyQnA = createAsyncThunk(
+    "community/getMyQnA",
+    async ({token, page} : {token : string | undefined | null, page : number},  {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/me/qna/`, {
+                params : {
+                    page : page
+                },
                 headers: {
                     Authorization: `Bearer  ${token}`,
                 },
@@ -131,6 +214,30 @@ export const communityStateSlice = createSlice({
             state.post = action.payload
         });
         builder.addCase(getMyPost.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(getMyReply.fulfilled, (state, action : any) => {
+            state.reply = action.payload
+        });
+        builder.addCase(getMyReply.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(getMyRepliedPost.fulfilled, (state, action : any) => {
+            state.repliedPost = action.payload
+        });
+        builder.addCase(getMyRepliedPost.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(getMyLikedPost.fulfilled, (state, action : any) => {
+            state.likedPost = action.payload
+        });
+        builder.addCase(getMyLikedPost.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(getMyQnA.fulfilled, (state, action : any) => {
+            state.qna = action.payload
+        });
+        builder.addCase(getMyQnA.rejected, (state, action : any) => {
             window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
     },
