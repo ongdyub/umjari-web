@@ -133,7 +133,7 @@ const Community = () => {
                 {myCommunityState.post?.contents.map((item) => (
                     <Stack onClick={() => navigate(`/community/${item.board}/${item.id}`)} direction={'row'} sx={{cursor : 'pointer',mt:1,pb:1,width: '100%', borderBottom: '0.5px solid grey'}} alignItems={'center'}>
                         <Stack sx={{width: res550 ? '60%' :'70%'}}>
-                            <Typography sx={{width: '100%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: res550 ? 10 : 12, fontWeight: 600, color: '#333'}}>{item.title}</Typography>
+                            <Typography sx={{width: '100%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12, fontWeight: 600, color: '#333'}}>{item.title}</Typography>
                         </Stack>
                         <Stack direction={'row'} sx={{width: res550 ? '40%' : '30%', textAlign: 'center'}}  justifyContent={'flex-end'} alignItems={'center'} >
                             <CommentIcon sx={{width: '7%', height: '7%'}} />
@@ -168,11 +168,11 @@ const Community = () => {
                 {myCommunityState.reply?.contents.map((item) => (
                     <Stack onClick={() => navigate(`/community/${item.post.board}/${item.post.id}`)} direction={'row'} sx={{cursor : 'pointer',mt:1,pb:1,width: '100%', borderBottom: '0.5px solid grey'}} alignItems={'center'}>
                         <Stack sx={{width: res550 ? '60%' :'70%'}}>
-                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: res550 ? 10 : 12, fontWeight: 400, color: '#333'}}>{item.content}</Typography>
-                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: res550 ? 7 : 9, fontWeight: 800, color: '#333'}}>{item.post.title}</Typography>
+                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12, fontWeight: 400, color: '#333'}}>{item.content}</Typography>
+                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: res550 ? 9 : 10, fontWeight: 800, color: '#333'}}>{item.post.title}</Typography>
                         </Stack>
                         <Stack direction={'row'} sx={{width: res550 ? '40%' : '30%', textAlign: 'center'}}  justifyContent={'flex-end'} alignItems={'center'} >
-                            <Typography sx={{ml:res550 ? 1 : 5,textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: res550 ? 8 : 10, fontWeight: 800, color: '#868e96', textAlign: 'center'}}>
+                            <Typography sx={{ml:res550 ? 1 : 5,textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 10, fontWeight: 800, color: '#868e96', textAlign: 'center'}}>
                                 {item.post.board}
                             </Typography>
                             <Typography sx={{ml:res550 ? 1 : 5,textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: res550 ? 8 : 10, fontWeight: 300, color: '#868e96', textAlign: 'center'}}>
@@ -200,10 +200,10 @@ const Community = () => {
                 {myCommunityState.repliedPost?.contents.map((item) => (
                     <Stack onClick={() => navigate(`/community/${item.board}/${item.id}`)} direction={'row'} sx={{cursor : 'pointer',mt:1,pb:1,width: '100%', borderBottom: '0.5px solid grey'}} alignItems={'center'}>
                         <Stack sx={{width: res550 ? '60%' :'70%'}}>
-                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: res550 ? 7 : 9, fontWeight: 800, color: '#333'}}>{item.title}</Typography>
+                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 11, fontWeight: 800, color: '#333'}}>{item.title}</Typography>
                         </Stack>
                         <Stack direction={'row'} sx={{width: res550 ? '40%' : '30%', textAlign: 'center'}}  justifyContent={'flex-end'} alignItems={'center'} >
-                            <Typography sx={{ml:res550 ? 1 : 5,textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: res550 ? 8 : 10, fontWeight: 800, color: '#868e96', textAlign: 'center'}}>
+                            <Typography sx={{ml:res550 ? 1 : 5,textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 10, fontWeight: 800, color: '#868e96', textAlign: 'center'}}>
                                 {item.board}
                             </Typography>
                         </Stack>
@@ -225,7 +225,7 @@ const Community = () => {
                 {myCommunityState.likedPost?.contents.map((item) => (
                     <Stack onClick={() => navigate(`/community/${item.board}/${item.id}`)} direction={'row'} sx={{cursor : 'pointer',mt:1,pb:1,width: '100%', borderBottom: '0.5px solid grey'}} alignItems={'center'}>
                         <Stack sx={{width: res550 ? '60%' :'70%'}}>
-                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: res550 ? 7 : 9, fontWeight: 800, color: '#333'}}>{item.title}</Typography>
+                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 11, fontWeight: 800, color: '#333'}}>{item.title}</Typography>
                         </Stack>
                         <Stack direction={'row'} sx={{width: res550 ? '40%' : '30%', textAlign: 'center'}}  justifyContent={'flex-end'} alignItems={'center'} >
                             <CommentIcon sx={{width: '7%', height: '7%'}} />
@@ -236,7 +236,7 @@ const Community = () => {
                             <Typography sx={{ml:1,textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 10}}>
                                 {item.likeCount}
                             </Typography>
-                            <Typography sx={{minWidth: 50,ml:res550 ? 1 : 5,textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: res550 ? 8 : 10, fontWeight: 300, color: '#868e96', textAlign: 'center'}}>
+                            <Typography sx={{minWidth: 50,ml:res550 ? 1 : 5,textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: res550 ? 8 : 10, fontWeight: 700, color: '#868e96', textAlign: 'center'}}>
                                 {item.board}
                             </Typography>
                         </Stack>
@@ -253,15 +253,15 @@ const Community = () => {
 
 
             <Stack direction={'row'} sx={{width: '90%'}} alignItems={'center'}>
-                <Typography sx={{fontSize : 25, fontWeight: 300}}>단체 질문글</Typography>
+                <Typography sx={{fontSize : 25, fontWeight: 300}}>작성한 단체 질문글</Typography>
             </Stack>
             <Divider sx={{mt : 1,mb:1, width: '90%'}} />
             <Stack sx={{width: '90%'}} direction={'column'} justifyContent={'start'} alignItems={'center'}>
                 {myCommunityState.qna?.contents.map((item) => (
                     <Stack onClick={() => navigate(`/group/${item.group.id}/qna/${item.id}`)} direction={'row'} sx={{cursor : 'pointer',mt:1,pb:1,width: '100%', borderBottom: '0.5px solid grey'}} alignItems={'center'}>
                         <Stack sx={{width: res550 ? '60%' :'70%'}}>
-                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: res550 ? 7 : 9, fontWeight: 400, color: '#333'}}>{item.group.name}</Typography>
-                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: res550 ? 7 : 9, fontWeight: 800, color: '#333'}}>{item.title}</Typography>
+                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 10, fontWeight: 300, color: '#333'}}>{item.group.name}</Typography>
+                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 13, fontWeight: 800, color: '#333'}}>{item.title}</Typography>
                         </Stack>
                         <Stack direction={'row'} sx={{width: res550 ? '40%' : '30%', textAlign: 'center'}}  justifyContent={'flex-end'} alignItems={'center'} >
                             <CommentIcon sx={{width: '7%', height: '7%'}} />
