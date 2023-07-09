@@ -14,7 +14,7 @@ const GroupSearchItem = (props : any) => {
             <Stack sx={{minHeight: 70}} direction={"row"} alignItems={'center'}>
                 <CardMedia
                     component="img"
-                    sx={{ height:50, width: 50, padding: '7px 7px 7px 7px', objectFit: 'fill'}}
+                    sx={{ height:50, width: 50, padding: '7px 7px 7px 7px', objectFit: 'contain'}}
                     alt="Group Logo"
                     onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
                     src={item.logo}
