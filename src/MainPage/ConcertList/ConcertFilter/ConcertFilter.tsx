@@ -53,7 +53,8 @@ const ConcertFilter = () => {
     const [parent, setParent] = useState<any>(0);
     const [child, setChild] = useState<any>(0);
 
-    const [startDate, setStartDate] = useState<Dayjs | null>(dayjs())
+    // const [startDate, setStartDate] = useState<Dayjs | null>(dayjs())
+    const [startDate, setStartDate] = useState<Dayjs | null>(dayjs('2023-03-01'))
     const [endDate, setEndDate] = useState<Dayjs | null>( null)
 
     const [searchText, setSearchText] = useState<string>("")
