@@ -238,7 +238,7 @@ const GroupRecruit = () => {
                 <Divider sx={{width: res700 ? '90%' : '100%', mt:-1}}/>
                 <Stack sx={{width : res700 ? '90%' : '100%'}}>
                     <Stack sx={{width: '100%'}} direction={'row'} justifyContent={'flex-start'}>
-                        <Typography sx={{fontSize: res700 ? 25:35, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>Program</Typography>
+                        <Typography sx={{fontSize: res700 ? 25:35, fontWeight: 100, fontFamily: "Open Sans", mt: 1, mb: 1, pl:1}}>모집 Program</Typography>
                         <Stack direction={'row'} alignItems={'center'} sx={{ml : 1,height: '100%'}}>
                             {
                                 isAdminGroup ?

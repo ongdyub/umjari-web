@@ -84,6 +84,7 @@ const Header = () => {
         }
         else if(setting === '로그아웃'){
             dispatch(userActions.logoutUser())
+            navigate(`/`)
             window.location.reload()
         }
         else if(setting === 'Size'){
