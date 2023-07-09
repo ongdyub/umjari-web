@@ -10,12 +10,13 @@ const MainPage = () => {
     return(
         <Stack sx={{mb:5}}>
             <ConcertList />
+            <Banner />
+            <Divider sx={{mt:1}} />
             <Stack sx={{width: '100%'}} justifyContent="flex-start" direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, sm: 2}} divider={(<Divider orientation={useMediaQuery(theme.breakpoints.down("md")) ? "horizontal" : "vertical"} flexItem={true}/>)}>
                 <MiniBoard />
                 <RecommendGroup />
             </Stack>
             <Divider />
-            <Banner />
         </Stack>
     )
 }
