@@ -24,7 +24,7 @@ const RecommendGroup = () => {
             instruments : null,
             page : 1,
             size: 5,
-            sort : "id,ASC",
+            sort : "id,DESC",
         }
 
         dispatch(groupSearchGet({params}))
