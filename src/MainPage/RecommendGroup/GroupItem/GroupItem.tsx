@@ -17,8 +17,8 @@ const GroupItem = (props : any) => {
                 onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
                 src={item.logo}
             />
-            <Stack sx={{justifyContent: "flex-start", alignItems: "center", ml: 0.5, mr:1, width: 125}}>
-                <Typography sx={{fontSize:12, mb:0.5}}>
+            <Stack sx={{justifyContent: "flex-start", alignItems: "center", ml: 0.5, mr:1, width: 135}}>
+                <Typography sx={{fontSize:11, mb:0.5}}>
                     {item.name}
                 </Typography>
                 <Typography sx={{fontSize: 10}} color="text.secondary">
@@ -34,7 +34,7 @@ const GroupItem = (props : any) => {
                         <Typography color={'blue'} sx={{fontSize: 10, fontWeight: 400}}>연주곡 미정</Typography>
                     </Stack>
                     :
-                    <Stack justifyContent={'center'} sx={{width: 'calc(100% - 80px)', minHeight: 100, overflow: 'hidden'}}>
+                    <Stack justifyContent={'center'} sx={{width: 'calc(100% - 120px)', minHeight: 100, overflow: 'hidden'}}>
                         {
                             item.setList.map((item : GroupProgram, idx : number) => (
                                 <Stack sx={{mb:0.5}} key={idx} direction={"row"} justifyContent="flex-start" alignItems={'center'}>
