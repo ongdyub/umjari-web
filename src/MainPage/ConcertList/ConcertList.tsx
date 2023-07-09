@@ -38,7 +38,7 @@ const ConcertList = () => {
         }
         const date = now.getDate()
         // const today = year + '-' + month + '-' + date
-        const today = '2023-07-01'
+        const today = '2023-03-01'
 
         const regionParent = searchParams.get('regionParent')
         const regionChild = searchParams.get('regionChild')
@@ -91,7 +91,8 @@ const ConcertList = () => {
             month = monthNum
         }
         const date = now.getDate()
-        const today = year + '-' + month + '-' + date
+        // const today = year + '-' + month + '-' + date
+        const today = '2023-03-01'
 
         const regionParent = searchParams.get('regionParent')
         const regionChild = searchParams.get('regionChild')
