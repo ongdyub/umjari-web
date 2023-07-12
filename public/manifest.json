@@ -3,7 +3,7 @@
   "name": "아마추어 음악가들의 별자리, 음자리 입니다.",
   "icons": [
     {
-      "src": "favicon.png",
+      "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },

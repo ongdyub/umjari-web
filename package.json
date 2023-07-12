@@ -2,8 +2,10 @@
   "name": "temp",
   "version": "0.1.0",
   "private": true,
+  "resolutions": {
+    "babel-core": "7.0.0-bridge.0"
+  },
   "dependencies": {
-    "@babel/core": "^7.16.0",
     "@draft-js-plugins/editor": "^4.1.3",
     "@draft-js-plugins/hashtag": "^4.2.2",
     "@draft-js-plugins/linkify": "^4.2.1",
@@ -28,7 +30,7 @@
     "@xeger/quill-image-actions": "^0.7.1",
     "@xeger/quill-image-formats": "^0.7.1",
     "axios": "^1.3.4",
-    "babel-jest": "^27.4.2",
+    "babel-jest": "^29.6.1",
     "babel-loader": "^8.2.3",
     "babel-plugin-named-asset-import": "^0.3.8",
     "babel-preset-react-app": "^10.0.1",
@@ -81,6 +83,7 @@
     "react-redux": "^8.0.5",
     "react-refresh": "^0.11.0",
     "react-router-dom": "^6.6.1",
+    "react-router-sitemap": "^1.2.0",
     "react-toastify": "^9.1.2",
     "redux": "^4.2.0",
     "resolve": "^1.20.0",
@@ -102,7 +105,9 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "GENERATE_SOURCEMAP=false CI=false node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "sitemap": "BABEL_ENV=development babel-node public/sitemapGenerator.js",
+    "predeploy": "npm run sitemap"
   },
   "eslintConfig": {
     "extends": [
@@ -123,11 +128,18 @@
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.22.6",
+    "@babel/core": "^7.22.8",
+    "@babel/node": "^7.22.6",
+    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@babel/preset-react": "^7.22.5",
+    "@babel/register": "^7.22.5",
     "@types/draft-js": "^0.11.10",
     "@types/draftjs-to-html": "^0.8.1",
     "@types/html-to-draftjs": "^1.4.0",
     "@types/mui-image": "^1.0.1",
-    "@types/react-draft-wysiwyg": "^1.13.4"
+    "@types/react-draft-wysiwyg": "^1.13.4",
+    "regenerator-runtime": "^0.13.11"
   },
   "proxy": "http://ec2-52-79-235-11.ap-northeast-2.compute.amazonaws.com/",
   "jest": {
