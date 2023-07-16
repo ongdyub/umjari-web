@@ -27,7 +27,7 @@ const GroupConcertList = (props : any) => {
                     alt="Live from space album cover"
                     onClick={() => setExpanded(!expanded)}
                 />
-                <Collapse sx={{mt:1}} in={expanded} orientation={"vertical"} timeout="auto" unmountOnExit>
+                <Collapse sx={{mt:1, width:'100%'}} in={expanded} orientation={"vertical"} timeout="auto" unmountOnExit>
                     {item.setList.map((item:any, idx:any) => (
                         <Stack key={idx} sx={{width: '100%', cursor: 'pointer', mb: 0.5}} alignItems={'center'} onClick={() => setExpanded(!expanded)}>
 
@@ -39,7 +39,7 @@ const GroupConcertList = (props : any) => {
 
                             <Divider orientation={"horizontal"} sx={{width: '90%'}}/>
 
-                            <Stack direction={"column"} justifyContent={"flex-start"} alignContent={"center"} alignItems={"center"} sx={{width: '90%', mt:0.5}}>
+                            <Stack direction={"row"} justifyContent={"flex-start"} alignContent={"center"} alignItems={"center"} sx={{width: '90%', mt:0.5}}>
                                 <Typography  variant="body2"  sx={{fontSize: 12, color: 'grey', fontWeight: 800}}>{item.musicInfo.shortNameEng}</Typography>
                             </Stack>
                             <Divider orientation={"horizontal"} sx={{width: '90%', mt: 0.5}}/>
