@@ -3,8 +3,7 @@ import {
     Button,
     Card,
     CardActions,
-    CardContent,
-    CardMedia, Chip,
+    Chip,
     Collapse,
     Divider,
     Stack,
@@ -68,7 +67,7 @@ const MyConcertList = (props : any) => {
                     alt="Live from space album cover"
                     onClick={() => setExpanded(!expanded)}
                 />
-                <Collapse sx={{mt:1}} in={expanded} orientation={"vertical"} timeout="auto" unmountOnExit>
+                <Collapse sx={{mt:1, width: '100%'}} in={expanded} orientation={"vertical"} timeout="auto" unmountOnExit>
                     {item.participatedList.map((item : any) => (
                         <Stack sx={{width: '100%', cursor: 'pointer', mb: 0.5}} alignItems={'center'} onClick={() => setExpanded(!expanded)}>
 
@@ -82,7 +81,7 @@ const MyConcertList = (props : any) => {
 
                             <Divider orientation={"horizontal"} sx={{width: '80%'}}/>
 
-                            <Stack direction={"column"} justifyContent={"flex-start"} alignContent={"center"} alignItems={"center"} sx={{width: '80%', mt:0.5}}>
+                            <Stack direction={"row"} justifyContent={"flex-start"} alignContent={"center"} alignItems={"center"} sx={{width: '80%', mt:0.5}}>
                                 <Typography  variant="body2"  sx={{fontSize: 12, color: 'grey', fontWeight: 800}}>{item.nameEng}</Typography>
                             </Stack>
                             <Divider orientation={"horizontal"} sx={{width: '90%', mt: 0.5}}/>
