@@ -117,11 +117,11 @@ const AddConcert = () => {
             window.alert("장소를 입력하세요.")
             return
         }
-        if(!checkDate(date)){
+        if(!checkDate(date) || date === '' || date.length < 1){
             window.alert("날짜 형식을 확인해주세요.")
             return
         }
-        if(!checkTime(time)){
+        if(!checkTime(time) || time === '' || time.length < 1){
             window.alert("시간 형식을 확인해주세요.")
             return
         }
