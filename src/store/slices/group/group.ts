@@ -29,7 +29,8 @@ export interface GroupInfo {
     homepage: string,
     detailIntro: string,
     recruit: boolean,
-    setList : [GroupProgram] | []
+    setList : [GroupProgram] | [],
+    friendCount : number | null
 }
 
 export interface GroupRecruit {
@@ -367,9 +368,14 @@ export const groupSetListAdd = createAsyncThunk(
 
 export const groupSearchGet = createAsyncThunk(
     "group/groupSearchGet",
-    async ({params} : {params : any}, {rejectWithValue}) => {
+    async ({params, token} : {params : any, token : string | null}, {rejectWithValue}) => {
         try {
-            const response = await axios.get('/api/v1/group/',{params : params})
+            const response = await axios.get('/api/v1/group/',{
+                params : params,
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
             return response.data
         }
         catch (err : any) {

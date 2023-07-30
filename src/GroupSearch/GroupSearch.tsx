@@ -9,10 +9,12 @@ import {useSearchParams} from "react-router-dom";
 import {groupSearchGet, groupStateActions, selectGroup} from "../store/slices/group/group";
 import * as React from "react";
 import {scrollToTop} from "../App";
+import {selectUser} from "../store/slices/user/user";
 
 const GroupSearch = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
+    const userState = useSelector(selectUser)
 
     const theme = useTheme();
     const resSize = useMediaQuery(theme.breakpoints.down("md"))
@@ -53,7 +55,7 @@ const GroupSearch = () => {
             sort : "id,ASC",
         }
 
-        dispatch(groupSearchGet({params}))
+        dispatch(groupSearchGet({params, token : userState.accessToken}))
 
         scrollToTop()
 

@@ -24,7 +24,7 @@ const GroupSearchItem = (props : any) => {
                     <Stack direction={"row"}>
                         <Typography sx={{fontSize: 11, fontWeight:600, color: '#606060'}}>{item.region}</Typography>
                         <Divider orientation={"vertical"} sx={{height: '80%', ml:1, mr:1}}/>
-                        {/*<Typography sx={{fontSize: 11, fontWeight:600, color: '#606060'}}>0 명 참여중</Typography>*/}
+                        <Typography sx={{fontSize: 11, fontWeight:600, color: '#606060'}}>{item.friendCount === null ? '참여중인 친구 : 0명' : `참여중인 친구 : ${item.friendCount}명`}</Typography>
                     </Stack>
                 </Stack>
             </Stack>
