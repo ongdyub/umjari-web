@@ -40,7 +40,6 @@ const AddConcert = () => {
     const [isAdminGroup, setIsAdminGroup] = useState(false)
 
     const [title, setTitle] = useState<string>('')
-    const [subTitle, setSubTitle] = useState<string>('')
     const [posterImg, setPosterImg] = useState<string>('https://umjari-image-bucket.s3.ap-northeast-2.amazonaws.com/images/32/25c55d6f-aee6-484f-903a-9f633af3559d.png')
     const [parent, setParent] = useState<any>(0);
     const [child, setChild] = useState<any>(0);
@@ -48,14 +47,8 @@ const AddConcert = () => {
     const [date, setDate] = useState<string>('')
     const [time, setTime] = useState<string>('')
     const [conductor, setConductor] = useState<string>('')
-    const [fee, setFee] = useState<string>('')
-    const [concertRunningTime, setConcertRunningTime] = useState<string>('')
-    const [host, setHost] = useState<string>('')
-    const [support, setSupport] = useState<string>('')
-    const [qna, setQna] = useState<string>('')
-    const [solist, setSolist] = useState<string>('')
 
-    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    const datePattern = /^[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9]|3[0-1])$/;
     const checkDate = (dateString : string) => {
         if(dateString === ''){
             return true
@@ -102,16 +95,6 @@ const AddConcert = () => {
             window.alert("제목을 입력하세요")
             return
         }
-        setSubTitle(subTitle.trim())
-        if(subTitle === '' || subTitle.length < 1){
-            window.alert("부제를 입력하세요.")
-            return
-        }
-        setConductor(conductor.trim())
-        if(conductor === '' || conductor.length < 1){
-            window.alert("지휘자를 입력하세요. 없는 경우에는 . 을 입력해 주세요.")
-            return
-        }
         setRegionDetail(regionDetail.trim())
         if(regionDetail === '' || regionDetail.length < 1){
             window.alert("장소를 입력하세요.")
@@ -125,40 +108,29 @@ const AddConcert = () => {
             window.alert("시간 형식을 확인해주세요.")
             return
         }
-        if(fee === ''|| fee.length < 1){
-            window.alert("가격을 입력해주세요.")
-            return
-        }
-        if(parseInt(fee) < 0 || !Number.isInteger(parseFloat(fee))){
-            window.alert("가격은 0 이상의 정수여야합니다.")
-            return
-        }
-        if(concertRunningTime === ''|| concertRunningTime.length < 1){
-            window.alert("러닝타임을 입력해주세요.")
-            return
-        }
-        if(parseInt(concertRunningTime) <= 0 || !Number.isInteger(parseFloat(concertRunningTime))){
-            window.alert("러닝타임은 0보다 큰 정수여야합니다.")
+        setConductor(conductor.trim())
+        if(conductor === '' || conductor.length < 1){
+            window.alert("지휘자를 입력하세요. 없는 경우에는 . 을 입력해 주세요.")
             return
         }
 
         const data = {
             title : title,
-            subtitle : subTitle,
+            subtitle : '.',
             conductor : conductor,
-            host : host,
-            support : support,
-            qna : qna,
+            host : '',
+            support : '',
+            qna : '',
             concertInfo : '.',
             posterImg : posterImg,
             concertDate : date + " " + time,
-            concertRunningTime : concertRunningTime,
-            fee : fee,
+            concertRunningTime : 100,
+            fee : 0,
             regionParent : region_parents[parent],
             regionChild : region_child[parent][child],
             regionDetail : regionDetail,
             musicIds : [],
-            solist : solist
+            solist : ''
         }
 
         const result = await dispatch(concertPost({data, token : userState.accessToken, id : id}))
@@ -236,17 +208,7 @@ const AddConcert = () => {
                                     onChange={(e) => setTitle(e.target.value)}
                                 />
                             </FormControl>
-                            <FormControl variant="standard" sx={{width: '90%'}}>
-                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">부제를 입력하세요</InputLabel>
-                                <Input
-                                    id="standard-adornment-amount"
-                                    sx={{fontSize: 12, pt: 0.5}}
-                                    value={subTitle}
-                                    onChange={(e) => setSubTitle(e.target.value)}
-                                />
-                            </FormControl>
                         </Stack>
-                        <Divider sx={{width: '90%'}} />
                         <Stack direction={"row"} sx={{mt:1.5}} alignItems={"center"} alignContent={"center"}>
                             <FormControl sx={{width: '35%'}}>
                                 <Select
@@ -308,7 +270,7 @@ const AddConcert = () => {
                         </Stack>
                         <Stack direction={"row"} sx={{mt:1.5}} alignItems={"center"} alignContent={"center"}>
                             <FormControl variant="standard" sx={{width: '40%'}}>
-                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">지휘자를 입력하세요</InputLabel>
+                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">지휘자를 입력하세요. 없는 경우 . 를 입력하세요</InputLabel>
                                 <Input
                                     id="standard-adornment-amount"
                                     sx={{fontSize: 12, pt: 0.5}}
@@ -316,79 +278,17 @@ const AddConcert = () => {
                                     onChange={(e) => setConductor(e.target.value)}
                                 />
                             </FormControl>
-                            <FormControl variant="standard" sx={{ml: '10%', width: '40%'}}>
-                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">협연자를 입력하세요</InputLabel>
-                                <Input
-                                    id="standard-adornment-amount"
-                                    sx={{fontSize: 12, pt: 0.5}}
-                                    value={solist}
-                                    onChange={(e) => setSolist(e.target.value)}
-                                />
-                            </FormControl>
                         </Stack>
-                        <Stack direction={"row"} sx={{mt:1.5}} alignItems={"center"} alignContent={"center"}>
-                            <FormControl variant="standard" sx={{width: '40%'}}>
-                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">러닝타임을 입력하세요</InputLabel>
-                                <Input
-                                    id="standard-adornment-amount"
-                                    type={"number"}
-                                    sx={{fontSize: 12, pt: 0.5}}
-                                    value={concertRunningTime}
-                                    onChange={(e) => setConcertRunningTime(e.target.value)}
-                                />
-                            </FormControl>
-                            <FormControl variant="standard" sx={{ml: '10%', width: '40%'}}>
-                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">가격을 입력하세요</InputLabel>
-                                <Input
-                                    id="standard-adornment-amount"
-                                    sx={{fontSize: 12, pt: 0.5}}
-                                    type={"number"}
-                                    value={fee}
-                                    onChange={(e) => setFee(e.target.value)}
-                                />
-                            </FormControl>
-                        </Stack>
-                        <Stack direction={"row"} sx={{mt:1.5, mb: 1}} alignItems={"center"} alignContent={"center"}>
-                            <FormControl variant="standard" sx={{width: '40%'}}>
-                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">후원을 입력하세요</InputLabel>
-                                <Input
-                                    id="standard-adornment-amount"
-                                    sx={{fontSize: 12, pt: 0.5}}
-                                    value={support}
-                                    onChange={(e) => setSupport(e.target.value)}
-                                />
-                            </FormControl>
-                            <FormControl variant="standard" sx={{ml: '10%', width: '40%'}}>
-                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">주최자를 입력하세요</InputLabel>
-                                <Input
-                                    id="standard-adornment-amount"
-                                    sx={{fontSize: 12, pt: 0.5}}
-                                    value={host}
-                                    onChange={(e) => setHost(e.target.value)}
-                                />
-                            </FormControl>
-                        </Stack>
-                        <Stack direction={"row"} sx={{mt:1.5, mb: 1}}>
-                            <FormControl variant="standard" sx={{width: '40%'}}>
-                                <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">문의를 입력하세요</InputLabel>
-                                <Input
-                                    id="standard-adornment-amount"
-                                    sx={{fontSize: 12, pt: 0.5}}
-                                    value={qna}
-                                    onChange={(e) => setQna(e.target.value)}
-                                />
-                            </FormControl>
-                        </Stack>
-                        <Stack direction={"row"} sx={{mt:1.5, width: '100%', pr: 5}} alignItems={"end"} justifyContent={'flex-end'} alignContent={"center"}>
+                        <Stack direction={"row"} sx={{mt:1.5, width: '90%'}} alignItems={"end"} justifyContent={'flex-end'} alignContent={"center"}>
                             <Button size={"small"} variant={'outlined'} sx={{ml : 1,maxWidth: 80, minWidth: 80, fontSize: 11}} onClick={() => navigate(`/group/${id}/recruit`)} >취소</Button>
                             <Button size={"small"} variant={'contained'} sx={{ml : 1,maxWidth: 80, minWidth: 80, fontSize: 11}} onClick={handleAddConcert} >등록</Button>
                         </Stack>
                     </Stack>
                 </Stack>
                 <Stack direction={"column"} justifyContent={'center'} alignItems={'center'} sx={{mt: 2, left: '50%'}}>
-                    <Typography variant={'h6'} sx={{width: '90%', mt:1}}>곡과 연주자 설정은 콘서트 등록이 완료된 뒤, 콘서트 페이지에서 진행해주시면 됩니다.</Typography>
+                    <Typography variant={'h6'} sx={{width: '90%', mt:1}}>곡과 연주자 설정 및 구체적인 사항(협연자, 러닝타임, 가격, 후원 등)은 콘서트 등록이 완료된 뒤, 콘서트 페이지에서 진행해주시면 됩니다.</Typography>
                     <Typography variant={'subtitle2'} color={'error'} sx={{width: '90%', mt:1}}>비정상적인 요청을 반복적으로 수행시 해당 단체 및 계정에 대한 제제가 있습니다.</Typography>
-                    <Typography variant='body1' color={'grey'} sx={{width: '90%', mt:1}}>별도의 포스터 이미지를 업로드 하지 않으면 기본 이미지로 설정이 되며, 콘서트 페이지에서 추후 변경이 가능합니다.</Typography>
+                    <Typography variant='body1' color={'grey'} sx={{width: '90%', mt:1}}>별도의 포스터 이미지를 업로드 하지 않으면 단체 이미지나 기본 이미지로 설정이 되며, 콘서트 페이지에서 추후 변경이 가능합니다.</Typography>
                 </Stack>
             </Stack>
         )
