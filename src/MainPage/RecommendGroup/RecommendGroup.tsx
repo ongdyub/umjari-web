@@ -5,6 +5,7 @@ import {useEffect} from "react";
 import {groupSearchGet, groupStateActions, selectGroup} from "../../store/slices/group/group";
 import {AppDispatch} from "../../store";
 import {useNavigate} from "react-router-dom";
+import {selectUser} from "../../store/slices/user/user";
 
 const RecommendGroup = () => {
 
@@ -13,6 +14,7 @@ const RecommendGroup = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const groupSelector = useSelector(selectGroup)
+    const userState = useSelector(selectUser)
 
     useEffect(() => {
         const params = {
@@ -27,7 +29,7 @@ const RecommendGroup = () => {
             sort : "id,DESC",
         }
 
-        dispatch(groupSearchGet({params}))
+        dispatch(groupSearchGet({params, token : userState.accessToken}))
 
         return () => {
             dispatch(groupStateActions.resetGroupSearchList())
