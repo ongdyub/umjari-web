@@ -286,7 +286,7 @@ const AddConcert = () => {
                     </Stack>
                 </Stack>
                 <Stack direction={"column"} justifyContent={'center'} alignItems={'center'} sx={{mt: 2, left: '50%'}}>
-                    <Typography variant={'h6'} sx={{width: '90%', mt:1}}>곡과 연주자 설정 및 구체적인 사항(협연자, 러닝타임, 가격, 후원 등)은 콘서트 등록이 완료된 뒤, 콘서트 페이지에서 진행해주시면 됩니다.</Typography>
+                    <Typography variant={'h6'} sx={{width: '90%', mt:1}}>부제, 연주곡과 연주자 파트별 추가 및 구체적인 사항(협연자, 러닝타임, 가격, 후원 등)은 콘서트 등록이 완료된 뒤, 콘서트 페이지에서 진행해주시면 됩니다.</Typography>
                     <Typography variant={'subtitle2'} color={'error'} sx={{width: '90%', mt:1}}>비정상적인 요청을 반복적으로 수행시 해당 단체 및 계정에 대한 제제가 있습니다.</Typography>
                     <Typography variant='body1' color={'grey'} sx={{width: '90%', mt:1}}>별도의 포스터 이미지를 업로드 하지 않으면 단체 이미지나 기본 이미지로 설정이 되며, 콘서트 페이지에서 추후 변경이 가능합니다.</Typography>
                 </Stack>
