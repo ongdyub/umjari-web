@@ -77,12 +77,12 @@ const ConcertItem = (props: any) => {
                             <Typography sx={{fontWeight: 'bold', fontSize: '15px'}} variant="h6" gutterBottom>
                                 {item.concertRunningTime}
                             </Typography>
-                            {/*<Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>*/}
-                            {/*    참여중인 친구*/}
-                            {/*</Typography>*/}
-                            {/*<Typography sx={{ mb: 1.5 }} color="text.secondary">*/}
-                            {/*    0명*/}
-                            {/*</Typography>*/}
+                            <Typography sx={{fontWeight: 'bold', fontSize: '12px'}} color="text.secondary" variant="subtitle2" gutterBottom>
+                                참여중인 친구
+                            </Typography>
+                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                {item.friendCount === null ? '로그인이 필요합니다.' : item.friendCount}
+                            </Typography>
                         </CardContent>
                         <Stack direction="row" justifyContent="flex-start" alignItems="center" sx={{pl: '10px',width: '100%'}}>
                             {/*<IconButton aria-label="add to favorites">*/}

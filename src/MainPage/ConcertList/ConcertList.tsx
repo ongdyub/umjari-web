@@ -7,10 +7,12 @@ import {useEffect, useState} from "react";
 import {AppDispatch} from "../../store";
 import * as React from "react";
 import {useSearchParams} from "react-router-dom";
+import {selectUser} from "../../store/slices/user/user";
 
 const ConcertList = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
+    const userState = useSelector(selectUser)
 
     const dispatch = useDispatch<AppDispatch>();
     const theme = useTheme();
@@ -62,7 +64,7 @@ const ConcertList = () => {
             sort : "concertDate,ASC",
         }
 
-        dispatch(dashboardList({params}))
+        dispatch(dashboardList({params : params, token : userState.accessToken}))
 
         return () => {
             dispatch(concertStateActions.resetConcertList())
@@ -115,7 +117,7 @@ const ConcertList = () => {
             size: 10,
             sort : "concertDate,ASC",
         }
-        dispatch(dashboardList({params}))
+        dispatch(dashboardList({params : params, token : userState.accessToken}))
 
     },[searchParams])
 
