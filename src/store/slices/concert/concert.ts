@@ -53,7 +53,8 @@ export interface Concert {
     region: string,
     regionDetail: string,
     solist: string,
-    setList : [GroupSetList]
+    setList : [GroupSetList],
+    friendCount : number | null
 }
 
 export interface ConcertList {
@@ -82,9 +83,14 @@ const initialState: ConcertState = {
 
 export const dashboardList = createAsyncThunk(
     "concert/dashboardList",
-    async ({params} : {params : any}, {rejectWithValue}) => {
+    async ({params, token} : {params : any, token : string | null}, {rejectWithValue}) => {
         try {
-            const response = await axios.get('/api/v1/concert/dashboard/',{params : params})
+            const response = await axios.get('/api/v1/concert/dashboard/',{
+                params : params,
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
             return response.data
         }
         catch (err : any) {
