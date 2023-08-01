@@ -116,7 +116,7 @@ const AddConcert = () => {
 
         const data = {
             title : title,
-            subtitle : '.',
+            subtitle : '',
             conductor : conductor,
             host : '',
             support : '',
@@ -130,7 +130,8 @@ const AddConcert = () => {
             regionChild : region_child[parent][child],
             regionDetail : regionDetail,
             musicIds : [],
-            solist : ''
+            solist : '',
+            link: 'link'
         }
 
         const result = await dispatch(concertPost({data, token : userState.accessToken, id : id}))
