@@ -1,6 +1,6 @@
 import {
     Box,
-    Button, CircularProgress,
+    Button, Chip, CircularProgress,
     Divider,
     FormControl,
     Input,
@@ -50,6 +50,7 @@ const GroupInfo = (props : any) => {
     const [regionDetail, setRegionDetail] = useState<string>('')
     const [homepage, setHomepage] = useState<string>('')
     const [detailIntro, setDetailIntro] = useState<string>('')
+    const [tagItem, setTagItem] = useState<string>('')
 
     const handleLinkClick = (event : any) => {
         if (groupData.homepage === "" || groupData.homepage === null) {
@@ -109,6 +110,18 @@ const GroupInfo = (props : any) => {
             return
         }
 
+        const tagRegex = /,+/g;
+        const tagString = tagItem.replace(tagRegex, ',');
+        const tagList = tagString.split(',')
+        if(tagList.length > 10){
+            window.alert("최대 10개의 태그만 만들 수 있습니다.")
+            return
+        }
+        if(tagList.some(str => str.length >= 11)){
+            window.alert("한 태그는 최대 10자까지 가능합니다.")
+            return
+        }
+
         const data = {
             name : name,
             logo : logo,
@@ -120,7 +133,8 @@ const GroupInfo = (props : any) => {
             regionChild : region_child[parent][child],
             regionDetail : regionDetail,
             homepage : homepage,
-            detailIntro : detailIntro
+            detailIntro : detailIntro,
+            tags : tagList
         }
 
         const result = await dispatch(groupInfoPut({data, token : userState.accessToken, id : id}))
@@ -151,6 +165,7 @@ const GroupInfo = (props : any) => {
             setRegionDetail(groupData.regionDetail)
             setHomepage(groupData.homepage)
             setDetailIntro(groupData.detailIntro)
+            setTagItem(groupData.tags.join(','))
 
             if(userGroup !== null && userGroup !== undefined && userGroup.memberType === 'ADMIN'){
                 setIsAdminGroup(true)
@@ -337,6 +352,17 @@ const GroupInfo = (props : any) => {
                                     sx={{width: '90%', fontSize:11}}
                                 />
                             </Stack>
+                            <Stack sx={{mt:1}} direction={"row"} alignItems={"center"} alignContent={"center"}>
+                                <FormControl variant="standard" sx={{width: '90%'}}>
+                                    <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">한 태그당 최대 10자, 최대 10개 등록 가능하며 쉼표로 구분해서 입력해주세요.</InputLabel>
+                                    <Input
+                                        id="standard-adornment-amount"
+                                        sx={{fontSize: 12, pt: 0.5}}
+                                        value={tagItem}
+                                        onChange={(e) => setTagItem(e.target.value)}
+                                    />
+                                </FormControl>
+                            </Stack>
                         </>
                         :
                         <>
@@ -377,6 +403,26 @@ const GroupInfo = (props : any) => {
                                 <Divider orientation={"vertical"} sx={{height: '70%', ml:1, mr:1}} />
                                 <Typography sx={{ml:1.5, mr:1.5, pr:1}}>{groupData.detailIntro}</Typography>
                             </Stack>
+
+                            {
+                                groupData.tags.length < 1 ?
+                                    null
+                                    :
+                                    (
+                                        <Stack sx={{ mt: 2 }} direction={"row"} alignContent={"center"} alignItems={"center"}>
+                                            <Typography sx={{fontSize: 17, fontWeight: 900, minWidth: 70}}>태그</Typography>
+                                            <Divider orientation={"vertical"} sx={{height: '70%', ml:1, mr:1}} />
+                                            <Stack direction={'row'} sx={{width: 'calc(100% - 90px)'}} flexWrap={'wrap'}>
+                                                {
+                                                    groupData.tags.map((item : string, idx : number) => (
+                                                        <Chip sx={{mr : 1, mb:1}} key={idx} label={`#${item}`} />
+                                                    ))
+                                                }
+                                            </Stack>
+
+                                        </Stack>
+                                    )
+                            }
                         </>
                 }
                 <Stack direction={"row"} sx={{mt:2, width: '100%', pr: 5}} alignItems={"end"} justifyContent={'flex-end'} alignContent={"center"}>
