@@ -42,6 +42,7 @@ const GroupSearch = () => {
         const name = searchParams.get('name')
         const page = searchParams.get('page')
         const inst = searchParams.get('inst')
+        const tags = searchParams.get('tags')
 
         const params = {
             regionParent : regionParent,
@@ -50,6 +51,7 @@ const GroupSearch = () => {
             musicName: musicName === '' ? null : musicName,
             name : name === '' ? null : name,
             instruments : inst === '' ? null : inst,
+            tags : tags === '' ? null : tags,
             page : page === null || page === '' ? 1 : page,
             size: 12,
             sort : "id,ASC",

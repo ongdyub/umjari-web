@@ -64,6 +64,7 @@ const GroupSearchMenu = () => {
     const [composer, setComposer] = useState('')
     const [musicName, setMusicName] = useState('')
     const [name, setName] = useState('')
+    const [tag, setTag] = useState<string>('')
 
     const handleParentChange = (event: SelectChangeEvent) => {
         setParent(event.target.value);
@@ -84,6 +85,12 @@ const GroupSearchMenu = () => {
         searchParams.set('page','1')
         searchParams.set('inst',instEnums.join(','))
 
+        const tagRegex = /,+/g;
+        const tagString = tag.replace(tagRegex, ',');
+        const trimRegex = /^,|,$/g
+        const tags = tagString.replace(trimRegex, '')
+        searchParams.set('tags',tags)
+
         setSearchParams(searchParams)
     }
 
@@ -94,6 +101,7 @@ const GroupSearchMenu = () => {
         setMusicName('')
         setName('')
         setInstruments([])
+        setTag('')
     }
 
     useEffect(() => {
@@ -147,6 +155,11 @@ const GroupSearchMenu = () => {
         }
         else{
             setName('')
+        }
+
+        const tag = searchParams.get('tags')
+        if(tag !== null && tag !== undefined){
+            setTag(tag)
         }
     },[])
 
@@ -297,7 +310,7 @@ const GroupSearchMenu = () => {
                                     id="standard-search"
                                     type="search"
                                     variant="standard"
-                                    placeholder={"작곡가를 입력하세요"}
+                                    placeholder={"단체명을 입력하세요"}
                                     inputProps={{
                                         style: {
                                             fontSize: 12, // adjust the font size here
@@ -305,6 +318,36 @@ const GroupSearchMenu = () => {
                                     }}
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            handleSearchBtn();
+                                        }
+                                    }}
+                                    sx={{width: '70%', fontSize: 12}}
+                                />
+                            </Stack>
+
+                            <Divider sx={{width: '90%', mt:1.5, mb: 1.5}} />
+
+                            <Stack direction={'row'} sx={{width:'100%'}} alignItems={'center'} justifyContent={'center'}>
+                                <Typography sx={{width: '100%', mt: 1.5, fontWeight: 300, fontSize: 15, textAlign:' center'}}>
+                                    태그
+                                </Typography>
+                            </Stack>
+
+                            <Stack direction={'row'} sx={{width:'100%'}} alignItems={'flex-end'} justifyContent={'space-around'}>
+                                <TextField
+                                    id="standard-search"
+                                    type="search"
+                                    variant="standard"
+                                    placeholder={"태그를 입력하세요, 쉼표로 구분합니다."}
+                                    inputProps={{
+                                        style: {
+                                            fontSize: 12, // adjust the font size here
+                                        },
+                                    }}
+                                    value={tag}
+                                    onChange={(e) => setTag(e.target.value)}
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter') {
                                             handleSearchBtn();
@@ -459,7 +502,7 @@ const GroupSearchMenu = () => {
                                 id="standard-search"
                                 type="search"
                                 variant="standard"
-                                placeholder={"작곡가를 입력하세요"}
+                                placeholder={"단체명을 입력하세요"}
                                 inputProps={{
                                     style: {
                                         fontSize: 10, // adjust the font size here
@@ -467,6 +510,36 @@ const GroupSearchMenu = () => {
                                 }}
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        handleSearchBtn();
+                                    }
+                                }}
+                                sx={{width: '80%', fontSize: 10}}
+                            />
+                        </Stack>
+
+                        <Divider sx={{width: '90%', mt:1.5, mb: 1.5}} />
+
+                        <Stack direction={'row'} sx={{width:'100%'}} alignItems={'center'} justifyContent={'center'}>
+                            <Typography sx={{width: '100%', mt: 1.5, fontWeight: 300, fontSize: 15, textAlign:' center'}}>
+                                태그
+                            </Typography>
+                        </Stack>
+
+                        <Stack direction={'row'} sx={{width:'100%'}} alignItems={'flex-end'} justifyContent={'space-around'}>
+                            <TextField
+                                id="standard-search"
+                                type="search"
+                                variant="standard"
+                                placeholder={"태그를 입력하세요, 쉼표로 구분합니다."}
+                                inputProps={{
+                                    style: {
+                                        fontSize: 10, // adjust the font size here
+                                    },
+                                }}
+                                value={tag}
+                                onChange={(e) => setTag(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') {
                                         handleSearchBtn();
