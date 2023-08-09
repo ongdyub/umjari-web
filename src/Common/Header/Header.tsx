@@ -80,7 +80,7 @@ const Header = () => {
             navigate(`/myconcert/${userState.profileName}/selfintro`)
         }
         else if(setting === '내정보 관리'){
-            navigate(`/manage/${userState.profileName}/friend`)
+            navigate(`/manage/${userState.profileName}/account`)
         }
         else if(setting === '로그아웃'){
             dispatch(userActions.logoutUser())

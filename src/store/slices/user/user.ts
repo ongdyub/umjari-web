@@ -73,6 +73,46 @@ export const valEmailPost = createAsyncThunk(
     }
 )
 
+export const findEmailPost = createAsyncThunk(
+    "user/findEmailPost",
+    async (data: Partial<SignUser>, {rejectWithValue}) => {
+        try {
+            const response = await axios.post('/api/v1/auth/id-find/', data);
+            return response.data;
+        } catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"]);
+        }
+    }
+)
+
+export const resetPw = createAsyncThunk(
+    "user/resetPw",
+    async (data: Partial<SignUser>, {rejectWithValue}) => {
+        try {
+            const response = await axios.post('/api/v1/auth/password-reset/', data);
+            return response.data;
+        } catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"]);
+        }
+    }
+)
+
+export const changePw = createAsyncThunk(
+    "user/changePw",
+    async (data: {currentPassword : string, newPassword : string, token : string | null | undefined}, {rejectWithValue}) => {
+        try {
+            const response = await axios.put('/api/v1/auth/password/', data, {
+                headers: {
+                    Authorization: `Bearer  ${data.token}`,
+                },
+            });
+            return response.data;
+        } catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"]);
+        }
+    }
+)
+
 export const valCode = createAsyncThunk(
     "user/valCode",
     async (data: any, {rejectWithValue}) => {

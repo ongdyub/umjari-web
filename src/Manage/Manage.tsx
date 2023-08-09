@@ -7,6 +7,7 @@ import {useEffect} from "react";
 import {friendStateActions, isSelfGet, selectFriend} from "../store/slices/manage/friend/friend";
 import Friend from "./Friend/Friend";
 import Community from "./Community/Community";
+import AccountInfo from "./AccountInfo/AccountInfo";
 
 const Manage = () => {
 
@@ -21,6 +22,10 @@ const Manage = () => {
     const userState = useSelector(selectUser)
     const manageState = useSelector(selectFriend)
 
+    const onClickGoAccountInfo = () => {
+        navigate(`/manage/${profileName}/account`)
+    }
+
     const onClickGoFriend = () => {
         navigate(`/manage/${profileName}/friend`)
     }
@@ -31,6 +36,7 @@ const Manage = () => {
 
 
     const myButtons = [
+        <Button onClick={onClickGoAccountInfo} sx={{fontSize: res750 ? 10 : 12}} key="friend">계정정보</Button>,
         <Button onClick={onClickGoFriend} sx={{fontSize: res750 ? 10 : 12}} key="friend">친구관계</Button>,
         <Button onClick={onClickGoCommunity} sx={{fontSize: res750 ? 10 : 12}} key="community">커뮤니티</Button>,
     ]
@@ -65,6 +71,7 @@ const Manage = () => {
                     <Routes>
                         <Route path="friend" element={<Friend />}/>
                         <Route path="community" element={<Community />}/>
+                        <Route path="account" element={<AccountInfo />} />
                     </Routes>
                 </Stack>
             </Stack>

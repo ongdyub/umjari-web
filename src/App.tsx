@@ -14,6 +14,7 @@ import Group from "./Group/Group";
 import AddConcert from "./AddConcert/AddConcert";
 import Manage from "./Manage/Manage";
 import About from "./About/About";
+import Account from "./Account/Account";
 
 declare module '@mui/material/styles' {
     interface BreakpointOverrides {
@@ -113,6 +114,7 @@ function App() {
                         <Route path="/concert/:id/*" element={<Concert/>}/>
                         <Route path="/group/:id/*" element={<Group/>}/>
                         <Route path="/add/:id" element={<AddConcert/>}/>
+                        <Route path="/account" element={<Account/>}/>
                     </Routes>
                 </BrowserRouter>
             </div>

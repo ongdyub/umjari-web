@@ -30,7 +30,8 @@ export interface GroupInfo {
     detailIntro: string,
     recruit: boolean,
     setList : [GroupProgram] | [],
-    friendCount : number | null
+    friendCount : number | null,
+    tags: [string] | []
 }
 
 export interface GroupRecruit {

@@ -54,7 +54,8 @@ export interface Concert {
     regionDetail: string,
     solist: string,
     setList : [GroupSetList],
-    friendCount : number | null
+    friendCount : number | null,
+    link: string
 }
 
 export interface ConcertList {

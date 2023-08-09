@@ -3,7 +3,7 @@ import {
     Button, CircularProgress,
     Divider, FormControl,
     Input,
-    InputLabel, MenuItem, Select, SelectChangeEvent,
+    InputLabel, Link, MenuItem, Select, SelectChangeEvent,
     Stack,
     Typography,
     useMediaQuery,
@@ -92,6 +92,7 @@ const ConcertInfo = (props : any) => {
     const [support, setSupport] = useState<string>('')
     const [qna, setQna] = useState<string>('')
     const [solist, setSolist] = useState<string>('')
+    const [link, setLink] = useState<string>('')
 
     const datePattern = /^\d{4}-\d{2}-\d{2}$/;
     const checkDate = (dateString : string) => {
@@ -144,11 +145,11 @@ const ConcertInfo = (props : any) => {
             window.alert("제목을 입력하세요")
             return
         }
-        setSubTitle(subTitle.trim())
-        if(subTitle === '' || subTitle.length < 1){
-            window.alert("부제를 입력하세요.")
-            return
-        }
+        // setSubTitle(subTitle.trim())
+        // if(subTitle === '' || subTitle.length < 1){
+        //     window.alert("부제를 입력하세요.")
+        //     return
+        // }
         setConductor(conductor.trim())
         if(conductor === '' || conductor.length < 1){
             window.alert("지휘자를 입력하세요. 없는 경우에는 . 을 입력해 주세요.")
@@ -167,22 +168,22 @@ const ConcertInfo = (props : any) => {
             window.alert("시간 형식을 확인해주세요.")
             return
         }
-        if(fee === ''|| fee.length < 1){
-            window.alert("가격을 입력해주세요.")
-            return
-        }
-        if(parseInt(fee) < 0 || !Number.isInteger(parseFloat(fee))){
-            window.alert("가격은 0 이상의 정수여야합니다.")
-            return
-        }
-        if(concertRunningTime === ''|| concertRunningTime.length < 1){
-            window.alert("러닝타임을 입력해주세요.")
-            return
-        }
-        if(parseInt(concertRunningTime) <= 0 || !Number.isInteger(parseFloat(concertRunningTime))){
-            window.alert("러닝타임은 0보다 큰 정수여야합니다.")
-            return
-        }
+        // if(fee === ''|| fee.length < 1){
+        //     window.alert("가격을 입력해주세요.")
+        //     return
+        // }
+        // if(parseInt(fee) < 0 || !Number.isInteger(parseFloat(fee))){
+        //     window.alert("가격은 0 이상의 정수여야합니다.")
+        //     return
+        // }
+        // if(concertRunningTime === ''|| concertRunningTime.length < 1){
+        //     window.alert("러닝타임을 입력해주세요.")
+        //     return
+        // }
+        // if(parseInt(concertRunningTime) <= 0 || !Number.isInteger(parseFloat(concertRunningTime))){
+        //     window.alert("러닝타임은 0보다 큰 정수여야합니다.")
+        //     return
+        // }
 
         const data = {
             title : title,
@@ -199,7 +200,8 @@ const ConcertInfo = (props : any) => {
             regionParent : region_parents[parent],
             regionChild : region_child[parent][child],
             regionDetail : regionDetail,
-            solist : solist
+            solist : solist,
+            link : link
         }
 
         const result = await dispatch(concertDetailPut({data, token : userState.accessToken, id : id}))
@@ -228,6 +230,7 @@ const ConcertInfo = (props : any) => {
             setHost(concertData.host)
             setSupport(concertData.support)
             setQna(concertData.qna)
+            setLink(concertData.link)
             const regionList = concertData.region.split(" ")
             if(region_parents.indexOf(regionList[0]) > -1){
                 setParent(region_parents.indexOf(regionList[0]))
@@ -398,7 +401,6 @@ const ConcertInfo = (props : any) => {
                                     <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">러닝타임을 입력하세요</InputLabel>
                                     <Input
                                         id="standard-adornment-amount"
-                                        type={"number"}
                                         sx={{fontSize: 12, pt: 0.5}}
                                         value={concertRunningTime}
                                         onChange={(e) => setConcertRunningTime(e.target.value)}
@@ -409,7 +411,6 @@ const ConcertInfo = (props : any) => {
                                     <Input
                                         id="standard-adornment-amount"
                                         sx={{fontSize: 12, pt: 0.5}}
-                                        type={"number"}
                                         value={fee}
                                         onChange={(e) => setFee(e.target.value)}
                                     />
@@ -443,6 +444,15 @@ const ConcertInfo = (props : any) => {
                                         sx={{fontSize: 12, pt: 0.5}}
                                         value={qna}
                                         onChange={(e) => setQna(e.target.value)}
+                                    />
+                                </FormControl>
+                                <FormControl variant="standard" sx={{ml: '10%', width: '40%'}}>
+                                    <InputLabel sx={{fontSize : 11, pt: 1}} htmlFor="standard-adornment-amount">안내(예매)링크를 입력하세요</InputLabel>
+                                    <Input
+                                        id="standard-adornment-amount"
+                                        sx={{fontSize: 12, pt: 0.5}}
+                                        value={link}
+                                        onChange={(e) => setLink(e.target.value)}
                                     />
                                 </FormControl>
                             </Stack>
@@ -489,6 +499,15 @@ const ConcertInfo = (props : any) => {
                                 <Typography variant={"subtitle2"} sx={fontTitle}>문의</Typography>
                                 <Typography>{concertData.qna}</Typography>
                             </Stack>
+                            {
+                                concertData.link === '' || concertData.link.length < 1 ?
+                                    null
+                                    :
+                                    <Stack direction={"row"} sx={{mt:1.5, pr: 2}} alignItems={"center"} alignContent={"center"}>
+                                        <Typography variant={"subtitle2"} sx={fontTitle}>예매</Typography>
+                                        <Link href={concertData.link} sx={{cursor:'pointer'}} target="_blank">링크 바로가기</Link>
+                                    </Stack>
+                            }
                         </>
                 }
                 <Stack direction={"row"} sx={{mt:1.5, width: '100%', pr: 5}} alignItems={"end"} justifyContent={'flex-end'} alignContent={"center"}>
