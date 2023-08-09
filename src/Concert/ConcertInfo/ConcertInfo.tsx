@@ -3,7 +3,7 @@ import {
     Button, CircularProgress,
     Divider, FormControl,
     Input,
-    InputLabel, MenuItem, Select, SelectChangeEvent,
+    InputLabel, Link, MenuItem, Select, SelectChangeEvent,
     Stack,
     Typography,
     useMediaQuery,
@@ -503,9 +503,9 @@ const ConcertInfo = (props : any) => {
                                 concertData.link === '' || concertData.link.length < 1 ?
                                     null
                                     :
-                                    <Stack direction={"row"} sx={{mt:1.5}} alignItems={"center"} alignContent={"center"}>
+                                    <Stack direction={"row"} sx={{mt:1.5, pr: 2}} alignItems={"center"} alignContent={"center"}>
                                         <Typography variant={"subtitle2"} sx={fontTitle}>예매</Typography>
-                                        <Typography>{concertData.link}</Typography>
+                                        <Link href={concertData.link} sx={{cursor:'pointer'}} target="_blank">링크 바로가기</Link>
                                     </Stack>
                             }
                         </>
