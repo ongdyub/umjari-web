@@ -97,6 +97,22 @@ export const resetPw = createAsyncThunk(
     }
 )
 
+export const changePw = createAsyncThunk(
+    "user/changePw",
+    async (data: {currentPassword : string, newPassword : string, token : string | null | undefined}, {rejectWithValue}) => {
+        try {
+            const response = await axios.put('/api/v1/auth/password/', data, {
+                headers: {
+                    Authorization: `Bearer  ${data.token}`,
+                },
+            });
+            return response.data;
+        } catch (err : any) {
+            return rejectWithValue(err.response.data["errorCode"]);
+        }
+    }
+)
+
 export const valCode = createAsyncThunk(
     "user/valCode",
     async (data: any, {rejectWithValue}) => {

@@ -128,7 +128,7 @@ const Account = () => {
                     <Typography variant={'body2'}>적어주신 이메일로 임시 비밀번호가 전송됩니다.</Typography>
                 </Stack>
                 <Stack sx={{width: '100%', mt:1}} direction={'row'}>
-                    <Typography variant={'body2'}>변경된 비밀번호로 로그인 후 변경 바랍니다.</Typography>
+                    <Typography variant={'body2'}>변경된 비밀번호로 로그인 후 내정보 관리 탭에서 변경 바랍니다.</Typography>
                 </Stack>
 
                 <Divider sx={{width: '100%', mt:2, mb:2}} />
