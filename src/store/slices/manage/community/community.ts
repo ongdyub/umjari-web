@@ -50,7 +50,14 @@ export interface myRepliedPost {
     likeCount: number,
     createdAt: string,
     liked: boolean,
-    author: boolean
+    author: boolean,
+    isAnonymous : boolean,
+    nickname : string,
+    authorInfo : {
+        id : number,
+        profileImage : string,
+        profileName : string
+    }
 }
 
 export interface myRepliedPostList {

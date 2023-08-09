@@ -1,9 +1,8 @@
 import {Divider, Pagination, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import * as React from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUser} from "../../store/slices/user/user";
-import {selectFriend} from "../../store/slices/manage/friend/friend";
 import {AppDispatch} from "../../store";
 import {useEffect, useState} from "react";
 import {
@@ -19,8 +18,6 @@ const Community = () => {
 
     const theme = useTheme();
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
-
-    const {profileName} = useParams()
 
     const navigate = useNavigate()
 
@@ -201,6 +198,7 @@ const Community = () => {
                     <Stack onClick={() => navigate(`/community/${item.board}/${item.id}`)} direction={'row'} sx={{cursor : 'pointer',mt:1,pb:1,width: '100%', borderBottom: '0.5px solid grey'}} alignItems={'center'}>
                         <Stack sx={{width: res550 ? '60%' :'70%'}}>
                             <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 11, fontWeight: 800, color: '#333'}}>{item.title}</Typography>
+                            <Typography sx={{width: '100%',whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 10, fontWeight: 500, color: '#333'}}>{item.isAnonymous ? item.nickname : item.authorInfo.profileName}</Typography>
                         </Stack>
                         <Stack direction={'row'} sx={{width: res550 ? '40%' : '30%', textAlign: 'center'}}  justifyContent={'flex-end'} alignItems={'center'} >
                             <Typography sx={{ml:res550 ? 1 : 5,textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 10, fontWeight: 800, color: '#868e96', textAlign: 'center'}}>
