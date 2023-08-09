@@ -12,6 +12,7 @@ import {login, signUp, userActions, valCode, valEmailPost, valNamePost} from "..
 import {AppDispatch} from "../store";
 import Backdrop from "@mui/material/Backdrop";
 import * as React from "react";
+import {useNavigate} from "react-router-dom";
 
 const styleReg = (theme: any) => ({
     position: 'absolute',
@@ -51,6 +52,7 @@ const LoginModal = (props : any) => {
     const {open} = props;
 
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate()
     const theme = useTheme();
 
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
@@ -302,6 +304,11 @@ const LoginModal = (props : any) => {
 
         setIsLoginMode(true)
         dispatch(userActions.closeModal())
+    }
+
+    const onClickGoAccount = () => {
+        onClickClose()
+        navigate('/account')
     }
 
     useEffect(() => {
@@ -599,6 +606,7 @@ const LoginModal = (props : any) => {
                         >
                             {errorText}
                         </Typography>
+                        <Typography onClick={onClickGoAccount} variant={'body2'} sx={{color: 'grey',cursor: 'pointer',mr: 2, width: '40%', textDecoration: 'underline'}}>계정찾기</Typography>
                         <Typography
                             color='text.primary'
                             variant='body2'
