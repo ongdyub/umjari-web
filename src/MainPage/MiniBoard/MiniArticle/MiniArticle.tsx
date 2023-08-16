@@ -37,13 +37,13 @@ const MiniArticle = (props : any) => {
                 {item.title}
             </Typography>
             <Typography className={"mini-article-responsive"} sx={{pr: 1,minWidth: '8%', maxWidth: '8%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 13}}>
-                <CommentIcon sx={{pt: 0.2,pr: 0.2, width: 10, height: 10}} /> {item.replyCount}
+                <ThumbUpAltIcon sx={{color: 'red',pt: 0.6,pr: 0.5, width: 15, height: 15}} />{item.likeCount}
             </Typography>
             <Typography onClick={onClickAuthor} sx={{cursor : 'pointer',minWidth: '15%', maxWidth: '15%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
                 {item.isAnonymous ? item.nickname : item.authorInfo.profileName}
             </Typography>
             <Typography sx={{pl: 1, minWidth: '10%', maxWidth: '10%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
-                <ThumbUpAltIcon sx={{color: 'red',pt: 0.6,pr: 0.5, width: 15, height: 15}} />{item.likeCount}
+                <CommentIcon sx={{pt: 0.2,pr: 0.2, width: 10, height: 10}} /> {item.replyCount}
             </Typography>
             <Typography className={"mini-article-responsive"} sx={{pl: 1, minWidth: '8%', maxWidth: '8%',textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 12}}>
                 {/*<MouseIcon sx={{color: 'blue',pt: 0.6,pr: 0.5, width: 15, height: 15}}/>{visit}*/}

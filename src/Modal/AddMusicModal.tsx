@@ -81,7 +81,7 @@ const ChildModal = () => {
             const result = await dispatch(musicItemAdd({data : data, token : userState.accessToken}))
 
             if(result.type === `${musicItemAdd.typePrefix}/fulfilled`){
-                setOpen(false)
+                // setOpen(false)
             }
         }
 

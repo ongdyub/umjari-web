@@ -59,12 +59,26 @@ const AccountInfo = () => {
                 <CircularProgress color="inherit" />
             </Backdrop>
 
+            {/*지역 변경*/}
             <Stack direction={'row'} sx={{width: '90%'}} alignItems={'center'}>
-                <Typography sx={{fontSize : 20, fontWeight: 300}}>비밀번호 변경</Typography>
+                <Typography sx={{fontSize : 20, fontWeight: 300}}>계정 정보 변경</Typography>
+            </Stack>
+            <Divider sx={{mt : 1,mb:1, width: '90%'}} />
+            <Stack sx={{width:'90%', mb:2}} direction={'row'} alignItems={'end'} alignContent={'end'}>
+                <Stack sx={{width: '50%'}} direction={'row'} alignItems={'end'} alignContent={'end'}>
+                    <Typography>지역 1</Typography>
+                </Stack>
+                <Stack sx={{width: '50%'}} direction={'row'} alignItems={'end'} alignContent={'end'}>
+                    <Typography>지역 2</Typography>
+                </Stack>
             </Stack>
 
-            <Divider sx={{mt : 1,mb:1, width: '90%'}} />
 
+            {/*비밀번호 변경*/}
+            <Stack direction={'row'} sx={{width: '90%', mt:3}} alignItems={'center'}>
+                <Typography sx={{fontSize : 20, fontWeight: 300}}>비밀번호 변경</Typography>
+            </Stack>
+            <Divider sx={{mt : 1,mb:1, width: '90%'}} />
             <Stack sx={{width: '90%', mb:2}} direction={'row'} alignItems={'end'} alignContent={'end'}>
                 <TextField
                     required
