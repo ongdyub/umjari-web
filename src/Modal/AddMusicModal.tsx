@@ -184,7 +184,7 @@ const ChildModal = () => {
                     <Stack sx={{width: '100%', mb: 2}}>
                         <Stack direction={"row"} alignItems={'center'}>
                             <Typography sx={{mr:1, fontSize: 14}}>곡명 한글 풀네임</Typography>
-                            <Typography variant={"caption"} sx={{color: 'grey', fontSize: 8}}>ex) 교향곡 제 5번 e단조 Op. 64</Typography>
+                            <Typography variant={"caption"} sx={{color: 'grey', fontSize: 8}}>ex) 교향곡 제 5번 마단조 Op. 64</Typography>
                         </Stack>
                         <Stack sx={{mt: -1}}>
                             <Input

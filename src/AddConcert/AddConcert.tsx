@@ -82,6 +82,7 @@ const AddConcert = () => {
 
         if (result.type === `${myConcertProfileImageUpload.typePrefix}/fulfilled`) {
             setPosterImg(result.payload.url)
+            window.alert("포스터 업로드 완료.")
             setLoading(false)
         } else {
             setLoading(false)

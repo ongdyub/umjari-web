@@ -157,7 +157,7 @@ const MyList = () => {
                                                 {RoleComponent[item.role]}
                                             </Stack>
                                             <Stack direction={"row"} alignContent={"center"} alignItems={"center"} sx={{width: '100%'}}>
-                                                <Typography variant="overline"  display="block" gutterBottom sx={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 15, color: 'grey'}}>
+                                                <Typography variant="caption"  display="block" gutterBottom sx={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 16, fontWeight:200, mt:1.5, mb:2, color: 'grey'}}>
                                                     {item.nameEng}
                                                 </Typography>
                                             </Stack>

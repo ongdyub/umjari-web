@@ -157,7 +157,7 @@ const GroupConcert = () => {
                                                 <Divider orientation={"vertical"} sx={{ml:2, mr: 2, height: '50%'}} />
                                             </Stack>
                                             <Stack direction={"row"} alignContent={"center"} alignItems={"center"} sx={{width: '100%'}}>
-                                                <Typography variant="overline"  display="block" gutterBottom sx={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 15, color: 'grey'}}>
+                                                <Typography variant="caption"  display="block" gutterBottom sx={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', fontSize: 17, mt:1, mb:1, color: 'grey'}}>
                                                     {item.musicInfo.nameEng}
                                                 </Typography>
                                             </Stack>
