@@ -118,6 +118,11 @@ const BoardSearch = () => {
                                 sx={{fontSize: 13, pt: 0.5}}
                                 value={searchWord}
                                 onChange={(e) => setSearchWord(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        handleSearch();
+                                    }
+                                }}
                                 startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
                             />
                         </FormControl>
@@ -192,6 +197,11 @@ const BoardSearch = () => {
                                 sx={{fontSize: 13, pt: 0.5}}
                                 value={searchWord}
                                 onChange={(e) => setSearchWord(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        handleSearch();
+                                    }
+                                }}
                                 startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
                             />
                         </FormControl>

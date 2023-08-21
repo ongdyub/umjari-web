@@ -127,9 +127,12 @@ const SelfIntro = () => {
                             res800 ?
                                 <Card sx={{width: '80%', pb: 0, border: `0.5px solid ${color[item.part]}`}}>
                                     <CardContent sx={{pb : 0}}>
-                                        <Stack direction={'row'} justifyContent={"flex-end"} alignItems={"center"} alignContent={"center"} sx={{width: '100%', mb: 0.5}}>
-                                            <Stack justifyContent={"flex-start"} sx={{mr: 'auto'}}>
+                                        <Stack direction={'row'} justifyContent={"flex-end"} alignItems={"center"} alignContent={"center"} sx={{width: '100%', mb: 0.5, mt:-0.5}}>
+                                            <Stack justifyContent={"flex-start"} sx={{mr: 1.5}}>
                                                 <Typography variant={"subtitle2"} sx={{fontWeight: 800, fontSize: 13}}>{item.shortComposerEng}</Typography>
+                                            </Stack>
+                                            <Stack justifyContent={"flex-start"} sx={{mr: 'auto'}}>
+                                                <Typography variant={"caption"} sx={{fontWeight: 300, fontSize: 10}}>in {item.groupName}</Typography>
                                             </Stack>
                                             <Stack justifyContent={"flex-start"} alignItems={'center'} sx={{mt: -1}}>
                                                 {RoleComponent[item.role]}
@@ -139,13 +142,9 @@ const SelfIntro = () => {
                                             </Stack>
                                         </Stack>
                                         <Divider sx={{width: '100%'}} />
-                                        <Stack direction={'row'} justifyContent={"flex-start"} sx={{width: '100%', mt:1, mb:1}}>
-                                            <Typography variant={"caption"} sx={{fontWeight: 400, fontSize: 12}}>{item.nameEng}</Typography>
-                                        </Stack>
-                                        <Divider sx={{width: '100%'}} />
-                                        <Stack direction={'row'} justifyContent={"flex-end"} sx={{mt: 1, mb:-2}} alignItems={'center'}>
-                                            <Typography variant={"caption"} sx={{fontWeight: 300, fontSize: 12}}>{item.groupName}</Typography>
-                                            <Typography variant={"caption"} sx={{ml: 2, fontSize: 8, color: 'grey'}}>{item.concertDate.slice(2,10)}</Typography>
+                                        <Stack direction={'row'} justifyContent={"flex-start"} sx={{width: '100%', mt:1, mb: -2}}>
+                                            <Typography variant={"caption"} sx={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', width: '80%',fontWeight: 400, fontSize: 11}}>{item.nameEng}</Typography>
+                                            <Typography variant={"caption"} sx={{ml: 'auto', fontSize: 8, color: 'grey'}}>{item.concertDate.slice(2,10)}</Typography>
                                         </Stack>
                                     </CardContent>
                                 </Card>

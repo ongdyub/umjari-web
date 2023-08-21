@@ -29,6 +29,7 @@ export interface MySelfIntro {
     id: number,
     shortComposerEng: string,
     nameEng: string,
+    shortNameEng: string,
     part: string,
     detailPart: string,
     groupName: string,
