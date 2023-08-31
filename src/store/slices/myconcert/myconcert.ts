@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import {RootState} from "../..";
 import {User} from "../user/user";
+import {Music} from "../music/music";
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -56,10 +57,16 @@ export interface MyList {
     participatedList: [ParticipatedList] | []
 }
 
+export interface MyPlayList {
+    musicList : [Music] | [],
+    counts : number
+}
+
 export interface MyConcertState {
     myDefaultInfo : MyDefaultInfo | null,
     mySelfIntro : [MySelfIntro] | [],
     myList : [MyList] | [],
+    myPlayList : MyPlayList,
     isExist : boolean
 }
 
@@ -67,6 +74,10 @@ const initialState: MyConcertState = {
     myDefaultInfo : null,
     mySelfIntro : [],
     myList : [],
+    myPlayList : {
+        musicList : [],
+        counts : -1
+    },
     isExist : true
 };
 
@@ -181,6 +192,36 @@ export const myListGet = createAsyncThunk(
     }
 )
 
+export const myPlayListGet = createAsyncThunk(
+    "myconcert/myPlayListGet",
+    async (profileName : string | null | undefined, {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`/api/v1/user/profile-name/${profileName}/interest-music/`)
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
+export const myPlayListPut = createAsyncThunk(
+    "myconcert/myPlayListPut",
+    async ({token, data} : {token : string | null | undefined, data : any}, {rejectWithValue}) => {
+        try {
+            const response = await axios.put(`/api/v1/user/interest-music/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
 export const myConcertStateSlice = createSlice({
     name: "myConcertState",
     initialState,
@@ -194,6 +235,12 @@ export const myConcertStateSlice = createSlice({
         },
         resetMyList : (state) => {
             state.myList = []
+        },
+        resetMyPlayList : (state) => {
+            state.myPlayList = {
+                musicList : [],
+                counts : -1
+            }
         },
         sortMySelfIntro : (state, action: PayloadAction<any>) => {
             if(action.payload.rule === '시간'){
@@ -393,6 +440,18 @@ export const myConcertStateSlice = createSlice({
             })
         });
         builder.addCase(myListGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(myPlayListGet.fulfilled, (state, action) => {
+            state.myPlayList = action.payload
+        });
+        builder.addCase(myPlayListGet.rejected, (state, action : any) => {
+            window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+        });
+        builder.addCase(myPlayListPut.fulfilled, () => {
+            window.alert("변경 완료")
+        });
+        builder.addCase(myPlayListPut.rejected, (state, action : any) => {
             window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
     },

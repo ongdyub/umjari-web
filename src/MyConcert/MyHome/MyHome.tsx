@@ -1,4 +1,14 @@
-import {Button, ButtonGroup, Divider, Input, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {
+    Button,
+    ButtonGroup,
+    Divider,
+    IconButton,
+    Input,
+    Stack,
+    Typography,
+    useMediaQuery,
+    useTheme
+} from "@mui/material";
 import {Routes, Route, useParams} from "react-router-dom";
 import SelfIntro from "./SelfIntro/SelfIntro";
 import MyList from "./MyList/MyList";
@@ -12,8 +22,8 @@ import {useState} from "react";
 import {AppDispatch} from "../../store";
 import AlbumGallery from "./Gallery/AlbumGallery/AlbumGallery";
 import PhotoGallery from "./Gallery/PhotoGallery/PhotoGallery";
-
-
+import QueueMusicIcon from '@mui/icons-material/QueueMusic';
+import FavoriteMusicListModal from "./FavoriteMusicListModal";
 
 
 const MyHome = () => {
@@ -34,6 +44,8 @@ const MyHome = () => {
 
     const [isEdit, setIsEdit] = useState(false)
     const [introText, setIntroText] = useState('')
+
+    const [openFavorite, setOpenFavorite] = useState(false)
 
     const onClickGoSelf = () => {
         navigate(`/myconcert/${profileName}/selfintro`)
@@ -114,6 +126,16 @@ const MyHome = () => {
                 }
             </Stack>
             <Divider sx={{Width: '90%'}}/>
+
+            {/*내가 좋아하는 곡 목록 수정 & 보기*/}
+            <Stack sx={{pl: res750 ? 0 : 6, width: '100%', mt:0.5, mb: 0.5}} justifyContent={'center'} direction={'row'} alignItems={'center'}>
+                <Typography variant={'caption'} sx={{fontSize: 16, color: 'black', fontWeight: 300, mr:1}}>Top 10 PlayList</Typography>
+                <IconButton onClick={() => setOpenFavorite(true)}>
+                    <QueueMusicIcon sx={{height: 25, width: 25, color: 'grey', cursor: 'pointer'}} />
+                </IconButton>
+            </Stack>
+            <Divider sx={{width: '100%'}}/>
+
             <Stack sx={{pl: res750 ? 0 : 6, width: '100%'}} justifyContent={res750 ? "center" : ''} alignItems={res750 ? "center" : ''} alignContent={res750 ? "center" : ''}>
                 <Stack sx={{mt:2}}>
                     <ButtonGroup variant={"text"} size={"small"}>
@@ -129,6 +151,12 @@ const MyHome = () => {
                     <Route path="diary" element={<Diary />}/>
                 </Routes>
             </Stack>
+            {
+                openFavorite ?
+                    <FavoriteMusicListModal open={openFavorite} setOpen={setOpenFavorite} />
+                    :
+                    null
+            }
         </Stack>
     );
 }
