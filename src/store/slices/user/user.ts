@@ -33,6 +33,7 @@ export interface User {
     nickname : string | null
     intro : string | null
     career : [UserGroup] | []
+    region : string
 }
 
 const initialState: User = {
@@ -45,7 +46,8 @@ const initialState: User = {
     isModalOpen : false,
     nickname : null,
     intro : null,
-    career : []
+    career : [],
+    region : ''
 };
 
 export const signUp = createAsyncThunk(

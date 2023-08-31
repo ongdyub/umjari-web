@@ -24,6 +24,7 @@ import {concert, concertSetListAdd, selectConcert} from "../store/slices/concert
 import {selectUser} from "../store/slices/user/user";
 import {useParams} from "react-router-dom";
 import {groupInfo, groupSetListAdd, selectGroup} from "../store/slices/group/group";
+import {myPlayListGet, myPlayListPut, selectMyConcert} from "../store/slices/myconcert/myconcert";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -215,6 +216,9 @@ const ChildModal = () => {
                             <Button variant={'contained'} size={'small'} onClick={addMusicItem}>추가</Button>
                         </Stack>
                     </Stack>
+                    <Stack direction={'row'}>
+                        <Typography sx={{fontSize: 11, mt:1}}>클래식 곡이 아닌 경우는 적절히 모든 칸을 채워서 작성해주시면 됩니다.</Typography>
+                    </Stack>
                 </Box>
             </Modal>
         </React.Fragment>
@@ -224,13 +228,14 @@ const ChildModal = () => {
 const AddMusicModal = (props : any) => {
 
     const {open, setOpen, scope} = props
-    const { id } = useParams();
+    const { id, profileName } = useParams();
 
     const dispatch = useDispatch<AppDispatch>()
     const userState = useSelector(selectUser)
     const musicState = useSelector(selectMusic)
     const concertState = useSelector(selectConcert)
     const groupState = useSelector(selectGroup)
+    const myConcertState = useSelector(selectMyConcert)
 
     const [searchComposer, setSearchComposer] = useState<string>('')
     const [searchName, setSearchName] = useState<string>('')
@@ -258,6 +263,25 @@ const AddMusicModal = (props : any) => {
                 if(result.type === `${groupSetListAdd.typePrefix}/fulfilled`){
                     dispatch(groupInfo(id))
                 }
+                setOpen(false)
+            }
+            return
+        }
+
+        if(scope === 'myPlayList'){
+            if(!myConcertState.myDefaultInfo?.isSelfProfile){
+                window.alert("권한이 없습니다.")
+                return
+            }
+            if(userState.accessToken === null){
+                window.alert("다시 로그인해주세요.")
+                return
+            }
+            const musicIdList = myConcertState.myPlayList.musicList.map((item) => (item.id))
+            musicIdList.push(musicId)
+            const result = await dispatch(myPlayListPut({token : userState.accessToken, data : {musicIds : musicIdList}}))
+            if(result.type === `${myPlayListPut.typePrefix}/fulfilled`){
+                dispatch(myPlayListGet(profileName))
                 setOpen(false)
             }
             return
@@ -302,7 +326,7 @@ const AddMusicModal = (props : any) => {
                 aria-labelledby="parent-modal-title"
                 aria-describedby="parent-modal-description"
             >
-                <Box sx={{...style, width: '85%', height: '90%'}}>
+                <Box sx={{...style, width: scope === 'myPlayList' ? '80%' : '85%', height: '90%'}}>
                     <Stack direction={"row"} sx={{width: '100%'}} alignItems={'center'}>
                         <Stack sx={{width: '90%'}}>
                             <Stack direction={"row"} alignItems={'center'}>

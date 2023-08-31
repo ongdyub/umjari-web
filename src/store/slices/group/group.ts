@@ -481,7 +481,8 @@ export const groupStateSlice = createSlice({
                 window.alert("변경 권한이 없는 계정입니다.")
             }
             else{
-                window.alert("변경 실패. 다시 시도하거나 다시 로그인해주세요. " + "네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+                console.log(action.payload)
+                window.alert("변경 실패. 다시 시도하거나 다시 로그인해주세요. \n" + "네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"] + " " + action.payload.data["detailIntro"])
             }
         });
         builder.addCase(groupQnADelete.fulfilled, () => {

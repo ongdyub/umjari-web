@@ -1,10 +1,21 @@
-import {Button, CircularProgress, Divider, Stack, TextField, Typography} from "@mui/material";
+import {
+    Button,
+    CircularProgress,
+    Divider,
+    FormControl,
+    MenuItem,
+    Select, SelectChangeEvent,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
 import * as React from "react";
 import {useState} from "react";
 import Backdrop from "@mui/material/Backdrop";
 import {changePw, selectUser} from "../../store/slices/user/user";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../store";
+import {region_child, region_parents} from "../../MainPage/ConcertList/ConcertFilter/ConcertFilter";
 
 const AccountInfo = () => {
 
@@ -15,6 +26,17 @@ const AccountInfo = () => {
     const [newPw, setNewPw] = useState<string>('')
 
     const [pending, setPending] = useState<boolean>(false)
+
+    const [parent, setParent] = useState<any>(0);
+    const [child, setChild] = useState<any>(0);
+
+    const handleParentChange = (event: SelectChangeEvent) => {
+        setParent(event.target.value);
+        setChild(0)
+    };
+    const handleChildChange = (event: SelectChangeEvent) => {
+        setChild(event.target.value);
+    };
 
     const checkPW = (asValue: string) => {
         const regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/
@@ -60,18 +82,47 @@ const AccountInfo = () => {
             </Backdrop>
 
             {/*지역 변경*/}
-            <Stack direction={'row'} sx={{width: '90%'}} alignItems={'center'}>
-                <Typography sx={{fontSize : 20, fontWeight: 300}}>계정 정보 변경</Typography>
-            </Stack>
-            <Divider sx={{mt : 1,mb:1, width: '90%'}} />
-            <Stack sx={{width:'90%', mb:2}} direction={'row'} alignItems={'end'} alignContent={'end'}>
-                <Stack sx={{width: '50%'}} direction={'row'} alignItems={'end'} alignContent={'end'}>
-                    <Typography>지역 1</Typography>
-                </Stack>
-                <Stack sx={{width: '50%'}} direction={'row'} alignItems={'end'} alignContent={'end'}>
-                    <Typography>지역 2</Typography>
-                </Stack>
-            </Stack>
+            {/*<Stack direction={'row'} sx={{width: '90%'}} alignItems={'center'}>*/}
+            {/*    <Typography sx={{fontSize : 20, fontWeight: 300}}>계정 정보 변경</Typography>*/}
+            {/*</Stack>*/}
+            {/*<Divider sx={{mt : 1,mb:1, width: '90%'}} />*/}
+            {/*<Stack sx={{width:'90%', mb:2}} direction={'row'} alignItems={'end'} alignContent={'end'}>*/}
+            {/*    <Stack sx={{width: '50%'}} direction={'row'} alignItems={'end'} alignContent={'end'}>*/}
+            {/*        <Typography sx={{fontSize: 12, width: '215', mr: 3}}>지역 1</Typography>*/}
+            {/*        <FormControl sx={{width: '50%', maxWidth: 150}}>*/}
+            {/*            <Select*/}
+            {/*                value={parent}*/}
+            {/*                onChange={handleParentChange}*/}
+            {/*                displayEmpty*/}
+            {/*                sx={{height: '20px', fontSize:11}}*/}
+            {/*                variant={"standard"}*/}
+            {/*            >*/}
+            {/*                {region_parents.map((item, idx) => (*/}
+            {/*                    <MenuItem key={idx} value={idx} sx={{fontSize:11}}>{item}</MenuItem>*/}
+            {/*                ))}*/}
+            {/*            </Select>*/}
+            {/*        </FormControl>*/}
+            {/*    </Stack>*/}
+            {/*    <Stack sx={{width: '50%'}} direction={'row'} alignItems={'end'} alignContent={'end'}>*/}
+            {/*        <Typography sx={{fontSize: 12, width: '215', mr: 3}}>지역 2</Typography>*/}
+            {/*        <FormControl sx={{width: '50%', maxWidth: 150}}>*/}
+            {/*            <Select*/}
+            {/*                value={child}*/}
+            {/*                onChange={handleChildChange}*/}
+            {/*                displayEmpty*/}
+            {/*                sx={{height: '20px', fontSize: 11}}*/}
+            {/*                variant={"standard"}*/}
+            {/*            >*/}
+            {/*                {region_child[parent].map((item, idx) => (*/}
+            {/*                    <MenuItem key={idx} value={idx} sx={{fontSize:11}}>{item}</MenuItem>*/}
+            {/*                ))}*/}
+            {/*            </Select>*/}
+            {/*        </FormControl>*/}
+            {/*    </Stack>*/}
+            {/*</Stack>*/}
+            {/*<Stack sx={{width: '90%'}} direction={'row'}>*/}
+            {/*    <Typography variant={'body2'} sx={{fontSize : 11}}>추천 단체를 선정할때 필요한 정보이고 설정이 필수는 아니며, 타인에게 공개되지 않습니다.</Typography>*/}
+            {/*</Stack>*/}
 
 
             {/*비밀번호 변경*/}

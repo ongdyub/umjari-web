@@ -110,6 +110,11 @@ const GroupInfo = (props : any) => {
             return
         }
 
+        if(detailIntro.length > 255){
+            window.alert("상세소개는 255자 이내로 작성 가능합니다.")
+            return
+        }
+
         const tagRegex = /,+/g;
         const tagString = tagItem.replace(tagRegex, ',');
         const tagList = tagString.split(',')
