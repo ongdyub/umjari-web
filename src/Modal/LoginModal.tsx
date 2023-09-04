@@ -6,13 +6,14 @@ import {
     Typography, useMediaQuery, useTheme,
 } from "@mui/material";
 import {useEffect, useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {login, signUp, userActions, valCode, valEmailPost, valNamePost} from "../store/slices/user/user";
+import {login, selectUser, signUp, userActions, valCode, valEmailPost, valNamePost} from "../store/slices/user/user";
 import {AppDispatch} from "../store";
 import Backdrop from "@mui/material/Backdrop";
 import * as React from "react";
 import {useNavigate} from "react-router-dom";
+import {getRequestFriend, selectFriend} from "../store/slices/manage/friend/friend";
 
 const styleReg = (theme: any) => ({
     position: 'absolute',
@@ -56,6 +57,8 @@ const LoginModal = (props : any) => {
     const theme = useTheme();
 
     const res550 = useMediaQuery(theme.breakpoints.down("res550"))
+
+    const userState = useSelector(selectUser)
 
     const [loginId, setLoginId] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
@@ -341,6 +344,35 @@ const LoginModal = (props : any) => {
             setErrorText("")
         }
     },[profileName, email, nickname, loginId, loginPassword, pwConfirm])
+
+
+    //alert Freind Request
+
+    const friendState = useSelector(selectFriend)
+    const [reqNum, setReqNum] = useState(0)
+
+    useEffect(() => {
+        if(userState.accessToken !== null){
+            const param = {
+                page: 1,
+                size: 20,
+                sort: "createdAt,DESC"
+            }
+            dispatch(getRequestFriend({token : userState.accessToken, param}))
+        }
+    },[userState.accessToken])
+
+    useEffect(() => {
+        if(friendState.requestFriend !== null){
+            setReqNum(friendState.requestFriend.totalElements)
+        }
+    },[friendState.requestFriend])
+
+    useEffect(() => {
+        if(reqNum > 0){
+            window.alert(reqNum + "명의 친구 요청이 있습니다.")
+        }
+    },[reqNum])
 
     return (
         <Modal

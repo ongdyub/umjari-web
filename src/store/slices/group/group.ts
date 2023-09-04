@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../..";
 import {Concert} from "../concert/concert";
+import {Music} from "../music/music";
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
@@ -115,6 +116,15 @@ export interface GroupSearchList {
     currentPage: number
 }
 
+export interface GroupRecommend {
+    id: number,
+    name: string,
+    logo: string,
+    region: string,
+    regionDetail: string,
+    setList: [Music] | []
+}
+
 export interface GroupState {
     groupInfo: GroupInfo | null,
     groupRecruit: GroupRecruit | null,
@@ -125,7 +135,8 @@ export interface GroupState {
     groupQnAExist : boolean,
     groupConcertList : GroupConcertList | null,
 
-    groupSearchList : GroupSearchList | null
+    groupSearchList : GroupSearchList | null,
+    groupRecommend : [GroupRecommend] | [],
 }
 
 const initialState: GroupState = {
@@ -138,7 +149,8 @@ const initialState: GroupState = {
     groupQnAExist : true,
     groupConcertList : null,
 
-    groupSearchList : null
+    groupSearchList : null,
+    groupRecommend : [],
 };
 
 export const groupInfo = createAsyncThunk(
@@ -385,6 +397,23 @@ export const groupSearchGet = createAsyncThunk(
     }
 )
 
+export const groupRecommendGet = createAsyncThunk(
+    "group/groupRecommendGet",
+    async ({token} : {token : string | null}, {rejectWithValue}) => {
+        try {
+            const response = await axios.get('/api/v1/group/recommendation/',{
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
 export const groupStateSlice = createSlice({
     name: "groupState",
     initialState,
@@ -550,6 +579,17 @@ export const groupStateSlice = createSlice({
             state.groupSearchList = action.payload
         });
         builder.addCase(groupSearchGet.rejected, (state, action : any) => {
+            if(action.payload.data["errorCode"] === 3001){
+                window.alert("변경 권한이 없는 계정입니다.")
+            }
+            else{
+                window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
+            }
+        });
+        builder.addCase(groupRecommendGet.fulfilled, (state, action) => {
+            state.groupRecommend = action.payload
+        });
+        builder.addCase(groupRecommendGet.rejected, (state, action : any) => {
             if(action.payload.data["errorCode"] === 3001){
                 window.alert("변경 권한이 없는 계정입니다.")
             }
