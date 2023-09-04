@@ -54,10 +54,22 @@ const ConcertFilter = () => {
     const [child, setChild] = useState<any>(0);
 
     // const [startDate, setStartDate] = useState<Dayjs | null>(dayjs())
-    const [startDate, setStartDate] = useState<Dayjs | null>(dayjs('2023-03-01'))
+    const now = new Date()
+    const year = now.getFullYear()
+    let monthNum = now.getMonth() + 1
+    let month
+    if(monthNum < 10){
+        month = `0${monthNum}`
+    }
+    else{
+        month = monthNum
+    }
+    // const today = year + '-' + month + '-' + date
+    const today = year + '-' + month + '-' + '01'
+    // const [startDate, setStartDate] = useState<Dayjs | null>(dayjs('2023-03-01'))
+    const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(today))
     const [endDate, setEndDate] = useState<Dayjs | null>( null)
 
-    const [searchText, setSearchText] = useState<string>("")
     const [composer, setComposer] = useState('')
     const [musicName, setMusicName] = useState('')
 
@@ -101,7 +113,6 @@ const ConcertFilter = () => {
         }
         searchParams.set('composer',composer)
         searchParams.set('musicName',musicName)
-        searchParams.set('text',searchText)
         searchParams.set('page','1')
 
         setSearchParams(searchParams)

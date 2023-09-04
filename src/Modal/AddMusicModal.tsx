@@ -277,7 +277,12 @@ const AddMusicModal = (props : any) => {
                 window.alert("다시 로그인해주세요.")
                 return
             }
+
             const musicIdList = myConcertState.myPlayList.musicList.map((item) => (item.id))
+            if(musicIdList.includes(musicId)){
+                window.alert("이미 존재하는 곡입니다.")
+                return
+            }
             musicIdList.push(musicId)
             const result = await dispatch(myPlayListPut({token : userState.accessToken, data : {musicIds : musicIdList}}))
             if(result.type === `${myPlayListPut.typePrefix}/fulfilled`){
