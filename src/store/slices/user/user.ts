@@ -33,7 +33,7 @@ export interface User {
     nickname : string | null
     intro : string | null
     career : [UserGroup] | []
-    region : string
+    region : string | null
 }
 
 const initialState: User = {
@@ -47,7 +47,7 @@ const initialState: User = {
     nickname : null,
     intro : null,
     career : [],
-    region : ''
+    region : null
 };
 
 export const signUp = createAsyncThunk(
@@ -292,6 +292,7 @@ export const userSlice = createSlice({
             state.profileName = action.payload.profileName
             state.nickname = action.payload.nickname
             state.intro = action.payload.intro
+            state.region = action.payload.region
         });
         builder.addCase(userGroupGet.fulfilled, (state, action) => {
             state.career = action.payload.career

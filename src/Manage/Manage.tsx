@@ -36,7 +36,7 @@ const Manage = () => {
 
 
     const myButtons = [
-        <Button onClick={onClickGoAccountInfo} sx={{fontSize: res750 ? 10 : 12}} key="friend">계정정보</Button>,
+        <Button onClick={onClickGoAccountInfo} sx={{fontSize: res750 ? 10 : 12}} key="account">계정정보</Button>,
         <Button onClick={onClickGoFriend} sx={{fontSize: res750 ? 10 : 12}} key="friend">친구관계</Button>,
         <Button onClick={onClickGoCommunity} sx={{fontSize: res750 ? 10 : 12}} key="community">커뮤니티</Button>,
     ]
