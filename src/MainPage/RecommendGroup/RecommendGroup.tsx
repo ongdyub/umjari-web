@@ -17,13 +17,7 @@ const RecommendGroup = () => {
     const userState = useSelector(selectUser)
 
     useEffect(() => {
-        if(userState.accessToken !== null || groupSelector.groupRecommend.length < 1){
-            dispatch(groupRecommendGet({token : userState.accessToken}))
-            return () => {
-                dispatch(groupStateActions.resetGroupSearchList())
-            }
-        }
-        else{
+        if(userState.accessToken === null){
             const params = {
                 regionParent : null,
                 regionChild : null,
@@ -42,7 +36,35 @@ const RecommendGroup = () => {
                 dispatch(groupStateActions.resetGroupSearchList())
             }
         }
+        else{
+            dispatch(groupRecommendGet({token : userState.accessToken}))
+            return () => {
+                dispatch(groupStateActions.resetGroupSearchList())
+            }
+        }
     },[userState.accessToken])
+
+    useEffect(() => {
+        if(groupSelector.groupRecommend.length < 1){
+            const params = {
+                regionParent : null,
+                regionChild : null,
+                composer: null,
+                musicName: null,
+                name : null,
+                instruments : null,
+                page : 1,
+                size: 5,
+                sort : "id,DESC",
+            }
+
+            dispatch(groupSearchGet({params, token : userState.accessToken}))
+
+            return () => {
+                dispatch(groupStateActions.resetGroupSearchList())
+            }
+        }
+    },[groupSelector.groupRecommend])
 
     return(
         <Stack direction="column" justifyContent="flex-start" alignContent={'center'} alignItems="center" sx={{width: useMediaQuery(theme.breakpoints.down("md")) ? "100%" : "42%"}}>
