@@ -34,6 +34,7 @@ export interface User {
     intro : string | null
     career : [UserGroup] | []
     region : string | null
+    refreshed : boolean
 }
 
 const initialState: User = {
@@ -47,7 +48,8 @@ const initialState: User = {
     nickname : null,
     intro : null,
     career : [],
-    region : null
+    region : null,
+    refreshed : false
 };
 
 export const signUp = createAsyncThunk(
@@ -228,6 +230,7 @@ export const userSlice = createSlice({
             action: PayloadAction<Partial<User>>
         ) => {
             state.isLogin = true;
+            state.refreshed = true
             if (action.payload.profileName) {
                 state.profileName = action.payload.profileName
                 localStorage.setItem("profileName", action.payload.profileName)
@@ -251,6 +254,12 @@ export const userSlice = createSlice({
             state.accessToken = null;
             state.nickname = null;
             state.career = [];
+            state.refreshed = false
+        },
+        setRefresh : (
+            state,
+        ) => {
+            state.refreshed = true
         },
         openModal : (
             state,
