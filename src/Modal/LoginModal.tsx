@@ -360,7 +360,7 @@ const LoginModal = (props : any) => {
             }
             dispatch(getRequestFriend({token : userState.accessToken, param}))
         }
-    },[userState.accessToken])
+    },[userState.accessToken, userState.refreshed])
 
     useEffect(() => {
         if(friendState.requestFriend !== null){
