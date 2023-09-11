@@ -15,7 +15,7 @@ import Backdrop from "@mui/material/Backdrop";
 import {changePw, myInfoGet, myNamePut, selectUser} from "../../store/slices/user/user";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../store";
-import {region_child, region_parents} from "../../Concert/ConcertInfo/ConcertInfo";
+import {region_child, region_parents} from "../../MainPage/ConcertList/ConcertFilter/ConcertFilter";
 import {useParams} from "react-router-dom";
 import {checkAxios} from "../../App";
 
@@ -56,13 +56,10 @@ const AccountInfo = () => {
         }
     }
     const onClickResetRegion = async () => {
-        // TODO
         const data = {
             nickname: userState.nickname,
             profileName: profileName,
-            intro: userState.intro,
-            regionParent: '',
-            regionChild: ''
+            intro: userState.intro
         }
         const result = await dispatch(myNamePut({token : userState.accessToken, data : data}))
         if(checkAxios(result.type, myNamePut.typePrefix)){
@@ -115,30 +112,28 @@ const AccountInfo = () => {
     },[profileName])
 
     useEffect(() => {
-        if(userState.regionParent === null){
+
+        const parentR = userState.regionParent === null ? '' : userState.regionParent
+
+        if(region_parents.indexOf(parentR) > -1){
+            setParent(region_parents.indexOf(parentR))
+        }
+        else{
             setParent(0)
         }
-        else{
-            if(region_parents.indexOf(userState.regionParent) > -1){
-                setParent(region_parents.indexOf(userState.regionParent))
-            }
-            else{
-                setParent(0)
-            }
-        }
+    },[userState.regionParent])
 
-        if(userState.regionChild === null){
+    useEffect(() => {
+
+        const childR = userState.regionChild === null ? '' : userState.regionChild
+
+        if(region_child[parent].indexOf(childR) > -1){
+            setChild(region_child[parent].indexOf(childR))
+        }
+        else{
             setChild(0)
         }
-        else{
-            if(region_child[parent].indexOf(userState.regionChild) > -1){
-                setChild(region_child[parent].indexOf(userState.regionChild))
-            }
-            else{
-                setChild(0)
-            }
-        }
-    },[userState.regionParent, userState.regionChild])
+    },[userState.regionChild, parent])
 
     return(
         <Stack sx={{width: '100%'}} justifyContent={'center'} alignContent={'center'} alignItems={'center'}>
