@@ -12,11 +12,12 @@ import {
 import * as React from "react";
 import {useEffect, useState} from "react";
 import Backdrop from "@mui/material/Backdrop";
-import {changePw, myInfoGet, selectUser} from "../../store/slices/user/user";
+import {changePw, myInfoGet, myNamePut, selectUser} from "../../store/slices/user/user";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../store";
 import {region_child, region_parents} from "../../Concert/ConcertInfo/ConcertInfo";
 import {useParams} from "react-router-dom";
+import {checkAxios} from "../../App";
 
 const AccountInfo = () => {
 
@@ -40,11 +41,34 @@ const AccountInfo = () => {
         setChild(event.target.value);
     };
 
-    const onClickSetRegion = () => {
-        window.alert("준비중입니다.")
+    const onClickSetRegion = async () => {
+        const data = {
+            nickname: userState.nickname,
+            profileName: profileName,
+            intro: userState.intro,
+            regionParent: region_parents[parent],
+            regionChild: region_child[parent][child]
+        }
+        const result = await dispatch(myNamePut({token : userState.accessToken, data : data}))
+        if(checkAxios(result.type, myNamePut.typePrefix)){
+            window.alert("변경 완료")
+            dispatch(myInfoGet({token : userState.accessToken, profileName : profileName}))
+        }
     }
-    const onClickResetRegion = () => {
-        window.alert("준비중입니다.")
+    const onClickResetRegion = async () => {
+        // TODO
+        const data = {
+            nickname: userState.nickname,
+            profileName: profileName,
+            intro: userState.intro,
+            regionParent: '',
+            regionChild: ''
+        }
+        const result = await dispatch(myNamePut({token : userState.accessToken, data : data}))
+        if(checkAxios(result.type, myNamePut.typePrefix)){
+            window.alert("변경 완료")
+            dispatch(myInfoGet({token : userState.accessToken, profileName : profileName}))
+        }
     }
 
     const checkPW = (asValue: string) => {
@@ -91,15 +115,30 @@ const AccountInfo = () => {
     },[profileName])
 
     useEffect(() => {
-        if(userState.region === null){
+        if(userState.regionParent === null){
             setParent(0)
+        }
+        else{
+            if(region_parents.indexOf(userState.regionParent) > -1){
+                setParent(region_parents.indexOf(userState.regionParent))
+            }
+            else{
+                setParent(0)
+            }
+        }
+
+        if(userState.regionChild === null){
             setChild(0)
         }
         else{
-            console.log("지역")
-            console.log(userState.region)
+            if(region_child[parent].indexOf(userState.regionChild) > -1){
+                setChild(region_child[parent].indexOf(userState.regionChild))
+            }
+            else{
+                setChild(0)
+            }
         }
-    },[userState.region])
+    },[userState.regionParent, userState.regionChild])
 
     return(
         <Stack sx={{width: '100%'}} justifyContent={'center'} alignContent={'center'} alignItems={'center'}>
