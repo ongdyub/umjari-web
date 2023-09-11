@@ -33,7 +33,9 @@ export interface User {
     nickname : string | null
     intro : string | null
     career : [UserGroup] | []
-    region : string | null
+    regionParent : string | null
+    regionChild : string | null
+    refreshed : boolean
 }
 
 const initialState: User = {
@@ -47,7 +49,9 @@ const initialState: User = {
     nickname : null,
     intro : null,
     career : [],
-    region : null
+    regionParent : null,
+    regionChild : null,
+    refreshed : false
 };
 
 export const signUp = createAsyncThunk(
@@ -152,7 +156,7 @@ export const login = createAsyncThunk(
 
 export const myInfoGet = createAsyncThunk(
     "user/myInfoGet",
-    async ({token, profileName} : { token : string, profileName : string}, {rejectWithValue}) => {
+    async ({token, profileName} : { token : string | null, profileName : string | undefined}, {rejectWithValue}) => {
         try {
 
             const response = await axios.get(`/api/v1/user/profile-name/${profileName}/`,{
@@ -228,6 +232,7 @@ export const userSlice = createSlice({
             action: PayloadAction<Partial<User>>
         ) => {
             state.isLogin = true;
+            state.refreshed = true
             if (action.payload.profileName) {
                 state.profileName = action.payload.profileName
                 localStorage.setItem("profileName", action.payload.profileName)
@@ -251,6 +256,12 @@ export const userSlice = createSlice({
             state.accessToken = null;
             state.nickname = null;
             state.career = [];
+            state.refreshed = false
+        },
+        setRefresh : (
+            state,
+        ) => {
+            state.refreshed = true
         },
         openModal : (
             state,
@@ -292,7 +303,8 @@ export const userSlice = createSlice({
             state.profileName = action.payload.profileName
             state.nickname = action.payload.nickname
             state.intro = action.payload.intro
-            state.region = action.payload.region
+            state.regionParent = action.payload.regionParent
+            state.regionChild = action.payload.regionChild
         });
         builder.addCase(userGroupGet.fulfilled, (state, action) => {
             state.career = action.payload.career

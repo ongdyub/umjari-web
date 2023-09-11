@@ -95,7 +95,9 @@ const NameChangeModal = (props : any) => {
         const data = {
             nickname: nickname,
             profileName: profileName,
-            intro: userState.intro
+            intro: userState.intro,
+            regionChild : userState.regionChild,
+            regionParent : userState.regionParent
         }
 
         if(nickname === '' && userState.nickname !== null){

@@ -352,7 +352,7 @@ const LoginModal = (props : any) => {
     const [reqNum, setReqNum] = useState(0)
 
     useEffect(() => {
-        if(userState.accessToken !== null){
+        if(userState.accessToken !== null && userState.refreshed){
             const param = {
                 page: 1,
                 size: 20,
@@ -360,7 +360,7 @@ const LoginModal = (props : any) => {
             }
             dispatch(getRequestFriend({token : userState.accessToken, param}))
         }
-    },[userState.accessToken])
+    },[userState.accessToken, userState.refreshed])
 
     useEffect(() => {
         if(friendState.requestFriend !== null){

@@ -113,6 +113,7 @@ const Header = () => {
                     const result = await dispatch(myInfoGet({token : userState.accessToken, profileName : userState.profileName}))
                     if (result.payload.isSelfProfile) {
                         dispatch(userGroupGet(userState.accessToken))
+                        dispatch(userActions.setRefresh())
                     }
                     else{
                         window.alert("로그인 유효기간 만료")

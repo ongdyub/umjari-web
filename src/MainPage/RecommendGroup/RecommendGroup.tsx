@@ -17,7 +17,7 @@ const RecommendGroup = () => {
     const userState = useSelector(selectUser)
 
     useEffect(() => {
-        if(userState.accessToken === null){
+        if(userState.accessToken === null || !userState.refreshed){
             const params = {
                 regionParent : null,
                 regionChild : null,
@@ -42,7 +42,7 @@ const RecommendGroup = () => {
                 dispatch(groupStateActions.resetGroupSearchList())
             }
         }
-    },[userState.accessToken])
+    },[userState.refreshed])
 
     useEffect(() => {
         if(groupSelector.groupRecommend.length < 1){

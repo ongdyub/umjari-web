@@ -15,6 +15,8 @@ import AddConcert from "./AddConcert/AddConcert";
 import Manage from "./Manage/Manage";
 import About from "./About/About";
 import Account from "./Account/Account";
+import {userGroupTimePut} from "./store/slices/user/user";
+import {myconcertGroupGet} from "./store/slices/myconcert/myconcert";
 
 declare module '@mui/material/styles' {
     interface BreakpointOverrides {
@@ -92,6 +94,14 @@ export const scrollToTop = () => {
         top: 0,
         behavior: 'smooth'
     });
+}
+
+export const checkAxios = (resultType : string, dispatchPrefix : string) => {
+    return resultType === `${dispatchPrefix}/fulfilled`
+    // if (result.type === `${userGroupTimePut.typePrefix}/fulfilled`) {
+    //     dispatch(myconcertGroupGet(userState.accessToken))
+    //     window.alert("변경 완료")
+    // }
 }
 
 function App() {
