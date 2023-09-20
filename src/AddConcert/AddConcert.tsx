@@ -132,7 +132,7 @@ const AddConcert = () => {
             regionDetail : regionDetail,
             musicIds : [],
             solist : '',
-            link: 'link'
+            link: ''
         }
 
         const result = await dispatch(concertPost({data, token : userState.accessToken, id : id}))
