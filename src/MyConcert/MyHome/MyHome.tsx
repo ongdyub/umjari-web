@@ -73,7 +73,9 @@ const MyHome = () => {
         const data = {
             intro: introText,
             profileName : userState.profileName,
-            nickname : userState.nickname
+            nickname : userState.nickname,
+            regionParent : userState.regionParent,
+            regionChild : userState.regionChild
         }
 
         const result = await dispatch(myIntroPut({token : userState.accessToken, data : data}))
