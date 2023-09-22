@@ -100,6 +100,7 @@ const GroupQnA = () => {
             page : page === null || '' ? 1 : parseInt(page),
             sort : 'createAt,DESC',
         }
+        console.log(param)
         if(text !== null){
             setSearchWord(text)
         }

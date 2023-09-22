@@ -99,12 +99,18 @@ const GroupQnAItem = () => {
     },[confirm])
 
     useEffect(() => {
-        dispatch(groupQnAItemGet({id, qid, token : userState.accessToken}))
+        if(!confirm){
+            dispatch(groupQnAItemGet({id, qid, token : userState.accessToken}))
+        }
 
         return () => {
             dispatch(groupStateActions.resetGroupQnAItem())
         }
     },[id, dispatch, confirm])
+
+    useEffect(() => {
+        dispatch(groupQnAItemGet({id, qid, token : userState.accessToken}))
+    },[writeOpen])
 
     if(groupState.groupQnAItem === null){
         if(!groupState.groupQnAExist){
