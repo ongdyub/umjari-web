@@ -414,6 +414,40 @@ export const groupRecommendGet = createAsyncThunk(
     }
 )
 
+export const addGroup = createAsyncThunk(
+    "group/addGroup",
+    async ({token, data} : {token : string | null, data : any}, {rejectWithValue}) => {
+        try {
+            const response = await axios.post('/api/v1/group/',data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
+export const addAdmin = createAsyncThunk(
+    "group/addAdmin",
+    async ({token, data, id} : {token : string | null, data : any, id : any}, {rejectWithValue}) => {
+        try {
+            const response = await axios.post(`/api/v1/group/${id}/register/admin/`,data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err : any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
 export const groupStateSlice = createSlice({
     name: "groupState",
     initialState,
@@ -596,6 +630,13 @@ export const groupStateSlice = createSlice({
             else{
                 window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
+        });
+
+        builder.addCase(addGroup.fulfilled, (state, action) => {
+            window.alert("그룹 생성 완료")
+        });
+        builder.addCase(addAdmin.fulfilled, (state, action) => {
+            window.alert("등록 완료")
         });
     },
 });
