@@ -346,10 +346,7 @@ const LoginModal = (props : any) => {
     },[profileName, email, nickname, loginId, loginPassword, pwConfirm])
 
 
-    //alert Freind Request
-
-    const friendState = useSelector(selectFriend)
-    const [reqNum, setReqNum] = useState(0)
+    //Get Freind Request
 
     useEffect(() => {
         if(userState.accessToken !== null && userState.refreshed){
@@ -362,17 +359,11 @@ const LoginModal = (props : any) => {
         }
     },[userState.accessToken, userState.refreshed])
 
-    useEffect(() => {
-        if(friendState.requestFriend !== null){
-            setReqNum(friendState.requestFriend.totalElements)
-        }
-    },[friendState.requestFriend])
-
-    useEffect(() => {
-        if(reqNum > 0){
-            window.alert(reqNum + "명의 친구 요청이 있습니다.")
-        }
-    },[reqNum])
+    // useEffect(() => {
+    //     if(reqNum > 0){
+    //         window.alert(reqNum + "명의 친구 요청이 있습니다.")
+    //     }
+    // },[reqNum])
 
     return (
         <Modal

@@ -1,6 +1,6 @@
 import {
     AppBar,
-    Avatar,
+    Avatar, Badge,
     Box,
     Button,
     Container, Divider,
@@ -21,6 +21,7 @@ import {AppDispatch} from "../../store";
 import React from 'react'
 import NameChangeModal from "../../Modal/NameChangeModal";
 import {useSearchParams} from "react-router-dom";
+import {selectFriend} from "../../store/slices/manage/friend/friend";
 
 const pages = ['홈', '커뮤니티', '단체검색', '장터', '객원모집', '소개', '단체 등록'];
 const settings = ['마이페이지', '닉네임 변경' , '내정보 관리', '로그아웃', 'Size'];
@@ -128,6 +129,14 @@ const Header = () => {
 
     }, [userState.accessToken, userState.profileName, dispatch])
 
+    const [reqNum, setReqNum] = useState(0)
+    const friendState = useSelector(selectFriend)
+    useEffect(() => {
+        if(friendState.requestFriend !== null){
+            setReqNum(friendState.requestFriend.totalElements)
+        }
+    },[friendState.requestFriend])
+
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -232,7 +241,7 @@ const Header = () => {
                                 <>
                                     <Tooltip title="Open settings">
                                         <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                            <Avatar alt={''} src={`${userState.profileImage}`}/>
+                                            <Avatar alt={''} sx={{border : reqNum > 0 ? `1.5px solid red` : ''}} src={`${userState.profileImage}`}/>
                                         </IconButton>
                                     </Tooltip>
                                     <Menu
@@ -254,6 +263,12 @@ const Header = () => {
                                         {settings.map((setting) => (
                                             <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
                                                 <Typography textAlign="center">{setting}</Typography>
+                                                {
+                                                    setting === '내정보 관리' && reqNum > 0 ?
+                                                        <Typography color={'red'} sx={{fontSize: 15, fontWeight: 15}}>*</Typography>
+                                                        :
+                                                        null
+                                                }
                                             </MenuItem>
                                         ))}
                                     </Menu>
