@@ -100,7 +100,6 @@ const GroupQnAWriteModal = (props : any) => {
             }
         }
         dispatch(groupQnAListGet({id, param}))
-        dispatch(groupQnAItemGet({id, qid, token : userState.accessToken}))
         handleClose(true)
     }
 
