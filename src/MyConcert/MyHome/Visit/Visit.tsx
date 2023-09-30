@@ -83,7 +83,7 @@ const Visit = () => {
                         :
                         <VisitList item={writeData} write={true} />
                     :
-                    <Typography sx={{mt:1, fontSize:25, fontWeight:300}}>먼저 로그인해주세요</Typography>
+                    <Typography sx={{mt:2, mb:1, fontSize:22, fontWeight:200}}>로그인시 작성 가능합니다.</Typography>
             }
             {
                 visitState.contents.map((item,idx) => (
