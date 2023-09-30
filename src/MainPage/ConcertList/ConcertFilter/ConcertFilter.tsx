@@ -73,7 +73,7 @@ const ConcertFilter = () => {
     const [composer, setComposer] = useState('')
     const [musicName, setMusicName] = useState('')
 
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(true)
 
     const menuOpen = () => {
         setOpen((!open))
