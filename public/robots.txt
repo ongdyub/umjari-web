@@ -1,3 +1,4 @@
+# https://umjari.co.kr/robots.txt
 Sitemap: https://umjari.co.kr/sitemap.xml
 User-agent: *
 Disallow:
