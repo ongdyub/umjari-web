@@ -38,7 +38,7 @@ const AddConcertMemberModal = (props : any) => {
     const [curSetMusic, setCurSetMusic] = useState<string | number | undefined | null>(concertState.concert?.setList[0].id)
 
     const [userList, setUserList] = useState<Array<any>>([])
-    const partList = ['Vn 1st', 'Vn 2nd', 'Va', 'Vc', 'Db', 'Fl', 'Picc', 'Ob', 'E.H', 'Cl', 'Fg', 'Hn', 'Trp', 'Trb', 'Cnt', 'Tub', 'Timp', 'Perc', 'Harp']
+    const partList = ['Vn 1st', 'Vn 2nd', 'Va', 'Vc', 'Db', 'Fl', 'Picc', 'Ob', 'E.H', 'Cl', 'Fg', 'Hn', 'Trp', 'Trb', 'Cnt', 'Tub', 'Timp', 'Perc', 'Harp', 'Piano', 'Bass Drum']
     const roleList = [{role : '악장', enum : 'MASTER'}, {role : '수석', enum : 'PRINCIPAL'}, {role : '부수석', enum : 'ASSISTANT_PRINCIPAL'}, {role : '단원', enum : 'MEMBER'}]
     const detailPartList = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', 'assist', 'Solo', 'off.', 'obb.', '.']
 
