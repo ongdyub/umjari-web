@@ -3,6 +3,7 @@ import ConcertList from "./ConcertList/ConcertList";
 import RecommendGroup from "./RecommendGroup/RecommendGroup";
 import MiniBoard from "./MiniBoard/MiniBoard";
 import Banner from "../Banner/Banner";
+import Advertisement from "./Advertisement/Advertisement";
 
 const MainPage = () => {
     const theme = useTheme();
@@ -17,6 +18,7 @@ const MainPage = () => {
                 <RecommendGroup />
             </Stack>
             <Divider />
+            <Advertisement />
         </Stack>
     )
 }
