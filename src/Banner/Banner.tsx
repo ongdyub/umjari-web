@@ -19,6 +19,9 @@ const Banner = () => {
             <Stack direction={'row'} justifyContent={'center'} sx={{fontSize: 12, fontWeight: 700,mt: 1,width: '90%'}} alignItems={'center'}>
                 연습실 / 악기사 / 단체 광고 및 기타 문의 : umjari@umjari.co.kr
             </Stack>
+            <Stack direction={'row'} justifyContent={'center'} sx={{ fontSize: 11, fontWeight: 400, mt: 1, width: '90%' }} alignItems={'center'}>
+                <Link href={'https://www.instagram.com/umjari_/'} target={'_blank'}>인스타그램 DM 문의</Link>
+            </Stack>
         </Stack>
     )
 }
