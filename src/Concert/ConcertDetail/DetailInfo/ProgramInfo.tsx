@@ -59,7 +59,7 @@ const ProgramInfo = (props : any) => {
                 }
             </Stack>
             <Stack>
-                <Typography variant={"caption"} sx={{fontWeight: 100, fontSize: 16, mt:1, mb:1}}>{item.musicInfo.nameEng}</Typography>
+                <Typography variant={"caption"} sx={{fontWeight: 200, fontSize: 16, mt:1, mb:1}}>{item.musicInfo.nameEng}</Typography>
             </Stack>
             <Divider sx={{width: '100%', mb:1}} />
             {

@@ -1,7 +1,6 @@
 import {Divider, Pagination, Stack, useMediaQuery, useTheme} from "@mui/material";
 import {useState} from "react";
 import VisitList from "../../../MyConcert/MyHome/Visit/VisitList/VisitList";
-import ReviewList from "../Review/ReviewList";
 import ConstructionIcon from "@mui/icons-material/Construction";
 
 const ConcertComment = () => {

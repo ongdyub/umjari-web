@@ -17,7 +17,7 @@ const GroupItem = (props : any) => {
                 onError={({currentTarget}) => currentTarget.src = `${process.env.PUBLIC_URL}/Logo_posit.png`}
                 src={item.logo}
             />
-            <Stack sx={{justifyContent: "flex-start", alignItems: "center", ml: 0.5, mr:1, width: 135}}>
+            <Stack sx={{textAlign: 'center',justifyContent: "flex-start", alignItems: "center", alignContent: 'center', ml: 0.5, mr:1, width: 135}}>
                 <Typography sx={{fontSize:11, mb:0.5}}>
                     {item.name}
                 </Typography>
