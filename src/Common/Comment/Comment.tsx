@@ -30,7 +30,7 @@ const Comment = (props : any) => {
             window.alert("익명글입니다.")
         }
         else{
-            navigate(`/myconcert/${item.authorInfo.profileName}/selfintro`)
+            navigate(`/myconcert/${item.authorInfo.profileName}/list`)
         }
     }
 

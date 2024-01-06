@@ -88,7 +88,7 @@ const MyConcertList = (props : any) => {
                         </Stack>
                     ))}
                     <CardActions sx={{mt:-1.5,mb:-0.5, display: 'flex', justifyContent: 'center'}}>
-                        <Button onClick={() => navigate(`/concert/${item.id}/review`)} size="small" sx={{mt:0.5,fontSize: 14,maxHeight:40, minHeight:40, maxWidth: 80, minWidth:80}}>후기 쓰기</Button>
+                        <Button onClick={() => navigate(`/concert/${item.id}/member`)} size="small" sx={{mt:0.5,fontSize: 14,maxHeight:40, minHeight:40, maxWidth: 80, minWidth:80}}>정보 보기</Button>
                     </CardActions>
                     {/*<Stack onClick={() => setExpanded(!expanded)} justifyContent={"flex-end"} sx={{marginLeft: 'auto', position: 'relative', bottom:10, right: 25, minWidth: 145, cursor: 'pointer'}}>*/}
                     {/*    <Stack justifyContent={"flex-end"}  direction={"row"}>*/}

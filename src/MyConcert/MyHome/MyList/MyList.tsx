@@ -166,7 +166,7 @@ const MyList = () => {
                                     ))}
                                     <Stack direction={"row"}>
                                         <CardActions sx={{ml:-2}}>
-                                            <Button onClick={() => navigate(`/concert/${item.id}/review`)} size="small" sx={{fontSize: 12,maxHeight:40, minHeight:40, maxWidth: 60, minWidth:60}}>후기 쓰기</Button>
+                                            <Button onClick={() => navigate(`/concert/${item.id}/member`)} size="small" sx={{fontSize: 12,maxHeight:40, minHeight:40, maxWidth: 60, minWidth:60}}>정보 보기</Button>
                                         </CardActions>
                                         <Stack justifyContent={"flex-end"} sx={{marginLeft: 'auto'}}>
                                             <Stack justifyContent={"flex-end"}  alignContent={"center"} alignItems={"center"} direction={"row"}>

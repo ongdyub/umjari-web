@@ -46,7 +46,7 @@ const GroupConcertList = (props : any) => {
                         </Stack>
                     ))}
                     <CardActions sx={{mt:-1.5,mb:-0.5, display: 'flex', justifyContent: 'center'}}>
-                        <Button onClick={() => navigate(`/concert/${item.id}/review`)} size="small" sx={{fontSize: 11,maxHeight:25, minHeight:25, maxWidth: 60, minWidth:60}}>후기 쓰기</Button>
+                        <Button onClick={() => navigate(`/concert/${item.id}/member`)} size="small" sx={{fontSize: 11,maxHeight:25, minHeight:25, maxWidth: 60, minWidth:60}}>정보 보기</Button>
                     </CardActions>
                 </Collapse>
             </Card>

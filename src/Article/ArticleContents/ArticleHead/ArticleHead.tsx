@@ -16,7 +16,7 @@ const ArticleHead = () => {
             window.alert("익명글입니다.")
         }
         else{
-            navigate(`/myconcert/${articleState.authorInfo.profileName}/selfintro`)
+            navigate(`/myconcert/${articleState.authorInfo.profileName}/list`)
         }
     }
 
