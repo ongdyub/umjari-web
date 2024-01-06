@@ -118,7 +118,7 @@ const ConcertInfo = (props : any) => {
     };
 
     const onClickGoGroup = () => {
-        navigate(`/group/${concertData.groupId}/recruit`)
+        navigate(`/group/${concertData.groupId}/list`)
     }
 
     const handleFile = async (e : any) => {

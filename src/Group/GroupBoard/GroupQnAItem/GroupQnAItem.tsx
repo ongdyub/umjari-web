@@ -44,7 +44,7 @@ const GroupQnAItem = () => {
             window.alert("익명글입니다.")
         }
         else{
-            navigate(`/myconcert/${groupState.groupQnAItem?.authorInfo.profileName}/selfintro`)
+            navigate(`/myconcert/${groupState.groupQnAItem?.authorInfo.profileName}/list`)
         }
     }
 
