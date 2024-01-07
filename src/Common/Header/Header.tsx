@@ -23,7 +23,7 @@ import NameChangeModal from "../../Modal/NameChangeModal";
 import {useSearchParams} from "react-router-dom";
 import {selectFriend} from "../../store/slices/manage/friend/friend";
 
-const pages = ['홈', '커뮤니티', '단체검색', '장터', '소개', '단체 등록'];
+const pages = ['홈', '커뮤니티', '단체검색', '장터', '사이트 소개', '단체 등록'];
 const settings = ['마이페이지', '닉네임 변경' , '내정보 관리', '로그아웃'];
 
 const Header = () => {
@@ -65,7 +65,7 @@ const Header = () => {
         else if(page === '객원모집'){
             window.alert("준비 중 입니다.")
         }
-        else if(page === '소개'){
+        else if(page === '사이트 소개'){
             navigate('/about')
         }
         else if(page === '단체 등록'){
