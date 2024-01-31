@@ -319,7 +319,7 @@ export const userSlice = createSlice({
             window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
         });
         builder.addCase(login.rejected, () => {
-            window.alert("아이디와 비밀번호가 일치하지 않습니다.")
+            window.alert("로그인 실패. 아이디와 비밀번호를 다시 한번 확인해 주세요.")
         });
     },
 });
