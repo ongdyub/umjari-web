@@ -35,6 +35,25 @@ export interface ConcertParticipate {
     "member": [Participant] | [],
 }
 
+export interface ConcertComment {
+    contents: [
+        {
+            id: number,
+            "simpleUserDto": {
+                id: number,
+                profileName: string,
+                profileImage: string
+            },
+            "comment": string,
+            "createAt": string,
+            "isOwnedComment": boolean
+        }
+    ],
+    totalPages: number,
+    totalElements: number,
+    currentPage: number
+}
+
 export interface Concert {
     id: number,
     groupId: number,
@@ -68,12 +87,14 @@ export interface ConcertList {
 export interface ConcertState {
     concert : Concert | null,
     participants : [ConcertParticipate] | [],
+    concertComment : ConcertComment | null,
     concertList: ConcertList | null
 }
 
 const initialState: ConcertState = {
     concert: null,
     participants : [],
+    concertComment: null,
     concertList: {
         totalPages: 0,
         totalElements: 0,
@@ -246,6 +267,75 @@ export const concertPost = createAsyncThunk(
     }
 )
 
+export const concertCommentPost = createAsyncThunk(
+    "concert/concertCommentPost",
+    async ({ data, token, id }: { data: any, token: string | number | undefined | null, id: string | number | undefined | null }, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`/api/v1/concert/${id}/comments/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err: any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
+export const concertCommentGet = createAsyncThunk(
+    "concert/concertCommentGet",
+    async ({ id, param, token }: { id: string | number | undefined | null, param: any, token: string | number | undefined | null }, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`/api/v1/concert/${id}/comments/`, {
+                params: param,
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err: any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
+export const concertCommentDelete = createAsyncThunk(
+    "concert/concertCommentDelete",
+    async ({ id, cid, token }: { id: string | number | undefined | null, cid: string | number | undefined | null, token: string | number | undefined | null }, { rejectWithValue }) => {
+        try {
+            const response = await axios.delete(`/api/v1/concert/${id}/comments/${cid}/`, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err: any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
+export const concertCommentPut = createAsyncThunk(
+    "concert/concertCommentPut",
+    async ({ id, cid, token, data }: { id: string | number | undefined | null, cid: string | number | undefined | null, token: string | number | undefined | null, data: any }, { rejectWithValue }) => {
+        try {
+            const response = await axios.put(`/api/v1/concert/${id}/comments/${cid}/`, data, {
+                headers: {
+                    Authorization: `Bearer  ${token}`,
+                },
+            })
+            return response.data
+        }
+        catch (err: any) {
+            return rejectWithValue(err.response)
+        }
+    }
+)
+
 export const concertStateSlice = createSlice({
     name: "concertState",
     initialState,
@@ -258,6 +348,9 @@ export const concertStateSlice = createSlice({
         },
         resetParticipants: (state) => {
             state.participants = []
+        },
+        resetConcertComment: (state) => {
+            state.concertComment = null
         },
     },
 
@@ -373,6 +466,9 @@ export const concertStateSlice = createSlice({
             else{
                 window.alert("네트워크 오류. " + action.payload.data["errorCode"] + " : " + action.payload.data["detail"] + " " + action.payload.data["content"])
             }
+        });
+        builder.addCase(concertCommentGet.fulfilled, (state, action) => {
+            state.concertComment = action.payload
         });
     },
 });
